@@ -1,0 +1,171 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+using YGNodeRef = Yoga.Net.YGNode;
+using size_t = System.Int32;
+using static Yoga.Net.YGGlobal;
+
+namespace Yoga.Net
+{
+    public class YGVector : List<YGNodeRef> { }
+
+    public partial class Yoga
+    {
+        internal static bool isUndefined(float value) 
+        {
+            return float.IsNaN(value);
+        }
+    }
+
+
+    public class YGCachedMeasurement
+    {
+        public float availableWidth;
+        public float availableHeight;
+        public YGMeasureMode widthMeasureMode;
+        public YGMeasureMode heightMeasureMode;
+
+        public float computedWidth;
+        public float computedHeight;
+
+        public YGCachedMeasurement()
+        {
+            availableWidth = 0;
+            availableHeight = 0;
+            widthMeasureMode = YGMeasureMode.Undefined;
+            heightMeasureMode = YGMeasureMode.Undefined;
+            computedWidth = -1;
+            computedHeight = -1;
+        }
+
+        protected bool Equals(YGCachedMeasurement other)
+        {
+            bool isEqual = widthMeasureMode == other.widthMeasureMode &&
+                heightMeasureMode == other.heightMeasureMode;
+
+            if (!Yoga.isUndefined(availableWidth) || !Yoga.isUndefined(other.availableWidth))
+            {
+                isEqual = isEqual && YGFloatsEqual(availableWidth, other.availableWidth);
+            }
+
+            if (!Yoga.isUndefined(availableHeight) || !Yoga.isUndefined(other.availableHeight))
+            {
+                isEqual = isEqual && YGFloatsEqual(availableHeight, other.availableHeight);
+            }
+
+            if (!Yoga.isUndefined(computedWidth) || !Yoga.isUndefined(other.computedWidth))
+            {
+                isEqual = isEqual && YGFloatsEqual(computedWidth , other.computedWidth);
+            }
+
+            if (!Yoga.isUndefined(computedHeight) || !Yoga.isUndefined(other.computedHeight))
+            {
+                isEqual = isEqual && YGFloatsEqual(computedHeight , other.computedHeight);
+            }
+
+            return isEqual;
+        }
+
+        /// <inheritdoc />
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((YGCachedMeasurement)obj);
+        }
+
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = availableWidth.GetHashCode();
+                hashCode = (hashCode * 397) ^ availableHeight.GetHashCode();
+                hashCode = (hashCode * 397) ^ (int)widthMeasureMode;
+                hashCode = (hashCode * 397) ^ (int)heightMeasureMode;
+                hashCode = (hashCode * 397) ^ computedWidth.GetHashCode();
+                hashCode = (hashCode * 397) ^ computedHeight.GetHashCode();
+                return hashCode;
+            }
+        }
+
+        public static bool operator ==(YGCachedMeasurement left, YGCachedMeasurement right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(YGCachedMeasurement left, YGCachedMeasurement right)
+        {
+            return !Equals(left, right);
+        }
+    }
+
+
+    namespace detail 
+    {
+        public class Values<T> where T : struct, IConvertible
+        {
+            readonly CompactValue[] _values;
+
+            public Values()
+            {
+                if (!typeof(T).IsEnum)
+                    throw new ArgumentException("T must be an enum");
+
+                var size = Enum.GetValues(typeof(T)).Length;
+                _values = new CompactValue[size];
+            }
+
+            public Values(YGValue defaultValue) : this()
+            {
+                var cv = new CompactValue(defaultValue);
+                _values.Fill(cv);
+            }
+
+            public CompactValue this[size_t i]
+            {
+                get => _values[i];
+                set => _values[i] = value;
+            }
+
+            public CompactValue this[T i]
+            {
+                get => _values[Convert.ToInt32(i)];
+                set => _values[Convert.ToInt32(i)] = value;
+            }
+
+            protected bool Equals(Values<T> other)
+            {
+                return _values.SequenceEqual(other._values);
+            }
+
+            /// <inheritdoc />
+            public override bool Equals(object obj)
+            {
+                if (ReferenceEquals(null, obj)) return false;
+                if (ReferenceEquals(this, obj)) return true;
+                if (obj.GetType() != this.GetType()) return false;
+                return Equals((Values<T>)obj);
+            }
+
+            /// <inheritdoc />
+            public override int GetHashCode()
+            {
+                return (_values != null ? _values.GetHashCode() : 0);
+            }
+
+            public static bool operator ==(Values<T> left, Values<T> right)
+            {
+                return Equals(left, right);
+            }
+
+            public static bool operator !=(Values<T> left, Values<T> right)
+            {
+                return !Equals(left, right);
+            }
+        }
+    }
+
+}
