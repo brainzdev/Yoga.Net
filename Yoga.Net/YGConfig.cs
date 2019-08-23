@@ -39,10 +39,20 @@ namespace Yoga.Net
 
         public float pointScaleFactor = 1.0f;
 
-        //public std::array<bool, facebook::yoga::enums::count<YGExperimentalFeature>()> experimentalFeatures = {};
+        public bool[] experimentalFeatures = {false};
         public object context = null;
 
-        public YGConfig(YGLogger logger) { }
+        public YGConfig(YGLogger logger)
+        {
+            logNoContext = logger;
+        }
+
+        public YGConfig(YGConfig config)
+        {
+            cloneWithContext = config.cloneWithContext;
+            cloneNoContext = config.cloneNoContext;
+            loggerUsesContext_ = config.loggerUsesContext_;
+        }
 
         public void log(YGConfig config, YGNode node, YGLogLevel level, object context, in string format, params object[] args)
         {
@@ -79,14 +89,14 @@ namespace Yoga.Net
             return clone ?? YGNodeClone(node);
         }
 
-        void setCloneNodeCallback(YGCloneNodeFunc cloneNode = null)
+        public void setCloneNodeCallback(YGCloneNodeFunc cloneNode = null)
         {
             cloneNoContext        = cloneNode;
             cloneWithContext      = null;
             cloneNodeUsesContext_ = false;
         }
 
-        void setCloneNodeCallback(CloneWithContextFn cloneNode)
+        public void setCloneNodeCallback(CloneWithContextFn cloneNode)
         {
             cloneWithContext      = cloneNode;
             cloneNoContext        = null;

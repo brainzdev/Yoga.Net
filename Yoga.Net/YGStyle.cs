@@ -1,13 +1,13 @@
 ﻿
 namespace Yoga.Net
 {
-    public class Edges : detail.Values<YGEdge>
+    public class Edges : Values<YGEdge>
     {
         public Edges() { }
         public Edges(YGValue defaultValue) : base(defaultValue) { }
     }
 
-    public class Dimensions : detail.Values<YGDimension>
+    public class Dimensions : Values<YGDimension>
     {
         public Dimensions() { }
         public Dimensions(YGValue defaultValue) : base(defaultValue) { }

@@ -5,6 +5,22 @@ namespace Yoga.Net
     public static class Log 
     {
         public static void log(
+            YGLogLevel level,
+            object context,
+            string format, 
+            params object[] args)
+        {
+            vlog(
+                null,
+                null,
+                level,
+                context,
+                format,
+                args);
+
+        }
+
+        public static void log(
             YGNode node,
             YGLogLevel level,
             object context,

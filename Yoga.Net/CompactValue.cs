@@ -25,12 +25,12 @@ namespace Yoga.Net
 
         // these are signaling NaNs with specific bit pattern as payload they will be
         // silenced whenever going through an FPU operation on ARM + x86
-        const uint32_t AUTO_BITS = 0x7faaaaaa;
-        const uint32_t ZERO_BITS_POINT = 0x7f8f0f0f;
-        const uint32_t ZERO_BITS_PERCENT = 0x7f80f0f0;
+        const int AUTO_BITS = 0x7faaaaaa;
+        const int ZERO_BITS_POINT = 0x7f8f0f0f;
+        const int ZERO_BITS_PERCENT = 0x7f80f0f0;
 
-        const uint32_t BIAS = 0x20000000;
-        const uint32_t PERCENT_BIT = 0x40000000;
+        const int BIAS = 0x20000000;
+        const int PERCENT_BIT = 0x40000000;
 
         public static CompactValue Auto = new CompactValue(AUTO_BITS);
         public static CompactValue Undefined = new CompactValue(float.NaN);
@@ -41,9 +41,9 @@ namespace Yoga.Net
         {
             [FieldOffset(0)] public float value;
 
-            [FieldOffset(0)] public uint32_t repr;
+            [FieldOffset(0)] public int repr;
 
-            public Payload(uint32_t r) : this() => repr = r;
+            public Payload(int r) : this() => repr = r;
             public Payload(float v) : this() => value = v;
         }
 
@@ -66,6 +66,8 @@ namespace Yoga.Net
 
         public static CompactValue of(float value, YGUnit unit) => new CompactValue(Build(value, unit));
 
+        public float value => _payload.value;
+
         static Payload Build(float value, YGUnit unit)
         {
             if (Math.Abs(value) < float.Epsilon || (value < LOWER_BOUND && value > -LOWER_BOUND))
@@ -80,7 +82,7 @@ namespace Yoga.Net
             else if (value < -upperBound)
                 value = -upperBound;
 
-            uint32_t unitBit = unit == YGUnit.Percent ? PERCENT_BIT : 0;
+            int unitBit = unit == YGUnit.Percent ? PERCENT_BIT : 0;
             var data = new Payload(value);
             data.repr -= BIAS;
             data.repr |= unitBit;

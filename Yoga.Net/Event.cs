@@ -25,7 +25,6 @@ namespace Yoga.Net
         // ReSharper disable once InconsistentNaming Used for Sizing
         COUNT
     };
-    //const char* LayoutPassReasonToString(const LayoutPassReason value);
 
 
     public unsafe struct LayoutData
@@ -37,7 +36,7 @@ namespace Yoga.Net
         public int cachedMeasures;
         public int measureCallbacks;
 
-        fixed uint8_t measureCallbackReasonsCount[(int)LayoutPassReason.COUNT];
+        public fixed uint8_t measureCallbackReasonsCount[(int)LayoutPassReason.COUNT];
         //std::array<int, static_cast<uint8_t>(LayoutPassReason::COUNT)>
         //    measureCallbackReasonsCount;
     };
@@ -48,30 +47,69 @@ namespace Yoga.Net
     }
 
 
+    public abstract class YGNodeEventArgs : EventArgs
+    {
+        public YGNode node;
 
-    public class NodeAllocationEventArgs : EventArgs
+        public YGNodeEventArgs(YGNode node)
+        {
+            this.node = node;
+        }
+    }
+
+    public class NodeAllocationEventArgs : YGNodeEventArgs
     {
         public YGConfig config;
+
+        public NodeAllocationEventArgs(YGNode node, YGConfig config) : base(node)
+        {
+            this.config = config;
+        }
     }
-    public class NodeDeallocationEventArgs : EventArgs
+    public class NodeDeallocationEventArgs : YGNodeEventArgs
     {
         public YGConfig config;
+
+        public NodeDeallocationEventArgs(YGNode node, YGConfig config) : base(node)
+        {
+            this.config = config;
+        }
     }
-    public class LayoutPassStartEventArgs : EventArgs
+    public class LayoutPassStartEventArgs : YGNodeEventArgs
     {
         public object layoutContext;
+
+        /// <inheritdoc />
+        public LayoutPassStartEventArgs(YGNode node, object layoutContext) : base(node)
+        {
+            this.layoutContext = layoutContext;
+        }
     }
-    public class LayoutPassEndEventArgs : EventArgs
+    public class LayoutPassEndEventArgs : YGNodeEventArgs
     {
         public object layoutContext;
         public LayoutData layoutData;
+
+        /// <inheritdoc />
+        public LayoutPassEndEventArgs(YGNode node, object layoutContext, LayoutData layoutData) : base(node)
+        {
+            this.layoutContext = layoutContext;
+            this.layoutData = layoutData;
+        }
     }
-    public class NodeLayoutEventArgs : EventArgs
+    public class NodeLayoutEventArgs : YGNodeEventArgs
     {
-        public object layoutContext;
         public LayoutType layoutType;
+        public object layoutContext;
+
+        /// <inheritdoc />
+        public NodeLayoutEventArgs(YGNode node, LayoutType layoutType, object layoutContext) : base(node)
+        {
+            this.layoutType = layoutType;
+            this.layoutContext = layoutContext;
+        }
     }
-    public class MeasureCallbackEndEventArgs : EventArgs
+    public class MeasureCallbackEndEventArgs : YGNodeEventArgs
     {
         public object layoutContext;
         public float width;
@@ -80,10 +118,22 @@ namespace Yoga.Net
         public YGMeasureMode heightMeasureMode;
         public float measuredWidth;
         public float measuredHeight;
-        public readonly LayoutPassReason reason;
+        public LayoutPassReason reason;
+
+        /// <inheritdoc />
+        public MeasureCallbackEndEventArgs(YGNode node) : base(node) { }
     }
 
-    public class MeasureCallbackStartEventArgs : EventArgs { }
-    public class NodeBaselineStartEventArgs : EventArgs { }
-    public class NodeBaselineEndEventArgs : EventArgs { }
+    public class MeasureCallbackStartEventArgs : YGNodeEventArgs {
+        /// <inheritdoc />
+        public MeasureCallbackStartEventArgs(YGNode node) : base(node) { }
+    }
+    public class NodeBaselineStartEventArgs : YGNodeEventArgs {
+        /// <inheritdoc />
+        public NodeBaselineStartEventArgs(YGNode node) : base(node) { }
+    }
+    public class NodeBaselineEndEventArgs : YGNodeEventArgs {
+        /// <inheritdoc />
+        public NodeBaselineEndEventArgs(YGNode node) : base(node) { }
+    }
 }

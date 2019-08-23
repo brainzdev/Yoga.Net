@@ -20,15 +20,15 @@ namespace Yoga.Net
         public float[] padding = {0f, 0f, 0f, 0f};
 
         //public:
-        public uint32_t computedFlexBasisGeneration = 0;
+        public int computedFlexBasisGeneration = 0;
         public YGFloatOptional computedFlexBasis = new YGFloatOptional();
 
         // Instead of recomputing the entire layout every single time, we cache some
         // information to break early when nothing changed
-        public uint32_t generationCount = 0;
+        public int generationCount = 0;
         public YGDirection lastOwnerDirection = YGDirection.Unknown;
 
-        public uint32_t nextCachedMeasurementsIndex = 0;
+        public int nextCachedMeasurementsIndex = 0;
 
         public YGCachedMeasurement[] cachedMeasurements = new YGCachedMeasurement[YGGlobal.YG_MAX_CACHED_RESULT_COUNT]; // TODO: Initialise array correctly
         public float[] measuredDimensions = {YGValue.YGUndefined, YGValue.YGUndefined};
@@ -57,12 +57,12 @@ namespace Yoga.Net
             for (uint32_t i = 0; i < cachedMeasurements.Length && isEqual; ++i) 
                 isEqual = isEqual && cachedMeasurements[i] == other.cachedMeasurements[i];
 
-            if (!Yoga.isUndefined(measuredDimensions[0]) || !Yoga.isUndefined(other.measuredDimensions[0])) 
+            if (!YogaIsUndefined(measuredDimensions[0]) || !YogaIsUndefined(other.measuredDimensions[0])) 
             {
                 isEqual = isEqual && YGFloatsEqual(measuredDimensions[0],  other.measuredDimensions[0]);
             }
 
-            if (!Yoga.isUndefined(measuredDimensions[1]) || !Yoga.isUndefined(other.measuredDimensions[1])) 
+            if (!YogaIsUndefined(measuredDimensions[1]) || !YogaIsUndefined(other.measuredDimensions[1])) 
             {
                 isEqual = isEqual && YGFloatsEqual(measuredDimensions[1], other.measuredDimensions[1]);
             }

@@ -1,27 +1,10 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace Yoga.Net
 {
-    public delegate YGSize YGMeasureFunc(
-        YGNode node,
-        float width,
-        YGMeasureMode widthMode,
-        float height,
-        YGMeasureMode heightMode);
-    public delegate float YGBaselineFunc(YGNode node, float width, float height);
-    public delegate void YGDirtiedFunc(YGNode node);
-    public delegate void YGPrintFunc(YGNode node);
-    public delegate void YGNodeCleanupFunc(YGNode node);
-    public delegate int YGLogger(
-        YGConfig config,
-        YGNode node,
-        YGLogLevel level,
-        string format,
-        params object[] args);
-    public delegate YGNode YGCloneNodeFunc(YGNode oldNode, YGNode owner, int childIndex);
-
     internal static class YGGlobal
     {
         // This value was chosen based on empirical data:
@@ -46,14 +29,19 @@ namespace Yoga.Net
         {
             return CompactValue.of(value, YGUnit.Point);
         }
-    
+
+        public static bool YogaIsUndefined(float value) 
+        {
+            return float.IsNaN(value);
+        }
+
         public static bool YGValueEqual(in YGValue a, in YGValue b)
         {
             if (a.unit != b.unit) 
                 return false;
 
             if (a.unit == YGUnit.Undefined ||
-                (Yoga.isUndefined(a.value) && Yoga.isUndefined(b.value))) 
+                (YogaIsUndefined(a.value) && YogaIsUndefined(b.value))) 
             {
                 return true;
             }
@@ -73,18 +61,18 @@ namespace Yoga.Net
         // difference between two floats is less than 0.0001f or both are undefined.
         public static bool YGFloatsEqual(in float a, in float b)
         {
-            if (!Yoga.isUndefined(a) && !Yoga.isUndefined(b)) {
+            if (!YogaIsUndefined(a) && !YogaIsUndefined(b)) {
                 return Math.Abs(a - b) < float.Epsilon;
             }
-            return Yoga.isUndefined(a) && Yoga.isUndefined(b);
+            return YogaIsUndefined(a) && YogaIsUndefined(b);
         }
 
         public static float YGFloatMax(in float a, in float b)
         {
-            if (!Yoga.isUndefined(a) && !Yoga.isUndefined(b)) {
+            if (!YogaIsUndefined(a) && !YogaIsUndefined(b)) {
                 return Math.Max(a, b);
             }
-            return Yoga.isUndefined(a) ? b : a;
+            return YogaIsUndefined(a) ? b : a;
         }
 
         public static YGFloatOptional YGFloatOptionalMax(
@@ -100,13 +88,15 @@ namespace Yoga.Net
             return op1.isUndefined() ? op2 : op1;
         }
 
+        public static float fmodf(float x, float y) => (float) Math.IEEERemainder(x, y);
+
         public static float YGFloatMin(in float a, in float b)
         {
-            if (!Yoga.isUndefined(a) && !Yoga.isUndefined(b)) {
+            if (!YogaIsUndefined(a) && !YogaIsUndefined(b)) {
                 return Math.Min(a, b);
             }
 
-            return Yoga.isUndefined(a) ? b : a;
+            return YogaIsUndefined(a) ? b : a;
         }
 
         // This custom float comparison function compares the array of float with
@@ -122,7 +112,7 @@ namespace Yoga.Net
         // This function returns 0 if YGFloatIsUndefined(val) is true and val otherwise
         public static float YGFloatSanitize(in float val)
         {
-            return Yoga.isUndefined(val) ? 0 : val;
+            return YogaIsUndefined(val) ? 0 : val;
         }
 
         public static YGFlexDirection YGFlexDirectionCross(
@@ -196,7 +186,7 @@ namespace Yoga.Net
             return value.IsAuto ? new YGFloatOptional(0) : YGResolveValue(value, ownerSize);
         }
 
-        static YGLogger YGDefaultLog = (config, node, level, format, args) =>
+        public static YGLogger YGDefaultLog = (config, node, level, format, args) =>
         {
             switch (level)
             {

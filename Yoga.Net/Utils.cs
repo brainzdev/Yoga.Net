@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
@@ -34,12 +35,12 @@ namespace Yoga.Net
     //   and/or grow.
     public struct YGCollectFlexItemsRowValues
     {
-        public uint32_t itemsOnLine;
+        public int itemsOnLine;
         public float sizeConsumedOnCurrentLine;
         public float totalFlexGrowFactors;
         public float totalFlexShrinkScaledFactors;
-        public uint32_t endOfLineIndex;
-        public YGNodeRef[] relativeChildren;
+        public int endOfLineIndex;
+        public List<YGNodeRef> relativeChildren;
 
         public float remainingFreeSpace;
 

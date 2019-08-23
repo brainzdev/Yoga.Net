@@ -59,7 +59,7 @@ namespace Yoga.Net
         YGDirtiedFunc dirtied_ = null;
         YGStyle style_ = new YGStyle();
         YGLayout layout_ = new YGLayout();
-        uint32_t lineIndex_ = 0;
+        int lineIndex_ = 0;
         YGNodeRef owner_ = null;
         YGVector children_ = new YGVector();
         YGConfigRef config_;
@@ -201,7 +201,7 @@ namespace Yoga.Net
         //// For Performance reasons passing as reference.
         public YGLayout getLayout() { return layout_; }
 
-        public uint32_t getLineIndex() { return lineIndex_; }
+        public int getLineIndex() { return lineIndex_; }
 
         public bool isReferenceBaseline() { return isReferenceBaseline_; }
 
@@ -248,7 +248,7 @@ namespace Yoga.Net
 
         public YGValue[] getResolvedDimensions() { return resolvedDimensions_; }
 
-        public YGValue getResolvedDimension(int index) {return resolvedDimensions_[index]; }
+        public YGValue getResolvedDimension(YGDimension index) {return resolvedDimensions_[(int)index]; }
 
         // Methods related to positions, margin, padding and border
         public YGFloatOptional getLeadingPosition(in YGFlexDirection axis, in float axisSize)
@@ -479,7 +479,7 @@ namespace Yoga.Net
 
         public void setLayout(in YGLayout layout) { layout_ = layout; }
 
-        public void setLineIndex(uint32_t lineIndex) { lineIndex_ = lineIndex; }
+        public void setLineIndex(int lineIndex) { lineIndex_ = lineIndex; }
 
         public void setIsReferenceBaseline(bool isReferenceBaseline)
         {
@@ -489,6 +489,10 @@ namespace Yoga.Net
         public void setOwner(YGNodeRef owner) { owner_ = owner; }
 
         public void setChildren(in YGVector children) { children_ = children; }
+
+        public void setChildren(IEnumerable<YGNodeRef> children)
+        {
+            children_ = new YGVector(children); }
 
         // TODO: rvalue override for setChildren
         //YG_DEPRECATED void setConfig(YGConfigRef config) { config_ = config; }
@@ -513,7 +517,7 @@ namespace Yoga.Net
             layout_.computedFlexBasis = computedFlexBasis;
         }
 
-        public void setLayoutComputedFlexBasisGeneration(uint32_t computedFlexBasisGeneration)
+        public void setLayoutComputedFlexBasisGeneration(int computedFlexBasisGeneration)
         {
             layout_.computedFlexBasisGeneration = computedFlexBasisGeneration;
         }
@@ -521,6 +525,10 @@ namespace Yoga.Net
         public void setLayoutMeasuredDimension(float measuredDimension, int index)
         {
             layout_.measuredDimensions[index] = measuredDimension;
+        }
+        public void setLayoutMeasuredDimension(float measuredDimension, YGDimension index)
+        {
+            layout_.measuredDimensions[(int)index] = measuredDimension;
         }
 
         public void setLayoutHadOverflow(bool hadOverflow)
@@ -538,20 +546,11 @@ namespace Yoga.Net
             layout_.direction = direction;
         }
 
-        public void setLayoutMargin(float margin, int index)
-        {
-            layout_.margin[index] = margin;
-        }
+        public void setLayoutMargin(float margin, YGEdge edge) => layout_.margin[(int)edge] = margin;
 
-        public void setLayoutBorder(float border, int index)
-        {
-            layout_.border[index] = border;
-        }
+        public void setLayoutBorder(float border, YGEdge edge) => layout_.border[(int)edge] = border;
 
-        public void setLayoutPadding(float padding, int index)
-        {
-            layout_.padding[index] = padding;
-        }
+        public void setLayoutPadding(float padding, YGEdge edge) => layout_.padding[(int)edge] = padding;
 
         public void setLayoutPosition(float position, int index)
         {

@@ -8,14 +8,10 @@ using static Yoga.Net.YGGlobal;
 
 namespace Yoga.Net
 {
-    public class YGVector : List<YGNodeRef> { }
-
-    public partial class Yoga
+    public class YGVector : List<YGNodeRef>
     {
-        internal static bool isUndefined(float value) 
-        {
-            return float.IsNaN(value);
-        }
+        public YGVector() { }
+        public YGVector(IEnumerable<YGNode> collection) : base(collection) { }
     }
 
 
@@ -44,22 +40,22 @@ namespace Yoga.Net
             bool isEqual = widthMeasureMode == other.widthMeasureMode &&
                 heightMeasureMode == other.heightMeasureMode;
 
-            if (!Yoga.isUndefined(availableWidth) || !Yoga.isUndefined(other.availableWidth))
+            if (!YogaIsUndefined(availableWidth) || !YogaIsUndefined(other.availableWidth))
             {
                 isEqual = isEqual && YGFloatsEqual(availableWidth, other.availableWidth);
             }
 
-            if (!Yoga.isUndefined(availableHeight) || !Yoga.isUndefined(other.availableHeight))
+            if (!YogaIsUndefined(availableHeight) || !YogaIsUndefined(other.availableHeight))
             {
                 isEqual = isEqual && YGFloatsEqual(availableHeight, other.availableHeight);
             }
 
-            if (!Yoga.isUndefined(computedWidth) || !Yoga.isUndefined(other.computedWidth))
+            if (!YogaIsUndefined(computedWidth) || !YogaIsUndefined(other.computedWidth))
             {
                 isEqual = isEqual && YGFloatsEqual(computedWidth , other.computedWidth);
             }
 
-            if (!Yoga.isUndefined(computedHeight) || !Yoga.isUndefined(other.computedHeight))
+            if (!YogaIsUndefined(computedHeight) || !YogaIsUndefined(other.computedHeight))
             {
                 isEqual = isEqual && YGFloatsEqual(computedHeight , other.computedHeight);
             }
@@ -103,68 +99,65 @@ namespace Yoga.Net
     }
 
 
-    namespace detail 
+    public class Values<T> where T : struct, IConvertible
     {
-        public class Values<T> where T : struct, IConvertible
+        readonly CompactValue[] _values;
+
+        public Values()
         {
-            readonly CompactValue[] _values;
+            if (!typeof(T).IsEnum)
+                throw new ArgumentException("T must be an enum");
 
-            public Values()
-            {
-                if (!typeof(T).IsEnum)
-                    throw new ArgumentException("T must be an enum");
+            var size = Enum.GetValues(typeof(T)).Length;
+            _values = new CompactValue[size];
+        }
 
-                var size = Enum.GetValues(typeof(T)).Length;
-                _values = new CompactValue[size];
-            }
+        public Values(YGValue defaultValue) : this()
+        {
+            var cv = new CompactValue(defaultValue);
+            _values.Fill(cv);
+        }
 
-            public Values(YGValue defaultValue) : this()
-            {
-                var cv = new CompactValue(defaultValue);
-                _values.Fill(cv);
-            }
+        public CompactValue this[int i]
+        {
+            get => _values[i];
+            set => _values[i] = value;
+        }
 
-            public CompactValue this[size_t i]
-            {
-                get => _values[i];
-                set => _values[i] = value;
-            }
+        public CompactValue this[T i]
+        {
+            get => _values[Convert.ToInt32(i)];
+            set => _values[Convert.ToInt32(i)] = value;
+        }
 
-            public CompactValue this[T i]
-            {
-                get => _values[Convert.ToInt32(i)];
-                set => _values[Convert.ToInt32(i)] = value;
-            }
+        protected bool Equals(Values<T> other)
+        {
+            return _values.SequenceEqual(other._values);
+        }
 
-            protected bool Equals(Values<T> other)
-            {
-                return _values.SequenceEqual(other._values);
-            }
+        /// <inheritdoc />
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Values<T>)obj);
+        }
 
-            /// <inheritdoc />
-            public override bool Equals(object obj)
-            {
-                if (ReferenceEquals(null, obj)) return false;
-                if (ReferenceEquals(this, obj)) return true;
-                if (obj.GetType() != this.GetType()) return false;
-                return Equals((Values<T>)obj);
-            }
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            return (_values != null ? _values.GetHashCode() : 0);
+        }
 
-            /// <inheritdoc />
-            public override int GetHashCode()
-            {
-                return (_values != null ? _values.GetHashCode() : 0);
-            }
+        public static bool operator ==(Values<T> left, Values<T> right)
+        {
+            return Equals(left, right);
+        }
 
-            public static bool operator ==(Values<T> left, Values<T> right)
-            {
-                return Equals(left, right);
-            }
-
-            public static bool operator !=(Values<T> left, Values<T> right)
-            {
-                return !Equals(left, right);
-            }
+        public static bool operator !=(Values<T> left, Values<T> right)
+        {
+            return !Equals(left, right);
         }
     }
 
