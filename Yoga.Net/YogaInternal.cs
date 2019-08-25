@@ -110,6 +110,7 @@ namespace Yoga.Net
 
             var size = Enum.GetValues(typeof(T)).Length;
             _values = new CompactValue[size];
+            _values.Fill(CompactValue.Undefined);
         }
 
         public Values(YGValue defaultValue) : this()

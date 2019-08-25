@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace Yoga.Net
 {
-    internal static class YGGlobal
+    public static partial class YGGlobal
     {
         // This value was chosen based on empirical data:
         // 98% of analyzed layouts require less than 8 entries.
@@ -15,11 +16,6 @@ namespace Yoga.Net
         public const float kDefaultFlexShrink = 0.0f;
         public const float kWebDefaultFlexShrink = 1.0f;
 
-        internal static readonly YGEdge[] leading = {YGEdge.Top, YGEdge.Bottom, YGEdge.Left, YGEdge.Right};
-        internal static readonly YGEdge[] trailing = {YGEdge.Bottom, YGEdge.Top, YGEdge.Right, YGEdge.Left};
-        internal static readonly YGEdge[] pos = {YGEdge.Top,YGEdge.Bottom,YGEdge.Left,YGEdge.Right};
-
-
         public static CompactValue CompactPercent(this float value)
         {
             return CompactValue.of(value, YGUnit.Percent);
@@ -28,11 +24,6 @@ namespace Yoga.Net
         public static CompactValue CompactPoint(this float value)
         {
             return CompactValue.of(value, YGUnit.Point);
-        }
-
-        public static bool YogaIsUndefined(float value) 
-        {
-            return float.IsNaN(value);
         }
 
         public static bool YGValueEqual(in YGValue a, in YGValue b)
@@ -188,6 +179,7 @@ namespace Yoga.Net
 
         public static YGLogger YGDefaultLog = (config, node, level, format, args) =>
         {
+            Trace.Write(string.Format(format, args));
             switch (level)
             {
             case YGLogLevel.Error:
@@ -200,7 +192,7 @@ namespace Yoga.Net
             case YGLogLevel.Debug:
             case YGLogLevel.Verbose:
             default:
-                Console.Write(format, args);
+                    Console.Write(format, args);
                 break;
             }
 
@@ -214,9 +206,6 @@ namespace Yoga.Net
         }
 
         public static YGNode DefaultYGNode { get; }
-
-        [Obsolete("use node.Children[index]")]
-        public static YGNode YGNodeGetChild(YGNode node, int index) => node.Children[index];
 
         public static CompactValue YGComputedEdgeValue(
             Edges edges,
@@ -248,19 +237,6 @@ namespace Yoga.Net
             }
 
             return defaultValue;
-        }
-
-        public static void YGAssertWithNode(
-            YGNode node,
-            bool condition,
-            string message)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static YGNode YGNodeClone(YGNode node)
-        {
-            throw new NotImplementedException();
         }
     }
 }

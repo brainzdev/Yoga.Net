@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Yoga.Net
 {
-    public struct YGFloatOptional
+    public class YGFloatOptional
     {
         readonly float _value;
 

@@ -33,7 +33,7 @@ namespace Yoga.Net
     //
     // - relativeChildren: Maintain a vector of the child nodes that can shrink
     //   and/or grow.
-    public struct YGCollectFlexItemsRowValues
+    public class YGCollectFlexItemsRowValues
     {
         public int itemsOnLine;
         public float sizeConsumedOnCurrentLine;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using uint32_t = System.UInt32;
 
@@ -52,6 +53,11 @@ namespace Yoga.Net
         CompactValue()
         {
             _payload.value = float.NaN;
+        }
+
+        CompactValue(int value)
+        {
+            _payload.repr = value;
         }
 
         CompactValue(float value)
@@ -121,9 +127,9 @@ namespace Yoga.Net
             case AUTO_BITS:
                 return YGValue.Auto;
             case ZERO_BITS_POINT:
-                return of(0f, YGUnit.Point);
+                return new YGValue(0f, YGUnit.Point);
             case ZERO_BITS_PERCENT:
-                return of(0f, YGUnit.Percent);
+                return new YGValue(0f, YGUnit.Percent);
             }
 
             if (float.IsNaN(cv._payload.value))
@@ -178,6 +184,11 @@ namespace Yoga.Net
         public static bool operator !=(CompactValue left, CompactValue right)
         {
             return !Equals(left, right);
+        }
+
+        public override string ToString()
+        {
+            return ((YGValue)this).ToString();
         }
     }
 }

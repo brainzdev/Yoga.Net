@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 namespace Yoga.Net
 {
     [DebuggerDisplay("{value} {unit}")]
-    public struct YGValue
+    public class YGValue
     {
         public const float YGUndefined = float.NaN;
 
@@ -15,7 +15,9 @@ namespace Yoga.Net
         public readonly float value;
         public readonly YGUnit unit;
 
-        public YGValue(float value, YGUnit unit) : this()
+        private YGValue() { }
+
+        public YGValue(float value, YGUnit unit)
         {
             this.value = value;
             this.unit  = unit;

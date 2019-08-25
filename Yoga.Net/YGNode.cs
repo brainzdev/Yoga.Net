@@ -6,6 +6,7 @@ using YGConfigRef = Yoga.Net.YGConfig;
 using YGNodeRef = Yoga.Net.YGNode;
 using uint32_t = System.UInt32;
 using uint8_t = System.Byte;
+using System.Linq;
 
 namespace Yoga.Net
 {
@@ -127,7 +128,7 @@ namespace Yoga.Net
             config_             = node.config_;
             resolvedDimensions_ = node.resolvedDimensions_;
 
-            foreach (var c in node.children_)
+            foreach (var c in node.children_.ToList())
             {
                 node.children_.Remove(c);
                 children_.Add(c);
@@ -240,7 +241,7 @@ namespace Yoga.Net
             return children_[index];
         }
 
-        public List<YGNode> Children => children_;
+        public IReadOnlyList<YGNode> Children => children_;
 
         public YGConfigRef getConfig() { return config_; }
 

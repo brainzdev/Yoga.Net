@@ -40,6 +40,12 @@ namespace Yoga.Net
         public bool doesLegacyStretchFlagAffectsLayout { get; set; }
         public bool hadOverflow { get; internal set; }
 
+        public YGLayout()
+        {
+            cachedMeasurements = new YGCachedMeasurement[YGGlobal.YG_MAX_CACHED_RESULT_COUNT];
+            cachedMeasurements.Fill(new YGCachedMeasurement());
+        }
+
         protected bool Equals(YGLayout other)
         {
             bool isEqual = YGFloatArrayEqual(position, other.position) &&

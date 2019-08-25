@@ -6,28 +6,28 @@ namespace Yoga.Net
 {
     public enum LayoutType
     {
-        kLayout = 0,
-        kMeasure = 1,
-        kCachedLayout = 2,
-        kCachedMeasure = 3
+        Layout = 0,
+        Measure = 1,
+        CachedLayout = 2,
+        CachedMeasure = 3
     }
 
     public enum LayoutPassReason
     {
-        kInitial = 0,
-        kAbsLayout = 1,
-        kStretch = 2,
-        kMultilineStretch = 3,
-        kFlexLayout = 4,
-        kMeasureChild = 5,
-        kAbsMeasureChild = 6,
-        kFlexMeasure = 7,
+        Initial = 0,
+        AbsLayout = 1,
+        Stretch = 2,
+        MultilineStretch = 3,
+        FlexLayout = 4,
+        MeasureChild = 5,
+        AbsMeasureChild = 6,
+        FlexMeasure = 7,
         // ReSharper disable once InconsistentNaming Used for Sizing
         COUNT
     };
 
 
-    public unsafe struct LayoutData
+    public class LayoutData
     {
         public int layouts;
         public int measures;
@@ -36,9 +36,7 @@ namespace Yoga.Net
         public int cachedMeasures;
         public int measureCallbacks;
 
-        public fixed uint8_t measureCallbackReasonsCount[(int)LayoutPassReason.COUNT];
-        //std::array<int, static_cast<uint8_t>(LayoutPassReason::COUNT)>
-        //    measureCallbackReasonsCount;
+        public uint8_t[] measureCallbackReasonsCount = new uint8_t[(int)LayoutPassReason.COUNT];
     };
 
     public static class Event
