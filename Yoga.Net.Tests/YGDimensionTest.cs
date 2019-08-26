@@ -1,13 +1,7 @@
-/**
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the LICENSE
- * file in the root directory of this source tree.
- */
-
 using NUnit.Framework;
-
 using static Yoga.Net.YGGlobal;
+using YGNodeRef = Yoga.Net.YGNode;
+using YGConfigRef = Yoga.Net.YGConfig;
 
 namespace Yoga.Net
 {
@@ -15,7 +9,7 @@ namespace Yoga.Net
     public class YGDimensionTest
     {
         [Test]
-        public void Test_wrap_child()
+        public void wrap_child()
         {
             var config = YGConfigNew();
 
@@ -51,7 +45,7 @@ namespace Yoga.Net
         }
 
         [Test]
-        public void Test_wrap_grandchild()
+        public void wrap_grandchild()
         {
             var config = YGConfigNew();
 

@@ -16,27 +16,13 @@ using static Yoga.Net.YGGlobal;
 
 namespace Yoga.Net
 {
-    public delegate YGSize YGMeasureFunc(
-        YGNode node,
-        float width,
-        YGMeasureMode widthMode,
-        float height,
-        YGMeasureMode heightMode);
-
-    public delegate float YGBaselineFunc(YGNode node, float width, float height);
+    public delegate YGSize YGMeasureFunc(YGNode node, float width, YGMeasureMode widthMode, float height, YGMeasureMode heightMode, object layoutContext = null);
+    public delegate float YGBaselineFunc(YGNode node, float width, float height, object layoutContext = null);
+    public delegate void YGPrintFunc(YGNode node, object layoutContext = null);
 
     public delegate void YGDirtiedFunc(YGNode node);
-
-    public delegate void YGPrintFunc(YGNode node);
-
     public delegate void YGNodeCleanupFunc(YGNode node);
-
-    public delegate int YGLogger(
-        YGConfig config,
-        YGNode node,
-        YGLogLevel level,
-        string format,
-        params object[] args);
+    public delegate int YGLogger(YGConfig config, YGNode node, YGLogLevel level, string format, params object[] args);
 
     public delegate YGNode YGCloneNodeFunc(YGNode oldNode, YGNode owner, int childIndex);
 
@@ -1013,6 +999,18 @@ namespace Yoga.Net
         public static YGDirection YGNodeLayoutGetDirection(YGNodeRef node) => node.getLayout().direction;
         public static bool YGNodeLayoutGetHadOverflow(YGNodeRef node) => node.getLayout().hadOverflow;
 
+        // Get the computed values for these nodes after performing layout. If they were
+        // set using point values then the returned value will be the same as
+        // YGNodeStyleGetXXX. However if they were set using a percentage value then the
+        // returned value is the computed value used during layout.
+        public static float YGNodeLayoutGetMargin(YGNodeRef node, YGEdge edge) => LayoutResolvedProperty(node, node.getLayout().margin, edge);
+        public static float YGNodeLayoutGetBorder(YGNodeRef node, YGEdge edge) => LayoutResolvedProperty(node, node.getLayout().border, edge);
+        public static float YGNodeLayoutGetPadding(YGNodeRef node, YGEdge edge) => LayoutResolvedProperty(node, node.getLayout().padding, edge);
+
+        public static float Margin(YGNodeRef node, YGEdge edge) => LayoutResolvedProperty(node, node.getLayout().margin, edge);
+        public static float Border(YGNodeRef node, YGEdge edge) => LayoutResolvedProperty(node, node.getLayout().border, edge);
+        public static float Padding(YGNodeRef node, YGEdge edge) => LayoutResolvedProperty(node, node.getLayout().padding, edge);
+
         public static float LayoutResolvedProperty(YGNodeRef node, float[] instanceName, YGEdge edge)
         {
             YGAssertWithNode(
@@ -1035,16 +1033,6 @@ namespace Yoga.Net
 
             return instanceName[(int)edge];
         }
-
-        // Get the computed values for these nodes after performing layout. If they were
-        // set using point values then the returned value will be the same as
-        // YGNodeStyleGetXXX. However if they were set using a percentage value then the
-        // returned value is the computed value used during layout.
-
-
-        public static float Margin(YGNodeRef node, YGEdge edge) => LayoutResolvedProperty(node, node.getLayout().margin, edge);
-        public static float Border(YGNodeRef node, YGEdge edge) => LayoutResolvedProperty(node, node.getLayout().border, edge);
-        public static float Padding(YGNodeRef node, YGEdge edge) => LayoutResolvedProperty(node, node.getLayout().padding, edge);
 
         public static bool YGNodeLayoutGetDidLegacyStretchFlagAffectLayout(YGNodeRef node)
         {

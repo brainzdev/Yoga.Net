@@ -10,13 +10,8 @@ using System.Linq;
 
 namespace Yoga.Net
 {
-    public delegate YGSize MeasureWithContextFn(YGNode node, float width, YGMeasureMode widthMode, float height, YGMeasureMode heightMode, object layoutContext);
-    public delegate float BaselineWithContextFn(YGNode node, float width, float height, object layoutContext);
-    public delegate void PrintWithContextFn(YGNode node, object layoutContext);
-
-
     public class YGNode
-    {
+        {
 
         //private:
 
@@ -24,9 +19,6 @@ namespace Yoga.Net
         bool isReferenceBaseline_ { get; set; } = false;
         bool isDirty_ { get; set; } = false;
         YGNodeType nodeType_ { get; set; } = YGNodeType.Default;
-        bool measureUsesContext_ { get; set; } = false;
-        bool baselineUsesContext_ { get; set; } = false;
-        bool printUsesContext_ { get; set; } = false;
         bool useWebDefaults_ { get; set; } = false;
 
         //const size_t hasNewLayout_ = 0;
@@ -44,18 +36,9 @@ namespace Yoga.Net
         //using Flags = facebook::yoga::Bitfield<uint8_t, bool, bool, bool, YGNodeType, bool, bool, bool, bool>;
         //Flags flags_ = {true, false, false, YGNodeTypeDefault, false, false, false, false};
 
-        //union {
-        YGMeasureFunc measureNoContext;
-        MeasureWithContextFn measureWithContext;
-        //} measure_ = {nullptr};
-        //union {
-        YGBaselineFunc baselineNoContext;
-        BaselineWithContextFn baselineWithContext;
-        //} baseline_ = {nullptr};
-        //union {
-        YGPrintFunc printNoContext;
-        PrintWithContextFn printWithContext;
-        //} print_ = {nullptr};
+        YGMeasureFunc measureFunc_;
+        YGBaselineFunc baselineFunc_;
+        YGPrintFunc printFunc_;
 
         YGDirtiedFunc dirtied_ = null;
         YGStyle style_ = new YGStyle();
@@ -114,12 +97,9 @@ namespace Yoga.Net
         public YGNode(in YGNode node)
         {
             context_            = node.context_;
-            measureNoContext = node.measureNoContext;
-            measureWithContext = node.measureWithContext;
-            baselineNoContext = node.baselineNoContext;
-            baselineWithContext = node.baselineWithContext;
-            printNoContext = node.printNoContext;
-            printWithContext = node.printWithContext;
+            measureFunc_ = node.measureFunc_;
+            baselineFunc_ = node.baselineFunc_;
+            printFunc_ = node.printFunc_;
             dirtied_            = node.dirtied_;
             style_              = node.style_;
             layout_             = node.layout_;
@@ -159,10 +139,7 @@ namespace Yoga.Net
 
         public void print(object printContext)
         {  
-            if (printUsesContext_) 
-                printWithContext?.Invoke(this, printContext);
-            else 
-                printNoContext?.Invoke(this);
+            printFunc_?.Invoke(this, printContext);
         }
 
         public bool getHasNewLayout() { return hasNewLayout_; }
@@ -171,27 +148,23 @@ namespace Yoga.Net
 
         public bool hasMeasureFunc()
         {
-            return measureNoContext != null || measureWithContext != null;
+            return measureFunc_ != null;
         }
 
         public YGSize measure(float width, YGMeasureMode widthMode, float height, YGMeasureMode heightMode, object layoutContext)
         {
-            return (measureUsesContext_
-                ? measureWithContext?.Invoke(this, width, widthMode, height, heightMode, layoutContext)
-                : measureNoContext?.Invoke(this, width, widthMode, height, heightMode)) 
+            return measureFunc_?.Invoke(this, width, widthMode, height, heightMode, layoutContext) 
                 ?? new YGSize();
         }
 
         public bool hasBaselineFunc() 
         {
-            return baselineNoContext != null || baselineWithContext != null;
+            return baselineFunc_ != null;
         }
 
         public float baseline(float width, float height, object layoutContext)
         {
-            return (baselineUsesContext_
-                ? baselineWithContext?.Invoke(this, width, height, layoutContext)
-                : baselineNoContext(this, width, height)) ?? 0f;
+            return baselineFunc_?.Invoke(this, width, height, layoutContext) ?? 0f;
         }
 
         public YGDirtiedFunc getDirtied() { return dirtied_; }
@@ -408,15 +381,7 @@ namespace Yoga.Net
 
         public void setPrintFunc(YGPrintFunc printFunc = null)
         {
-            printNoContext = printFunc;
-            printWithContext = null;
-            printUsesContext_ = false;
-        }
-        public void setPrintFunc(PrintWithContextFn printFunc)
-        {
-            printWithContext = printFunc;
-            printNoContext = null;
-            printUsesContext_ = true;
+            printFunc_ = printFunc;
         }
 
         public void setHasNewLayout(bool hasNewLayout)
@@ -426,9 +391,9 @@ namespace Yoga.Net
 
         public void setNodeType(YGNodeType nodeType) { nodeType_ = nodeType; }
 
-        void setMeasureFunc( /*decltype(measure_)*/)
+        void setMeasureFunc() // decltype(measure_)
         {
-            if (measureNoContext == null && measureWithContext == null) 
+            if (measureFunc_ == null) 
             {
                 // TODO: t18095186 Move nodeType to opt-in function and mark appropriate places in Litho
                 nodeType_ = YGNodeType.Default;
@@ -445,34 +410,20 @@ namespace Yoga.Net
             }
         }
 
-        public void setMeasureFunc(YGMeasureFunc measureFunc = null)
+        public void setMeasureFunc(YGMeasureFunc measureFunc)
         {
-            measureUsesContext_ = false;
-            measureNoContext = measureFunc;
-            measureWithContext = null;
+            measureFunc_ = measureFunc;
             setMeasureFunc();
         }
 
-        public void setMeasureFunc(MeasureWithContextFn measureFunc)
+        public YGMeasureFunc getMeasure() => measureFunc_;
+
+        public void setBaselineFunc(YGBaselineFunc baseLineFunc)
         {
-            measureUsesContext_ = true;
-            measureNoContext    = null;
-            measureWithContext  = measureFunc;
-            setMeasureFunc();
+            baselineFunc_ = baseLineFunc;
         }
 
-        public void setBaselineFunc(YGBaselineFunc baseLineFunc = null)
-        {
-            baselineUsesContext_ = false;
-            baselineNoContext = baseLineFunc;
-            baselineWithContext = null;
-        }
-        public void setBaselineFunc(BaselineWithContextFn baseLineFunc)
-        {
-            baselineUsesContext_ = true;
-            baselineWithContext = baseLineFunc;
-            baselineNoContext = null;
-        }
+        public YGBaselineFunc getBaselineFunc() => baselineFunc_;
 
         public void setDirtiedFunc(YGDirtiedFunc dirtiedFunc) { dirtied_ = dirtiedFunc; }
 
