@@ -53,7 +53,7 @@ namespace Yoga.Net
         public static bool YGFloatsEqual(in float a, in float b)
         {
             if (!YogaIsUndefined(a) && !YogaIsUndefined(b)) {
-                return Math.Abs(a - b) < float.Epsilon;
+                return Math.Abs(a - b) < 0.0001f;
             }
             return YogaIsUndefined(a) && YogaIsUndefined(b);
         }

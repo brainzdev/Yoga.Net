@@ -4029,6 +4029,7 @@ namespace Yoga.Net
             float scaledValue = value * pointScaleFactor;
             // We want to calculate `fractial` such that `floor(scaledValue) = scaledValue
             // - fractial`.
+            float f = 0.0000019f;
             float fractial = fmodf(scaledValue, 1.0f);
             if (fractial < 0)
             {
@@ -4061,6 +4062,7 @@ namespace Yoga.Net
             }
             else if (forceCeil)
             {
+                var d = Math.Ceiling(scaledValue);
                 // Next we check if we need to use forced rounding
                 scaledValue = scaledValue - fractial + 1.0f;
             }

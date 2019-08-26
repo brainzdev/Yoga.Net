@@ -4,7 +4,7 @@ using YGNodeRef = Yoga.Net.YGNode;
 using YGConfigRef = Yoga.Net.YGConfig;
 using System.Text;
 
-namespace Yoga.Net
+namespace Yoga.Net.Tests
 {
     [TestFixture]
     public class YGLoggerTest

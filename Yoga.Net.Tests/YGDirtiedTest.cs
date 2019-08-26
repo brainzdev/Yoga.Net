@@ -3,7 +3,7 @@ using static Yoga.Net.YGGlobal;
 using YGNodeRef = Yoga.Net.YGNode;
 using YGConfigRef = Yoga.Net.YGConfig;
 
-namespace Yoga.Net
+namespace Yoga.Net.Tests
 {
     [TestFixture]
     public class YGDirtiedTest
@@ -92,19 +92,19 @@ namespace Yoga.Net
             root_child0.setContext(0);
             root_child0.setDirtiedFunc(_dirtied);
 
-            Assert.AreEqual(0, (int)root.getContext());
+            Assert.AreEqual(0, (int)root_child0.getContext());
 
             // `_dirtied` must NOT be called for descendants.
             root.markDirtyAndPropogate();
-            Assert.AreEqual(0, (int)root.getContext());
+            Assert.AreEqual(0, (int)root_child0.getContext());
 
             // `_dirtied` must NOT be called for the sibling node.
             root_child1.markDirtyAndPropogate();
-            Assert.AreEqual(0, (int)root.getContext());
+            Assert.AreEqual(0, (int)root_child0.getContext());
 
             // `_dirtied` MUST be called in case of explicit dirtying.
             root_child0.markDirtyAndPropogate();
-            Assert.AreEqual(1, (int)root.getContext());
+            Assert.AreEqual(1, (int)root_child0.getContext());
         }
     }
 }

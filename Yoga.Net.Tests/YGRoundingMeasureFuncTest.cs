@@ -3,7 +3,7 @@ using static Yoga.Net.YGGlobal;
 using YGNodeRef = Yoga.Net.YGNode;
 using YGConfigRef = Yoga.Net.YGConfig;
 
-namespace Yoga.Net
+namespace Yoga.Net.Tests
 {
     [TestFixture]
     public class YGRoundingMeasureFuncTest
@@ -50,36 +50,36 @@ namespace Yoga.Net
 
             YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.RTL);
 
-            Assert.AreEqual(10.2, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(10.2, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(10.2f, YGNodeLayoutGetWidth(root_child0));
+            Assert.AreEqual(10.2f, YGNodeLayoutGetHeight(root_child0));
 
             YGConfigSetPointScaleFactor(config, 1.0f);
 
             YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
 
-            Assert.AreEqual(11, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(11, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(11f, YGNodeLayoutGetWidth(root_child0));
+            Assert.AreEqual(11f, YGNodeLayoutGetHeight(root_child0));
 
             YGConfigSetPointScaleFactor(config, 2.0f);
 
             YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.RTL);
 
-            Assert.AreEqual(10.5, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(10.5, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(10.5f, YGNodeLayoutGetWidth(root_child0));
+            Assert.AreEqual(10.5f, YGNodeLayoutGetHeight(root_child0));
 
             YGConfigSetPointScaleFactor(config, 4.0f);
 
             YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
 
-            Assert.AreEqual(10.25, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(10.25, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(10.25f, YGNodeLayoutGetWidth(root_child0));
+            Assert.AreEqual(10.25f, YGNodeLayoutGetHeight(root_child0));
 
             YGConfigSetPointScaleFactor(config, 1.0f / 3.0f);
 
             YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.RTL);
 
-            Assert.AreEqual(12.0, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(12.0, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(12.0f, YGNodeLayoutGetWidth(root_child0));
+            Assert.AreEqual(12.0f, YGNodeLayoutGetHeight(root_child0));
 
             YGNodeFreeRecursive(root);
 

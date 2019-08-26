@@ -3,7 +3,7 @@ using static Yoga.Net.YGGlobal;
 using YGNodeRef = Yoga.Net.YGNode;
 using YGConfigRef = Yoga.Net.YGConfig;
 
-namespace Yoga.Net
+namespace Yoga.Net.Tests
 {
     [TestFixture]
     public class YGStyleTest

@@ -654,7 +654,7 @@ namespace Yoga.Net
 
         public void markDirtyAndPropogate()
         {
-            if (isDirty_) 
+            if (!isDirty_) 
             {
                 setDirty(true);
                 setLayoutComputedFlexBasis(new YGFloatOptional());
