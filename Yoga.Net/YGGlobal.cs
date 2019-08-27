@@ -205,7 +205,7 @@ namespace Yoga.Net
             return defaultConfig;
         }
 
-        public static YGNode DefaultYGNode { get; }
+        public static YGNode DefaultYGNode { get; } = new YGNode();
 
         public static CompactValue YGComputedEdgeValue(
             Edges edges,

@@ -27,7 +27,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(YGOverflow.Visible, YGNodeStyleGetOverflow(root));
             Assert.AreEqual(0, YGNodeStyleGetFlexGrow(root));
             Assert.AreEqual(0, YGNodeStyleGetFlexShrink(root));
-            Assert.AreEqual(YGNodeStyleGetFlexBasis(root).unit, YGUnit.Auto);
+            Assert.AreEqual(YGUnit.Auto, YGNodeStyleGetFlexBasis(root).unit);
 
             Assert.AreEqual(YGNodeStyleGetPosition(root, YGEdge.Left).unit, YGUnit.Undefined);
             Assert.AreEqual(YGNodeStyleGetPosition(root, YGEdge.Top).unit, YGUnit.Undefined);

@@ -64,8 +64,12 @@ namespace Yoga.Net.Tests
             // Relayout with changed input should result in cloned children.
             YGNodeRef root2_child0 = YGNodeGetChild(root2, 0);
             YGNodeRef root2_child1 = YGNodeGetChild(root2, 1);
-            Assert.AreNotEqual(root_child0, root2_child0);
-            Assert.AreNotEqual(root_child1, root2_child1);
+
+            Assert.IsFalse(ReferenceEquals(root_child0, root2_child0));
+            Assert.IsFalse(ReferenceEquals(root_child1, root2_child1));
+
+            //Assert.AreNotEqual(root_child0, root2_child0);
+            //Assert.AreNotEqual(root_child1, root2_child1);
 
             // Everything in the root should remain unchanged.
             Assert.AreEqual(0, YGNodeLayoutGetLeft(root));

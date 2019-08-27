@@ -14,7 +14,9 @@ namespace Yoga.Net.Tests
                                float height,
                                YGMeasureMode heightMode, object context) =>
         {
-            int measureCount = (int)node.getContext();
+            var nodeContext = node.getContext();
+
+            int measureCount = nodeContext == null ? 0 : (int)nodeContext;
             measureCount++;
             node.setContext(measureCount);
 

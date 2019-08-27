@@ -39,7 +39,13 @@ namespace Yoga.Net
             string key,
             YGValue number)
         {
-            sb.Append($"{key}: {number}");
+            if (number.unit == YGUnit.Undefined)
+                return;
+
+            if (number.unit == YGUnit.Auto)
+                sb.Append($"{key}: auto; ");
+            else
+                sb.Append($"{key}: {number}; ");
         }
 
         static void appendNumberIfNotAuto(
@@ -79,7 +85,7 @@ namespace Yoga.Net
             {
                 for (var edge = YGEdge.Left; edge != YGEdge.All; ++edge)
                 {
-                    string str = key + "-" + edge;
+                    string str = key + "-" + (edge.ToString().ToLower());
                     appendNumberIfNotZero(sb, str, edges[edge]);
                 }
             }
@@ -122,27 +128,27 @@ namespace Yoga.Net
                 var style = node.getStyle();
                 if (style.flexDirection != DefaultYGNode.getStyle().flexDirection)
                 {
-                    appendString(sb,$"flex-direction: {style.flexDirection}; ");
+                    appendString(sb,$"flex-direction: {style.flexDirection.ToString().ToLower()}; ");
                 }
 
                 if (style.justifyContent != DefaultYGNode.getStyle().justifyContent)
                 {
-                    appendString(sb,$"justify-content: {style.justifyContent}; ");
+                    appendString(sb,$"justify-content: {style.justifyContent.ToString().ToLower()}; ");
                 }
 
                 if (style.alignItems != DefaultYGNode.getStyle().alignItems)
                 {
-                    appendString(sb,$"align-items: {style.alignItems}; ");
+                    appendString(sb,$"align-items: {style.alignItems.ToString().ToLower()}; ");
                 }
 
                 if (style.alignContent != DefaultYGNode.getStyle().alignContent)
                 {
-                    appendString(sb,$"align-content: {style.alignContent}; ");
+                    appendString(sb,$"align-content: {style.alignContent.ToString().ToLower()}; ");
                 }
 
                 if (style.alignSelf != DefaultYGNode.getStyle().alignSelf)
                 {
-                    appendString(sb,$"align-self: {style.alignSelf}; ");
+                    appendString(sb,$"align-self: {style.alignSelf.ToString().ToLower()}; ");
                 }
 
                 appendFloatOptionalIfDefined(sb, "flex-grow", style.flexGrow);
@@ -152,17 +158,17 @@ namespace Yoga.Net
 
                 if (style.flexWrap != DefaultYGNode.getStyle().flexWrap)
                 {
-                    appendString(sb,$"flex-wrap: {style.flexWrap}; ");
+                    appendString(sb,$"flex-wrap: {style.flexWrap.ToString().ToLower()}; ");
                 }
 
                 if (style.overflow != DefaultYGNode.getStyle().overflow)
                 {
-                    appendString(sb,$"overflow: {style.overflow}; ");
+                    appendString(sb,$"overflow: {style.overflow.ToString().ToLower()}; ");
                 }
 
                 if (style.display != DefaultYGNode.getStyle().display)
                 {
-                    appendString(sb,$"display: {style.display}; ");
+                    appendString(sb,$"display: {style.display.ToString().ToLower()}; ");
                 }
 
                 appendEdges(sb, "margin", style.margin);
@@ -178,7 +184,7 @@ namespace Yoga.Net
 
                 if (style.positionType != DefaultYGNode.getStyle().positionType)
                 {
-                    appendString(sb, $"position: {style.positionType}; ");
+                    appendString(sb, $"position: {style.positionType.ToString().ToLower()}; ");
                 }
 
                 appendEdgeIfNotUndefined(sb, "left", style.position, YGEdge.Left);

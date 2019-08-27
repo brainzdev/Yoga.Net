@@ -8,8 +8,8 @@ namespace Yoga.Net.Tests
     [TestFixture]
     public class YGHadOverflowTest
     {
-
-        public YGHadOverflowTest()
+        [SetUp]
+        public void Setup()
         {
             config = YGConfigNew();
             root = YGNodeNewWithConfig(config);
@@ -19,10 +19,14 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetFlexWrap(root, YGWrap.NoWrap);
         }
 
-        //~YogaTest_HadOverflowTests() {
-        //    YGNodeFreeRecursive(root);
-        //    YGConfigFree(config);
-        //}
+        [TearDown]
+        public void Teardown()
+        {
+            root = null;
+            config = null;
+            //YGNodeFreeRecursive(root);
+            //YGConfigFree(config);
+        }
 
         YGNodeRef root;
         YGConfigRef config;

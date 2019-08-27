@@ -19,8 +19,11 @@ namespace Yoga.Net
 
         public YGValue(float value, YGUnit unit)
         {
-            this.value = value;
-            this.unit  = unit;
+            this.unit = unit;
+            if (unit == YGUnit.Auto || unit == YGUnit.Undefined)
+                this.value = YGUndefined;
+            else
+                this.value = value;
         }
 
         public bool IsNaN() => float.IsNaN(value);
@@ -50,11 +53,11 @@ namespace Yoga.Net
             switch (unit)
             {
             case YGUnit.Auto:
-                return $"{value}: auto";
+                return $"auto";
             case YGUnit.Percent:
                 return $"{value}%";
             case YGUnit.Point:
-                return $"{value}pt";
+                return $"{value}px";
             case YGUnit.Undefined:
             default:
                 return string.Empty;

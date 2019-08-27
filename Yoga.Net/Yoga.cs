@@ -737,14 +737,14 @@ namespace Yoga.Net
 
         public static YGValue YGNodeStyleGetFlexBasis(YGNodeConstRef node)
         {
-            YGValue flexBasis = node.getStyle().flexBasis;
-            if (flexBasis.unit == YGUnit.Undefined || flexBasis.unit == YGUnit.Auto)
-            {
-                // TODO(T26792433): Get rid off the use of YGUndefined at client side
-                flexBasis = YGValue.Undefined;
-            }
-
-            return flexBasis;
+            return node.getStyle().flexBasis;
+            //YGValue flexBasis = node.getStyle().flexBasis;
+            //if (flexBasis.unit == YGUnit.Undefined || flexBasis.unit == YGUnit.Auto)
+            //{
+            //    // TODO(T26792433): Get rid off the use of YGUndefined at client side
+            //    flexBasis.value = YGValue.YGUndefined;
+            //}
+            //return flexBasis;
         }
 
         public static void YGNodeStyleSetFlexBasis(YGNodeRef node, float flexBasis)
@@ -3947,8 +3947,8 @@ namespace Yoga.Net
         }
 
         #if DEBUG
-        public static bool gPrintChanges = true;
-        public static bool gPrintSkips = true;
+        public static bool gPrintChanges = false;
+        public static bool gPrintSkips = false;
         #else
         public static bool gPrintChanges = false;
         public static bool gPrintSkips = false;
