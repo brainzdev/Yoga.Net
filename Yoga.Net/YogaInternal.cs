@@ -35,6 +35,16 @@ namespace Yoga.Net
             computedHeight = -1;
         }
 
+        public YGCachedMeasurement(YGCachedMeasurement other)
+        {
+            availableWidth = other.availableWidth;
+            availableHeight = other.availableHeight;
+            widthMeasureMode = other.widthMeasureMode;
+            heightMeasureMode = other.heightMeasureMode;
+            computedWidth = other.computedWidth;
+            computedHeight = other.computedHeight;
+        }
+
         protected bool Equals(YGCachedMeasurement other)
         {
             bool isEqual = widthMeasureMode == other.widthMeasureMode &&
@@ -101,7 +111,7 @@ namespace Yoga.Net
 
     public class Values<T> where T : struct, IConvertible
     {
-        readonly CompactValue[] _values;
+        readonly protected CompactValue[] _values;
 
         public Values()
         {

@@ -24,7 +24,7 @@ namespace Yoga.Net
     public delegate void YGNodeCleanupFunc(YGNode node);
     public delegate int YGLogger(YGConfig config, YGNode node, YGLogLevel level, string format, params object[] args);
 
-    public delegate YGNode YGCloneNodeFunc(YGNode oldNode, YGNode owner, int childIndex);
+    public delegate YGNode YGCloneNodeFunc(YGNode oldNode, YGNode owner, int childIndex, object context);
 
     public static partial class YGGlobal
     {

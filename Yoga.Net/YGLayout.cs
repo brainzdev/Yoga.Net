@@ -46,6 +46,32 @@ namespace Yoga.Net
             cachedMeasurements.Fill(new YGCachedMeasurement());
         }
 
+        public YGLayout(YGLayout other)
+        {
+            Array.Copy(other.position, position, position.Length);
+            Array.Copy(other.dimensions, dimensions, dimensions.Length);
+            Array.Copy(other.margin, margin, margin.Length);
+            Array.Copy(other.border, border, border.Length);
+            Array.Copy(other.padding, padding, padding.Length);
+
+            computedFlexBasisGeneration = other.computedFlexBasisGeneration;
+            computedFlexBasis = other.computedFlexBasis;
+
+            generationCount = other.generationCount;
+
+            lastOwnerDirection = other.lastOwnerDirection;
+
+            nextCachedMeasurementsIndex = other.nextCachedMeasurementsIndex;
+            Array.Copy(other.cachedMeasurements, cachedMeasurements, cachedMeasurements.Length);
+            Array.Copy(other.measuredDimensions, measuredDimensions, measuredDimensions.Length);
+
+            cachedLayout = new YGCachedMeasurement(other.cachedLayout);
+            direction = other.direction;
+            didUseLegacyFlag = other.didUseLegacyFlag;
+            doesLegacyStretchFlagAffectsLayout = other.doesLegacyStretchFlagAffectsLayout;
+            hadOverflow = other.hadOverflow;
+        }
+
         protected bool Equals(YGLayout other)
         {
             bool isEqual = YGFloatArrayEqual(position, other.position) &&

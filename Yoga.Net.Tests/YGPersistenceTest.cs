@@ -11,6 +11,7 @@ namespace Yoga.Net.Tests
 
         [Test] public void cloning_shared_root() {
             YGConfigRef config = YGConfigNew();
+            YGConfigSetPrintTreeFlag(config, true);
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 100);
@@ -65,11 +66,8 @@ namespace Yoga.Net.Tests
             YGNodeRef root2_child0 = YGNodeGetChild(root2, 0);
             YGNodeRef root2_child1 = YGNodeGetChild(root2, 1);
 
-            Assert.IsFalse(ReferenceEquals(root_child0, root2_child0));
-            Assert.IsFalse(ReferenceEquals(root_child1, root2_child1));
-
-            //Assert.AreNotEqual(root_child0, root2_child0);
-            //Assert.AreNotEqual(root_child1, root2_child1);
+            Assert.AreNotEqual(root_child0, root2_child0);
+            Assert.AreNotEqual(root_child1, root2_child1);
 
             // Everything in the root should remain unchanged.
             Assert.AreEqual(0, YGNodeLayoutGetLeft(root));
@@ -112,6 +110,7 @@ namespace Yoga.Net.Tests
 
         [Test] public void mutating_children_of_a_clone_clones() {
             YGConfigRef config = YGConfigNew();
+            YGConfigSetPrintTreeFlag(config, true);
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             Assert.AreEqual(0, YGNodeGetChildCount(root));
@@ -155,6 +154,7 @@ namespace Yoga.Net.Tests
 
         [Test] public void cloning_two_levels() {
             YGConfigRef config = YGConfigNew();
+            YGConfigSetPrintTreeFlag(config, true);
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 100);
@@ -209,9 +209,18 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(40, YGNodeLayoutGetHeight(root2_child0));
             Assert.AreEqual(60, YGNodeLayoutGetHeight(root2_child1));
 
+            var root2_child1_child0 = root2_child1.Children[0];
+            var root2_child1_child1 = root2_child1.Children[1];
+
+            if (!ReferenceEquals(root2_child1_child0, root2_child1_child0))
+                Assert.IsTrue(false, "Not the same");
+            if (!ReferenceEquals(root2_child1_child1, root2_child1_child1))
+                Assert.IsTrue(false, "Not the same");
+
+            bool b = root_child1_0 == root2_child1_child0;
             // The deeper children are untouched.
-            Assert.AreEqual(YGNodeGetChild(root2_child1, 0), root_child1_0);
-            Assert.AreEqual(YGNodeGetChild(root2_child1, 1), root_child1_1);
+            Assert.AreEqual(root_child1_0, root2_child1_child0);
+            Assert.AreEqual(root_child1_1, YGNodeGetChild(root2_child1, 1));
 
             YGNodeFreeRecursive(root2);
             YGNodeFreeRecursive(root);
@@ -223,6 +232,7 @@ namespace Yoga.Net.Tests
             //int initialInstanceCount = YGNodeGetInstanceCount();
 
             YGConfigRef config = YGConfigNew();
+            YGConfigSetPrintTreeFlag(config, true);
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 100);

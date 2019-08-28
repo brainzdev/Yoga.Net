@@ -13,22 +13,13 @@ namespace Yoga.Net
         string format,
         params object[] args);
 
-    public delegate YGNodeRef CloneWithContextFn(
-        YGNodeRef node,
-        YGNodeRef owner,
-        int childIndex,
-        object cloneContext);
-
-
     public class YGConfig
     {
-        CloneWithContextFn cloneWithContext;
-        YGCloneNodeFunc cloneNoContext;
+        YGCloneNodeFunc cloneFunc;
 
         LogWithContextFn logWithContext;
         YGLogger logNoContext;
 
-        bool cloneNodeUsesContext_;
         bool loggerUsesContext_;
 
         //public:
@@ -49,8 +40,7 @@ namespace Yoga.Net
 
         public YGConfig(YGConfig config)
         {
-            cloneWithContext = config.cloneWithContext;
-            cloneNoContext = config.cloneNoContext;
+            cloneFunc = config.cloneFunc;
             loggerUsesContext_ = config.loggerUsesContext_;
         }
 
@@ -82,25 +72,19 @@ namespace Yoga.Net
             int childIndex,
             object cloneContext)
         {
-            YGNodeRef clone = cloneNodeUsesContext_
-                ? cloneWithContext?.Invoke(node, owner, childIndex, cloneContext)
-                : cloneNoContext?.Invoke(node, owner, childIndex);
+            YGNodeRef clone = cloneFunc?.Invoke(node, owner, childIndex, cloneContext);
 
             return clone ?? YGNodeClone(node);
         }
 
         public void setCloneNodeCallback(YGCloneNodeFunc cloneNode = null)
         {
-            cloneNoContext        = cloneNode;
-            cloneWithContext      = null;
-            cloneNodeUsesContext_ = false;
+            cloneFunc        = cloneNode;
         }
 
-        public void setCloneNodeCallback(CloneWithContextFn cloneNode)
+        public override string ToString()
         {
-            cloneWithContext      = cloneNode;
-            cloneNoContext        = null;
-            cloneNodeUsesContext_ = true;
+            return $"Config({(useWebDefaults ? "useWebDefaults; " : "" )}{(useLegacyStretchBehaviour ? "useLegacyStretchBehavior; " : "")}{pointScaleFactor}; )";
         }
     }
 }

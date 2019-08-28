@@ -11,7 +11,7 @@ using System.Linq;
 namespace Yoga.Net
 {
     public class YGNode
-        {
+    {
 
         //private:
 
@@ -21,26 +21,14 @@ namespace Yoga.Net
         YGNodeType nodeType_ { get; set; } = YGNodeType.Default;
         bool useWebDefaults_ { get; set; } = false;
 
-        //const size_t hasNewLayout_ = 0;
-        //const size_t isReferenceBaseline_ = 1;
-        //const size_t isDirty_ = 2;
-        //const size_t nodeType_ = 3;
-        //const size_t measureUsesContext_ = 4;
-        //const size_t baselineUsesContext_ = 5;
-        //const size_t printUsesContext_ = 6;
-        //const size_t useWebDefaults_ = 7;
-
         object context_ = null;
         uint8_t reserved_ = 0;
-
-        //using Flags = facebook::yoga::Bitfield<uint8_t, bool, bool, bool, YGNodeType, bool, bool, bool, bool>;
-        //Flags flags_ = {true, false, false, YGNodeTypeDefault, false, false, false, false};
 
         YGMeasureFunc measureFunc_;
         YGBaselineFunc baselineFunc_;
         YGPrintFunc printFunc_;
 
-        YGDirtiedFunc dirtied_ = null;
+        YGDirtiedFunc dirtiedFunc_ = null;
         YGStyle style_ = new YGStyle();
         YGLayout layout_ = new YGLayout();
         int lineIndex_ = 0;
@@ -56,13 +44,13 @@ namespace Yoga.Net
             YGFlexDirection axis,
             float axisSize)
         {
-            if (isLeadingPositionDefined(axis)) 
+            if (isLeadingPositionDefined(axis))
             {
                 return getLeadingPosition(axis, axisSize);
             }
 
             YGFloatOptional trailingPosition = getTrailingPosition(axis, axisSize);
-            if (!trailingPosition.isUndefined()) 
+            if (!trailingPosition.isUndefined())
             {
                 trailingPosition = new YGFloatOptional(-1 * trailingPosition.unwrap());
             }
@@ -89,31 +77,27 @@ namespace Yoga.Net
         public YGNode(in YGConfigRef config)
         {
             config_ = config;
-            if (config.useWebDefaults) 
+            if (config.useWebDefaults)
                 useWebDefaults();
         }
         //~YGNode() = default; // cleanup of owner/children relationships in YGNodeFree
 
-        public YGNode(in YGNode node)
+        public YGNode(in YGNode other)
         {
-            context_            = node.context_;
-            measureFunc_ = node.measureFunc_;
-            baselineFunc_ = node.baselineFunc_;
-            printFunc_ = node.printFunc_;
-            dirtied_            = node.dirtied_;
-            style_              = node.style_;
-            layout_             = node.layout_;
-            lineIndex_          = node.lineIndex_;
-            owner_              = node.owner_;
-            config_             = node.config_;
-            resolvedDimensions_ = node.resolvedDimensions_;
+            context_ = other.context_;
+            measureFunc_ = other.measureFunc_;
+            baselineFunc_ = other.baselineFunc_;
+            printFunc_ = other.printFunc_;
+            dirtiedFunc_ = other.dirtiedFunc_;
+            style_ = new YGStyle(other.style_);
+            layout_ = new YGLayout(other.layout_);
+            lineIndex_ = other.lineIndex_;
+            owner_ = other.owner_;
+            config_ = other.config_;
+            Array.Copy(other.resolvedDimensions_, resolvedDimensions_, resolvedDimensions_.Length);
 
-            foreach (var c in node.children_.ToList())
-            {
-                node.children_.Remove(c);
-                children_.Add(c);
-                c.setOwner(this);       // c->setOwner(c);
-            }
+            // Lazy-clone
+            children_.AddRange(other.Children);
         }
 
         // Does not expose true value semantics, as children are not cloned eagerly.
@@ -124,7 +108,7 @@ namespace Yoga.Net
         public YGNode(in YGNode node, YGConfigRef config) : this(node)
         {
             config_ = config;
-            if (config.useWebDefaults) 
+            if (config.useWebDefaults)
                 useWebDefaults();
         }
 
@@ -138,7 +122,7 @@ namespace Yoga.Net
         public uint8_t reserved() { return reserved_; }
 
         public void print(object printContext)
-        {  
+        {
             printFunc_?.Invoke(this, printContext);
         }
 
@@ -153,11 +137,11 @@ namespace Yoga.Net
 
         public YGSize measure(float width, YGMeasureMode widthMode, float height, YGMeasureMode heightMode, object layoutContext)
         {
-            return measureFunc_?.Invoke(this, width, widthMode, height, heightMode, layoutContext) 
+            return measureFunc_?.Invoke(this, width, widthMode, height, heightMode, layoutContext)
                 ?? new YGSize();
         }
 
-        public bool hasBaselineFunc() 
+        public bool hasBaselineFunc()
         {
             return baselineFunc_ != null;
         }
@@ -167,7 +151,7 @@ namespace Yoga.Net
             return baselineFunc_?.Invoke(this, width, height, layoutContext) ?? 0f;
         }
 
-        public YGDirtiedFunc getDirtied() { return dirtied_; }
+        public YGDirtiedFunc getDirtied() { return dirtiedFunc_; }
 
         //// For Performance reasons passing as reference.
         public YGStyle getStyle() { return style_; }
@@ -193,7 +177,7 @@ namespace Yoga.Net
         // Applies a callback to all children, after cloning them if they are not
         // owned.
         //template <typename T>
-        public void iterChildrenAfterCloningIfNeeded(Action<YGNodeRef,object> callback, object cloneContext)
+        public void iterChildrenAfterCloningIfNeeded(Action<YGNodeRef, object> callback, object cloneContext)
         {
             for (int i = 0; i < children_.Count; i++)
             {
@@ -203,7 +187,7 @@ namespace Yoga.Net
                     child = config_.cloneNode(child, this, i, cloneContext);
                     child.setOwner(this);
                 }
-
+                children_[i] = child;
                 callback?.Invoke(child, cloneContext);
             }
         }
@@ -222,15 +206,15 @@ namespace Yoga.Net
 
         public YGValue[] getResolvedDimensions() { return resolvedDimensions_; }
 
-        public YGValue getResolvedDimension(YGDimension index) {return resolvedDimensions_[(int)index]; }
+        public YGValue getResolvedDimension(YGDimension index) { return resolvedDimensions_[(int)index]; }
 
         // Methods related to positions, margin, padding and border
         public YGFloatOptional getLeadingPosition(in YGFlexDirection axis, in float axisSize)
         {
-            if (YGFlexDirectionIsRow(axis)) 
+            if (YGFlexDirectionIsRow(axis))
             {
                 var lp = YGComputedEdgeValue(style_.position, YGEdge.Start, CompactValue.Undefined);
-                if (!lp.isUndefined()) 
+                if (!lp.isUndefined())
                 {
                     return YGResolveValue(lp, axisSize);
                 }
@@ -260,7 +244,7 @@ namespace Yoga.Net
             if (YGFlexDirectionIsRow(axis))
             {
                 var tp = YGComputedEdgeValue(style_.position, YGEdge.End, CompactValue.Undefined);
-                if (!tp.isUndefined()) 
+                if (!tp.isUndefined())
                 {
                     return YGResolveValue(tp, axisSize);
                 }
@@ -274,7 +258,7 @@ namespace Yoga.Net
         public YGFloatOptional getLeadingMargin(in YGFlexDirection axis, in float widthSize)
         {
             if (YGFlexDirectionIsRow(axis) &&
-                !style_.margin[YGEdge.Start].isUndefined()) 
+                !style_.margin[YGEdge.Start].isUndefined())
             {
                 return YGResolveValueMargin(style_.margin[YGEdge.Start], widthSize);
             }
@@ -286,23 +270,23 @@ namespace Yoga.Net
 
         public YGFloatOptional getTrailingMargin(in YGFlexDirection axis, in float widthSize)
         {
-            if (YGFlexDirectionIsRow(axis) && !style_.margin[YGEdge.End].isUndefined()) 
+            if (YGFlexDirectionIsRow(axis) && !style_.margin[YGEdge.End].isUndefined())
             {
                 return YGResolveValueMargin(style_.margin[YGEdge.End], widthSize);
             }
 
             return YGResolveValueMargin(
-                YGComputedEdgeValue(style_.margin, trailing[(int)axis], CompactValue.Zero), 
+                YGComputedEdgeValue(style_.margin, trailing[(int)axis], CompactValue.Zero),
                 widthSize);
         }
         public float getLeadingBorder(in YGFlexDirection axis)
         {
             YGValue leadingBorder;
             if (YGFlexDirectionIsRow(axis) &&
-                !style_.border[YGEdge.Start].isUndefined()) 
+                !style_.border[YGEdge.Start].isUndefined())
             {
                 leadingBorder = style_.border[YGEdge.Start];
-                if (leadingBorder.value >= 0) 
+                if (leadingBorder.value >= 0)
                     return leadingBorder.value;
             }
 
@@ -314,10 +298,10 @@ namespace Yoga.Net
         {
             YGValue trailingBorder;
             if (YGFlexDirectionIsRow(flexDirection) &&
-                !style_.border[YGEdge.End].isUndefined()) 
+                !style_.border[YGEdge.End].isUndefined())
             {
                 trailingBorder = style_.border[YGEdge.End];
-                if (trailingBorder.value >= 0.0f) 
+                if (trailingBorder.value >= 0.0f)
                 {
                     return trailingBorder.value;
                 }
@@ -328,13 +312,13 @@ namespace Yoga.Net
             return YGFloatMax(trailingBorder.value, 0.0f);
         }
 
-        public YGFloatOptional getLeadingPadding(in YGFlexDirection axis,in float widthSize)
+        public YGFloatOptional getLeadingPadding(in YGFlexDirection axis, in float widthSize)
         {
             YGFloatOptional paddingEdgeStart =
                 YGResolveValue(style_.padding[YGEdge.Start], widthSize);
             if (YGFlexDirectionIsRow(axis) &&
                 !style_.padding[YGEdge.Start].isUndefined() &&
-                !paddingEdgeStart.isUndefined() && paddingEdgeStart.unwrap() >= 0.0f) 
+                !paddingEdgeStart.isUndefined() && paddingEdgeStart.unwrap() >= 0.0f)
             {
                 return paddingEdgeStart;
             }
@@ -345,11 +329,11 @@ namespace Yoga.Net
             return YGFloatOptionalMax(resolvedValue, new YGFloatOptional(0.0f));
         }
 
-        public YGFloatOptional getTrailingPadding(in YGFlexDirection axis,in float widthSize)
+        public YGFloatOptional getTrailingPadding(in YGFlexDirection axis, in float widthSize)
         {
             YGFloatOptional paddingEdgeEnd =
                 YGResolveValue(style_.padding[YGEdge.End], widthSize);
-            if (YGFlexDirectionIsRow(axis) && paddingEdgeEnd >= new YGFloatOptional(0.0f)) 
+            if (YGFlexDirectionIsRow(axis) && paddingEdgeEnd >= new YGFloatOptional(0.0f))
             {
                 return paddingEdgeEnd;
             }
@@ -361,7 +345,7 @@ namespace Yoga.Net
             return YGFloatOptionalMax(resolvedValue, new YGFloatOptional(0.0f));
         }
 
-        public YGFloatOptional getLeadingPaddingAndBorder(in YGFlexDirection axis,in float widthSize)
+        public YGFloatOptional getLeadingPaddingAndBorder(in YGFlexDirection axis, in float widthSize)
         {
             return getLeadingPadding(axis, widthSize) + new YGFloatOptional(getLeadingBorder(axis));
         }
@@ -393,12 +377,12 @@ namespace Yoga.Net
 
         void setMeasureFunc() // decltype(measure_)
         {
-            if (measureFunc_ == null) 
+            if (measureFunc_ == null)
             {
                 // TODO: t18095186 Move nodeType to opt-in function and mark appropriate places in Litho
                 nodeType_ = YGNodeType.Default;
-            } 
-            else 
+            }
+            else
             {
                 YGAssertWithNode(
                     this,
@@ -425,7 +409,7 @@ namespace Yoga.Net
 
         public YGBaselineFunc getBaselineFunc() => baselineFunc_;
 
-        public void setDirtiedFunc(YGDirtiedFunc dirtiedFunc) { dirtied_ = dirtiedFunc; }
+        public void setDirtiedFunc(YGDirtiedFunc dirtiedFunc) { dirtiedFunc_ = dirtiedFunc; }
 
         public void setStyle(in YGStyle style) { style_ = style; }
 
@@ -444,19 +428,20 @@ namespace Yoga.Net
 
         public void setChildren(IEnumerable<YGNodeRef> children)
         {
-            children_ = new YGVector(children); }
+            children_ = new YGVector(children);
+        }
 
         // TODO: rvalue override for setChildren
         //YG_DEPRECATED void setConfig(YGConfigRef config) { config_ = config; }
 
         public void setDirty(bool isDirty)
         {
-            if (isDirty == isDirty_) 
+            if (isDirty == isDirty_)
                 return;
-            
+
             isDirty_ = isDirty;
-            if (isDirty) 
-                dirtied_?.Invoke(this);
+            if (isDirty)
+                dirtiedFunc_?.Invoke(this);
         }
 
         public void setLayoutLastOwnerDirection(YGDirection direction)
@@ -551,7 +536,7 @@ namespace Yoga.Net
         public void markDirtyAndPropogateDownwards()
         {
             isDirty_ = true;
-            foreach(var child in children_) 
+            foreach (var child in children_)
             {
                 child.markDirtyAndPropogateDownwards();
             }
@@ -560,14 +545,14 @@ namespace Yoga.Net
         // Other methods
         public YGValue marginLeadingValue(in YGFlexDirection axis)
         {
-            if (YGFlexDirectionIsRow(axis) && !style_.margin[YGEdge.Start].isUndefined()) 
+            if (YGFlexDirectionIsRow(axis) && !style_.margin[YGEdge.Start].isUndefined())
                 return style_.margin[YGEdge.Start];
             return style_.margin[leading[(int)axis]];
         }
 
         public YGValue marginTrailingValue(in YGFlexDirection axis)
         {
-            if (YGFlexDirectionIsRow(axis) && !style_.margin[YGEdge.End].isUndefined()) 
+            if (YGFlexDirectionIsRow(axis) && !style_.margin[YGEdge.End].isUndefined())
                 return style_.margin[YGEdge.End];
             return style_.margin[trailing[(int)axis]];
         }
@@ -575,12 +560,12 @@ namespace Yoga.Net
         public YGValue resolveFlexBasisPtr()
         {
             YGValue flexBasis = style_.flexBasis;
-            if (flexBasis.unit != YGUnit.Auto && flexBasis.unit != YGUnit.Undefined) 
+            if (flexBasis.unit != YGUnit.Auto && flexBasis.unit != YGUnit.Undefined)
             {
                 return flexBasis;
             }
 
-            if (!style_.flex.isUndefined() && style_.flex.unwrap() > 0.0f) 
+            if (!style_.flex.isUndefined() && style_.flex.unwrap() > 0.0f)
             {
                 return useWebDefaults_ ? YGValue.Auto : YGValue.Zero;
             }
@@ -590,14 +575,14 @@ namespace Yoga.Net
         public void resolveDimension()
         {
             YGStyle style = getStyle();
-            foreach (var dim in new[]{YGDimension.Width, YGDimension.Height}) 
+            foreach (var dim in new[] { YGDimension.Width, YGDimension.Height })
             {
                 if (!style.maxDimensions[dim].isUndefined() &&
-                    YGValueEqual(style.maxDimensions[dim], style.minDimensions[dim])) 
+                    YGValueEqual(style.maxDimensions[dim], style.minDimensions[dim]))
                 {
                     resolvedDimensions_[(int)dim] = style.maxDimensions[dim];
-                } 
-                else 
+                }
+                else
                 {
                     resolvedDimensions_[(int)dim] = style.dimensions[dim];
                 }
@@ -606,7 +591,7 @@ namespace Yoga.Net
 
         public YGDirection resolveDirection(in YGDirection ownerDirection)
         {
-            if (style_.direction == YGDirection.Inherit) 
+            if (style_.direction == YGDirection.Inherit)
                 return ownerDirection > YGDirection.Inherit ? ownerDirection : YGDirection.LTR;
 
             return style_.direction;
@@ -654,7 +639,7 @@ namespace Yoga.Net
 
         public void markDirtyAndPropogate()
         {
-            if (!isDirty_) 
+            if (!isDirty_)
             {
                 setDirty(true);
                 setLayoutComputedFlexBasis(new YGFloatOptional());
@@ -665,13 +650,13 @@ namespace Yoga.Net
         public float resolveFlexGrow()
         {
             // Root nodes flexGrow should always be 0
-            if (owner_ == null) 
+            if (owner_ == null)
                 return 0.0f;
 
-            if (!style_.flexGrow.isUndefined()) 
+            if (!style_.flexGrow.isUndefined())
                 return style_.flexGrow.unwrap();
 
-            if (!style_.flex.isUndefined() && style_.flex.unwrap() > 0.0f) 
+            if (!style_.flex.isUndefined() && style_.flex.unwrap() > 0.0f)
                 return style_.flex.unwrap();
 
             return kDefaultFlexGrow;
@@ -679,14 +664,15 @@ namespace Yoga.Net
 
         public float resolveFlexShrink()
         {
-            if (owner_ == null) 
+            if (owner_ == null)
                 return 0.0f;
-            
-            if (!style_.flexShrink.isUndefined()) 
+
+            if (!style_.flexShrink.isUndefined())
                 return style_.flexShrink.unwrap();
 
             if (!useWebDefaults_ && !style_.flex.isUndefined() &&
-                style_.flex.unwrap() < 0.0f) {
+                style_.flex.unwrap() < 0.0f)
+            {
                 return -style_.flex.unwrap();
             }
             return useWebDefaults_ ? kWebDefaultFlexShrink : kDefaultFlexShrink;
@@ -702,12 +688,12 @@ namespace Yoga.Net
         public bool didUseLegacyFlag()
         {
             bool didUseLegacyFlag = layout_.didUseLegacyFlag;
-            if (didUseLegacyFlag) 
+            if (didUseLegacyFlag)
                 return true;
-            
-            foreach (var child in children_) 
+
+            foreach (var child in children_)
             {
-                if (child. layout_.didUseLegacyFlag) 
+                if (child.layout_.didUseLegacyFlag)
                 {
                     didUseLegacyFlag = true;
                     break;
@@ -718,19 +704,19 @@ namespace Yoga.Net
 
         public bool isLayoutTreeEqualToNode(in YGNode node)
         {
-            if (children_.Count != node.children_.Count) 
+            if (children_.Count != node.children_.Count)
                 return false;
 
             if (layout_ != node.layout_)
                 return false;
-            
-            if (children_.Count == 0) 
+
+            if (children_.Count == 0)
                 return true;
-            
+
 
             bool isLayoutTreeEqual = true;
             YGNodeRef otherNodeChildren = null;
-            for (var i = 0; i < children_.Count; ++i) 
+            for (var i = 0; i < children_.Count; ++i)
             {
                 otherNodeChildren = node.children_[i];
                 isLayoutTreeEqual = children_[i].isLayoutTreeEqualToNode(otherNodeChildren);
@@ -754,6 +740,71 @@ namespace Yoga.Net
             {
                 useWebDefaults_ = useWebDefaults_
             };
+        }
+
+        protected bool Equals(YGNode other)
+        {
+            var isEqual = Equals(style_, other.style_);
+            isEqual = isEqual & Equals(layout_, other.layout_);
+            isEqual = isEqual & lineIndex_ == other.lineIndex_;
+            isEqual = isEqual & Equals(config_, other.config_);
+            isEqual = isEqual & hasNewLayout_ == other.hasNewLayout_;
+            isEqual = isEqual & isReferenceBaseline_ == other.isReferenceBaseline_;
+            isEqual = isEqual & isDirty_ == other.isDirty_;
+            isEqual = isEqual & nodeType_ == other.nodeType_;
+            isEqual = isEqual & useWebDefaults_ == other.useWebDefaults_;
+            isEqual = isEqual & (children_.Count == other.Children.Count);
+
+            if (isEqual)
+            {
+                isEqual = isEqual & resolvedDimensions_[0] == other.resolvedDimensions_[0];
+                isEqual = isEqual & resolvedDimensions_[1] == other.resolvedDimensions_[1];
+                for (int i = 0; i < children_.Count && isEqual; i++)
+                {
+                    isEqual = isEqual & children_[i] == other.Children[0];
+                }
+            }
+
+            return isEqual;
+        }
+
+        /// <inheritdoc />
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((YGNode)obj);
+        }
+
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (style_ != null ? style_.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (layout_ != null ? layout_.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ lineIndex_;
+                hashCode = (hashCode * 397) ^ (children_ != null ? children_.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (config_ != null ? config_.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (resolvedDimensions_ != null ? resolvedDimensions_.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ hasNewLayout_.GetHashCode();
+                hashCode = (hashCode * 397) ^ isReferenceBaseline_.GetHashCode();
+                hashCode = (hashCode * 397) ^ isDirty_.GetHashCode();
+                hashCode = (hashCode * 397) ^ (int)nodeType_;
+                hashCode = (hashCode * 397) ^ useWebDefaults_.GetHashCode();
+                return hashCode;
+            }
+        }
+
+        public static bool operator ==(YGNode left, YGNode right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(YGNode left, YGNode right)
+        {
+            return !Equals(left, right);
         }
     }
 

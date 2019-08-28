@@ -1,16 +1,25 @@
-﻿
+﻿using System;
+
 namespace Yoga.Net
 {
     public class Edges : Values<YGEdge>
     {
         public Edges() { }
         public Edges(YGValue defaultValue) : base(defaultValue) { }
+        public Edges(Edges other)
+        {
+            Array.Copy(other._values, _values, _values.Length);
+        }
     }
 
     public class Dimensions : Values<YGDimension>
     {
         public Dimensions() { }
         public Dimensions(YGValue defaultValue) : base(defaultValue) { }
+        public Dimensions(Dimensions other)
+        {
+            Array.Copy(other._values, _values, _values.Length);
+        }
     }
 
     public class YGStyle
@@ -40,6 +49,36 @@ namespace Yoga.Net
 
         // Yoga specific properties, not compatible with flexbox specification
         public YGFloatOptional aspectRatio { get; set; } = new YGFloatOptional();
+
+        public YGStyle() { }
+
+        public YGStyle(YGStyle other)
+        {
+            direction = other.direction;
+            flexDirection = other.flexDirection;
+            justifyContent = other.justifyContent;
+            alignContent = other.alignContent;
+            alignItems = other.alignItems;
+            alignSelf = other.alignSelf;
+            positionType = other.positionType;
+            flexWrap = other.flexWrap;
+            overflow = other.overflow;
+            display = other.display;
+
+            flex = other.flex;
+            flexGrow = other.flexGrow;
+            flexShrink = other.flexShrink;
+            flexBasis = other.flexBasis;
+            margin = new Edges(other.margin);
+            position = new Edges(other.position);
+            padding = new Edges(other.padding);
+            border = new Edges(other.border);
+            dimensions = new Dimensions(other.dimensions);
+            minDimensions = new Dimensions(other.minDimensions);
+            maxDimensions = new Dimensions(other.maxDimensions);
+
+            aspectRatio = other.aspectRatio;
+        }
 
         protected bool Equals(YGStyle other)
         {
