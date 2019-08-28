@@ -416,8 +416,8 @@ namespace Yoga.Net
                 return;
             }
 
-            var children = childs.ToList();
-            if (children.Count == 0)
+            var newChildren = childs.ToList();
+            if (newChildren.Count == 0)
             {
                 if (YGNodeGetChildCount(owner) > 0)
                 {
@@ -435,11 +435,11 @@ namespace Yoga.Net
             {
                 if (YGNodeGetChildCount(owner) > 0)
                 {
-                    foreach (YGNodeRef oldChild in owner.getChildren())
+                    foreach (YGNodeRef oldChild in owner.Children)
                     {
                         // Our new children may have nodes in common with the old children. We don't reset these common nodes.
                         //if (std::find(children.begin(), children.end(), oldChild) == children.end()) 
-                        if (!children.Contains(oldChild))
+                        if (!newChildren.Contains(oldChild))
                         {
                             oldChild.setLayout(new YGLayout());
                             oldChild.setOwner(null);
@@ -447,8 +447,8 @@ namespace Yoga.Net
                     }
                 }
 
-                owner.setChildren(children);
-                foreach (YGNodeRef child in children)
+                owner.setChildren(newChildren);
+                foreach (YGNodeRef child in newChildren)
                     child.setOwner(owner);
 
                 owner.markDirtyAndPropogate();

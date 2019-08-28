@@ -65,11 +65,15 @@ namespace Yoga.Net.Tests
             YGNodeRef root = YGNodeNew();
             YGNodeRef root_child0 = YGNodeNew();
             YGNodeRef root_child1 = YGNodeNew();
-
-            YGNodeSetChildren(root, new List<YGNodeRef> { root_child0, root_child1 });
-
             YGNodeRef root_child2 = YGNodeNew();
             YGNodeRef root_child3 = YGNodeNew();
+
+            root_child0.setLineIndex(0);
+            root_child1.setLineIndex(1);
+            root_child2.setLineIndex(2);
+            root_child3.setLineIndex(3);
+
+            YGNodeSetChildren(root, new List<YGNodeRef> { root_child0, root_child1 });
 
             YGNodeSetChildren(root, new List<YGNodeRef> { root_child2, root_child3 });
 
@@ -93,10 +97,14 @@ namespace Yoga.Net.Tests
             YGNodeRef root_child0 = YGNodeNew();
             YGNodeRef root_child1 = YGNodeNew();
             YGNodeRef root_child2 = YGNodeNew();
+            YGNodeRef root_child3 = YGNodeNew();
+
+            root_child0.setLineIndex(0);
+            root_child1.setLineIndex(1);
+            root_child2.setLineIndex(2);
+            root_child3.setLineIndex(3);
 
             YGNodeSetChildren(root, new YGNodeRef[] { root_child0, root_child1, root_child2 });
-
-            YGNodeRef root_child3 = YGNodeNew();
 
             YGNodeSetChildren(root, new YGNodeRef[] { root_child2, root_child1, root_child3 });
 

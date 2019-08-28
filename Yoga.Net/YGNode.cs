@@ -744,6 +744,9 @@ namespace Yoga.Net
 
         protected bool Equals(YGNode other)
         {
+            if (ReferenceEquals(this, other))
+                return true;
+
             var isEqual = Equals(style_, other.style_);
             isEqual = isEqual & Equals(layout_, other.layout_);
             isEqual = isEqual & lineIndex_ == other.lineIndex_;

@@ -134,7 +134,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(1, YGNodeGetChildCount(root2));
             Assert.AreEqual(2, YGNodeGetChildCount(root3));
             Assert.AreEqual(root3_child1, YGNodeGetChild(root3, 1));
-            Assert.AreNotEqual(YGNodeGetChild(root2, 0), YGNodeGetChild(root3, 0));
+            Assert.IsFalse(ReferenceEquals(root2.Children[0], root3.Children[1]));
 
             YGNodeRef root4 = YGNodeClone(root3);
             Assert.AreEqual(root3_child1, YGNodeGetChild(root4, 1));
@@ -142,7 +142,7 @@ namespace Yoga.Net.Tests
             YGNodeRemoveChild(root4, root3_child1);
             Assert.AreEqual(2, YGNodeGetChildCount(root3));
             Assert.AreEqual(1, YGNodeGetChildCount(root4));
-            Assert.AreNotEqual(YGNodeGetChild(root3, 0), YGNodeGetChild(root4, 0));
+            Assert.IsFalse(ReferenceEquals(YGNodeGetChild(root3, 0), YGNodeGetChild(root4, 0)));
 
             YGNodeFreeRecursive(root4);
             YGNodeFreeRecursive(root3);
