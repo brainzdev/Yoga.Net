@@ -8,7 +8,7 @@ namespace Yoga.Net.Tests
     [TestFixture]
     public class YGLayoutDiffingTest
     {
-
+        /*
         [Test] public void assert_layout_trees_are_same() {
             var config = YGConfigNew();
             YGConfigSetUseLegacyStretchBehaviour(config, true);
@@ -80,5 +80,6 @@ namespace Yoga.Net.Tests
 
             Assert.IsFalse(root1.isLayoutTreeEqualToNode(root2));
         }
+        */
     }
 }

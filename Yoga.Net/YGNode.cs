@@ -19,7 +19,6 @@ namespace Yoga.Net
         bool isReferenceBaseline_ { get; set; } = false;
         bool isDirty_ { get; set; } = false;
         YGNodeType nodeType_ { get; set; } = YGNodeType.Default;
-        bool useWebDefaults_ { get; set; } = false;
 
         object context_ = null;
         uint8_t reserved_ = 0;
@@ -57,20 +56,11 @@ namespace Yoga.Net
             return trailingPosition;
         }
 
-        void useWebDefaults()
-        {
-            useWebDefaults_ = true;
-            style_.flexDirection = YGFlexDirection.Row;
-            style_.alignContent = YGAlign.Stretch;
-        }
-
         public YGNode() : this(YGConfigGetDefault()) { }
 
         public YGNode(in YGConfigRef config)
         {
             config_ = config;
-            if (config.useWebDefaults)
-                useWebDefaults();
         }
 
         public YGNode(in YGNode other)
@@ -99,8 +89,6 @@ namespace Yoga.Net
         public YGNode(in YGNode node, YGConfigRef config) : this(node)
         {
             config_ = config;
-            if (config.useWebDefaults)
-                useWebDefaults();
         }
 
         // Getters
@@ -510,16 +498,6 @@ namespace Yoga.Net
                 (int)trailing[(int)crossAxis]);
         }
 
-        public void setLayoutDoesLegacyFlagAffectsLayout(bool doesLegacyFlagAffectsLayout)
-        {
-            layout_.doesLegacyStretchFlagAffectsLayout = doesLegacyFlagAffectsLayout;
-        }
-
-        public void setLayoutDidUseLegacyFlag(bool didUseLegacyFlag)
-        {
-            layout_.didUseLegacyFlag = didUseLegacyFlag;
-        }
-
         public void markDirtyAndPropogateDownwards()
         {
             isDirty_ = true;
@@ -553,9 +531,7 @@ namespace Yoga.Net
             }
 
             if (!style_.flex.isUndefined() && style_.flex.unwrap() > 0.0f)
-            {
-                return useWebDefaults_ ? YGValue.Auto : YGValue.Zero;
-            }
+                return YGValue.Zero;
             return YGValue.Auto;
         }
 
@@ -657,12 +633,11 @@ namespace Yoga.Net
             if (!style_.flexShrink.isUndefined())
                 return style_.flexShrink.unwrap();
 
-            if (!useWebDefaults_ && !style_.flex.isUndefined() &&
-                style_.flex.unwrap() < 0.0f)
+            if (!style_.flex.isUndefined() && style_.flex.unwrap() < 0.0f)
             {
                 return -style_.flex.unwrap();
             }
-            return useWebDefaults_ ? kWebDefaultFlexShrink : kDefaultFlexShrink;
+            return kDefaultFlexShrink;
         }
 
         public bool isNodeFlexible()
@@ -670,23 +645,6 @@ namespace Yoga.Net
             return (
                 (style_.positionType == YGPositionType.Relative) &&
                 (resolveFlexGrow() != 0 || resolveFlexShrink() != 0));
-        }
-
-        public bool didUseLegacyFlag()
-        {
-            bool didUseLegacyFlag = layout_.didUseLegacyFlag;
-            if (didUseLegacyFlag)
-                return true;
-
-            foreach (var child in children_)
-            {
-                if (child.layout_.didUseLegacyFlag)
-                {
-                    didUseLegacyFlag = true;
-                    break;
-                }
-            }
-            return didUseLegacyFlag;
         }
 
         public bool isLayoutTreeEqualToNode(in YGNode node)
@@ -723,10 +681,7 @@ namespace Yoga.Net
                 this, owner_ == null, "Cannot reset a node still attached to a owner");
 
             // *this = YGNode{getConfig()};
-            return new YGNode(getConfig())
-            {
-                useWebDefaults_ = useWebDefaults_
-            };
+            return new YGNode(getConfig());
         }
 
         protected bool Equals(YGNode other)
@@ -742,7 +697,6 @@ namespace Yoga.Net
             isEqual = isEqual & isReferenceBaseline_ == other.isReferenceBaseline_;
             isEqual = isEqual & isDirty_ == other.isDirty_;
             isEqual = isEqual & nodeType_ == other.nodeType_;
-            isEqual = isEqual & useWebDefaults_ == other.useWebDefaults_;
             isEqual = isEqual & (children_.Count == other.Children.Count);
 
             if (isEqual)
@@ -782,7 +736,6 @@ namespace Yoga.Net
                 hashCode = (hashCode * 397) ^ isReferenceBaseline_.GetHashCode();
                 hashCode = (hashCode * 397) ^ isDirty_.GetHashCode();
                 hashCode = (hashCode * 397) ^ (int)nodeType_;
-                hashCode = (hashCode * 397) ^ useWebDefaults_.GetHashCode();
                 return hashCode;
             }
         }

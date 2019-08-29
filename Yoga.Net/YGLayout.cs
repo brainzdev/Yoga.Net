@@ -36,8 +36,6 @@ namespace Yoga.Net
         public YGCachedMeasurement cachedLayout = new YGCachedMeasurement();
 
         public YGDirection direction { get; internal set; }
-        public bool didUseLegacyFlag { get; set; }
-        public bool doesLegacyStretchFlagAffectsLayout { get; set; }
         public bool hadOverflow { get; internal set; }
 
         public YGLayout()
@@ -67,8 +65,6 @@ namespace Yoga.Net
 
             cachedLayout = new YGCachedMeasurement(other.cachedLayout);
             direction = other.direction;
-            didUseLegacyFlag = other.didUseLegacyFlag;
-            doesLegacyStretchFlagAffectsLayout = other.doesLegacyStretchFlagAffectsLayout;
             hadOverflow = other.hadOverflow;
         }
 
@@ -130,8 +126,6 @@ namespace Yoga.Net
                 hashCode = (hashCode * 397) ^ (measuredDimensions != null ? measuredDimensions.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (cachedLayout != null ? cachedLayout.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (int)direction;
-                hashCode = (hashCode * 397) ^ didUseLegacyFlag.GetHashCode();
-                hashCode = (hashCode * 397) ^ doesLegacyStretchFlagAffectsLayout.GetHashCode();
                 hashCode = (hashCode * 397) ^ hadOverflow.GetHashCode();
                 return hashCode;
             }

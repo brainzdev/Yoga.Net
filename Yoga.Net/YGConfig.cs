@@ -23,9 +23,6 @@ namespace Yoga.Net
         bool loggerUsesContext_;
 
         //public:
-        public bool useWebDefaults = false;
-        public bool useLegacyStretchBehaviour = false;
-        public bool shouldDiffLayoutWithoutLegacyStretchBehaviour = false;
         public bool printTree = false;
 
         public float pointScaleFactor = 1.0f;
@@ -84,7 +81,7 @@ namespace Yoga.Net
 
         public override string ToString()
         {
-            return $"Config({(useWebDefaults ? "useWebDefaults; " : "" )}{(useLegacyStretchBehaviour ? "useLegacyStretchBehavior; " : "")}{pointScaleFactor}; )";
+            return $"Config({pointScaleFactor:F2}; )";
         }
     }
 }

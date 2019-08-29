@@ -14,7 +14,6 @@ namespace Yoga.Net
 
         public const float kDefaultFlexGrow = 0.0f;
         public const float kDefaultFlexShrink = 0.0f;
-        public const float kWebDefaultFlexShrink = 1.0f;
 
         public static CompactValue CompactPercent(this float value)
         {

@@ -139,11 +139,6 @@ namespace Yoga.Net
             return node.isDirty();
         }
 
-        public static bool YGNodeLayoutGetDidUseLegacyFlag(in YGNodeRef node)
-        {
-            return node.didUseLegacyFlag();
-        }
-
         /// <summary>
         /// Marks the current node and all its descendants as dirty.
         ///
@@ -451,9 +446,7 @@ namespace Yoga.Net
         public static float YGNodeStyleGetFlexShrink(YGNodeConstRef node)
         {
             return node.getStyle().flexShrink.isUndefined()
-                ? (node.getConfig().useWebDefaults
-                    ? kWebDefaultFlexShrink
-                    : kDefaultFlexShrink)
+                ? kDefaultFlexShrink
                 : node.getStyle().flexShrink.unwrap();
         }
 
@@ -949,11 +942,6 @@ namespace Yoga.Net
             }
 
             return instanceName[(int)edge];
-        }
-
-        public static bool YGNodeLayoutGetDidLegacyStretchFlagAffectLayout(YGNodeRef node)
-        {
-            return node.getLayout().doesLegacyStretchFlagAffectsLayout;
         }
 
         public static uint32_t gCurrentGenerationCount = 0;
@@ -3158,12 +3146,8 @@ namespace Yoga.Net
                     }
                     else
                     {
-                        if (!node.getConfig().useLegacyStretchBehaviour &&
-                            ((YogaIsUndefined(
-                                        collectedFlexItemsValues.totalFlexGrowFactors) &&
-                                    collectedFlexItemsValues.totalFlexGrowFactors == 0) ||
-                                (YogaIsUndefined(node.resolveFlexGrow()) &&
-                                    node.resolveFlexGrow() == 0)))
+                        if (((YogaIsUndefined(collectedFlexItemsValues.totalFlexGrowFactors) && collectedFlexItemsValues.totalFlexGrowFactors == 0) ||
+                            (YogaIsUndefined(node.resolveFlexGrow()) && node.resolveFlexGrow() == 0)))
                         {
                             // If we don't have any children to flex or we can't flex the node
                             // itself, space we've used is all space we need. Root node also
@@ -3172,12 +3156,7 @@ namespace Yoga.Net
                                 collectedFlexItemsValues.sizeConsumedOnCurrentLine;
                         }
 
-                        if (node.getConfig().useLegacyStretchBehaviour)
-                        {
-                            node.setLayoutDidUseLegacyFlag(true);
-                        }
-
-                        sizeBasedOnContent = !node.getConfig().useLegacyStretchBehaviour;
+                        sizeBasedOnContent = true;
                     }
                 }
 
@@ -4478,15 +4457,6 @@ namespace Yoga.Net
             }
         }
 
-        public static void unsetUseLegacyFlagRecursively(YGNodeRef node)
-        {
-            node.getConfig().useLegacyStretchBehaviour = false;
-            foreach (var child in node.getChildren())
-            {
-                unsetUseLegacyFlagRecursively(child);
-            }
-        }
-
         public static void YGNodeCalculateLayoutWithContext(
             YGNodeRef node,
             float ownerWidth,
@@ -4587,65 +4557,6 @@ namespace Yoga.Net
             }
 
             Event.Hub.Publish(new LayoutPassEndEventArgs(node, layoutContext, markerData));
-
-            // We want to get rid off `useLegacyStretchBehaviour` from YGConfig. But we
-            // aren't sure whether client's of yoga have gotten rid off this flag or not.
-            // So logging this in YGLayout would help to find out the call sites depending
-            // on this flag. This check would be removed once we are sure no one is
-            // dependent on this flag anymore. The flag
-            // `shouldDiffLayoutWithoutLegacyStretchBehaviour` in YGConfig will help to
-            // run experiments.
-            if (node.getConfig().shouldDiffLayoutWithoutLegacyStretchBehaviour &&
-                node.didUseLegacyFlag())
-            {
-                YGNodeRef nodeWithoutLegacyFlag = YGNodeDeepClone(node);
-                nodeWithoutLegacyFlag.resolveDimension();
-                // Recursively mark nodes as dirty
-                nodeWithoutLegacyFlag.markDirtyAndPropogateDownwards();
-                gCurrentGenerationCount++;
-                // Rerun the layout, and calculate the diff
-                unsetUseLegacyFlagRecursively(nodeWithoutLegacyFlag);
-                LayoutData layoutMarkerData = new LayoutData();
-                if (YGLayoutNodeInternal(
-                    nodeWithoutLegacyFlag,
-                    width,
-                    height,
-                    ownerDirection,
-                    widthMeasureMode,
-                    heightMeasureMode,
-                    ownerWidth,
-                    ownerHeight,
-                    true,
-                    LayoutPassReason.Initial,
-                    nodeWithoutLegacyFlag.getConfig(),
-                    layoutMarkerData,
-                    layoutContext,
-                    0, // tree root
-                    gCurrentGenerationCount))
-                {
-                    nodeWithoutLegacyFlag.setPosition(
-                        nodeWithoutLegacyFlag.getLayout().direction,
-                        ownerWidth,
-                        ownerHeight,
-                        ownerWidth);
-                    YGRoundToPixelGrid(
-                        nodeWithoutLegacyFlag,
-                        nodeWithoutLegacyFlag.getConfig().pointScaleFactor,
-                        0.0f,
-                        0.0f);
-
-                    // Set whether the two layouts are different or not.
-                    var neededLegacyStretchBehaviour = !nodeWithoutLegacyFlag.isLayoutTreeEqualToNode(node);
-                    node.setLayoutDoesLegacyFlagAffectsLayout(neededLegacyStretchBehaviour);
-
-#if DEBUG
-                    if (nodeWithoutLegacyFlag.getConfig().printTree)
-                    {
-                        YGNodePrint(nodeWithoutLegacyFlag, YGPrintOptions.Layout | YGPrintOptions.Children | YGPrintOptions.Style);
-                    }
-#endif
-                }
-            }
         }
 
         public static void YGNodeCalculateLayout(
@@ -4676,13 +4587,6 @@ namespace Yoga.Net
                 config.setLogger(YGDefaultLog);
 #endif
             }
-        }
-
-        public static void YGConfigSetShouldDiffLayoutWithoutLegacyStretchBehaviour(
-            YGConfigRef config,
-            bool shouldDiffLayout)
-        {
-            config.shouldDiffLayoutWithoutLegacyStretchBehaviour = shouldDiffLayout;
         }
 
         public static void YGAssert(bool condition, string message)
@@ -4729,34 +4633,6 @@ namespace Yoga.Net
             YGExperimentalFeature feature)
         {
             return config.experimentalFeatures[(int)feature];
-        }
-
-        /// <summary>
-        /// Using the web defaults is the preferred configuration for new projects. Usage
-        /// of non web defaults should be considered as legacy.
-        /// </summary>
-        public static void YGConfigSetUseWebDefaults(YGConfigRef config, bool enabled)
-        {
-            config.useWebDefaults = enabled;
-        }
-
-        /// <summary>
-        /// Yoga previously had an error where containers would take the maximum space
-        /// possible instead of the minimum like they are supposed to. In practice this
-        /// resulted in implicit behaviour similar to align-self: stretch; Because this
-        /// was such a long-standing bug we must allow legacy users to switch back to
-        /// this behaviour.
-        /// </summary>
-        public static void YGConfigSetUseLegacyStretchBehaviour(
-            YGConfigRef config,
-            bool useLegacyStretchBehaviour)
-        {
-            config.useLegacyStretchBehaviour = useLegacyStretchBehaviour;
-        }
-
-        public static bool YGConfigGetUseWebDefaults(YGConfigRef config)
-        {
-            return config.useWebDefaults;
         }
 
         public static void YGConfigSetContext(YGConfigRef config, object context)

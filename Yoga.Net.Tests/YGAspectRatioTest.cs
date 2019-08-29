@@ -805,6 +805,7 @@ namespace Yoga.Net.Tests
             
         }
 
+        /*
         [Test] public void aspect_ratio_should_prefer_explicit_height() {
             YGConfigRef config = YGConfigNew();
             YGConfigSetUseWebDefaults(config, true);
@@ -835,7 +836,9 @@ namespace Yoga.Net.Tests
 
             
         }
+        */
 
+        /*
         [Test] public void aspect_ratio_should_prefer_explicit_width() {
             YGConfigRef config = YGConfigNew();
             YGConfigSetUseWebDefaults(config, true);
@@ -866,7 +869,9 @@ namespace Yoga.Net.Tests
 
             
         }
+        */
 
+        /*
         [Test] public void aspect_ratio_should_prefer_flexed_dimension() {
             YGConfigRef config = YGConfigNew();
             YGConfigSetUseWebDefaults(config, true);
@@ -897,5 +902,6 @@ namespace Yoga.Net.Tests
 
             
         }
+        */
     }
 }
