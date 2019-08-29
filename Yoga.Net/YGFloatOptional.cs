@@ -15,14 +15,13 @@ namespace Yoga.Net
         }
 
         // returns the wrapped value, or a value x with YGIsUndefined(x) == true
-        public float unwrap() => _value;
-        public bool isUndefined() => float.IsNaN(_value);
-
+        public float Unwrap() => _value;
+        public bool IsUndefined() => float.IsNaN(_value);
 
         public bool Equals(YGFloatOptional other)
         {
             return _value.Equals(other._value) ||
-                isUndefined() && other.isUndefined();
+                IsUndefined() && other.IsUndefined();
         }
 
         /// <inheritdoc />
@@ -42,30 +41,30 @@ namespace Yoga.Net
         public static bool operator !=(YGFloatOptional left, YGFloatOptional right) => !left.Equals(right);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool operator==(YGFloatOptional lhs, float rhs) => lhs == new YGFloatOptional(rhs);
+        public static bool operator ==(YGFloatOptional lhs, float rhs) => lhs == new YGFloatOptional(rhs);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool operator!=(YGFloatOptional lhs, float rhs) => !(lhs == rhs);
+        public static bool operator !=(YGFloatOptional lhs, float rhs) => !(lhs == rhs);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool operator==(float lhs, YGFloatOptional rhs) => rhs == lhs;
+        public static bool operator ==(float lhs, YGFloatOptional rhs) => rhs == lhs;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool operator!=(float lhs, YGFloatOptional rhs) => !(lhs == rhs);
+        public static bool operator !=(float lhs, YGFloatOptional rhs) => !(lhs == rhs);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static YGFloatOptional operator+(YGFloatOptional lhs, YGFloatOptional rhs) => new YGFloatOptional( lhs.unwrap() + rhs.unwrap());
+        public static YGFloatOptional operator +(YGFloatOptional lhs, YGFloatOptional rhs) => new YGFloatOptional(lhs.Unwrap() + rhs.Unwrap());
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool operator>(YGFloatOptional lhs, YGFloatOptional rhs) => lhs.unwrap() > rhs.unwrap();
+        public static bool operator >(YGFloatOptional lhs, YGFloatOptional rhs) => lhs.Unwrap() > rhs.Unwrap();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool operator<(YGFloatOptional lhs, YGFloatOptional rhs) => lhs.unwrap() < rhs.unwrap();
+        public static bool operator <(YGFloatOptional lhs, YGFloatOptional rhs) => lhs.Unwrap() < rhs.Unwrap();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool operator>=(YGFloatOptional lhs, YGFloatOptional rhs) => lhs > rhs || lhs == rhs;
+        public static bool operator >=(YGFloatOptional lhs, YGFloatOptional rhs) => lhs > rhs || lhs == rhs;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool operator<=(YGFloatOptional lhs, YGFloatOptional rhs) => lhs < rhs || lhs == rhs;
+        public static bool operator <=(YGFloatOptional lhs, YGFloatOptional rhs) => lhs < rhs || lhs == rhs;
     }
 }

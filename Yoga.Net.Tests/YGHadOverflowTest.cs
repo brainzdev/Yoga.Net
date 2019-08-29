@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using static Yoga.Net.YGGlobal;
-using YGNodeRef = Yoga.Net.YGNode;
-using YGConfigRef = Yoga.Net.YGConfig;
+
+
 
 namespace Yoga.Net.Tests
 {
@@ -28,17 +28,17 @@ namespace Yoga.Net.Tests
             //
         }
 
-        YGNodeRef root;
-        YGConfigRef config;
+        YGNode root;
+        YGConfig config;
 
     [Test] public void children_overflow_no_wrap_and_no_flex_children() {
-        YGNodeRef child0 = YGNodeNewWithConfig(config);
+        YGNode child0 = YGNodeNewWithConfig(config);
         YGNodeStyleSetWidth(child0, 80);
         YGNodeStyleSetHeight(child0, 40);
         YGNodeStyleSetMargin(child0, YGEdge.Top, 10);
         YGNodeStyleSetMargin(child0, YGEdge.Bottom, 15);
         YGNodeInsertChild(root, child0, 0);
-        YGNodeRef child1 = YGNodeNewWithConfig(config);
+        YGNode child1 = YGNodeNewWithConfig(config);
         YGNodeStyleSetWidth(child1, 80);
         YGNodeStyleSetHeight(child1, 40);
         YGNodeStyleSetMargin(child1, YGEdge.Bottom, 5);
@@ -51,13 +51,13 @@ namespace Yoga.Net.Tests
 
         [Test]
         public void spacing_overflow_no_wrap_and_no_flex_children() {
-        YGNodeRef child0 = YGNodeNewWithConfig(config);
+        YGNode child0 = YGNodeNewWithConfig(config);
         YGNodeStyleSetWidth(child0, 80);
         YGNodeStyleSetHeight(child0, 40);
         YGNodeStyleSetMargin(child0, YGEdge.Top, 10);
         YGNodeStyleSetMargin(child0, YGEdge.Bottom, 10);
         YGNodeInsertChild(root, child0, 0);
-        YGNodeRef child1 = YGNodeNewWithConfig(config);
+        YGNode child1 = YGNodeNewWithConfig(config);
         YGNodeStyleSetWidth(child1, 80);
         YGNodeStyleSetHeight(child1, 40);
         YGNodeStyleSetMargin(child1, YGEdge.Bottom, 5);
@@ -69,13 +69,13 @@ namespace Yoga.Net.Tests
     }
 
     [Test] public void no_overflow_no_wrap_and_flex_children() {
-        YGNodeRef child0 = YGNodeNewWithConfig(config);
+        YGNode child0 = YGNodeNewWithConfig(config);
         YGNodeStyleSetWidth(child0, 80);
         YGNodeStyleSetHeight(child0, 40);
         YGNodeStyleSetMargin(child0, YGEdge.Top, 10);
         YGNodeStyleSetMargin(child0, YGEdge.Bottom, 10);
         YGNodeInsertChild(root, child0, 0);
-        YGNodeRef child1 = YGNodeNewWithConfig(config);
+        YGNode child1 = YGNodeNewWithConfig(config);
         YGNodeStyleSetWidth(child1, 80);
         YGNodeStyleSetHeight(child1, 40);
         YGNodeStyleSetMargin(child1, YGEdge.Bottom, 5);
@@ -88,13 +88,13 @@ namespace Yoga.Net.Tests
     }
 
     [Test] public void hadOverflow_gets_reset_if_not_logger_valid() {
-        YGNodeRef child0 = YGNodeNewWithConfig(config);
+        YGNode child0 = YGNodeNewWithConfig(config);
         YGNodeStyleSetWidth(child0, 80);
         YGNodeStyleSetHeight(child0, 40);
         YGNodeStyleSetMargin(child0, YGEdge.Top, 10);
         YGNodeStyleSetMargin(child0, YGEdge.Bottom, 10);
         YGNodeInsertChild(root, child0, 0);
-        YGNodeRef child1 = YGNodeNewWithConfig(config);
+        YGNode child1 = YGNodeNewWithConfig(config);
         YGNodeStyleSetWidth(child1, 80);
         YGNodeStyleSetHeight(child1, 40);
         YGNodeStyleSetMargin(child1, YGEdge.Bottom, 5);
@@ -112,17 +112,17 @@ namespace Yoga.Net.Tests
     }
 
     [Test] public void spacing_overflow_in_nested_nodes() {
-        YGNodeRef child0 = YGNodeNewWithConfig(config);
+        YGNode child0 = YGNodeNewWithConfig(config);
         YGNodeStyleSetWidth(child0, 80);
         YGNodeStyleSetHeight(child0, 40);
         YGNodeStyleSetMargin(child0, YGEdge.Top, 10);
         YGNodeStyleSetMargin(child0, YGEdge.Bottom, 10);
         YGNodeInsertChild(root, child0, 0);
-        YGNodeRef child1 = YGNodeNewWithConfig(config);
+        YGNode child1 = YGNodeNewWithConfig(config);
         YGNodeStyleSetWidth(child1, 80);
         YGNodeStyleSetHeight(child1, 40);
         YGNodeInsertChild(root, child1, 1);
-        YGNodeRef child1_1 = YGNodeNewWithConfig(config);
+        YGNode child1_1 = YGNodeNewWithConfig(config);
         YGNodeStyleSetWidth(child1_1, 80);
         YGNodeStyleSetHeight(child1_1, 40);
         YGNodeStyleSetMargin(child1_1, YGEdge.Bottom, 5);

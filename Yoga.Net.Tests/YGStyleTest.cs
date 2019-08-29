@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using static Yoga.Net.YGGlobal;
-using YGNodeRef = Yoga.Net.YGNode;
-using YGConfigRef = Yoga.Net.YGConfig;
+
+
 
 namespace Yoga.Net.Tests
 {
@@ -10,8 +10,8 @@ namespace Yoga.Net.Tests
     {
 
         [Test] public void copy_style_same() {
-            YGNodeRef node0 = YGNodeNew();
-            YGNodeRef node1 = YGNodeNew();
+            YGNode node0 = YGNodeNew();
+            YGNode node1 = YGNodeNew();
             Assert.IsFalse(node0.isDirty());
 
             YGNodeCopyStyle(node0, node1);
@@ -22,12 +22,12 @@ namespace Yoga.Net.Tests
         }
 
         [Test] public void copy_style_modified() {
-            YGNodeRef node0 = YGNodeNew();
+            YGNode node0 = YGNodeNew();
             Assert.IsFalse(node0.isDirty());
             Assert.AreEqual(YGFlexDirection.Column, YGNodeStyleGetFlexDirection(node0));
             Assert.IsFalse(YGNodeStyleGetMaxHeight(node0).unit != YGUnit.Undefined);
 
-            YGNodeRef node1 = YGNodeNew();
+            YGNode node1 = YGNodeNew();
             YGNodeStyleSetFlexDirection(node1, YGFlexDirection.Row);
             YGNodeStyleSetMaxHeight(node1, 10);
 
@@ -41,13 +41,13 @@ namespace Yoga.Net.Tests
         }
 
         [Test] public void copy_style_modified_same() {
-            YGNodeRef node0 = YGNodeNew();
+            YGNode node0 = YGNodeNew();
             YGNodeStyleSetFlexDirection(node0, YGFlexDirection.Row);
             YGNodeStyleSetMaxHeight(node0, 10);
             YGNodeCalculateLayout(node0, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
             Assert.IsFalse(node0.isDirty());
 
-            YGNodeRef node1 = YGNodeNew();
+            YGNode node1 = YGNodeNew();
             YGNodeStyleSetFlexDirection(node1, YGFlexDirection.Row);
             YGNodeStyleSetMaxHeight(node1, 10);
 
@@ -59,7 +59,7 @@ namespace Yoga.Net.Tests
         }
 
         [Test] public void initialise_flexShrink_flexGrow() {
-            YGNodeRef node0 = YGNodeNew();
+            YGNode node0 = YGNodeNew();
             YGNodeStyleSetFlexShrink(node0, 1);
             Assert.AreEqual(1, YGNodeStyleGetFlexShrink(node0));
 

@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using static Yoga.Net.YGGlobal;
-using YGNodeRef = Yoga.Net.YGNode;
-using YGConfigRef = Yoga.Net.YGConfig;
+
+
 
 namespace Yoga.Net.Tests
 {
@@ -9,7 +9,7 @@ namespace Yoga.Net.Tests
     public class YGRoundingMeasureFuncTest
     {
 
-        static YGMeasureFunc _measureFloor = (YGNodeRef node,
+        static YGMeasureFunc _measureFloor = (YGNode node,
                                     float width,
                                     YGMeasureMode widthMode,
                                     float height,
@@ -19,7 +19,7 @@ namespace Yoga.Net.Tests
                 return new YGSize(10.2f, 10.2f);
             };
 
-        static YGMeasureFunc _measureCeil = (YGNodeRef node,
+        static YGMeasureFunc _measureCeil = (YGNode node,
                                    float width,
                                    YGMeasureMode widthMode,
                                    float height,
@@ -29,7 +29,7 @@ namespace Yoga.Net.Tests
             return new YGSize(10.5f, 10.5f);
         };
 
-        static YGMeasureFunc _measureFractial = (YGNodeRef node,
+        static YGMeasureFunc _measureFractial = (YGNode node,
           float width,
           YGMeasureMode widthMode,
           float height,
@@ -39,10 +39,10 @@ namespace Yoga.Net.Tests
             };
 
         [Test] public void rounding_feature_with_custom_measure_func_floor() {
-            YGConfigRef config = YGConfigNew();
-            YGNodeRef root = YGNodeNewWithConfig(config);
+            YGConfig config = YGConfigNew();
+            YGNode root = YGNodeNewWithConfig(config);
 
-            YGNodeRef root_child0 = YGNodeNewWithConfig(config);
+            YGNode root_child0 = YGNodeNewWithConfig(config);
             root_child0.setMeasureFunc(_measureFloor);
             YGNodeInsertChild(root, root_child0, 0);
 
@@ -87,10 +87,10 @@ namespace Yoga.Net.Tests
         }
 
         [Test] public void rounding_feature_with_custom_measure_func_ceil() {
-            YGConfigRef config = YGConfigNew();
-            YGNodeRef root = YGNodeNewWithConfig(config);
+            YGConfig config = YGConfigNew();
+            YGNode root = YGNodeNewWithConfig(config);
 
-            YGNodeRef root_child0 = YGNodeNewWithConfig(config);
+            YGNode root_child0 = YGNodeNewWithConfig(config);
             root_child0.setMeasureFunc(_measureCeil);
             YGNodeInsertChild(root, root_child0, 0);
             YGConfigSetPointScaleFactor(config, 1.0f);
@@ -106,10 +106,10 @@ namespace Yoga.Net.Tests
         }
 
         [Test] public void rounding_feature_with_custom_measure_and_fractial_matching_scale() {
-            YGConfigRef config = YGConfigNew();
-            YGNodeRef root = YGNodeNewWithConfig(config);
+            YGConfig config = YGConfigNew();
+            YGNode root = YGNodeNewWithConfig(config);
 
-            YGNodeRef root_child0 = YGNodeNewWithConfig(config);
+            YGNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetPosition(root_child0, YGEdge.Left, 73.625f);
             root_child0.setMeasureFunc(_measureFractial);
             YGNodeInsertChild(root, root_child0, 0);

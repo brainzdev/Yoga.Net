@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using static Yoga.Net.YGGlobal;
-using YGNodeRef = Yoga.Net.YGNode;
-using YGConfigRef = Yoga.Net.YGConfig;
+
+
 
 namespace Yoga.Net.Tests
 {
@@ -9,17 +9,17 @@ namespace Yoga.Net.Tests
     public class YGDirtyMarkingTest
     {
         [Test] public void dirty_propagation() {
-            YGNodeRef root = YGNodeNew();
+            YGNode root = YGNodeNew();
             YGNodeStyleSetAlignItems(root, YGAlign.FlexStart);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNodeRef root_child0 = YGNodeNew();
+            YGNode root_child0 = YGNodeNew();
             YGNodeStyleSetWidth(root_child0, 50);
             YGNodeStyleSetHeight(root_child0, 20);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNodeRef root_child1 = YGNodeNew();
+            YGNode root_child1 = YGNodeNew();
             YGNodeStyleSetWidth(root_child1, 50);
             YGNodeStyleSetHeight(root_child1, 20);
             YGNodeInsertChild(root, root_child1, 1);
@@ -42,17 +42,17 @@ namespace Yoga.Net.Tests
         }
 
         [Test] public void dirty_propagation_only_if_prop_changed() {
-            YGNodeRef root = YGNodeNew();
+            YGNode root = YGNodeNew();
             YGNodeStyleSetAlignItems(root, YGAlign.FlexStart);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNodeRef root_child0 = YGNodeNew();
+            YGNode root_child0 = YGNodeNew();
             YGNodeStyleSetWidth(root_child0, 50);
             YGNodeStyleSetHeight(root_child0, 20);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNodeRef root_child1 = YGNodeNew();
+            YGNode root_child1 = YGNodeNew();
             YGNodeStyleSetWidth(root_child1, 50);
             YGNodeStyleSetHeight(root_child1, 20);
             YGNodeInsertChild(root, root_child1, 1);
@@ -69,17 +69,17 @@ namespace Yoga.Net.Tests
         }
 
         [Test] public void dirty_mark_all_children_as_dirty_when_display_changes() {
-            YGNodeRef root = YGNodeNew();
+            YGNode root = YGNodeNew();
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNodeRef child0 = YGNodeNew();
+            YGNode child0 = YGNodeNew();
             YGNodeStyleSetFlexGrow(child0, 1);
-            YGNodeRef child1 = YGNodeNew();
+            YGNode child1 = YGNodeNew();
             YGNodeStyleSetFlexGrow(child1, 1);
 
-            YGNodeRef child1_child0 = YGNodeNew();
-            YGNodeRef child1_child0_child0 = YGNodeNew();
+            YGNode child1_child0 = YGNodeNew();
+            YGNode child1_child0_child0 = YGNodeNew();
             YGNodeStyleSetWidth(child1_child0_child0, 8);
             YGNodeStyleSetHeight(child1_child0_child0, 16);
 
@@ -117,19 +117,19 @@ namespace Yoga.Net.Tests
         }
 
         [Test] public void dirty_node_only_if_children_are_actually_removed() {
-            YGNodeRef root = YGNodeNew();
+            YGNode root = YGNodeNew();
             YGNodeStyleSetAlignItems(root, YGAlign.FlexStart);
             YGNodeStyleSetWidth(root, 50);
             YGNodeStyleSetHeight(root, 50);
 
-            YGNodeRef child0 = YGNodeNew();
+            YGNode child0 = YGNodeNew();
             YGNodeStyleSetWidth(child0, 50);
             YGNodeStyleSetHeight(child0, 25);
             YGNodeInsertChild(root, child0, 0);
 
             YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
 
-            YGNodeRef child1 = YGNodeNew();
+            YGNode child1 = YGNodeNew();
             YGNodeRemoveChild(root, child1);
             Assert.IsFalse(root.isDirty());
             
@@ -142,7 +142,7 @@ namespace Yoga.Net.Tests
         }
 
         [Test] public void dirty_node_only_if_undefined_values_gets_set_to_undefined() {
-            YGNodeRef root = YGNodeNew();
+            YGNode root = YGNodeNew();
             YGNodeStyleSetWidth(root, 50);
             YGNodeStyleSetHeight(root, 50);
             YGNodeStyleSetMinWidth(root, YGValue.YGUndefined);

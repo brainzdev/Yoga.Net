@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using static Yoga.Net.YGGlobal;
-using YGNodeRef = Yoga.Net.YGNode;
-using YGConfigRef = Yoga.Net.YGConfig;
+
+
 
 namespace Yoga.Net.Tests
 {
@@ -10,20 +10,20 @@ namespace Yoga.Net.Tests
     {
 
         [Test] public void flex_direction_column_no_height() {
-            YGConfigRef config = YGConfigNew();
+            YGConfig config = YGConfigNew();
 
-            YGNodeRef root = YGNodeNewWithConfig(config);
+            YGNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 100);
 
-            YGNodeRef root_child0 = YGNodeNewWithConfig(config);
+            YGNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetHeight(root_child0, 10);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNodeRef root_child1 = YGNodeNewWithConfig(config);
+            YGNode root_child1 = YGNodeNewWithConfig(config);
             YGNodeStyleSetHeight(root_child1, 10);
             YGNodeInsertChild(root, root_child1, 1);
 
-            YGNodeRef root_child2 = YGNodeNewWithConfig(config);
+            YGNode root_child2 = YGNodeNewWithConfig(config);
             YGNodeStyleSetHeight(root_child2, 10);
             YGNodeInsertChild(root, root_child2, 2);
             YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
@@ -76,21 +76,21 @@ namespace Yoga.Net.Tests
         }
 
         [Test] public void flex_direction_row_no_width() {
-            YGConfigRef config = YGConfigNew();
+            YGConfig config = YGConfigNew();
 
-            YGNodeRef root = YGNodeNewWithConfig(config);
+            YGNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNodeRef root_child0 = YGNodeNewWithConfig(config);
+            YGNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root_child0, 10);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNodeRef root_child1 = YGNodeNewWithConfig(config);
+            YGNode root_child1 = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root_child1, 10);
             YGNodeInsertChild(root, root_child1, 1);
 
-            YGNodeRef root_child2 = YGNodeNewWithConfig(config);
+            YGNode root_child2 = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root_child2, 10);
             YGNodeInsertChild(root, root_child2, 2);
             YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
@@ -143,21 +143,21 @@ namespace Yoga.Net.Tests
         }
 
         [Test] public void flex_direction_column() {
-            YGConfigRef config = YGConfigNew();
+            YGConfig config = YGConfigNew();
 
-            YGNodeRef root = YGNodeNewWithConfig(config);
+            YGNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNodeRef root_child0 = YGNodeNewWithConfig(config);
+            YGNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetHeight(root_child0, 10);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNodeRef root_child1 = YGNodeNewWithConfig(config);
+            YGNode root_child1 = YGNodeNewWithConfig(config);
             YGNodeStyleSetHeight(root_child1, 10);
             YGNodeInsertChild(root, root_child1, 1);
 
-            YGNodeRef root_child2 = YGNodeNewWithConfig(config);
+            YGNode root_child2 = YGNodeNewWithConfig(config);
             YGNodeStyleSetHeight(root_child2, 10);
             YGNodeInsertChild(root, root_child2, 2);
             YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
@@ -210,22 +210,22 @@ namespace Yoga.Net.Tests
         }
 
         [Test] public void flex_direction_row() {
-            YGConfigRef config = YGConfigNew();
+            YGConfig config = YGConfigNew();
 
-            YGNodeRef root = YGNodeNewWithConfig(config);
+            YGNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNodeRef root_child0 = YGNodeNewWithConfig(config);
+            YGNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root_child0, 10);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNodeRef root_child1 = YGNodeNewWithConfig(config);
+            YGNode root_child1 = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root_child1, 10);
             YGNodeInsertChild(root, root_child1, 1);
 
-            YGNodeRef root_child2 = YGNodeNewWithConfig(config);
+            YGNode root_child2 = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root_child2, 10);
             YGNodeInsertChild(root, root_child2, 2);
             YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
@@ -278,22 +278,22 @@ namespace Yoga.Net.Tests
         }
 
         [Test] public void flex_direction_column_reverse() {
-            YGConfigRef config = YGConfigNew();
+            YGConfig config = YGConfigNew();
 
-            YGNodeRef root = YGNodeNewWithConfig(config);
+            YGNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.ColumnReverse);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNodeRef root_child0 = YGNodeNewWithConfig(config);
+            YGNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetHeight(root_child0, 10);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNodeRef root_child1 = YGNodeNewWithConfig(config);
+            YGNode root_child1 = YGNodeNewWithConfig(config);
             YGNodeStyleSetHeight(root_child1, 10);
             YGNodeInsertChild(root, root_child1, 1);
 
-            YGNodeRef root_child2 = YGNodeNewWithConfig(config);
+            YGNode root_child2 = YGNodeNewWithConfig(config);
             YGNodeStyleSetHeight(root_child2, 10);
             YGNodeInsertChild(root, root_child2, 2);
             YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
@@ -346,22 +346,22 @@ namespace Yoga.Net.Tests
         }
 
         [Test] public void flex_direction_row_reverse() {
-            YGConfigRef config = YGConfigNew();
+            YGConfig config = YGConfigNew();
 
-            YGNodeRef root = YGNodeNewWithConfig(config);
+            YGNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.RowReverse);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNodeRef root_child0 = YGNodeNewWithConfig(config);
+            YGNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root_child0, 10);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNodeRef root_child1 = YGNodeNewWithConfig(config);
+            YGNode root_child1 = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root_child1, 10);
             YGNodeInsertChild(root, root_child1, 1);
 
-            YGNodeRef root_child2 = YGNodeNewWithConfig(config);
+            YGNode root_child2 = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root_child2, 10);
             YGNodeInsertChild(root, root_child2, 2);
             YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);

@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using static Yoga.Net.YGGlobal;
-using YGNodeRef = Yoga.Net.YGNode;
-using YGConfigRef = Yoga.Net.YGConfig;
+
+
 
 namespace Yoga.Net.Tests
 {
@@ -10,9 +10,9 @@ namespace Yoga.Net.Tests
     {
 
         [Test] public void reset_layout_when_child_removed() {
-            YGNodeRef root = YGNodeNew();
+            YGNode root = YGNodeNew();
 
-            YGNodeRef root_child0 = YGNodeNew();
+            YGNode root_child0 = YGNodeNew();
             YGNodeStyleSetWidth(root_child0, 100);
             YGNodeStyleSetHeight(root_child0, 100);
             YGNodeInsertChild(root, root_child0, 0);

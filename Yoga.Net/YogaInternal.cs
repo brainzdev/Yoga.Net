@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using YGNodeRef = Yoga.Net.YGNode;
+
 using size_t = System.Int32;
 using static Yoga.Net.YGGlobal;
 
 namespace Yoga.Net
 {
-    public class YGVector : List<YGNodeRef>
+    public class YGVector : List<YGNode>
     {
         public YGVector() { }
         public YGVector(IEnumerable<YGNode> collection) : base(collection) { }

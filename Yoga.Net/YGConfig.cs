@@ -2,86 +2,52 @@
 
 namespace Yoga.Net
 {
-    using YGConfigRef = YGConfig;
-    using YGNodeRef = YGNode;
-
-    public delegate int LogWithContextFn(
-        YGConfigRef config,
-        YGNodeRef node,
-        YGLogLevel level,
-        object context,
-        string format,
-        params object[] args);
-
     public class YGConfig
     {
-        YGCloneNodeFunc cloneFunc;
+        public YGCloneNodeFunc CloneNodeFunc { get; set; }
+        public YGLoggerFunc LoggerFunc { get; set; }
+        public bool PrintTree { get; set; }
+        public float PointScaleFactor { get; set; } = 1.0f;
 
-        LogWithContextFn logWithContext;
-        YGLogger logNoContext;
+        public object Context { get; set; }
 
-        bool loggerUsesContext_;
+        public bool[] ExperimentalFeatures { get; } = {false};
 
-        //public:
-        public bool printTree = false;
-
-        public float pointScaleFactor = 1.0f;
-
-        public bool[] experimentalFeatures = {false};
-        public object context = null;
-
-        public YGConfig(YGLogger logger)
+        public YGConfig(YGLoggerFunc logger)
         {
-            logNoContext = logger;
+            LoggerFunc = logger;
         }
 
         public YGConfig(YGConfig config)
         {
-            cloneFunc = config.cloneFunc;
-            loggerUsesContext_ = config.loggerUsesContext_;
+            CloneNodeFunc = config.CloneNodeFunc;
+            LoggerFunc    = config.LoggerFunc;
         }
 
-        public void log(YGConfig config, YGNode node, YGLogLevel level, object context, in string format, params object[] args)
+        public void Log(YGConfig config, YGNode node, YGLogLevel level, object context, string message)
         {
-            if (loggerUsesContext_)
-                logWithContext(config, node, level, context, format, args);
-            else
-                logNoContext(config, node, level, format, args);
+            LoggerFunc(config, node, level, context, message);
         }
 
-        public void setLogger(YGLogger logger = (YGLogger)null)
+        public void Log(YGConfig config, YGNode node, YGLogLevel level, string message)
         {
-            logNoContext       = logger;
-            logWithContext     = null;
-            loggerUsesContext_ = false;
+            LoggerFunc(config, node, level, Context, message);
         }
 
-        public void setLogger(LogWithContextFn logger)
-        {
-            logNoContext       = null;
-            logWithContext     = logger;
-            loggerUsesContext_ = true;
-        }
-
-        public YGNodeRef cloneNode(
-            YGNodeRef node,
-            YGNodeRef owner,
+        public YGNode CloneNode(
+            YGNode node,
+            YGNode owner,
             int childIndex,
             object cloneContext)
         {
-            YGNodeRef clone = cloneFunc?.Invoke(node, owner, childIndex, cloneContext);
+            YGNode clone = CloneNodeFunc?.Invoke(node, owner, childIndex, cloneContext);
 
             return clone ?? YGNodeClone(node);
         }
 
-        public void setCloneNodeCallback(YGCloneNodeFunc cloneNode = null)
-        {
-            cloneFunc        = cloneNode;
-        }
-
         public override string ToString()
         {
-            return $"Config({pointScaleFactor:F2}; )";
+            return $"Config({PointScaleFactor:F2}; )";
         }
     }
 }

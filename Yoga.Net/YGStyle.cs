@@ -101,25 +101,25 @@ namespace Yoga.Net
                 minDimensions == other.minDimensions &&
                 maxDimensions == other.maxDimensions;
 
-            areNonFloatValuesEqual = areNonFloatValuesEqual && flex.isUndefined() == other.flex.isUndefined();
-            if (areNonFloatValuesEqual && !flex.isUndefined() && !other.flex.isUndefined()) 
+            areNonFloatValuesEqual = areNonFloatValuesEqual && flex.IsUndefined() == other.flex.IsUndefined();
+            if (areNonFloatValuesEqual && !flex.IsUndefined() && !other.flex.IsUndefined()) 
             {
                 areNonFloatValuesEqual = areNonFloatValuesEqual && flex == other.flex;
             }
 
-            areNonFloatValuesEqual = areNonFloatValuesEqual && flexGrow.isUndefined() == other.flexGrow.isUndefined();
-            if (areNonFloatValuesEqual && !flexGrow.isUndefined()) 
+            areNonFloatValuesEqual = areNonFloatValuesEqual && flexGrow.IsUndefined() == other.flexGrow.IsUndefined();
+            if (areNonFloatValuesEqual && !flexGrow.IsUndefined()) 
             {
                 areNonFloatValuesEqual = areNonFloatValuesEqual && flexGrow == other.flexGrow;
             }
 
-            areNonFloatValuesEqual = areNonFloatValuesEqual && flexShrink.isUndefined() == other.flexShrink.isUndefined();
-            if (areNonFloatValuesEqual && !other.flexShrink.isUndefined()) 
+            areNonFloatValuesEqual = areNonFloatValuesEqual && flexShrink.IsUndefined() == other.flexShrink.IsUndefined();
+            if (areNonFloatValuesEqual && !other.flexShrink.IsUndefined()) 
             {
                 areNonFloatValuesEqual = areNonFloatValuesEqual && flexShrink == other.flexShrink;
             }
 
-            if (!(aspectRatio.isUndefined() && other.aspectRatio.isUndefined())) 
+            if (!(aspectRatio.IsUndefined() && other.aspectRatio.IsUndefined())) 
             {
                 areNonFloatValuesEqual = areNonFloatValuesEqual && aspectRatio == other.aspectRatio;
             }

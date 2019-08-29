@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
-using uint32_t = System.UInt32;
 
 namespace Yoga.Net
 {
@@ -33,15 +31,14 @@ namespace Yoga.Net
         const int BIAS = 0x20000000;
         const int PERCENT_BIT = 0x40000000;
 
-        public static CompactValue Auto = new CompactValue(AUTO_BITS);
-        public static CompactValue Undefined = new CompactValue(float.NaN);
-        public static CompactValue Zero = new CompactValue(ZERO_BITS_POINT);
+        public static readonly CompactValue Auto = new CompactValue(AUTO_BITS);
+        public static readonly CompactValue Undefined = new CompactValue(float.NaN);
+        public static readonly CompactValue Zero = new CompactValue(ZERO_BITS_POINT);
 
         [StructLayout(LayoutKind.Explicit)]
         struct Payload
         {
             [FieldOffset(0)] public float value;
-
             [FieldOffset(0)] public int repr;
 
             public Payload(int r) : this() => repr = r;
@@ -70,9 +67,25 @@ namespace Yoga.Net
             _payload = payload;
         }
 
-        public static CompactValue of(float value, YGUnit unit) => new CompactValue(Build(value, unit));
+        public CompactValue(YGValue x)
+        {
+            _payload.repr = 0;
+            switch (x.unit)
+            {
+                case YGUnit.Undefined:
+                    _payload.value = Undefined._payload.value;
+                    break;
+                case YGUnit.Auto:
+                    _payload.value = Auto._payload.value;
+                    break;
+                case YGUnit.Point:
+                case YGUnit.Percent:
+                    _payload = Build(x.value, x.unit);
+                    break;
+            }
+        }
 
-        public float value => _payload.value;
+        public float Value => _payload.value;
 
         static Payload Build(float value, YGUnit unit)
         {
@@ -95,41 +108,25 @@ namespace Yoga.Net
             return data;
         }
 
-        public static CompactValue ofMaybe(float value, YGUnit unit)
+        public static CompactValue Of(float value, YGUnit unit) => new CompactValue(Build(value, unit));
+
+        public static CompactValue OfMaybe(float value, YGUnit unit)
         {
             if (float.IsNaN(value) || float.IsInfinity(value))
                 return Undefined;
-            return of(value, unit);
-        }
-
-        public CompactValue(YGValue x)
-        {
-            _payload.repr = 0;
-            switch (x.unit)
-            {
-            case YGUnit.Undefined:
-                _payload.value = Undefined._payload.value;
-                break;
-            case YGUnit.Auto:
-                _payload.value = Auto._payload.value;
-                break;
-            case YGUnit.Point:
-            case YGUnit.Percent:
-                _payload = Build(x.value, x.unit);
-                break;
-            }
+            return Of(value, unit);
         }
 
         public static implicit operator YGValue(CompactValue cv)
         {
             switch (cv._payload.repr)
             {
-            case AUTO_BITS:
-                return YGValue.Auto;
-            case ZERO_BITS_POINT:
-                return new YGValue(0f, YGUnit.Point);
-            case ZERO_BITS_PERCENT:
-                return new YGValue(0f, YGUnit.Percent);
+                case AUTO_BITS:
+                    return YGValue.Auto;
+                case ZERO_BITS_POINT:
+                    return new YGValue(0f, YGUnit.Point);
+                case ZERO_BITS_PERCENT:
+                    return new YGValue(0f, YGUnit.Percent);
             }
 
             if (float.IsNaN(cv._payload.value))
@@ -151,8 +148,6 @@ namespace Yoga.Net
             _payload.repr != ZERO_BITS_POINT &&
             _payload.repr != ZERO_BITS_PERCENT &&
             float.IsNaN(_payload.value);
-
-        public bool isUndefined() => IsUndefined;
 
         public bool IsAuto => _payload.repr == AUTO_BITS;
 

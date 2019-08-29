@@ -17,12 +17,12 @@ namespace Yoga.Net
 
         public static CompactValue CompactPercent(this float value)
         {
-            return CompactValue.of(value, YGUnit.Percent);
+            return CompactValue.Of(value, YGUnit.Percent);
         }
 
         public static CompactValue CompactPoint(this float value)
         {
-            return CompactValue.of(value, YGUnit.Point);
+            return CompactValue.Of(value, YGUnit.Point);
         }
 
         public static bool YGValueEqual(in YGValue a, in YGValue b)
@@ -75,7 +75,7 @@ namespace Yoga.Net
             if (op2 > op1) {
                 return op2;
             }
-            return op1.isUndefined() ? op2 : op1;
+            return op1.IsUndefined() ? op2 : op1;
         }
 
         public static float fmodf(float x, float y) => (float) Math.IEEERemainder(x, y);
@@ -176,14 +176,14 @@ namespace Yoga.Net
             return value.IsAuto ? new YGFloatOptional(0) : YGResolveValue(value, ownerSize);
         }
 
-        public static YGLogger YGDefaultLog = (config, node, level, format, args) =>
+        public static YGLoggerFunc YGDefaultLog = (config, node, level, context, message) =>
         {
-            Trace.Write(string.Format(format, args));
+            Trace.Write(message);
             switch (level)
             {
             case YGLogLevel.Error:
             case YGLogLevel.Fatal:
-                Console.Error.Write(format, args);
+                Console.Error.Write(message);
                 break;
 
             case YGLogLevel.Warn:
@@ -191,7 +191,7 @@ namespace Yoga.Net
             case YGLogLevel.Debug:
             case YGLogLevel.Verbose:
             default:
-                    Console.Write(format, args);
+                    Console.Write(message);
                 break;
             }
 
@@ -211,23 +211,22 @@ namespace Yoga.Net
             YGEdge edge,
             CompactValue defaultValue) 
         {
-            if (!edges[edge].isUndefined()) 
+            if (!edges[edge].IsUndefined) 
             {
                 return edges[edge];
             }
 
             if ((edge == YGEdge.Top || edge == YGEdge.Bottom) &&
-                !edges[YGEdge.Vertical].isUndefined()) {
+                !edges[YGEdge.Vertical].IsUndefined) {
                 return edges[YGEdge.Vertical];
             }
 
-            if ((edge == YGEdge.Left || edge == YGEdge.Right || edge == YGEdge.Start ||
-                    edge == YGEdge.End) &&
-                !edges[YGEdge.Horizontal].isUndefined()) {
+            if ((edge == YGEdge.Left || edge == YGEdge.Right || edge == YGEdge.Start || edge == YGEdge.End) &&
+                !edges[YGEdge.Horizontal].IsUndefined) {
                 return edges[YGEdge.Horizontal];
             }
 
-            if (!edges[YGEdge.All].isUndefined()) {
+            if (!edges[YGEdge.All].IsUndefined) {
                 return edges[YGEdge.All];
             }
 

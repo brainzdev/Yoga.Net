@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using static Yoga.Net.YGGlobal;
-using YGNodeRef = Yoga.Net.YGNode;
-using YGConfigRef = Yoga.Net.YGConfig;
+
+
 
 namespace Yoga.Net.Tests
 {
@@ -12,16 +12,16 @@ namespace Yoga.Net.Tests
         [Test]
         public void nested_overflowing_child()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfig config = YGConfigNew();
 
-            YGNodeRef root = YGNodeNewWithConfig(config);
+            YGNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNodeRef root_child0 = YGNodeNewWithConfig(config);
+            YGNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNodeRef root_child0_child0 = YGNodeNewWithConfig(config);
+            YGNode root_child0_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root_child0_child0, 200);
             YGNodeStyleSetHeight(root_child0_child0, 200);
             YGNodeInsertChild(root_child0, root_child0_child0, 0);
@@ -67,18 +67,18 @@ namespace Yoga.Net.Tests
         [Test]
         public void nested_overflowing_child_in_constraint_parent()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfig config = YGConfigNew();
 
-            YGNodeRef root = YGNodeNewWithConfig(config);
+            YGNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNodeRef root_child0 = YGNodeNewWithConfig(config);
+            YGNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root_child0, 100);
             YGNodeStyleSetHeight(root_child0, 100);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNodeRef root_child0_child0 = YGNodeNewWithConfig(config);
+            YGNode root_child0_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root_child0_child0, 200);
             YGNodeStyleSetHeight(root_child0_child0, 200);
             YGNodeInsertChild(root_child0, root_child0_child0, 0);
@@ -124,17 +124,17 @@ namespace Yoga.Net.Tests
         [Test]
         public void parent_wrap_child_size_overflowing_parent()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfig config = YGConfigNew();
 
-            YGNodeRef root = YGNodeNewWithConfig(config);
+            YGNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNodeRef root_child0 = YGNodeNewWithConfig(config);
+            YGNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root_child0, 100);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNodeRef root_child0_child0 = YGNodeNewWithConfig(config);
+            YGNode root_child0_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root_child0_child0, 100);
             YGNodeStyleSetHeight(root_child0_child0, 200);
             YGNodeInsertChild(root_child0, root_child0_child0, 0);

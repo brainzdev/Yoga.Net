@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using static Yoga.Net.YGGlobal;
-using YGNodeRef = Yoga.Net.YGNode;
-using YGConfigRef = Yoga.Net.YGConfig;
+
+
 
 namespace Yoga.Net.Tests
 {
@@ -12,20 +12,20 @@ namespace Yoga.Net.Tests
         [Test] public void assert_layout_trees_are_same() {
             var config = YGConfigNew();
             YGConfigSetUseLegacyStretchBehaviour(config, true);
-            YGNodeRef root1 = YGNodeNewWithConfig(config);
+            YGNode root1 = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root1, 500);
             YGNodeStyleSetHeight(root1, 500);
 
-            YGNodeRef root1_child0 = YGNodeNewWithConfig(config);
+            YGNode root1_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetAlignItems(root1_child0, YGAlign.FlexStart);
             YGNodeInsertChild(root1, root1_child0, 0);
 
-            YGNodeRef root1_child0_child0 = YGNodeNewWithConfig(config);
+            YGNode root1_child0_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root1_child0_child0, 1);
             YGNodeStyleSetFlexShrink(root1_child0_child0, 1);
             YGNodeInsertChild(root1_child0, root1_child0_child0, 0);
 
-            YGNodeRef root1_child0_child0_child0 = YGNodeNewWithConfig(config);
+            YGNode root1_child0_child0_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root1_child0_child0_child0, 1);
             YGNodeStyleSetFlexShrink(root1_child0_child0_child0, 1);
             YGNodeInsertChild(root1_child0_child0, root1_child0_child0_child0, 0);
@@ -38,20 +38,20 @@ namespace Yoga.Net.Tests
             //Assert.AreEqual(YGConfigGetInstanceCount(), cal1_configInstanceCount);
             //Assert.AreEqual(YGNodeGetInstanceCount(), cal1_nodeInstanceCount);
 
-            YGNodeRef root2 = YGNodeNewWithConfig(config);
+            YGNode root2 = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root2, 500);
             YGNodeStyleSetHeight(root2, 500);
 
-            YGNodeRef root2_child0 = YGNodeNewWithConfig(config);
+            YGNode root2_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetAlignItems(root2_child0, YGAlign.FlexStart);
             YGNodeInsertChild(root2, root2_child0, 0);
 
-            YGNodeRef root2_child0_child0 = YGNodeNewWithConfig(config);
+            YGNode root2_child0_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root2_child0_child0, 1);
             YGNodeStyleSetFlexShrink(root2_child0_child0, 1);
             YGNodeInsertChild(root2_child0, root2_child0_child0, 0);
 
-            YGNodeRef root2_child0_child0_child0 = YGNodeNewWithConfig(config);
+            YGNode root2_child0_child0_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root2_child0_child0_child0, 1);
             YGNodeStyleSetFlexShrink(root2_child0_child0_child0, 1);
             YGNodeInsertChild(root2_child0_child0, root2_child0_child0_child0, 0);

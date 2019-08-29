@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using static Yoga.Net.YGGlobal;
-using YGNodeRef = Yoga.Net.YGNode;
-using YGConfigRef = Yoga.Net.YGConfig;
+
+
 
 namespace Yoga.Net.Tests
 {
@@ -11,12 +11,12 @@ namespace Yoga.Net.Tests
         [Test]
         public void zero_out_layout()
         {
-            YGNodeRef root = YGNodeNew();
+            YGNode root = YGNodeNew();
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
             YGNodeStyleSetWidth(root, 200);
             YGNodeStyleSetHeight(root, 200);
 
-            YGNodeRef child = YGNodeNew();
+            YGNode child = YGNodeNew();
             YGNodeInsertChild(root, child, 0);
             YGNodeStyleSetWidth(child, 100);
             YGNodeStyleSetHeight(child, 100);

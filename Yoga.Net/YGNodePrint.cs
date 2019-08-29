@@ -1,5 +1,5 @@
 ﻿using System.Text;
-using YGNodeRef = Yoga.Net.YGNode;
+
 using uint32_t = System.UInt32;
 using static Yoga.Net.YGGlobal;
 
@@ -28,9 +28,9 @@ namespace Yoga.Net
             string key,
             YGFloatOptional num)
         {
-            if (!num.isUndefined())
+            if (!num.IsUndefined())
             {
-                sb.Append($"{key}: {num.unwrap():G}; ");
+                sb.Append($"{key}: {num.Unwrap():G}; ");
             }
         }
 
@@ -105,7 +105,7 @@ namespace Yoga.Net
 
         public static void YGNodeToString(
             StringBuilder sb,
-            YGNodeRef node,
+            YGNode node,
             YGPrintOptions options,
             uint32_t level)
         {
@@ -115,10 +115,10 @@ namespace Yoga.Net
             if (options.HasFlag(YGPrintOptions.Layout))
             {
                 appendString(sb, "layout=\"");
-                appendString(sb, $"width: {node.getLayout().dimensions[(int)YGDimension.Width]:G}; ");
-                appendString(sb, $"height: {node.getLayout().dimensions[(int)YGDimension.Height]:G}; ");
-                appendString(sb, $"top: {node.getLayout().position[(int)YGEdge.Top]:G}; ");
-                appendString(sb, $"left: {node.getLayout().position[(int)YGEdge.Left]:G};");
+                appendString(sb, $"width: {node.getLayout().Dimensions[(int)YGDimension.Width]:G}; ");
+                appendString(sb, $"height: {node.getLayout().Dimensions[(int)YGDimension.Height]:G}; ");
+                appendString(sb, $"top: {node.getLayout().Position[(int)YGEdge.Top]:G}; ");
+                appendString(sb, $"left: {node.getLayout().Position[(int)YGEdge.Left]:G};");
                 appendString(sb, "\" ");
             }
 

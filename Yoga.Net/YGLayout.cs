@@ -1,98 +1,91 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-using size_t = System.Int32;
-using uint8_t = System.Byte;
-using uint32_t = System.UInt32;
-
+//using uint32_t = System.UInt32;
 using static Yoga.Net.YGGlobal;
 
 namespace Yoga.Net
 {
     public class YGLayout
     {
-        public float[] position = {0f, 0f, 0f, 0f};
-        public float[] dimensions = {YGValue.YGUndefined, YGValue.YGUndefined};
+        public readonly float[] Position = {0f, 0f, 0f, 0f};
+        public readonly float[] Dimensions = {YGValue.YGUndefined, YGValue.YGUndefined};
 
-        public float[] margin = {0f, 0f, 0f, 0f};
-        public float[] border = {0f, 0f, 0f, 0f};
-        public float[] padding = {0f, 0f, 0f, 0f};
+        public readonly float[] Margin = {0f, 0f, 0f, 0f};
+        public readonly float[] Border = {0f, 0f, 0f, 0f};
+        public readonly float[] Padding = {0f, 0f, 0f, 0f};
 
-        //public:
-        public int computedFlexBasisGeneration = 0;
-        public YGFloatOptional computedFlexBasis = new YGFloatOptional();
+        public int ComputedFlexBasisGeneration { get; set; }
+        public YGFloatOptional ComputedFlexBasis { get; set; } = new YGFloatOptional();
 
         // Instead of recomputing the entire layout every single time, we cache some
         // information to break early when nothing changed
-        public int generationCount = 0;
-        public YGDirection lastOwnerDirection = YGDirection.Unknown;
+        public int GenerationCount { get; set; }
+        public YGDirection LastOwnerDirection { get; set; } = YGDirection.Unknown;
 
-        public int nextCachedMeasurementsIndex = 0;
+        public int NextCachedMeasurementsIndex { get; set; }
 
-        public YGCachedMeasurement[] cachedMeasurements = new YGCachedMeasurement[YGGlobal.YG_MAX_CACHED_RESULT_COUNT]; // TODO: Initialise array correctly
-        public float[] measuredDimensions = {YGValue.YGUndefined, YGValue.YGUndefined};
+        public readonly YGCachedMeasurement[] CachedMeasurements = new YGCachedMeasurement[YG_MAX_CACHED_RESULT_COUNT];
+        public readonly float[] MeasuredDimensions = {YGValue.YGUndefined, YGValue.YGUndefined};
 
-        public YGCachedMeasurement cachedLayout = new YGCachedMeasurement();
+        public YGCachedMeasurement CachedLayout = new YGCachedMeasurement();
 
-        public YGDirection direction { get; internal set; }
-        public bool hadOverflow { get; internal set; }
+        public YGDirection Direction { get; internal set; }
+        public bool HadOverflow { get; internal set; }
 
         public YGLayout()
         {
-            cachedMeasurements = new YGCachedMeasurement[YGGlobal.YG_MAX_CACHED_RESULT_COUNT];
-            cachedMeasurements.Fill(new YGCachedMeasurement());
+            CachedMeasurements.Fill(() => new YGCachedMeasurement());
         }
 
         public YGLayout(YGLayout other)
         {
-            Array.Copy(other.position, position, position.Length);
-            Array.Copy(other.dimensions, dimensions, dimensions.Length);
-            Array.Copy(other.margin, margin, margin.Length);
-            Array.Copy(other.border, border, border.Length);
-            Array.Copy(other.padding, padding, padding.Length);
+            Array.Copy(other.Position, Position, Position.Length);
+            Array.Copy(other.Dimensions, Dimensions, Dimensions.Length);
+            Array.Copy(other.Margin, Margin, Margin.Length);
+            Array.Copy(other.Border, Border, Border.Length);
+            Array.Copy(other.Padding, Padding, Padding.Length);
 
-            computedFlexBasisGeneration = other.computedFlexBasisGeneration;
-            computedFlexBasis = other.computedFlexBasis;
+            ComputedFlexBasisGeneration = other.ComputedFlexBasisGeneration;
+            ComputedFlexBasis = other.ComputedFlexBasis;
 
-            generationCount = other.generationCount;
+            GenerationCount = other.GenerationCount;
 
-            lastOwnerDirection = other.lastOwnerDirection;
+            LastOwnerDirection = other.LastOwnerDirection;
 
-            nextCachedMeasurementsIndex = other.nextCachedMeasurementsIndex;
-            Array.Copy(other.cachedMeasurements, cachedMeasurements, cachedMeasurements.Length);
-            Array.Copy(other.measuredDimensions, measuredDimensions, measuredDimensions.Length);
+            NextCachedMeasurementsIndex = other.NextCachedMeasurementsIndex;
+            Array.Copy(other.CachedMeasurements, CachedMeasurements, CachedMeasurements.Length);
+            Array.Copy(other.MeasuredDimensions, MeasuredDimensions, MeasuredDimensions.Length);
 
-            cachedLayout = new YGCachedMeasurement(other.cachedLayout);
-            direction = other.direction;
-            hadOverflow = other.hadOverflow;
+            CachedLayout = new YGCachedMeasurement(other.CachedLayout);
+            Direction = other.Direction;
+            HadOverflow = other.HadOverflow;
         }
 
         protected bool Equals(YGLayout other)
         {
-            bool isEqual = YGFloatArrayEqual(position, other.position) &&
-                YGFloatArrayEqual(dimensions, other.dimensions) &&
-                YGFloatArrayEqual(margin, other.margin) &&
-                YGFloatArrayEqual(border, other.border) &&
-                YGFloatArrayEqual(padding, other.padding) &&
-                direction == other.direction &&
-                hadOverflow == other.hadOverflow &&
-                lastOwnerDirection == other.lastOwnerDirection &&
-                nextCachedMeasurementsIndex == other.nextCachedMeasurementsIndex &&
-                cachedLayout == other.cachedLayout &&
-                computedFlexBasis == other.computedFlexBasis;
+            bool isEqual = YGFloatArrayEqual(Position, other.Position) &&
+                YGFloatArrayEqual(Dimensions, other.Dimensions) &&
+                YGFloatArrayEqual(Margin, other.Margin) &&
+                YGFloatArrayEqual(Border, other.Border) &&
+                YGFloatArrayEqual(Padding, other.Padding) &&
+                Direction == other.Direction &&
+                HadOverflow == other.HadOverflow &&
+                LastOwnerDirection == other.LastOwnerDirection &&
+                NextCachedMeasurementsIndex == other.NextCachedMeasurementsIndex &&
+                CachedLayout == other.CachedLayout &&
+                ComputedFlexBasis == other.ComputedFlexBasis;
 
-            for (uint32_t i = 0; i < cachedMeasurements.Length && isEqual; ++i) 
-                isEqual = isEqual && cachedMeasurements[i] == other.cachedMeasurements[i];
+            for (var i = 0; i < CachedMeasurements.Length && isEqual; ++i) 
+                isEqual = CachedMeasurements[i] == other.CachedMeasurements[i];
 
-            if (!YogaIsUndefined(measuredDimensions[0]) || !YogaIsUndefined(other.measuredDimensions[0])) 
+            if (!YogaIsUndefined(MeasuredDimensions[0]) || !YogaIsUndefined(other.MeasuredDimensions[0])) 
             {
-                isEqual = isEqual && YGFloatsEqual(measuredDimensions[0],  other.measuredDimensions[0]);
+                isEqual = isEqual && YGFloatsEqual(MeasuredDimensions[0],  other.MeasuredDimensions[0]);
             }
 
-            if (!YogaIsUndefined(measuredDimensions[1]) || !YogaIsUndefined(other.measuredDimensions[1])) 
+            if (!YogaIsUndefined(MeasuredDimensions[1]) || !YogaIsUndefined(other.MeasuredDimensions[1])) 
             {
-                isEqual = isEqual && YGFloatsEqual(measuredDimensions[1], other.measuredDimensions[1]);
+                isEqual = isEqual && YGFloatsEqual(MeasuredDimensions[1], other.MeasuredDimensions[1]);
             }
 
             return isEqual;
@@ -112,21 +105,21 @@ namespace Yoga.Net
         {
             unchecked
             {
-                var hashCode = (position != null ? position.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (dimensions != null ? dimensions.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (margin != null ? margin.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (border != null ? border.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (padding != null ? padding.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (int)computedFlexBasisGeneration;
-                hashCode = (hashCode * 397) ^ computedFlexBasis.GetHashCode();
-                hashCode = (hashCode * 397) ^ (int)generationCount;
-                hashCode = (hashCode * 397) ^ (int)lastOwnerDirection;
-                hashCode = (hashCode * 397) ^ (int)nextCachedMeasurementsIndex;
-                hashCode = (hashCode * 397) ^ (cachedMeasurements != null ? cachedMeasurements.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (measuredDimensions != null ? measuredDimensions.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (cachedLayout != null ? cachedLayout.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (int)direction;
-                hashCode = (hashCode * 397) ^ hadOverflow.GetHashCode();
+                var hashCode = (Position != null ? Position.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Dimensions != null ? Dimensions.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Margin != null ? Margin.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Border != null ? Border.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Padding != null ? Padding.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (int)ComputedFlexBasisGeneration;
+                hashCode = (hashCode * 397) ^ ComputedFlexBasis.GetHashCode();
+                hashCode = (hashCode * 397) ^ (int)GenerationCount;
+                hashCode = (hashCode * 397) ^ (int)LastOwnerDirection;
+                hashCode = (hashCode * 397) ^ (int)NextCachedMeasurementsIndex;
+                hashCode = (hashCode * 397) ^ (CachedMeasurements != null ? CachedMeasurements.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (MeasuredDimensions != null ? MeasuredDimensions.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (CachedLayout != null ? CachedLayout.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (int)Direction;
+                hashCode = (hashCode * 397) ^ HadOverflow.GetHashCode();
                 return hashCode;
             }
         }

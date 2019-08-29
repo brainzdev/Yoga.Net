@@ -2,13 +2,13 @@
 {
     public struct YGSize 
     {
-        public float width;
-        public float height;
+        public float Width { get; }
+        public float Height { get; }
 
         public YGSize(float width, float height)
         {
-            this.width = width;
-            this.height = height;
+            Width = width;
+            Height = height;
         }
     }
 }

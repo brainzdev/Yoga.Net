@@ -78,8 +78,8 @@ namespace Yoga.Net
             try
             {
                 var disposableItems = from item in _dictionary.Values
-                    where item is IDisposable
-                    select item as IDisposable;
+                                      where item is IDisposable
+                                      select item as IDisposable;
 
                 foreach (var item in disposableItems)
                 {
@@ -191,7 +191,7 @@ namespace Yoga.Net
             // more than once before it gets cached.
             if (!_genericMethodCache.TryGetValue(cacheKey, out var method))
             {
-                method                        = GetMethod(sourceType, bindingFlags, methodName, genericTypes, parameterTypes);
+                method = GetMethod(sourceType, bindingFlags, methodName, genericTypes, parameterTypes);
                 _genericMethodCache[cacheKey] = method;
             }
 
@@ -228,11 +228,11 @@ namespace Yoga.Net
 
             public GenericMethodCacheKey(Type sourceType, string methodName, Type[] genericTypes, Type[] parameterTypes)
             {
-                _sourceType     = sourceType;
-                _methodName     = methodName;
-                _genericTypes   = genericTypes;
+                _sourceType = sourceType;
+                _methodName = methodName;
+                _genericTypes = genericTypes;
                 _parameterTypes = parameterTypes;
-                _hashCode       = GenerateHashCode();
+                _hashCode = GenerateHashCode();
             }
 
             public override bool Equals(object obj)
@@ -409,7 +409,7 @@ namespace Yoga.Net
         static string GetTypesString(IEnumerable<Type> types)
         {
             var typeNames = from type in types
-                select type.FullName;
+                            select type.FullName;
 
             return string.Join(",", typeNames.ToArray());
         }
@@ -486,18 +486,18 @@ namespace Yoga.Net
         ///     Preconfigured option for attempting resolution of unregistered types and failing on named resolution if name not
         ///     found
         /// </summary>
-        public static ResolveOptions FailNameNotFoundOnly { get; } = new ResolveOptions() {NamedResolutionFailureAction = NamedResolutionFailureActions.Fail, UnregisteredResolutionAction = UnregisteredResolutionActions.AttemptResolve};
+        public static ResolveOptions FailNameNotFoundOnly { get; } = new ResolveOptions() { NamedResolutionFailureAction = NamedResolutionFailureActions.Fail, UnregisteredResolutionAction = UnregisteredResolutionActions.AttemptResolve };
 
         /// <summary>
         ///     Preconfigured option for failing on resolving unregistered types and on named resolution if name not found
         /// </summary>
-        public static ResolveOptions FailUnregisteredAndNameNotFound { get; } = new ResolveOptions() {NamedResolutionFailureAction = NamedResolutionFailureActions.Fail, UnregisteredResolutionAction = UnregisteredResolutionActions.Fail};
+        public static ResolveOptions FailUnregisteredAndNameNotFound { get; } = new ResolveOptions() { NamedResolutionFailureAction = NamedResolutionFailureActions.Fail, UnregisteredResolutionAction = UnregisteredResolutionActions.Fail };
 
         /// <summary>
         ///     Preconfigured option for failing on resolving unregistered types, but attempting unnamed resolution if name not
         ///     found
         /// </summary>
-        public static ResolveOptions FailUnregisteredOnly { get; } = new ResolveOptions() {NamedResolutionFailureAction = NamedResolutionFailureActions.AttemptUnnamedResolution, UnregisteredResolutionAction = UnregisteredResolutionActions.Fail};
+        public static ResolveOptions FailUnregisteredOnly { get; } = new ResolveOptions() { NamedResolutionFailureAction = NamedResolutionFailureActions.AttemptUnnamedResolution, UnregisteredResolutionAction = UnregisteredResolutionActions.Fail };
 
         public NamedResolutionFailureActions NamedResolutionFailureAction { get; set; } = NamedResolutionFailureActions.Fail;
 
@@ -1195,10 +1195,10 @@ namespace Yoga.Net
             if (implementationTypeList.Count != implementationTypeList.Distinct().Count())
             {
                 var queryForDuplicatedTypes = from i in implementationTypeList
-                    group i by i
+                                              group i by i
                     into j
-                    where j.Count() > 1
-                    select j.Key.FullName;
+                                              where j.Count() > 1
+                                              select j.Key.FullName;
 
                 var fullNamesOfDuplicatedTypes = string.Join(",\n", queryForDuplicatedTypes.ToArray());
                 var multipleRegMessage = string.Format("types: The same implementation type cannot be specified multiple times for {0}\n\n{1}", registrationType.FullName, fullNamesOfDuplicatedTypes);
@@ -1942,15 +1942,15 @@ namespace Yoga.Net
                 }
 
                 var abstractInterfaceTypes = from type in types
-                    where (type.IsInterface() || type.IsAbstract()) && type.DeclaringType != GetType() && !type.IsGenericTypeDefinition()
-                    select type;
+                                             where (type.IsInterface() || type.IsAbstract()) && type.DeclaringType != GetType() && !type.IsGenericTypeDefinition()
+                                             select type;
 
                 foreach (var type in abstractInterfaceTypes)
                 {
                     var localType = type;
                     var implementations = (from implementationType in concreteTypes
-                        where localType.IsAssignableFrom(implementationType)
-                        select implementationType).ToList();
+                                           where localType.IsAssignableFrom(implementationType)
+                                           select implementationType).ToList();
 
                     if (implementations.Skip(1).Any())
                     {
@@ -1982,8 +1982,8 @@ namespace Yoga.Net
         void BuildUpInternal(object input, ResolveOptions resolveOptions)
         {
             var properties = from property in input.GetType().GetProperties()
-                where property.GetGetMethod() != null && property.GetSetMethod() != null && !property.PropertyType.IsValueType()
-                select property;
+                             where property.GetGetMethod() != null && property.GetSetMethod() != null && !property.PropertyType.IsValueType()
+                             select property;
 
             foreach (var property in properties)
             {
@@ -2248,9 +2248,9 @@ namespace Yoga.Net
 
         object GetIEnumerableRequest(Type type)
         {
-            var genericResolveAllMethod = GetType().GetGenericMethod(BindingFlags.Public | BindingFlags.Instance, "ResolveAll", type.GetGenericArguments(), new[] {typeof(bool)});
+            var genericResolveAllMethod = GetType().GetGenericMethod(BindingFlags.Public | BindingFlags.Instance, "ResolveAll", type.GetGenericArguments(), new[] { typeof(bool) });
 
-            return genericResolveAllMethod.Invoke(this, new object[] {false});
+            return genericResolveAllMethod.Invoke(this, new object[] { false });
         }
 
         object GetLazyAutomaticFactoryRequest(Type type)
@@ -2284,12 +2284,12 @@ namespace Yoga.Net
             {
                 var returnType = genericArguments[1];
 
-                var resolveMethod = typeof(TinyIoCContainer).GetMethod("Resolve", new[] {typeof(string)});
+                var resolveMethod = typeof(TinyIoCContainer).GetMethod("Resolve", new[] { typeof(string) });
                 if (resolveMethod != null)
                 {
                     resolveMethod = resolveMethod.MakeGenericMethod(returnType);
 
-                    var resolveParameters = new[] {Expression.Parameter(typeof(string), "name")};
+                    var resolveParameters = new[] { Expression.Parameter(typeof(string), "name") };
                     var resolveCall = Expression.Call(Expression.Constant(this), resolveMethod, resolveParameters);
 
                     var resolveLambda = Expression.Lambda(resolveCall, resolveParameters).Compile();
@@ -2306,7 +2306,7 @@ namespace Yoga.Net
                 var name = Expression.Parameter(typeof(string), "name");
                 var parameters = Expression.Parameter(typeof(IDictionary<string, object>), "parameters");
 
-                var resolveMethod = typeof(TinyIoCContainer).GetMethod("Resolve", new[] {typeof(string), typeof(NamedParameterOverloads)});
+                var resolveMethod = typeof(TinyIoCContainer).GetMethod("Resolve", new[] { typeof(string), typeof(NamedParameterOverloads) });
                 if (resolveMethod != null)
                 {
                     resolveMethod = resolveMethod.MakeGenericMethod(returnType);
@@ -2629,7 +2629,7 @@ namespace Yoga.Net
 
             public RegisterOptions(TinyIoCContainer container, TypeRegistration registration)
             {
-                _container    = container;
+                _container = container;
                 _registration = registration;
             }
 
@@ -2916,7 +2916,7 @@ namespace Yoga.Net
                 if (!IsValidAssignment(registerType, registerImplementation))
                     throw new TinyIoCRegistrationTypeException(registerImplementation, "MultiInstanceFactory");
 
-                _registerType           = registerType;
+                _registerType = registerType;
                 _registerImplementation = registerImplementation;
             }
 
@@ -3063,9 +3063,9 @@ namespace Yoga.Net
                 if (!IsValidAssignment(registerType, registerImplementation))
                     throw new TinyIoCRegistrationTypeException(registerImplementation, "InstanceFactory");
 
-                _registerType           = registerType;
+                _registerType = registerType;
                 _registerImplementation = registerImplementation;
-                _instance               = instance;
+                _instance = instance;
             }
 
             public override bool AssumeConstruction => true;
@@ -3112,9 +3112,9 @@ namespace Yoga.Net
                 if (!IsValidAssignment(registerType, registerImplementation))
                     throw new TinyIoCRegistrationTypeException(registerImplementation, "WeakInstanceFactory");
 
-                _registerType           = registerType;
+                _registerType = registerType;
                 _registerImplementation = registerImplementation;
-                _instance               = new WeakReference(instance);
+                _instance = new WeakReference(instance);
             }
 
             public override Type CreatesType => _registerImplementation;
@@ -3178,7 +3178,7 @@ namespace Yoga.Net
                 if (!IsValidAssignment(registerType, registerImplementation))
                     throw new TinyIoCRegistrationTypeException(registerImplementation, "SingletonFactory");
 
-                _registerType           = registerType;
+                _registerType = registerType;
                 _registerImplementation = registerImplementation;
             }
 
@@ -3249,9 +3249,9 @@ namespace Yoga.Net
                 if (registerImplementation.IsAbstract() || registerImplementation.IsInterface())
                     throw new TinyIoCRegistrationTypeException(registerImplementation, errorMessage);
 
-                _registerType           = registerType;
+                _registerType = registerType;
                 _registerImplementation = registerImplementation;
-                _lifetimeProvider       = lifetimeProvider;
+                _lifetimeProvider = lifetimeProvider;
             }
 
             public override Type CreatesType => _registerImplementation;
@@ -3413,7 +3413,8 @@ namespace Yoga.Net
 
     [AttributeUsage(AttributeTargets.Constructor, Inherited = false, AllowMultiple = false)]
     public
-        sealed class TinyIoCConstructorAttribute : Attribute { }
+        sealed class TinyIoCConstructorAttribute : Attribute
+    { }
 }
 
 

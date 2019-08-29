@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using static Yoga.Net.YGGlobal;
-using YGNodeRef = Yoga.Net.YGNode;
-using YGConfigRef = Yoga.Net.YGConfig;
+
+
 
 namespace Yoga.Net.Tests
 {
@@ -9,13 +9,13 @@ namespace Yoga.Net.Tests
     [TestFixture]
     public class YGAlignBaselineTest
     {
-        static YGBaselineFunc _baselineFunc = (YGNodeRef node, float width, float height, object context) =>
+        static YGBaselineFunc _baselineFunc = (YGNode node, float width, float height, object context) =>
         {
             return height / 2;
         };
 
         static YGMeasureFunc _measure1 = (
-        YGNodeRef node,
+        YGNode node,
         float width,
         YGMeasureMode widthMode,
         float height,
@@ -26,7 +26,7 @@ namespace Yoga.Net.Tests
         };
 
         static YGMeasureFunc _measure2 = (
-            YGNodeRef node,
+            YGNode node,
             float width,
             YGMeasureMode widthMode,
             float height,
@@ -39,9 +39,9 @@ namespace Yoga.Net.Tests
         [Test]
         public void align_baseline_parent_ht_not_specified()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfig config = YGConfigNew();
 
-            YGNodeRef root = YGNodeNewWithConfig(config);
+            YGNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
             YGNodeStyleSetAlignContent(root, YGAlign.Stretch);
             YGNodeStyleSetAlignItems(root, YGAlign.Baseline);
@@ -49,13 +49,13 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetMaxHeight(root, 170);
             YGNodeStyleSetMinHeight(root, 0);
 
-            YGNodeRef root_child0 = YGNodeNewWithConfig(config);
+            YGNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child0, 0);
             YGNodeStyleSetFlexShrink(root_child0, 1);
             YGNodeSetMeasureFunc(root_child0, _measure1);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNodeRef root_child1 = YGNodeNewWithConfig(config);
+            YGNode root_child1 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child1, 0);
             YGNodeStyleSetFlexShrink(root_child1, 1);
             YGNodeSetMeasureFunc(root_child1, _measure2);
@@ -86,19 +86,19 @@ namespace Yoga.Net.Tests
         [Test]
         public void align_baseline_with_no_parent_ht()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfig config = YGConfigNew();
 
-            YGNodeRef root = YGNodeNewWithConfig(config);
+            YGNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
             YGNodeStyleSetAlignItems(root, YGAlign.Baseline);
             YGNodeStyleSetWidth(root, 150);
 
-            YGNodeRef root_child0 = YGNodeNewWithConfig(config);
+            YGNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root_child0, 50);
             YGNodeStyleSetHeight(root_child0, 50);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNodeRef root_child1 = YGNodeNewWithConfig(config);
+            YGNode root_child1 = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root_child1, 50);
             YGNodeStyleSetHeight(root_child1, 40);
             YGNodeSetBaselineFunc(root_child1, _baselineFunc);
@@ -129,19 +129,19 @@ namespace Yoga.Net.Tests
         [Test]
         public void align_baseline_with_no_baseline_func_and_no_parent_ht()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfig config = YGConfigNew();
 
-            YGNodeRef root = YGNodeNewWithConfig(config);
+            YGNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
             YGNodeStyleSetAlignItems(root, YGAlign.Baseline);
             YGNodeStyleSetWidth(root, 150);
 
-            YGNodeRef root_child0 = YGNodeNewWithConfig(config);
+            YGNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root_child0, 50);
             YGNodeStyleSetHeight(root_child0, 80);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNodeRef root_child1 = YGNodeNewWithConfig(config);
+            YGNode root_child1 = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root_child1, 50);
             YGNodeStyleSetHeight(root_child1, 50);
             YGNodeInsertChild(root, root_child1, 1);

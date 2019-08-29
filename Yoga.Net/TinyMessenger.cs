@@ -84,7 +84,7 @@ namespace Yoga.Net
         public CancellableGenericTinyMessage(object sender, TContent content, Action cancelAction)
             : base(sender)
         {
-            Cancel  = cancelAction ?? throw new ArgumentNullException(nameof(cancelAction));
+            Cancel = cancelAction ?? throw new ArgumentNullException(nameof(cancelAction));
             Content = content;
         }
 
@@ -115,7 +115,7 @@ namespace Yoga.Net
             if (hub == null)
                 throw new ArgumentNullException(nameof(hub));
 
-            _hub         = new WeakReference(hub);
+            _hub = new WeakReference(hub);
             _messageType = messageType;
         }
 
@@ -125,11 +125,11 @@ namespace Yoga.Net
             {
                 if (_hub.Target is ITinyMessengerHub hub)
                 {
-                    var unsubscribeMethod = typeof(ITinyMessengerHub).GetMethod("Unsubscribe", new[] {typeof(TinyMessageSubscriptionToken)});
+                    var unsubscribeMethod = typeof(ITinyMessengerHub).GetMethod("Unsubscribe", new[] { typeof(TinyMessageSubscriptionToken) });
                     if (unsubscribeMethod != null)
                     {
                         unsubscribeMethod = unsubscribeMethod.MakeGenericMethod(_messageType);
-                        unsubscribeMethod.Invoke(hub, new object[] {this});
+                        unsubscribeMethod.Invoke(hub, new object[] { this });
                     }
                 }
             }
@@ -519,7 +519,7 @@ namespace Yoga.Net
             {
                 if (!_subscriptions.TryGetValue(typeof(TMessage), out var currentSubscriptions))
                 {
-                    currentSubscriptions             = new List<SubscriptionItem>();
+                    currentSubscriptions = new List<SubscriptionItem>();
                     _subscriptions[typeof(TMessage)] = currentSubscriptions;
                 }
 
@@ -557,8 +557,8 @@ namespace Yoga.Net
                     return;
 
                 currentlySubscribed = (from sub in currentSubscriptions
-                    where sub.Subscription.ShouldAttemptDelivery(message)
-                    select sub).ToList();
+                                       where sub.Subscription.ShouldAttemptDelivery(message)
+                                       select sub).ToList();
             }
 
             currentlySubscribed.ForEach(
@@ -588,8 +588,8 @@ namespace Yoga.Net
                     return;
 
                 var currentlySubscribed = (from sub in currentSubscriptions
-                    where ReferenceEquals(sub.Subscription.SubscriptionToken, subscriptionToken)
-                    select sub).ToList();
+                                           where ReferenceEquals(sub.Subscription.SubscriptionToken, subscriptionToken)
+                                           select sub).ToList();
 
                 currentlySubscribed.ForEach(sub => currentSubscriptions.Remove(sub));
             }
@@ -616,8 +616,8 @@ namespace Yoga.Net
                     throw new ArgumentNullException(nameof(messageFilter));
 
                 SubscriptionToken = subscriptionToken ?? throw new ArgumentNullException(nameof(subscriptionToken));
-                _deliveryAction    = new WeakReference(deliveryAction);
-                _messageFilter     = new WeakReference(messageFilter);
+                _deliveryAction = new WeakReference(deliveryAction);
+                _messageFilter = new WeakReference(messageFilter);
             }
 
             public TinyMessageSubscriptionToken SubscriptionToken { get; }
@@ -663,8 +663,8 @@ namespace Yoga.Net
             public StrongTinyMessageSubscription(TinyMessageSubscriptionToken subscriptionToken, Action<TMessage> deliveryAction, Func<TMessage, bool> messageFilter)
             {
                 SubscriptionToken = subscriptionToken ?? throw new ArgumentNullException(nameof(subscriptionToken));
-                _deliveryAction    = deliveryAction ?? throw new ArgumentNullException(nameof(deliveryAction));
-                _messageFilter     = messageFilter ?? throw new ArgumentNullException(nameof(messageFilter));
+                _deliveryAction = deliveryAction ?? throw new ArgumentNullException(nameof(deliveryAction));
+                _messageFilter = messageFilter ?? throw new ArgumentNullException(nameof(messageFilter));
             }
 
             public TinyMessageSubscriptionToken SubscriptionToken { get; }
@@ -690,7 +690,7 @@ namespace Yoga.Net
         {
             public SubscriptionItem(ITinyMessageProxy proxy, ITinyMessageSubscription subscription)
             {
-                Proxy        = proxy;
+                Proxy = proxy;
                 Subscription = subscription;
             }
 

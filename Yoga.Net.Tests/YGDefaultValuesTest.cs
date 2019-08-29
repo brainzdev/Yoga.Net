@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using static Yoga.Net.YGGlobal;
-using YGNodeRef = Yoga.Net.YGNode;
-using YGConfigRef = Yoga.Net.YGConfig;
+
+
 
 namespace Yoga.Net.Tests
 {
@@ -11,10 +11,9 @@ namespace Yoga.Net.Tests
     {
 
         [Test] public void assert_default_values() {
-            YGNodeRef root = YGNodeNew();
+            YGNode root = YGNodeNew();
 
             Assert.AreEqual(0, YGNodeGetChildCount(root));
-            Assert.AreEqual(null, YGNodeGetChild(root, 1));
 
             Assert.AreEqual(YGDirection.Inherit, YGNodeStyleGetDirection(root));
             Assert.AreEqual(YGFlexDirection.Column, YGNodeStyleGetFlexDirection(root));

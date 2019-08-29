@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using static Yoga.Net.YGGlobal;
-using YGNodeRef = Yoga.Net.YGNode;
-using YGConfigRef = Yoga.Net.YGConfig;
+
+
 
 namespace Yoga.Net.Tests
 {
@@ -10,30 +10,30 @@ namespace Yoga.Net.Tests
     public class YGBaselineFuncTest
     {
 
-        static YGBaselineFunc _baseline = (YGNodeRef node, float width, float height, object context) =>
+        static YGBaselineFunc _baseline = (YGNode node, float width, float height, object context) =>
         {
             return (float)node.getContext();
         };
 
         [Test] public void align_baseline_customer_func() {
-            YGNodeRef root = YGNodeNew();
+            YGNode root = YGNodeNew();
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
             YGNodeStyleSetAlignItems(root, YGAlign.Baseline);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNodeRef root_child0 = YGNodeNew();
+            YGNode root_child0 = YGNodeNew();
             YGNodeStyleSetWidth(root_child0, 50);
             YGNodeStyleSetHeight(root_child0, 50);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNodeRef root_child1 = YGNodeNew();
+            YGNode root_child1 = YGNodeNew();
             YGNodeStyleSetWidth(root_child1, 50);
             YGNodeStyleSetHeight(root_child1, 20);
             YGNodeInsertChild(root, root_child1, 1);
 
             float baselineValue = 10;
-            YGNodeRef root_child1_child0 = YGNodeNew();
+            YGNode root_child1_child0 = YGNodeNew();
             root_child1_child0.setContext(baselineValue);
             YGNodeStyleSetWidth(root_child1_child0, 50);
             root_child1_child0.setBaselineFunc(_baseline);

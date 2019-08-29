@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using static Yoga.Net.YGGlobal;
-using YGNodeRef = Yoga.Net.YGNode;
-using YGConfigRef = Yoga.Net.YGConfig;
+
+
 
 namespace Yoga.Net.Tests
 {
@@ -10,12 +10,12 @@ namespace Yoga.Net.Tests
     {
 
         [Test] public void start_overrides() {
-            YGNodeRef root = YGNodeNew();
+            YGNode root = YGNodeNew();
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNodeRef root_child0 = YGNodeNew();
+            YGNode root_child0 = YGNodeNew();
             YGNodeStyleSetFlexGrow(root_child0, 1);
             YGNodeStyleSetMargin(root_child0, YGEdge.Start, 10);
             YGNodeStyleSetMargin(root_child0, YGEdge.Left, 20);
@@ -34,12 +34,12 @@ namespace Yoga.Net.Tests
         }
 
         [Test] public void end_overrides() {
-            YGNodeRef root = YGNodeNew();
+            YGNode root = YGNodeNew();
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNodeRef root_child0 = YGNodeNew();
+            YGNode root_child0 = YGNodeNew();
             YGNodeStyleSetFlexGrow(root_child0, 1);
             YGNodeStyleSetMargin(root_child0, YGEdge.End, 10);
             YGNodeStyleSetMargin(root_child0, YGEdge.Left, 20);
@@ -58,12 +58,12 @@ namespace Yoga.Net.Tests
         }
 
         [Test] public void horizontal_overridden() {
-            YGNodeRef root = YGNodeNew();
+            YGNode root = YGNodeNew();
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNodeRef root_child0 = YGNodeNew();
+            YGNode root_child0 = YGNodeNew();
             YGNodeStyleSetFlexGrow(root_child0, 1);
             YGNodeStyleSetMargin(root_child0, YGEdge.Horizontal, 10);
             YGNodeStyleSetMargin(root_child0, YGEdge.Left, 20);
@@ -77,12 +77,12 @@ namespace Yoga.Net.Tests
         }
 
         [Test] public void vertical_overridden() {
-            YGNodeRef root = YGNodeNew();
+            YGNode root = YGNodeNew();
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Column);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNodeRef root_child0 = YGNodeNew();
+            YGNode root_child0 = YGNodeNew();
             YGNodeStyleSetFlexGrow(root_child0, 1);
             YGNodeStyleSetMargin(root_child0, YGEdge.Vertical, 10);
             YGNodeStyleSetMargin(root_child0, YGEdge.Top, 20);
@@ -96,12 +96,12 @@ namespace Yoga.Net.Tests
         }
 
         [Test] public void horizontal_overrides_all() {
-            YGNodeRef root = YGNodeNew();
+            YGNode root = YGNodeNew();
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Column);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNodeRef root_child0 = YGNodeNew();
+            YGNode root_child0 = YGNodeNew();
             YGNodeStyleSetFlexGrow(root_child0, 1);
             YGNodeStyleSetMargin(root_child0, YGEdge.Horizontal, 10);
             YGNodeStyleSetMargin(root_child0, YGEdge.All, 20);
@@ -117,12 +117,12 @@ namespace Yoga.Net.Tests
         }
 
         [Test] public void vertical_overrides_all() {
-            YGNodeRef root = YGNodeNew();
+            YGNode root = YGNodeNew();
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Column);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNodeRef root_child0 = YGNodeNew();
+            YGNode root_child0 = YGNodeNew();
             YGNodeStyleSetFlexGrow(root_child0, 1);
             YGNodeStyleSetMargin(root_child0, YGEdge.Vertical, 10);
             YGNodeStyleSetMargin(root_child0, YGEdge.All, 20);
@@ -138,12 +138,12 @@ namespace Yoga.Net.Tests
         }
 
         [Test] public void all_overridden() {
-            YGNodeRef root = YGNodeNew();
+            YGNode root = YGNodeNew();
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Column);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNodeRef root_child0 = YGNodeNew();
+            YGNode root_child0 = YGNodeNew();
             YGNodeStyleSetFlexGrow(root_child0, 1);
             YGNodeStyleSetMargin(root_child0, YGEdge.Left, 10);
             YGNodeStyleSetMargin(root_child0, YGEdge.Top, 10);

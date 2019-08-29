@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using static Yoga.Net.YGGlobal;
-using YGNodeRef = Yoga.Net.YGNode;
-using YGConfigRef = Yoga.Net.YGConfig;
+
+
 
 namespace Yoga.Net.Tests
 {
@@ -9,7 +9,7 @@ namespace Yoga.Net.Tests
     public class YGDirtiedTest
     {
 
-        static void _dirtied(YGNodeRef node)
+        static void _dirtied(YGNode node)
         {
             int dirtiedCount = (int)node.getContext();
             dirtiedCount++;
@@ -17,7 +17,7 @@ namespace Yoga.Net.Tests
         }
 
         [Test] public void dirtied() {
-            YGNodeRef root = YGNodeNew();
+            YGNode root = YGNodeNew();
             YGNodeStyleSetAlignItems(root, YGAlign.FlexStart);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
@@ -40,17 +40,17 @@ namespace Yoga.Net.Tests
         }
 
         [Test] public void dirtied_propagation() {
-            YGNodeRef root = YGNodeNew();
+            YGNode root = YGNodeNew();
             YGNodeStyleSetAlignItems(root, YGAlign.FlexStart);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNodeRef root_child0 = YGNodeNew();
+            YGNode root_child0 = YGNodeNew();
             YGNodeStyleSetWidth(root_child0, 50);
             YGNodeStyleSetHeight(root_child0, 20);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNodeRef root_child1 = YGNodeNew();
+            YGNode root_child1 = YGNodeNew();
             YGNodeStyleSetWidth(root_child1, 50);
             YGNodeStyleSetHeight(root_child1, 20);
             YGNodeInsertChild(root, root_child1, 1);
@@ -72,17 +72,17 @@ namespace Yoga.Net.Tests
         }
 
         [Test] public void dirtied_hierarchy() {
-            YGNodeRef root = YGNodeNew();
+            YGNode root = YGNodeNew();
             YGNodeStyleSetAlignItems(root, YGAlign.FlexStart);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNodeRef root_child0 = YGNodeNew();
+            YGNode root_child0 = YGNodeNew();
             YGNodeStyleSetWidth(root_child0, 50);
             YGNodeStyleSetHeight(root_child0, 20);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNodeRef root_child1 = YGNodeNew();
+            YGNode root_child1 = YGNodeNew();
             YGNodeStyleSetWidth(root_child1, 50);
             YGNodeStyleSetHeight(root_child1, 20);
             YGNodeInsertChild(root, root_child1, 1);

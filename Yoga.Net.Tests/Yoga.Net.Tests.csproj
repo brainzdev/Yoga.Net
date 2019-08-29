@@ -7,46 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="YGAlignItemsTest.cpp" />
-    <None Remove="YGAlignSelfTest.cpp" />
-    <None Remove="YGAndroidNewsFeed.cpp" />
-    <None Remove="YGAspectRatioTest.cpp" />
-    <None Remove="YGBaselineFuncTest.cpp" />
-    <None Remove="YGBorderTest.cpp" />
-    <None Remove="YGDefaultValuesTest.cpp" />
-    <None Remove="YGDirtiedTest.cpp" />
-    <None Remove="YGDirtyMarkingTest.cpp" />
-    <None Remove="YGDisplayTest.cpp" />
-    <None Remove="YGEdgeTest.cpp" />
-    <None Remove="YGFlexDirectionTest.cpp" />
-    <None Remove="YGFlexTest.cpp" />
-    <None Remove="YGFlexWrapTest.cpp" />
-    <None Remove="YGHadOverflowTest.cpp" />
-    <None Remove="YGInfiniteHeightTest.cpp" />
-    <None Remove="YGJustifyContentTest.cpp" />
-    <None Remove="YGLayoutDiffingTest.cpp" />
-    <None Remove="YGLoggerTest.cpp" />
-    <None Remove="YGMarginTest.cpp" />
-    <None Remove="YGMeasureCacheTest.cpp" />
-    <None Remove="YGMeasureModeTest.cpp" />
-    <None Remove="YGMeasureTest.cpp" />
-    <None Remove="YGMinMaxDimensionTest.cpp" />
-    <None Remove="YGNodeChildTest.cpp" />
-    <None Remove="YGPaddingTest.cpp" />
-    <None Remove="YGPercentageTest.cpp" />
-    <None Remove="YGPersistenceTest.cpp" />
-    <None Remove="YGRelayoutTest.cpp" />
-    <None Remove="YGRoundingFunctionTest.cpp" />
-    <None Remove="YGRoundingMeasureFuncTest.cpp" />
-    <None Remove="YGRoundingTest.cpp" />
-    <None Remove="YGSizeOverflowTest.cpp" />
-    <None Remove="YGStyleTest.cpp" />
-    <None Remove="YGTraversalTest.cpp" />
-    <None Remove="YGTreeMutationTest.cpp" />
-    <None Remove="YGZeroOutLayoutRecursivlyTest.cpp" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="nunit" Version="3.11.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.11.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />

@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using static Yoga.Net.YGGlobal;
-using YGNodeRef = Yoga.Net.YGNode;
-using YGConfigRef = Yoga.Net.YGConfig;
+
+
 using System.Collections.Generic;
 
 namespace Yoga.Net.Tests
@@ -22,7 +22,7 @@ namespace Yoga.Net.Tests
         {
         };
 
-        static YGMeasureFunc _measure = (YGNodeRef node,
+        static YGMeasureFunc _measure = (YGNode node,
                                float width,
                                YGMeasureMode widthMode,
                                float height,
@@ -52,11 +52,11 @@ namespace Yoga.Net.Tests
         {
             var constraintList = new _MeasureConstraintList();
 
-            YGNodeRef root = YGNodeNew();
+            YGNode root = YGNodeNew();
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNodeRef root_child0 = YGNodeNew();
+            YGNode root_child0 = YGNodeNew();
             //  root_child0.setContext(&constraintList);
             root_child0.setContext(constraintList);
             root_child0.setMeasureFunc(_measure);
@@ -79,12 +79,12 @@ namespace Yoga.Net.Tests
         {
             _MeasureConstraintList constraintList = new _MeasureConstraintList();
 
-            YGNodeRef root = YGNodeNew();
+            YGNode root = YGNodeNew();
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNodeRef root_child0 = YGNodeNew();
+            YGNode root_child0 = YGNodeNew();
             //  root_child0.setContext(&constraintList);
             root_child0.setContext(constraintList);
             root_child0.setMeasureFunc(_measure);
@@ -106,11 +106,11 @@ namespace Yoga.Net.Tests
         {
             var constraintList = new _MeasureConstraintList();
 
-            YGNodeRef root = YGNodeNew();
+            YGNode root = YGNodeNew();
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNodeRef root_child0 = YGNodeNew();
+            YGNode root_child0 = YGNodeNew();
             root_child0.setContext(constraintList);
             root_child0.setMeasureFunc(_measure);
             YGNodeInsertChild(root, root_child0, 0);
@@ -131,12 +131,12 @@ namespace Yoga.Net.Tests
         {
             var constraintList = new _MeasureConstraintList();
 
-            YGNodeRef root = YGNodeNew();
+            YGNode root = YGNodeNew();
             YGNodeStyleSetAlignItems(root, YGAlign.FlexStart);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNodeRef root_child0 = YGNodeNew();
+            YGNode root_child0 = YGNodeNew();
             root_child0.setContext(constraintList);
             root_child0.setMeasureFunc(_measure);
             YGNodeInsertChild(root, root_child0, 0);
@@ -157,12 +157,12 @@ namespace Yoga.Net.Tests
         {
             var constraintList = new _MeasureConstraintList();
 
-            YGNodeRef root = YGNodeNew();
+            YGNode root = YGNodeNew();
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNodeRef root_child0 = YGNodeNew();
+            YGNode root_child0 = YGNodeNew();
             root_child0.setContext(constraintList);
             root_child0.setMeasureFunc(_measure);
             YGNodeInsertChild(root, root_child0, 0);
@@ -183,13 +183,13 @@ namespace Yoga.Net.Tests
         {
             var constraintList = new _MeasureConstraintList();
 
-            YGNodeRef root = YGNodeNew();
+            YGNode root = YGNodeNew();
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
             YGNodeStyleSetAlignItems(root, YGAlign.FlexStart);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNodeRef root_child0 = YGNodeNew();
+            YGNode root_child0 = YGNodeNew();
             root_child0.setContext(constraintList);
             root_child0.setMeasureFunc(_measure);
             YGNodeInsertChild(root, root_child0, 0);
@@ -210,10 +210,10 @@ namespace Yoga.Net.Tests
         {
             var constraintList = new _MeasureConstraintList();
 
-            YGNodeRef root = YGNodeNew();
+            YGNode root = YGNodeNew();
             YGNodeStyleSetHeight(root, 100);
 
-            YGNodeRef root_child0 = YGNodeNew();
+            YGNode root_child0 = YGNodeNew();
             YGNodeStyleSetFlexGrow(root_child0, 1);
             root_child0.setContext(constraintList);
             root_child0.setMeasureFunc(_measure);
@@ -238,10 +238,10 @@ namespace Yoga.Net.Tests
         {
             var constraintList = new _MeasureConstraintList();
 
-            YGNodeRef root = YGNodeNew();
+            YGNode root = YGNodeNew();
             YGNodeStyleSetHeight(root, 100);
 
-            YGNodeRef root_child0 = YGNodeNew();
+            YGNode root_child0 = YGNodeNew();
             YGNodeStyleSetFlexGrow(root_child0, 1);
             YGNodeStyleSetFlexBasis(root_child0, 0);
             root_child0.setContext(constraintList);
@@ -264,13 +264,13 @@ namespace Yoga.Net.Tests
         {
             var constraintList = new _MeasureConstraintList();
 
-            YGNodeRef root = YGNodeNew();
+            YGNode root = YGNodeNew();
             YGNodeStyleSetAlignItems(root, YGAlign.FlexStart);
             YGNodeStyleSetOverflow(root, YGOverflow.Scroll);
             YGNodeStyleSetHeight(root, 100);
             YGNodeStyleSetWidth(root, 100);
 
-            YGNodeRef root_child0 = YGNodeNew();
+            YGNode root_child0 = YGNodeNew();
             root_child0.setContext(constraintList);
             root_child0.setMeasureFunc(_measure);
             YGNodeInsertChild(root, root_child0, 0);
@@ -294,14 +294,14 @@ namespace Yoga.Net.Tests
         {
             var constraintList = new _MeasureConstraintList();
 
-            YGNodeRef root = YGNodeNew();
+            YGNode root = YGNodeNew();
             YGNodeStyleSetAlignItems(root, YGAlign.FlexStart);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
             YGNodeStyleSetOverflow(root, YGOverflow.Scroll);
             YGNodeStyleSetHeight(root, 100);
             YGNodeStyleSetWidth(root, 100);
 
-            YGNodeRef root_child0 = YGNodeNew();
+            YGNode root_child0 = YGNodeNew();
             root_child0.setContext(constraintList);
             root_child0.setMeasureFunc(_measure);
             YGNodeInsertChild(root, root_child0, 0);

@@ -1,7 +1,5 @@
 ﻿using System;
 
-using uint8_t = System.Byte;
-
 namespace Yoga.Net
 {
     public enum LayoutType
@@ -29,14 +27,14 @@ namespace Yoga.Net
 
     public class LayoutData
     {
-        public int layouts;
-        public int measures;
-        public int maxMeasureCache;
-        public int cachedLayouts;
-        public int cachedMeasures;
-        public int measureCallbacks;
+        public int Layouts;
+        public int Measures;
+        public int MaxMeasureCache;
+        public int CachedLayouts;
+        public int CachedMeasures;
+        public int MeasureCallbacks;
 
-        public uint8_t[] measureCallbackReasonsCount = new uint8_t[(int)LayoutPassReason.COUNT];
+        public readonly byte[] MeasureCallbackReasonsCount = new byte[(int)LayoutPassReason.COUNT];
     };
 
     public static class Event
@@ -47,90 +45,113 @@ namespace Yoga.Net
 
     public abstract class YGNodeEventArgs : EventArgs
     {
-        public YGNode node;
+        public YGNode Node { get; }
 
-        public YGNodeEventArgs(YGNode node)
+        protected YGNodeEventArgs(YGNode node)
         {
-            this.node = node;
+            Node = node;
         }
     }
 
     public class NodeAllocationEventArgs : YGNodeEventArgs
     {
-        public YGConfig config;
+        public YGConfig Config { get; }
 
         public NodeAllocationEventArgs(YGNode node, YGConfig config) : base(node)
         {
-            this.config = config;
+            Config = config;
         }
     }
     public class NodeDeallocationEventArgs : YGNodeEventArgs
     {
-        public YGConfig config;
+        public YGConfig Config { get; }
 
         public NodeDeallocationEventArgs(YGNode node, YGConfig config) : base(node)
         {
-            this.config = config;
+            Config = config;
         }
     }
     public class LayoutPassStartEventArgs : YGNodeEventArgs
     {
-        public object layoutContext;
+        public object LayoutContext { get; }
 
         /// <inheritdoc />
         public LayoutPassStartEventArgs(YGNode node, object layoutContext) : base(node)
         {
-            this.layoutContext = layoutContext;
+            LayoutContext = layoutContext;
         }
     }
     public class LayoutPassEndEventArgs : YGNodeEventArgs
     {
-        public object layoutContext;
-        public LayoutData layoutData;
+        public object LayoutContext { get; }
+        public LayoutData LayoutData { get; }
 
         /// <inheritdoc />
         public LayoutPassEndEventArgs(YGNode node, object layoutContext, LayoutData layoutData) : base(node)
         {
-            this.layoutContext = layoutContext;
-            this.layoutData = layoutData;
+            LayoutContext = layoutContext;
+            LayoutData = layoutData;
         }
     }
     public class NodeLayoutEventArgs : YGNodeEventArgs
     {
-        public LayoutType layoutType;
-        public object layoutContext;
+        public LayoutType LayoutType { get; }
+        public object LayoutContext { get; }
 
         /// <inheritdoc />
         public NodeLayoutEventArgs(YGNode node, LayoutType layoutType, object layoutContext) : base(node)
         {
-            this.layoutType = layoutType;
-            this.layoutContext = layoutContext;
+            LayoutType = layoutType;
+            LayoutContext = layoutContext;
         }
     }
     public class MeasureCallbackEndEventArgs : YGNodeEventArgs
     {
-        public object layoutContext;
-        public float width;
-        public YGMeasureMode widthMeasureMode;
-        public float height;
-        public YGMeasureMode heightMeasureMode;
-        public float measuredWidth;
-        public float measuredHeight;
-        public LayoutPassReason reason;
+        public object LayoutContext { get; }
+        public float Width { get; }
+        public YGMeasureMode WidthMeasureMode { get; }
+        public float Height { get; }
+        public YGMeasureMode HeightMeasureMode { get; }
+        public float MeasuredWidth { get; }
+        public float MeasuredHeight { get; }
+        public LayoutPassReason Reason { get; }
 
         /// <inheritdoc />
-        public MeasureCallbackEndEventArgs(YGNode node) : base(node) { }
+        public MeasureCallbackEndEventArgs(
+            YGNode node,
+            object layoutContext,
+            float width,
+            YGMeasureMode widthMeasureMode,
+            float height,
+            YGMeasureMode heightMeasureMode ,
+            float measuredWidth ,
+            float measuredHeight,
+            LayoutPassReason reason 
+        ) : base(node)
+        {
+            LayoutContext = layoutContext;
+            Width = width;
+            WidthMeasureMode = widthMeasureMode;
+            Height = height;
+            HeightMeasureMode = heightMeasureMode;
+            MeasuredWidth = measuredWidth;
+            MeasuredHeight = measuredHeight;
+            Reason = reason;
+        }
     }
 
-    public class MeasureCallbackStartEventArgs : YGNodeEventArgs {
+    public class MeasureCallbackStartEventArgs : YGNodeEventArgs
+    {
         /// <inheritdoc />
         public MeasureCallbackStartEventArgs(YGNode node) : base(node) { }
     }
-    public class NodeBaselineStartEventArgs : YGNodeEventArgs {
+    public class NodeBaselineStartEventArgs : YGNodeEventArgs
+    {
         /// <inheritdoc />
         public NodeBaselineStartEventArgs(YGNode node) : base(node) { }
     }
-    public class NodeBaselineEndEventArgs : YGNodeEventArgs {
+    public class NodeBaselineEndEventArgs : YGNodeEventArgs
+    {
         /// <inheritdoc />
         public NodeBaselineEndEventArgs(YGNode node) : base(node) { }
     }

@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using static Yoga.Net.YGGlobal;
-using YGNodeRef = Yoga.Net.YGNode;
-using YGConfigRef = Yoga.Net.YGConfig;
+
+
 
 namespace Yoga.Net.Tests
 {
@@ -10,9 +10,9 @@ namespace Yoga.Net.Tests
     {
 
         [Test] public void padding_no_size() {
-            YGConfigRef config = YGConfigNew();
+            YGConfig config = YGConfigNew();
 
-            YGNodeRef root = YGNodeNewWithConfig(config);
+            YGNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetPadding(root, YGEdge.Left, 10);
             YGNodeStyleSetPadding(root, YGEdge.Top, 10);
             YGNodeStyleSetPadding(root, YGEdge.Right, 10);
@@ -37,15 +37,15 @@ namespace Yoga.Net.Tests
         }
 
         [Test] public void padding_container_match_child() {
-            YGConfigRef config = YGConfigNew();
+            YGConfig config = YGConfigNew();
 
-            YGNodeRef root = YGNodeNewWithConfig(config);
+            YGNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetPadding(root, YGEdge.Left, 10);
             YGNodeStyleSetPadding(root, YGEdge.Top, 10);
             YGNodeStyleSetPadding(root, YGEdge.Right, 10);
             YGNodeStyleSetPadding(root, YGEdge.Bottom, 10);
 
-            YGNodeRef root_child0 = YGNodeNewWithConfig(config);
+            YGNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root_child0, 10);
             YGNodeStyleSetHeight(root_child0, 10);
             YGNodeInsertChild(root, root_child0, 0);
@@ -79,9 +79,9 @@ namespace Yoga.Net.Tests
         }
 
         [Test] public void padding_flex_child() {
-            YGConfigRef config = YGConfigNew();
+            YGConfig config = YGConfigNew();
 
-            YGNodeRef root = YGNodeNewWithConfig(config);
+            YGNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetPadding(root, YGEdge.Left, 10);
             YGNodeStyleSetPadding(root, YGEdge.Top, 10);
             YGNodeStyleSetPadding(root, YGEdge.Right, 10);
@@ -89,7 +89,7 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNodeRef root_child0 = YGNodeNewWithConfig(config);
+            YGNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child0, 1);
             YGNodeStyleSetWidth(root_child0, 10);
             YGNodeInsertChild(root, root_child0, 0);
@@ -123,9 +123,9 @@ namespace Yoga.Net.Tests
         }
 
         [Test] public void padding_stretch_child() {
-            YGConfigRef config = YGConfigNew();
+            YGConfig config = YGConfigNew();
 
-            YGNodeRef root = YGNodeNewWithConfig(config);
+            YGNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetPadding(root, YGEdge.Left, 10);
             YGNodeStyleSetPadding(root, YGEdge.Top, 10);
             YGNodeStyleSetPadding(root, YGEdge.Right, 10);
@@ -133,7 +133,7 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNodeRef root_child0 = YGNodeNewWithConfig(config);
+            YGNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetHeight(root_child0, 10);
             YGNodeInsertChild(root, root_child0, 0);
             YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
@@ -166,9 +166,9 @@ namespace Yoga.Net.Tests
         }
 
         [Test] public void padding_center_child() {
-            YGConfigRef config = YGConfigNew();
+            YGConfig config = YGConfigNew();
 
-            YGNodeRef root = YGNodeNewWithConfig(config);
+            YGNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetJustifyContent(root, YGJustify.Center);
             YGNodeStyleSetAlignItems(root, YGAlign.Center);
             YGNodeStyleSetPadding(root, YGEdge.Start, 10);
@@ -177,7 +177,7 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNodeRef root_child0 = YGNodeNewWithConfig(config);
+            YGNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root_child0, 10);
             YGNodeStyleSetHeight(root_child0, 10);
             YGNodeInsertChild(root, root_child0, 0);
@@ -211,15 +211,15 @@ namespace Yoga.Net.Tests
         }
 
         [Test] public void child_with_padding_align_end() {
-            YGConfigRef config = YGConfigNew();
+            YGConfig config = YGConfigNew();
 
-            YGNodeRef root = YGNodeNewWithConfig(config);
+            YGNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetJustifyContent(root, YGJustify.FlexEnd);
             YGNodeStyleSetAlignItems(root, YGAlign.FlexEnd);
             YGNodeStyleSetWidth(root, 200);
             YGNodeStyleSetHeight(root, 200);
 
-            YGNodeRef root_child0 = YGNodeNewWithConfig(config);
+            YGNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetPadding(root_child0, YGEdge.Left, 20);
             YGNodeStyleSetPadding(root_child0, YGEdge.Top, 20);
             YGNodeStyleSetPadding(root_child0, YGEdge.Right, 20);

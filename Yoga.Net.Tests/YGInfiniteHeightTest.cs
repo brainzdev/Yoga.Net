@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using static Yoga.Net.YGGlobal;
-using YGNodeRef = Yoga.Net.YGNode;
-using YGConfigRef = Yoga.Net.YGConfig;
+
+
 
 namespace Yoga.Net.Tests
 {
@@ -12,18 +12,18 @@ namespace Yoga.Net.Tests
         // because percentages are calculated with parent constraints.
         // However, we need to make sure we fail gracefully in this case, not returning NaN
         [Test] public void percent_absolute_position_infinite_height() {
-            YGConfigRef config = YGConfigNew();
+            YGConfig config = YGConfigNew();
 
-            YGNodeRef root = YGNodeNewWithConfig(config);
+            YGNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
             YGNodeStyleSetWidth(root, 300);
 
-            YGNodeRef root_child0 = YGNodeNewWithConfig(config);
+            YGNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root_child0, 300);
             YGNodeStyleSetHeight(root_child0, 300);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNodeRef root_child1 = YGNodeNewWithConfig(config);
+            YGNode root_child1 = YGNodeNewWithConfig(config);
             YGNodeStyleSetPositionType(root_child1, YGPositionType.Absolute);
             YGNodeStyleSetPositionPercent(root_child1, YGEdge.Left, 20);
             YGNodeStyleSetPositionPercent(root_child1, YGEdge.Top, 20);
