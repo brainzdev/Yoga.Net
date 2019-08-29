@@ -32,7 +32,7 @@ namespace Yoga.Net.Tests
             };
             Assert.AreEqual(visited, expected);
 
-            YGNodeFreeRecursive(root);
+            
         }
     }
 }

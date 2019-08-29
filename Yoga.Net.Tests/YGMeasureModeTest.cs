@@ -71,7 +71,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(YGMeasureMode.Exactly, constraintList[0].widthMode);
 
             //free(constraintList.constraints);
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test]
@@ -98,7 +98,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(YGMeasureMode.Exactly, constraintList[0].heightMode);
 
             // free(constraintList.constraints);
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test]
@@ -123,7 +123,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(YGMeasureMode.AtMost, constraintList[0].heightMode);
 
             //free(constraintList.constraints);
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test]
@@ -149,7 +149,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(YGMeasureMode.AtMost, constraintList[0].widthMode);
 
             // free(constraintList.constraints);
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test]
@@ -175,7 +175,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(YGMeasureMode.AtMost, constraintList[0].widthMode);
 
             // free(constraintList.constraints);
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test]
@@ -202,7 +202,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(YGMeasureMode.AtMost, constraintList[0].heightMode);
 
             // free(constraintList.constraints);
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test]
@@ -230,7 +230,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(YGMeasureMode.Exactly, constraintList[1].heightMode);
 
             // free(constraintList.constraints);
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test]
@@ -256,7 +256,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(YGMeasureMode.Exactly, constraintList[0].heightMode);
 
             // free(constraintList.constraints);
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test]
@@ -286,7 +286,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(YGMeasureMode.Undefined, constraintList[0].heightMode);
 
             // free(constraintList.constraints);
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test]
@@ -317,7 +317,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(YGMeasureMode.AtMost, constraintList[0].heightMode);
 
             // free(constraintList.constraints);
-            YGNodeFreeRecursive(root);
+            
         }
     }
 }

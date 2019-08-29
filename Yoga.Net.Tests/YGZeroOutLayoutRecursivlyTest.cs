@@ -35,7 +35,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(0, YGNodeLayoutGetMargin(child, YGEdge.Top));
             Assert.AreEqual(0, YGNodeLayoutGetPadding(child, YGEdge.Top));
 
-            YGNodeFreeRecursive(root);
+            
         }
     }
 }

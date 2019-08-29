@@ -26,9 +26,9 @@ namespace Yoga.Net.Tests
 
             Assert.AreEqual(100, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void recalculate_resolvedDimonsion_onchange() {
@@ -47,7 +47,7 @@ namespace Yoga.Net.Tests
 
             Assert.AreEqual(0, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
     }
 }

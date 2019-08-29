@@ -71,9 +71,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(10, YGNodeLayoutGetWidth(root_child2));
             Assert.AreEqual(102, YGNodeLayoutGetHeight(root_child2));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void justify_content_row_flex_end() {
@@ -140,9 +140,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(10, YGNodeLayoutGetWidth(root_child2));
             Assert.AreEqual(102, YGNodeLayoutGetHeight(root_child2));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void justify_content_row_center() {
@@ -209,9 +209,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(10, YGNodeLayoutGetWidth(root_child2));
             Assert.AreEqual(102, YGNodeLayoutGetHeight(root_child2));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void justify_content_row_space_between() {
@@ -278,9 +278,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(10, YGNodeLayoutGetWidth(root_child2));
             Assert.AreEqual(102, YGNodeLayoutGetHeight(root_child2));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void justify_content_row_space_around() {
@@ -347,9 +347,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(10, YGNodeLayoutGetWidth(root_child2));
             Assert.AreEqual(102, YGNodeLayoutGetHeight(root_child2));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void justify_content_column_flex_start() {
@@ -414,9 +414,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(102, YGNodeLayoutGetWidth(root_child2));
             Assert.AreEqual(10, YGNodeLayoutGetHeight(root_child2));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void justify_content_column_flex_end() {
@@ -482,9 +482,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(102, YGNodeLayoutGetWidth(root_child2));
             Assert.AreEqual(10, YGNodeLayoutGetHeight(root_child2));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void justify_content_column_center() {
@@ -550,9 +550,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(102, YGNodeLayoutGetWidth(root_child2));
             Assert.AreEqual(10, YGNodeLayoutGetHeight(root_child2));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void justify_content_column_space_between() {
@@ -618,9 +618,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(102, YGNodeLayoutGetWidth(root_child2));
             Assert.AreEqual(10, YGNodeLayoutGetHeight(root_child2));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void justify_content_column_space_around() {
@@ -686,9 +686,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(102, YGNodeLayoutGetWidth(root_child2));
             Assert.AreEqual(10, YGNodeLayoutGetHeight(root_child2));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void justify_content_row_min_width_and_margin() {
@@ -728,9 +728,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(20, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(20, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test]
@@ -806,9 +806,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(300, YGNodeLayoutGetWidth(root_child0_child0_child0));
             Assert.AreEqual(100, YGNodeLayoutGetHeight(root_child0_child0_child0));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void justify_content_min_width_with_padding_child_width_lower_than_parent() {
@@ -883,9 +883,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(199, YGNodeLayoutGetWidth(root_child0_child0_child0));
             Assert.AreEqual(100, YGNodeLayoutGetHeight(root_child0_child0_child0));
             //
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void justify_content_row_max_width_and_margin() {
@@ -926,9 +926,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(20, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(20, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void justify_content_column_min_height_and_margin() {
@@ -967,9 +967,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(20, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(20, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void justify_content_colunn_max_height_and_margin() {
@@ -1009,9 +1009,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(20, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(20, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void justify_content_column_space_evenly() {
@@ -1077,9 +1077,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(102, YGNodeLayoutGetWidth(root_child2));
             Assert.AreEqual(10, YGNodeLayoutGetHeight(root_child2));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void justify_content_row_space_evenly() {
@@ -1146,9 +1146,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(0, YGNodeLayoutGetWidth(root_child2));
             Assert.AreEqual(10, YGNodeLayoutGetHeight(root_child2));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
     }
 }

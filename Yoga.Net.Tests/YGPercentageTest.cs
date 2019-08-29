@@ -45,9 +45,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(60, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(60, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void percentage_position_left_top() {
@@ -88,9 +88,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(180, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(220, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void percentage_position_bottom_right() {
@@ -131,9 +131,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(275, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(75, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void percentage_flex_basis() {
@@ -187,9 +187,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(75, YGNodeLayoutGetWidth(root_child1));
             Assert.AreEqual(200, YGNodeLayoutGetHeight(root_child1));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void percentage_flex_basis_cross() {
@@ -242,9 +242,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(200, YGNodeLayoutGetWidth(root_child1));
             Assert.AreEqual(75, YGNodeLayoutGetHeight(root_child1));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void percentage_flex_basis_cross_min_height() {
@@ -297,9 +297,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(200, YGNodeLayoutGetWidth(root_child1));
             Assert.AreEqual(60, YGNodeLayoutGetHeight(root_child1));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void percentage_flex_basis_main_max_height() {
@@ -355,9 +355,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(148, YGNodeLayoutGetWidth(root_child1));
             Assert.AreEqual(40, YGNodeLayoutGetHeight(root_child1));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void percentage_flex_basis_cross_max_height() {
@@ -412,9 +412,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(200, YGNodeLayoutGetWidth(root_child1));
             Assert.AreEqual(40, YGNodeLayoutGetHeight(root_child1));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void percentage_flex_basis_main_max_width() {
@@ -470,9 +470,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(40, YGNodeLayoutGetWidth(root_child1));
             Assert.AreEqual(200, YGNodeLayoutGetHeight(root_child1));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void percentage_flex_basis_cross_max_width() {
@@ -527,9 +527,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(40, YGNodeLayoutGetWidth(root_child1));
             Assert.AreEqual(150, YGNodeLayoutGetHeight(root_child1));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void percentage_flex_basis_main_min_width() {
@@ -585,9 +585,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(80, YGNodeLayoutGetWidth(root_child1));
             Assert.AreEqual(200, YGNodeLayoutGetHeight(root_child1));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void percentage_flex_basis_cross_min_width() {
@@ -642,9 +642,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(200, YGNodeLayoutGetWidth(root_child1));
             Assert.AreEqual(150, YGNodeLayoutGetHeight(root_child1));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void percentage_multiple_nested_with_padding_margin_and_percentage_values() {
@@ -751,9 +751,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(200, YGNodeLayoutGetWidth(root_child1));
             Assert.AreEqual(142, YGNodeLayoutGetHeight(root_child1));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void percentage_margin_should_calculate_based_only_on_width() {
@@ -809,9 +809,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(10, YGNodeLayoutGetWidth(root_child0_child0));
             Assert.AreEqual(10, YGNodeLayoutGetHeight(root_child0_child0));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void percentage_padding_should_calculate_based_only_on_width() {
@@ -867,9 +867,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(10, YGNodeLayoutGetWidth(root_child0_child0));
             Assert.AreEqual(10, YGNodeLayoutGetHeight(root_child0_child0));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void percentage_absolute_position() {
@@ -910,9 +910,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(10, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(10, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void percentage_width_height_undefined_parent_size() {
@@ -948,9 +948,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(0, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(0, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void percent_within_flex_grow() {
@@ -1030,9 +1030,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(100, YGNodeLayoutGetWidth(root_child2));
             Assert.AreEqual(100, YGNodeLayoutGetHeight(root_child2));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void percentage_container_in_wrapping_container() {
@@ -1116,9 +1116,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(50, YGNodeLayoutGetWidth(root_child0_child0_child1));
             Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child0_child0_child1));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void percent_absolute_position() {
@@ -1187,9 +1187,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(60, YGNodeLayoutGetWidth(root_child0_child1));
             Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child0_child1));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
     }
 }

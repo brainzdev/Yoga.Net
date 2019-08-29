@@ -88,7 +88,7 @@ namespace Yoga.Net.Tests
             Assert.IsTrue(YogaIsUndefined(YGNodeLayoutGetHeight(root)));
             Assert.AreEqual(YGDirection.Inherit, YGNodeLayoutGetDirection(root));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void assert_webdefault_values() {
@@ -100,8 +100,8 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(YGAlign.Stretch, YGNodeStyleGetAlignContent(root));
             Assert.AreEqual(1.0f, YGNodeStyleGetFlexShrink(root));
 
-            YGNodeFreeRecursive(root);
-            YGConfigFree(config);
+            
+            
         }
 
         [Test] public void assert_webdefault_values_reset() {
@@ -114,8 +114,8 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(YGAlign.Stretch, YGNodeStyleGetAlignContent(root));
             Assert.AreEqual(1.0f, YGNodeStyleGetFlexShrink(root));
 
-            YGNodeFreeRecursive(root);
-            YGConfigFree(config);
+            
+            
         }
 
         [Test] public void assert_legacy_stretch_behaviour() {
@@ -160,9 +160,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(0, YGNodeLayoutGetWidth(root_child0_child0_child0));
             Assert.AreEqual(500, YGNodeLayoutGetHeight(root_child0_child0_child0));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
     }
 }

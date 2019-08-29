@@ -38,7 +38,7 @@ namespace Yoga.Net.Tests
             Assert.IsFalse(root_child1.isDirty());
             Assert.IsFalse(root.isDirty());
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void dirty_propagation_only_if_prop_changed() {
@@ -65,7 +65,7 @@ namespace Yoga.Net.Tests
             Assert.IsFalse(root_child1.isDirty());
             Assert.IsFalse(root.isDirty());
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void dirty_mark_all_children_as_dirty_when_display_changes() {
@@ -113,7 +113,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(8, YGNodeLayoutGetWidth(child1_child0_child0));
             Assert.AreEqual(16, YGNodeLayoutGetHeight(child1_child0_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void dirty_node_only_if_children_are_actually_removed() {
@@ -132,13 +132,13 @@ namespace Yoga.Net.Tests
             YGNodeRef child1 = YGNodeNew();
             YGNodeRemoveChild(root, child1);
             Assert.IsFalse(root.isDirty());
-            YGNodeFree(child1);
+            
 
             YGNodeRemoveChild(root, child0);
             Assert.IsTrue(root.isDirty());
-            YGNodeFree(child0);
+            
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void dirty_node_only_if_undefined_values_gets_set_to_undefined() {
@@ -155,7 +155,7 @@ namespace Yoga.Net.Tests
 
             Assert.IsFalse(root.isDirty());
 
-            YGNodeFreeRecursive(root);
+            
         }
     }
 }

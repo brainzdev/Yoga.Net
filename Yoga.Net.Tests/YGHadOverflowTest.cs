@@ -24,8 +24,8 @@ namespace Yoga.Net.Tests
         {
             root = null;
             config = null;
-            //YGNodeFreeRecursive(root);
-            //YGConfigFree(config);
+            //
+            //
         }
 
         YGNodeRef root;

@@ -31,7 +31,7 @@ namespace Yoga.Net.Tests
             Assert.IsTrue(YogaIsUndefined(YGNodeLayoutGetWidth(root_child0)));
             Assert.IsTrue(YogaIsUndefined(YGNodeLayoutGetHeight(root_child0)));
 
-            YGNodeFreeRecursive(root);
+            
         }
     }
 }

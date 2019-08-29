@@ -39,7 +39,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(50, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void aspect_ratio_main_defined() {
@@ -60,7 +60,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(50, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void aspect_ratio_both_dimensions_defined_row() {
@@ -83,7 +83,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(100, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(100, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void aspect_ratio_both_dimensions_defined_column() {
@@ -105,7 +105,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(50, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void aspect_ratio_align_stretch() {
@@ -124,7 +124,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(100, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(100, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void aspect_ratio_flex_grow() {
@@ -146,7 +146,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(100, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(100, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void aspect_ratio_flex_shrink() {
@@ -168,7 +168,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(100, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(100, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void aspect_ratio_flex_shrink_2() {
@@ -200,7 +200,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(50, YGNodeLayoutGetWidth(root_child1));
             Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child1));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void aspect_ratio_basis() {
@@ -221,7 +221,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(50, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void aspect_ratio_absolute_layout_width_defined() {
@@ -244,7 +244,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(50, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void aspect_ratio_absolute_layout_height_defined() {
@@ -267,7 +267,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(50, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void aspect_ratio_with_max_cross_defined() {
@@ -289,7 +289,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(40, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void aspect_ratio_with_max_main_defined() {
@@ -311,7 +311,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(40, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(40, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void aspect_ratio_with_min_cross_defined() {
@@ -333,7 +333,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(40, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(30, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void aspect_ratio_with_min_main_defined() {
@@ -355,7 +355,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(40, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(40, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void aspect_ratio_double_cross() {
@@ -376,7 +376,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(100, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void aspect_ratio_half_cross() {
@@ -397,7 +397,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(50, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(100, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void aspect_ratio_double_main() {
@@ -418,7 +418,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(50, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(100, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void aspect_ratio_half_main() {
@@ -439,7 +439,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(100, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void aspect_ratio_with_measure_func() {
@@ -460,7 +460,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(50, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void aspect_ratio_width_height_flex_grow_row() {
@@ -484,7 +484,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(100, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(100, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void aspect_ratio_width_height_flex_grow_column() {
@@ -507,7 +507,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(100, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(100, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void aspect_ratio_height_as_flex_basis() {
@@ -541,7 +541,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(125, YGNodeLayoutGetWidth(root_child1));
             Assert.AreEqual(125, YGNodeLayoutGetHeight(root_child1));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void aspect_ratio_width_as_flex_basis() {
@@ -574,7 +574,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(125, YGNodeLayoutGetWidth(root_child1));
             Assert.AreEqual(125, YGNodeLayoutGetHeight(root_child1));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void aspect_ratio_overrides_flex_grow_row() {
@@ -597,7 +597,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(100, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(200, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void aspect_ratio_overrides_flex_grow_column() {
@@ -619,7 +619,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(200, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(100, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void aspect_ratio_left_right_absolute() {
@@ -642,7 +642,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(80, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(80, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void aspect_ratio_top_bottom_absolute() {
@@ -665,7 +665,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(80, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(80, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void aspect_ratio_width_overrides_align_stretch_row() {
@@ -686,7 +686,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(50, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void aspect_ratio_height_overrides_align_stretch_column() {
@@ -706,7 +706,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(50, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void aspect_ratio_allow_child_overflow_parent_size() {
@@ -727,7 +727,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(200, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void aspect_ratio_defined_main_with_margin() {
@@ -752,7 +752,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(50, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void aspect_ratio_defined_cross_with_margin() {
@@ -777,7 +777,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(50, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void aspect_ratio_defined_cross_with_main_margin() {
@@ -802,7 +802,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(50, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void aspect_ratio_should_prefer_explicit_height() {
@@ -833,7 +833,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(200, YGNodeLayoutGetWidth(root_child0_child0));
             Assert.AreEqual(100, YGNodeLayoutGetHeight(root_child0_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void aspect_ratio_should_prefer_explicit_width() {
@@ -864,7 +864,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(100, YGNodeLayoutGetWidth(root_child0_child0));
             Assert.AreEqual(200, YGNodeLayoutGetHeight(root_child0_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void aspect_ratio_should_prefer_flexed_dimension() {
@@ -895,7 +895,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(200, YGNodeLayoutGetWidth(root_child0_child0));
             Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child0_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
     }
 }

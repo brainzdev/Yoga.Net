@@ -71,9 +71,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(33, YGNodeLayoutGetWidth(root_child2));
             Assert.AreEqual(100, YGNodeLayoutGetHeight(root_child2));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void rounding_flex_basis_flex_grow_row_prime_number_width() {
@@ -167,9 +167,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(23, YGNodeLayoutGetWidth(root_child4));
             Assert.AreEqual(100, YGNodeLayoutGetHeight(root_child4));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void rounding_flex_basis_flex_shrink_row() {
@@ -236,9 +236,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(25, YGNodeLayoutGetWidth(root_child2));
             Assert.AreEqual(100, YGNodeLayoutGetHeight(root_child2));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void rounding_flex_basis_overrides_main_size() {
@@ -307,9 +307,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(100, YGNodeLayoutGetWidth(root_child2));
             Assert.AreEqual(24, YGNodeLayoutGetHeight(root_child2));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void rounding_total_fractial() {
@@ -378,9 +378,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(87, YGNodeLayoutGetWidth(root_child2));
             Assert.AreEqual(24, YGNodeLayoutGetHeight(root_child2));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void rounding_total_fractial_nested() {
@@ -483,9 +483,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(87, YGNodeLayoutGetWidth(root_child2));
             Assert.AreEqual(24, YGNodeLayoutGetHeight(root_child2));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void rounding_fractial_input_1() {
@@ -554,9 +554,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(100, YGNodeLayoutGetWidth(root_child2));
             Assert.AreEqual(24, YGNodeLayoutGetHeight(root_child2));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void rounding_fractial_input_2() {
@@ -625,9 +625,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(100, YGNodeLayoutGetWidth(root_child2));
             Assert.AreEqual(25, YGNodeLayoutGetHeight(root_child2));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void rounding_fractial_input_3() {
@@ -697,9 +697,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(100, YGNodeLayoutGetWidth(root_child2));
             Assert.AreEqual(25, YGNodeLayoutGetHeight(root_child2));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void rounding_fractial_input_4() {
@@ -769,9 +769,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(100, YGNodeLayoutGetWidth(root_child2));
             Assert.AreEqual(24, YGNodeLayoutGetHeight(root_child2));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void rounding_inner_node_controversy_horizontal() {
@@ -854,9 +854,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(107, YGNodeLayoutGetWidth(root_child2));
             Assert.AreEqual(10, YGNodeLayoutGetHeight(root_child2));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void rounding_inner_node_controversy_vertical() {
@@ -938,9 +938,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(10, YGNodeLayoutGetWidth(root_child2));
             Assert.AreEqual(107, YGNodeLayoutGetHeight(root_child2));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void rounding_inner_node_controversy_combined() {
@@ -1069,9 +1069,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(213, YGNodeLayoutGetWidth(root_child2));
             Assert.AreEqual(320, YGNodeLayoutGetHeight(root_child2));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
     }
 }

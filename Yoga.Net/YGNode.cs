@@ -64,14 +64,6 @@ namespace Yoga.Net
             style_.alignContent = YGAlign.Stretch;
         }
 
-        // DANGER DANGER DANGER!
-        // If the the node assigned to has children, we'd either have to deallocate
-        // them (potentially incorrect) or ignore them (danger of leaks). Only ever
-        // use this after checking that there are no children.
-        // DO NOT CHANGE THE VISIBILITY OF THIS METHOD!
-        //YGNode& operator=(YGNode&&) = default;
-
-        //public:
         public YGNode() : this(YGConfigGetDefault()) { }
 
         public YGNode(in YGConfigRef config)
@@ -80,7 +72,6 @@ namespace Yoga.Net
             if (config.useWebDefaults)
                 useWebDefaults();
         }
-        //~YGNode() = default; // cleanup of owner/children relationships in YGNodeFree
 
         public YGNode(in YGNode other)
         {
@@ -111,10 +102,6 @@ namespace Yoga.Net
             if (config.useWebDefaults)
                 useWebDefaults();
         }
-
-        // assignment means potential leaks of existing children, or alternatively
-        // freeing unowned memory, double free, or freeing stack memory.
-        //public YGNode& operator=(const YGNode&) = delete;
 
         // Getters
         public object getContext() { return context_; }

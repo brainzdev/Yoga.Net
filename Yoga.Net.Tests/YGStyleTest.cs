@@ -17,8 +17,8 @@ namespace Yoga.Net.Tests
             YGNodeCopyStyle(node0, node1);
             Assert.IsFalse(node0.isDirty());
 
-            YGNodeFree(node0);
-            YGNodeFree(node1);
+            
+            
         }
 
         [Test] public void copy_style_modified() {
@@ -36,8 +36,8 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(YGFlexDirection.Row, YGNodeStyleGetFlexDirection(node0));
             Assert.AreEqual(10, YGNodeStyleGetMaxHeight(node0).value);
 
-            YGNodeFree(node0);
-            YGNodeFree(node1);
+            
+            
         }
 
         [Test] public void copy_style_modified_same() {
@@ -54,8 +54,8 @@ namespace Yoga.Net.Tests
             YGNodeCopyStyle(node0, node1);
             Assert.IsFalse(node0.isDirty());
 
-            YGNodeFree(node0);
-            YGNodeFree(node1);
+            
+            
         }
 
         [Test] public void initialise_flexShrink_flexGrow() {
@@ -78,7 +78,7 @@ namespace Yoga.Net.Tests
                 YGNodeStyleGetFlexGrow(
                     node0)); // Default value is Zero, if flex grow is not defined
             Assert.AreEqual(3, YGNodeStyleGetFlexShrink(node0));
-            YGNodeFree(node0);
+            
         }
     }
 }

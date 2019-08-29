@@ -68,7 +68,7 @@ namespace Yoga.Net.Tests
 
             Assert.AreEqual(0, (int)root_child0.getContext());
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test]
@@ -89,7 +89,7 @@ namespace Yoga.Net.Tests
 
             Assert.AreEqual(1, (int)root_child0_child0.getContext());
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test]
@@ -117,7 +117,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(10, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(10, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test]
@@ -145,7 +145,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(10, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(10, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
 
@@ -168,7 +168,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(10, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(10, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test]
@@ -196,7 +196,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(10, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(10, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test]
@@ -224,7 +224,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(10, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(10, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test]
@@ -244,7 +244,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(68, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(16, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test]
@@ -264,7 +264,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(50, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(32, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test]
@@ -288,7 +288,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(282, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(0, YGNodeLayoutGetTop(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test]
@@ -331,9 +331,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(5, YGNodeLayoutGetWidth(root_child1));
             Assert.AreEqual(5, YGNodeLayoutGetHeight(root_child1));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test]
@@ -373,9 +373,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(5, YGNodeLayoutGetWidth(root_child1));
             Assert.AreEqual(5, YGNodeLayoutGetHeight(root_child1));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test]
@@ -415,9 +415,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(5, YGNodeLayoutGetWidth(root_child1));
             Assert.AreEqual(5, YGNodeLayoutGetHeight(root_child1));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test]
@@ -457,9 +457,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(5, YGNodeLayoutGetWidth(root_child1));
             Assert.AreEqual(5, YGNodeLayoutGetHeight(root_child1));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test]
@@ -500,9 +500,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(5, YGNodeLayoutGetWidth(root_child1));
             Assert.AreEqual(5, YGNodeLayoutGetHeight(root_child1));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test]
@@ -542,9 +542,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(5, YGNodeLayoutGetWidth(root_child1));
             Assert.AreEqual(5, YGNodeLayoutGetHeight(root_child1));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test]
@@ -583,9 +583,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(5, YGNodeLayoutGetWidth(root_child1));
             Assert.AreEqual(5, YGNodeLayoutGetHeight(root_child1));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
 #if GTEST_HAS_DEATH_TEST
@@ -596,7 +596,7 @@ TEST(YogaDeathTest, cannot_add_child_to_node_with_measure_func() {
   YGNodeRef root_child0 = YGNodeNew();
   ASSERT_DEATH(YGNodeInsertChild(root, root_child0, 0), "Cannot add child.*");
   YGNodeFree(root_child0);
-  YGNodeFreeRecursive(root);
+  
 }
 
 TEST(YogaDeathTest, cannot_add_nonnull_measure_func_to_non_leaf_node() {
@@ -604,7 +604,7 @@ TEST(YogaDeathTest, cannot_add_nonnull_measure_func_to_non_leaf_node() {
   YGNodeRef root_child0 = YGNodeNew();
   YGNodeInsertChild(root, root_child0, 0);
   ASSERT_DEATH(root.setMeasureFunc(_measure), "Cannot set measure function.*");
-  YGNodeFreeRecursive(root);
+  
 }
 
 #endif
@@ -616,7 +616,7 @@ TEST(YogaDeathTest, cannot_add_nonnull_measure_func_to_non_leaf_node() {
             YGNodeInsertChild(root, YGNodeNew(), 0);
             root.setMeasureFunc(null);
             Assert.IsTrue(root.getMeasure() == null);
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test]
@@ -636,8 +636,8 @@ TEST(YogaDeathTest, cannot_add_nonnull_measure_func_to_non_leaf_node() {
 
             YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
 
-            YGNodeFreeRecursive(root);
-            YGConfigFree(config);
+            
+            
         }
 
         [Test]
@@ -657,8 +657,8 @@ TEST(YogaDeathTest, cannot_add_nonnull_measure_func_to_non_leaf_node() {
 
             YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
 
-            YGNodeFreeRecursive(root);
-            YGConfigFree(config);
+            
+            
         }
 
         static YGMeasureFunc _measure_90_10 = (
@@ -710,9 +710,9 @@ TEST(YogaDeathTest, cannot_add_nonnull_measure_func_to_non_leaf_node() {
             Assert.AreEqual(50, YGNodeLayoutGetWidth(root_child1));
             Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child1));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
     }
 }

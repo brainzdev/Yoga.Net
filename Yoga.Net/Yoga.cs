@@ -155,8 +155,6 @@ namespace Yoga.Net
             node.markDirtyAndPropogateDownwards();
         }
 
-        public static int32_t gConfigInstanceCount = 0;
-
 
         public static YGNodeRef YGNodeNew()
         {
@@ -195,7 +193,6 @@ namespace Yoga.Net
         public static YGConfigRef YGConfigClone(YGConfig oldConfig)
         {
             YGConfigRef config = new YGConfig(oldConfig);
-            gConfigInstanceCount++;
             return config;
         }
 
@@ -220,95 +217,15 @@ namespace Yoga.Net
             return node;
         }
 
-        public static void YGNodeFree(YGNodeRef node)
-        {
-            if (node.getOwner() != null)
-            {
-                node.getOwner().removeChild(node);
-                node.setOwner(null);
-            }
-
-            var childCount = YGNodeGetChildCount(node);
-            for (int i = 0; i < childCount; i++)
-            {
-                YGNodeRef child = YGNodeGetChild(node, i);
-                child.setOwner(null);
-            }
-
-            node.clearChildren();
-            Event.Hub.Publish(new NodeDeallocationEventArgs(node, node.getConfig()));
-            //delete node;
-        }
-
-        public static void YGConfigFreeRecursive(YGNodeRef root)
-        {
-            if (root.getConfig() != null)
-            {
-                gConfigInstanceCount--;
-                //delete root.getConfig();
-            }
-
-            // Delete configs recursively for childrens
-            foreach (var child in root.getChildren())
-            {
-                YGConfigFreeRecursive(child);
-            }
-        }
-
-        public static void YGNodeFreeRecursiveWithCleanupFunc(
-            YGNodeRef root,
-            YGNodeCleanupFunc cleanup)
-        {
-            int skipped = 0;
-            while (YGNodeGetChildCount(root) > skipped)
-            {
-                YGNodeRef child = YGNodeGetChild(root, skipped);
-                if (child.getOwner() != root)
-                {
-                    // Don't free shared nodes that we don't own.
-                    skipped += 1;
-                }
-                else
-                {
-                    YGNodeRemoveChild(root, child);
-                    YGNodeFreeRecursive(child);
-                }
-            }
-
-            cleanup?.Invoke(root);
-            YGNodeFree(root);
-        }
-
-        public static void YGNodeFreeRecursive(YGNodeRef root)
-        {
-            YGNodeFreeRecursiveWithCleanupFunc(root, null);
-        }
-
         public static void YGNodeReset(YGNodeRef node)
         {
             node.reset();
         }
 
-        public static int32_t YGConfigGetInstanceCount()
-        {
-            return gConfigInstanceCount;
-        }
-
         public static YGConfigRef YGConfigNew()
         {
-#if ANDROID
-  YGConfigRef config = new YGConfig(YGAndroidLog);
-#else
             YGConfigRef config = new YGConfig(YGDefaultLog);
-#endif
-            gConfigInstanceCount++;
             return config;
-        }
-
-        public static void YGConfigFree(YGConfigRef config)
-        {
-            //delete config;
-            gConfigInstanceCount--;
         }
 
         public static void YGConfigCopy(YGConfigRef dest, YGConfigRef src)
@@ -4728,9 +4645,6 @@ namespace Yoga.Net
                     }
 #endif
                 }
-
-                YGConfigFreeRecursive(nodeWithoutLegacyFlag);
-                YGNodeFreeRecursive(nodeWithoutLegacyFlag);
             }
         }
 

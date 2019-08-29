@@ -57,9 +57,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(100, YGNodeLayoutGetWidth(root_child1));
             Assert.AreEqual(25, YGNodeLayoutGetHeight(root_child1));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void flex_shrink_flex_grow_row() {
@@ -99,9 +99,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(0, YGNodeLayoutGetTop(root_child1));
             Assert.AreEqual(250, YGNodeLayoutGetWidth(root_child1));
             Assert.AreEqual(100, YGNodeLayoutGetHeight(root_child1));
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void flex_shrink_flex_grow_child_flex_shrink_other_child() {
@@ -141,9 +141,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(0, YGNodeLayoutGetTop(root_child1));
             Assert.AreEqual(250, YGNodeLayoutGetWidth(root_child1));
             Assert.AreEqual(100, YGNodeLayoutGetHeight(root_child1));
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void flex_basis_flex_grow_row() {
@@ -196,9 +196,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(25, YGNodeLayoutGetWidth(root_child1));
             Assert.AreEqual(100, YGNodeLayoutGetHeight(root_child1));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void flex_basis_flex_shrink_column() {
@@ -250,9 +250,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(100, YGNodeLayoutGetWidth(root_child1));
             Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child1));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void flex_basis_flex_shrink_row() {
@@ -305,9 +305,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(50, YGNodeLayoutGetWidth(root_child1));
             Assert.AreEqual(100, YGNodeLayoutGetHeight(root_child1));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void flex_shrink_to_zero() {
@@ -375,9 +375,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(50, YGNodeLayoutGetWidth(root_child2));
             Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child2));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void flex_basis_overrides_main_size() {
@@ -446,9 +446,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(100, YGNodeLayoutGetWidth(root_child2));
             Assert.AreEqual(20, YGNodeLayoutGetHeight(root_child2));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void flex_grow_shrink_at_most() {
@@ -499,9 +499,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(100, YGNodeLayoutGetWidth(root_child0_child0));
             Assert.AreEqual(0, YGNodeLayoutGetHeight(root_child0_child0));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [Test] public void flex_grow_less_than_factor_one() {
@@ -567,9 +567,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(200, YGNodeLayoutGetWidth(root_child2));
             Assert.AreEqual(184, YGNodeLayoutGetHeight(root_child2));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
     }
 }

@@ -74,7 +74,7 @@ namespace Yoga.Net.Tests
 
             Assert.AreEqual(1, (int)root_child0.getContext());
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void remeasure_with_same_exact_width_larger_than_needed_height() {
@@ -90,7 +90,7 @@ namespace Yoga.Net.Tests
 
             Assert.AreEqual(1, (int)root_child0.getContext());
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void remeasure_with_same_atmost_width_larger_than_needed_height() {
@@ -107,7 +107,7 @@ namespace Yoga.Net.Tests
 
             Assert.AreEqual(1, (int)root_child0.getContext());
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void remeasure_with_computed_width_larger_than_needed_height() {
@@ -125,7 +125,7 @@ namespace Yoga.Net.Tests
 
             Assert.AreEqual(1, (int)root_child0.getContext());
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void remeasure_with_atmost_computed_width_undefined_height() {
@@ -142,7 +142,7 @@ namespace Yoga.Net.Tests
 
             Assert.AreEqual(1, (int)root_child0.getContext());
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void remeasure_with_already_measured_value_smaller_but_still_float_equal() {
@@ -164,7 +164,7 @@ namespace Yoga.Net.Tests
 
             YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
 
-            YGNodeFreeRecursive(root);
+            
 
             Assert.AreEqual(1, (int)root_child0_child0.getContext());
         }

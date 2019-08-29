@@ -101,11 +101,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(150, YGNodeLayoutGetWidth(root2_child1));
             Assert.AreEqual(75, YGNodeLayoutGetHeight(root2_child1));
 
-            YGNodeFreeRecursive(root2);
-
-            YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
+            
         }
 
         [Test] public void mutating_children_of_a_clone_clones() {
@@ -144,12 +140,6 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(1, YGNodeGetChildCount(root4));
             Assert.IsFalse(ReferenceEquals(YGNodeGetChild(root3, 0), YGNodeGetChild(root4, 0)));
 
-            YGNodeFreeRecursive(root4);
-            YGNodeFreeRecursive(root3);
-            YGNodeFreeRecursive(root2);
-            YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
         }
 
         [Test] public void cloning_two_levels() {
@@ -222,10 +212,6 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(root_child1_0, root2_child1_child0);
             Assert.AreEqual(root_child1_1, YGNodeGetChild(root2_child1, 1));
 
-            YGNodeFreeRecursive(root2);
-            YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
         }
 
         [Test] public void cloning_and_freeing() {
@@ -248,16 +234,9 @@ namespace Yoga.Net.Tests
 
             // Freeing the original root should be safe as long as we don't free its
             // children.
-            YGNodeFree(root);
+            
 
             YGNodeCalculateLayout(root2, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
-
-            YGNodeFreeRecursive(root2);
-
-            YGNodeFree(root_child0);
-            YGNodeFree(root_child1);
-
-            YGConfigFree(config);
 
             //Assert.AreEqual(initialInstanceCount, YGNodeGetInstanceCount());
         }

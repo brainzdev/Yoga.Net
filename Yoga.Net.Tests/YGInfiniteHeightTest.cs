@@ -47,9 +47,9 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(60, YGNodeLayoutGetWidth(root_child1));
             Assert.AreEqual(0, YGNodeLayoutGetHeight(root_child1));
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
     }
 }

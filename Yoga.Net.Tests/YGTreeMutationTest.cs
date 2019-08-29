@@ -35,7 +35,7 @@ namespace Yoga.Net.Tests
             List<YGNodeRef> expectedOwners = new List<YGNodeRef> { root, root };
             Assert.AreEqual(owners, expectedOwners);
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test]
@@ -56,7 +56,7 @@ namespace Yoga.Net.Tests
             List<YGNodeRef> expectedOwners = new List<YGNodeRef> { null, null };
             Assert.AreEqual(owners, expectedOwners);
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test]
@@ -85,9 +85,7 @@ namespace Yoga.Net.Tests
             List<YGNodeRef> expectedOwners = new List<YGNodeRef> { null, null };
             Assert.AreEqual(owners, expectedOwners);
 
-            YGNodeFreeRecursive(root);
-            YGNodeFree(root_child0);
-            YGNodeFree(root_child1);
+            
         }
 
         [Test]
@@ -122,8 +120,6 @@ namespace Yoga.Net.Tests
             var expectedOwners = new List<YGNodeRef> { null, root, root, root };
             Assert.AreEqual(owners, expectedOwners);
 
-            YGNodeFreeRecursive(root);
-            YGNodeFree(root_child0);
         }
     }
 }

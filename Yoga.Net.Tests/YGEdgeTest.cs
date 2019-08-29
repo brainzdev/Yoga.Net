@@ -30,7 +30,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(20, YGNodeLayoutGetLeft(root_child0));
             Assert.AreEqual(10, YGNodeLayoutGetRight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void end_overrides() {
@@ -54,7 +54,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(10, YGNodeLayoutGetLeft(root_child0));
             Assert.AreEqual(20, YGNodeLayoutGetRight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void horizontal_overridden() {
@@ -73,7 +73,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(20, YGNodeLayoutGetLeft(root_child0));
             Assert.AreEqual(10, YGNodeLayoutGetRight(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void vertical_overridden() {
@@ -92,7 +92,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(20, YGNodeLayoutGetTop(root_child0));
             Assert.AreEqual(10, YGNodeLayoutGetBottom(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void horizontal_overrides_all() {
@@ -113,7 +113,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(10, YGNodeLayoutGetRight(root_child0));
             Assert.AreEqual(20, YGNodeLayoutGetBottom(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void vertical_overrides_all() {
@@ -134,7 +134,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(20, YGNodeLayoutGetRight(root_child0));
             Assert.AreEqual(10, YGNodeLayoutGetBottom(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [Test] public void all_overridden() {
@@ -158,7 +158,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(10, YGNodeLayoutGetRight(root_child0));
             Assert.AreEqual(10, YGNodeLayoutGetBottom(root_child0));
 
-            YGNodeFreeRecursive(root);
+            
         }
     }
 }
