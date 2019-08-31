@@ -2,7 +2,6 @@
 using static Yoga.Net.YogaGlobal;
 
 
-
 namespace Yoga.Net.Tests
 {
     [TestFixture]
@@ -14,20 +13,17 @@ namespace Yoga.Net.Tests
             var root = YGNodeNew();
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
-            YGNodeStyleSetMarginPercent(root, YGEdge.Start, 10);
+            YGNodeStyleSetMarginPercent(root, Edge.Start, 10);
 
-            YGNodeCalculateLayout(root, 100, 100, YGDirection.LTR);
+            YGNodeCalculateLayout(root, 100, 100, Direction.LTR);
 
-            Assert.AreEqual(10, YGNodeLayoutGetMargin(root, YGEdge.Left));
-            Assert.AreEqual(0, YGNodeLayoutGetMargin(root, YGEdge.Right));
+            Assert.AreEqual(10, YGNodeLayoutGetMargin(root, Edge.Left));
+            Assert.AreEqual(0, YGNodeLayoutGetMargin(root, Edge.Right));
 
-            YGNodeCalculateLayout(root, 100, 100, YGDirection.RTL);
+            YGNodeCalculateLayout(root, 100, 100, Direction.RTL);
 
-            Assert.AreEqual(0, YGNodeLayoutGetMargin(root, YGEdge.Left));
-            Assert.AreEqual(10, YGNodeLayoutGetMargin(root, YGEdge.Right));
-
-            
+            Assert.AreEqual(0, YGNodeLayoutGetMargin(root, Edge.Left));
+            Assert.AreEqual(10, YGNodeLayoutGetMargin(root, Edge.Right));
         }
-
     }
 }

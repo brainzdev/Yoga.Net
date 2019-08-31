@@ -20,21 +20,21 @@ namespace Yoga.Net
         // Instead of recomputing the entire layout every single time, we cache some
         // information to break early when nothing changed
         public int GenerationCount { get; set; }
-        public YGDirection LastOwnerDirection { get; set; } = YGDirection.Unknown;
+        public Direction LastOwnerDirection { get; set; } = Net.Direction.Unknown;
 
         public int NextCachedMeasurementsIndex { get; set; }
 
-        public readonly YGCachedMeasurement[] CachedMeasurements = new YGCachedMeasurement[MaxCachedResultCount];
+        public readonly YogaCachedMeasurement[] CachedMeasurements = new YogaCachedMeasurement[MaxCachedResultCount];
         public readonly float[] MeasuredDimensions = {YogaValue.YGUndefined, YogaValue.YGUndefined};
 
-        public YGCachedMeasurement CachedLayout { get; } = new YGCachedMeasurement();
+        public YogaCachedMeasurement CachedLayout { get; } = new YogaCachedMeasurement();
 
-        public YGDirection Direction { get; internal set; }
+        public Direction Direction { get; internal set; }
         public bool HadOverflow { get; internal set; }
 
         public YogaLayout()
         {
-            CachedMeasurements.Fill(() => new YGCachedMeasurement());
+            CachedMeasurements.Fill(() => new YogaCachedMeasurement());
         }
 
         public YogaLayout(YogaLayout other)
@@ -56,7 +56,7 @@ namespace Yoga.Net
             Array.Copy(other.CachedMeasurements, CachedMeasurements, CachedMeasurements.Length);
             Array.Copy(other.MeasuredDimensions, MeasuredDimensions, MeasuredDimensions.Length);
 
-            CachedLayout = new YGCachedMeasurement(other.CachedLayout);
+            CachedLayout = new YogaCachedMeasurement(other.CachedLayout);
             Direction    = other.Direction;
             HadOverflow  = other.HadOverflow;
         }

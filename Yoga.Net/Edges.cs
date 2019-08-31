@@ -1,34 +1,34 @@
 ﻿using System;
 
-namespace Yoga.Net 
+namespace Yoga.Net
 {
-    public class Edges : Values<YGEdge>
+    public class Edges : Values<Edge, YogaValue>
     {
-        public Edges() { }
         public Edges(YogaValue defaultValue) : base(defaultValue) { }
-        public Edges(Edges other)
+
+        public Edges(Edges other) : base(YogaValue.Undefined)
         {
             Array.Copy(other._values, _values, _values.Length);
         }
 
-        public CompactValue ComputedEdgeValue(YGEdge edge, CompactValue defaultValue = null)
+        public YogaValue ComputedEdgeValue(Edge edge, YogaValue defaultValue = null)
         {
             if (!this[edge].IsUndefined)
                 return this[edge];
 
-            if ((edge == YGEdge.Top || edge == YGEdge.Bottom) && !this[YGEdge.Vertical].IsUndefined)
-                return this[YGEdge.Vertical];
+            if ((edge == Edge.Top || edge == Edge.Bottom) && !this[Edge.Vertical].IsUndefined)
+                return this[Edge.Vertical];
 
-            if ((edge == YGEdge.Left || edge == YGEdge.Right || edge == YGEdge.Start || edge == YGEdge.End) && !this[YGEdge.Horizontal].IsUndefined)
-                return this[YGEdge.Horizontal];
+            if ((edge == Edge.Left || edge == Edge.Right || edge == Edge.Start || edge == Edge.End) && !this[Edge.Horizontal].IsUndefined)
+                return this[Edge.Horizontal];
 
-            if (!this[YGEdge.All].IsUndefined)
-                return this[YGEdge.All];
+            if (!this[Edge.All].IsUndefined)
+                return this[Edge.All];
 
-            if (edge == YGEdge.Start || edge == YGEdge.End)
-                return CompactValue.Undefined;
+            if (edge == Edge.Start || edge == Edge.End)
+                return YogaValue.Undefined;
 
-            return defaultValue ?? CompactValue.Undefined;
+            return defaultValue ?? YogaValue.Undefined;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
+
 // ReSharper disable RedundantCaseLabel
 
 namespace Yoga.Net
@@ -10,20 +11,26 @@ namespace Yoga.Net
     {
         public const float YGUndefined = float.NaN;
 
-        public static readonly YogaValue Auto = new YogaValue(0f, YGUnit.Auto);
-        public static readonly YogaValue Undefined = new YogaValue(0f, YGUnit.Undefined);
-        public static readonly YogaValue Zero = new YogaValue(0f, YGUnit.Point);
+        public static readonly YogaValue Auto = new YogaValue(0f, YogaUnit.Auto);
+        public static readonly YogaValue Undefined = new YogaValue(0f, YogaUnit.Undefined);
+        public static readonly YogaValue Zero = new YogaValue(0f, YogaUnit.Point);
 
         public readonly float Value;
-        public readonly YGUnit Unit;
+        public readonly YogaUnit Unit;
 
-        public YogaValue(float value, YGUnit unit)
+        public YogaValue(float value, YogaUnit unit)
         {
-            Unit = unit;
-            Value = (unit == YGUnit.Auto || unit == YGUnit.Undefined) ? YGUndefined : value;
+            Unit  = unit;
+            Value = (unit == YogaUnit.Auto || unit == YogaUnit.Undefined) ? YGUndefined : value;
         }
 
-        public bool IsNaN() => float.IsNaN(Value);
+        public bool IsNaN => float.IsNaN(Value) || float.IsInfinity(Value);
+
+        public bool IsAuto => Unit == YogaUnit.Auto;
+
+        public bool IsUndefined =>
+            Unit == YogaUnit.Undefined ||
+            (IsNaN && (Unit == YogaUnit.Point || Unit == YogaUnit.Percent));
 
         public bool Equals(YogaValue other)
         {
@@ -32,11 +39,11 @@ namespace Yoga.Net
 
             switch (Unit)
             {
-            case YGUnit.Undefined:
-            case YGUnit.Auto:
+            case YogaUnit.Undefined:
+            case YogaUnit.Auto:
                 return true;
-            case YGUnit.Point:
-            case YGUnit.Percent:
+            case YogaUnit.Point:
+            case YogaUnit.Percent:
                 return
                     Value.Equals(other.Value);
             }
@@ -49,13 +56,13 @@ namespace Yoga.Net
         {
             switch (Unit)
             {
-            case YGUnit.Auto:
+            case YogaUnit.Auto:
                 return $"auto";
-            case YGUnit.Percent:
+            case YogaUnit.Percent:
                 return $"{Value}%";
-            case YGUnit.Point:
+            case YogaUnit.Point:
                 return $"{Value}px";
-            case YGUnit.Undefined:
+            case YogaUnit.Undefined:
             default:
                 return string.Empty;
             }
@@ -95,37 +102,43 @@ namespace Yoga.Net
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static explicit operator YogaValue(int i)
         {
-            return new YogaValue(i, YGUnit.Point);
+            return new YogaValue(i, YogaUnit.Point);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static explicit operator YogaValue(short s)
         {
-            return new YogaValue(s, YGUnit.Point);
+            return new YogaValue(s, YogaUnit.Point);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static explicit operator YogaValue(float f)
         {
-            return new YogaValue(f, YGUnit.Point);
+            return new YogaValue(f, YogaUnit.Point);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static explicit operator YogaValue(double d)
         {
-            return new YogaValue((float)d, YGUnit.Point);
+            return new YogaValue((float)d, YogaUnit.Point);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static YogaValue Percent(float f)
         {
-            return new YogaValue(f, YGUnit.Percent);
+            return new YogaValue(f, YogaUnit.Percent);
         }
 
-        public static YogaValue Sanitized(float value, YGUnit unit)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static YogaValue Point(float f)
+        {
+            return new YogaValue(f, YogaUnit.Point);
+        }
+
+        public static YogaValue Sanitized(float value, YogaUnit unit)
         {
             if (float.IsNaN(value))
-                return new YogaValue(0f, YGUnit.Undefined);
+                return new YogaValue(0f, YogaUnit.Undefined);
             return new YogaValue(value, unit);
         }
     }

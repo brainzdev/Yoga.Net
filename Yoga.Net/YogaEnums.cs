@@ -2,7 +2,7 @@
 
 namespace Yoga.Net
 {
-    public enum YGAlign
+    public enum YogaAlign
     {
         Auto,
         FlexStart,
@@ -14,27 +14,33 @@ namespace Yoga.Net
         SpaceAround
     }
 
-    public enum YGDimension
+    public enum Dimension
     {
         Width,
         Height
     }
 
-    public enum YGDirection
+    public enum Direction
     {
         Unknown = -1,
+
+        /// <summary>Inherit from owner</summary>
         Inherit = 0,
+
+        /// <summary>Left to right</summary>
         LTR = 1,
+
+        /// <summary>Right to left</summary>
         RTL = 2
     }
 
-    public enum YGDisplay
+    public enum Display
     {
         Flex,
         None
     }
 
-    public enum YGEdge
+    public enum Edge
     {
         Left,
         Top,
@@ -47,12 +53,12 @@ namespace Yoga.Net
         All
     }
 
-    public enum YGExperimentalFeature
+    public enum ExperimentalFeature
     {
         WebFlexBasis
     }
 
-    public enum YGFlexDirection
+    public enum FlexDirection
     {
         Column,
         ColumnReverse,
@@ -60,7 +66,7 @@ namespace Yoga.Net
         RowReverse
     }
 
-    public enum YGJustify
+    public enum Justify
     {
         FlexStart,
         Center,
@@ -70,7 +76,7 @@ namespace Yoga.Net
         SpaceEvenly
     }
 
-    public enum YGLogLevel
+    public enum LogLevel
     {
         Error,
         Warn,
@@ -80,27 +86,27 @@ namespace Yoga.Net
         Fatal
     }
 
-    public enum YGMeasureMode
+    public enum MeasureMode
     {
         Undefined = -1,
         Exactly = 0,
         AtMost = 1
     }
 
-    public enum YGNodeType
+    public enum NodeType
     {
         Default,
         Text
     }
 
-    public enum YGOverflow
+    public enum Overflow
     {
         Visible,
         Hidden,
         Scroll
     }
 
-    public enum YGPositionType
+    public enum PositionType
     {
         Relative,
         Absolute
@@ -108,14 +114,14 @@ namespace Yoga.Net
 
 
     [Flags]
-    public enum YGPrintOptions
+    public enum PrintOptions
     {
         Layout = 1,
         Style = 2,
         Children = 4
     }
 
-    public enum YGUnit
+    public enum YogaUnit
     {
         Undefined,
         Point,
@@ -123,7 +129,7 @@ namespace Yoga.Net
         Auto
     }
 
-    public enum YGWrap
+    public enum Wrap
     {
         NoWrap,
         Wrap,

@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29102.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yoga.Net", "Yoga.Net\Yoga.Net.csproj", "{47DC1B56-AA4F-45AE-8D1D-3D4E521C772A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yoga.Net.Tests", "Yoga.Net.Tests\Yoga.Net.Tests.csproj", "{79805DA9-D910-4829-881F-A0B69BEA0127}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yoga.Net.Tests", "Yoga.Net.Tests\Yoga.Net.Tests.csproj", "{79805DA9-D910-4829-881F-A0B69BEA0127}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

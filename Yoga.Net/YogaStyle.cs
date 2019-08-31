@@ -2,28 +2,28 @@
 {
     public class YogaStyle
     {
-        public YGDirection Direction { get; set; } = YGDirection.Inherit;
-        public YGFlexDirection FlexDirection { get; set; } = YGFlexDirection.Column;
-        public YGJustify JustifyContent { get; set; } = YGJustify.FlexStart;
-        public YGAlign AlignContent { get; set; } = YGAlign.FlexStart;
-        public YGAlign AlignItems { get; set; } = YGAlign.Stretch;
-        public YGAlign AlignSelf { get; set; } = YGAlign.Auto;
-        public YGPositionType PositionType { get; set; } = YGPositionType.Relative;
-        public YGWrap FlexWrap { get; set; } = YGWrap.NoWrap;
-        public YGOverflow Overflow { get; set; } = YGOverflow.Visible;
-        public YGDisplay Display { get; set; } = YGDisplay.Flex;
+        public Direction Direction { get; set; } = Direction.Inherit;
+        public FlexDirection FlexDirection { get; set; } = FlexDirection.Column;
+        public Justify JustifyContent { get; set; } = Justify.FlexStart;
+        public YogaAlign AlignContent { get; set; } = YogaAlign.FlexStart;
+        public YogaAlign AlignItems { get; set; } = YogaAlign.Stretch;
+        public YogaAlign AlignSelf { get; set; } = YogaAlign.Auto;
+        public PositionType PositionType { get; set; } = PositionType.Relative;
+        public Wrap FlexWrap { get; set; } = Wrap.NoWrap;
+        public Overflow Overflow { get; set; } = Overflow.Visible;
+        public Display Display { get; set; } = Display.Flex;
 
         public FloatOptional Flex { get; set; } = new FloatOptional();
         public FloatOptional FlexGrow { get; set; } = new FloatOptional();
         public FloatOptional FlexShrink { get; set; } = new FloatOptional();
-        public CompactValue FlexBasis { get; set; } = CompactValue.Auto;
-        public Edges Margin { get; set; } = new Edges();
-        public Edges Position { get; set; } = new Edges();
-        public Edges Padding { get; set; } = new Edges();
-        public Edges Border { get; set; } = new Edges();
+        public YogaValue FlexBasis { get; set; } = YogaValue.Auto;
+        public Edges Margin { get; set; } = new Edges(YogaValue.Undefined);
+        public Edges Position { get; set; } = new Edges(YogaValue.Undefined);
+        public Edges Padding { get; set; } = new Edges(YogaValue.Undefined);
+        public Edges Border { get; set; } = new Edges(YogaValue.Undefined);
         public Dimensions Dimensions { get; set; } = new Dimensions(YogaValue.Auto);
-        public Dimensions MinDimensions { get; set; } = new Dimensions();
-        public Dimensions MaxDimensions { get; set; } = new Dimensions();
+        public Dimensions MinDimensions { get; set; } = new Dimensions(YogaValue.Undefined);
+        public Dimensions MaxDimensions { get; set; } = new Dimensions(YogaValue.Undefined);
 
         // Yoga specific properties, not compatible with flexbox specification
         public FloatOptional AspectRatio { get; set; } = new FloatOptional();
@@ -79,25 +79,25 @@
                 MinDimensions == other.MinDimensions &&
                 MaxDimensions == other.MaxDimensions;
 
-            areNonFloatValuesEqual = areNonFloatValuesEqual && Flex.IsUndefined() == other.Flex.IsUndefined();
-            if (areNonFloatValuesEqual && !Flex.IsUndefined() && !other.Flex.IsUndefined())
+            areNonFloatValuesEqual = areNonFloatValuesEqual && Flex.IsUndefined == other.Flex.IsUndefined;
+            if (areNonFloatValuesEqual && !Flex.IsUndefined && !other.Flex.IsUndefined)
             {
                 areNonFloatValuesEqual = Flex == other.Flex;
             }
 
-            areNonFloatValuesEqual = areNonFloatValuesEqual && FlexGrow.IsUndefined() == other.FlexGrow.IsUndefined();
-            if (areNonFloatValuesEqual && !FlexGrow.IsUndefined())
+            areNonFloatValuesEqual = areNonFloatValuesEqual && FlexGrow.IsUndefined == other.FlexGrow.IsUndefined;
+            if (areNonFloatValuesEqual && !FlexGrow.IsUndefined)
             {
                 areNonFloatValuesEqual = FlexGrow == other.FlexGrow;
             }
 
-            areNonFloatValuesEqual = areNonFloatValuesEqual && FlexShrink.IsUndefined() == other.FlexShrink.IsUndefined();
-            if (areNonFloatValuesEqual && !other.FlexShrink.IsUndefined())
+            areNonFloatValuesEqual = areNonFloatValuesEqual && FlexShrink.IsUndefined == other.FlexShrink.IsUndefined;
+            if (areNonFloatValuesEqual && !other.FlexShrink.IsUndefined)
             {
                 areNonFloatValuesEqual = FlexShrink == other.FlexShrink;
             }
 
-            if (!(AspectRatio.IsUndefined() && other.AspectRatio.IsUndefined()))
+            if (!(AspectRatio.IsUndefined && other.AspectRatio.IsUndefined))
             {
                 areNonFloatValuesEqual = areNonFloatValuesEqual && AspectRatio == other.AspectRatio;
             }

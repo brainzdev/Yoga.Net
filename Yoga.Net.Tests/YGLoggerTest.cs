@@ -1,7 +1,5 @@
 using NUnit.Framework;
 using static Yoga.Net.YogaGlobal;
-
-
 using System.Text;
 
 namespace Yoga.Net.Tests
@@ -17,10 +15,11 @@ namespace Yoga.Net.Tests
             writeBuffer = new StringBuilder();
         }
 
-        int _unmanagedLogger(YogaConfig config,
-                             YGNode node,
-                             YGLogLevel level,
-                             string message)
+        int _unmanagedLogger(
+            YogaConfig config,
+            YGNode node,
+            LogLevel level,
+            string message)
         {
             writeBuffer.Append(message);
             return writeBuffer.Length;
@@ -37,9 +36,9 @@ namespace Yoga.Net.Tests
             YGNode child1 = YGNodeNewWithConfig(config);
             YGNodeInsertChild(root, child0, 0);
             YGNodeInsertChild(root, child1, 1);
-            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
             YGConfigSetLogger(config, null);
-            
+
 
             string expected =
                 "<div layout=\"width: 0; height: 0; top: 0; left: 0;\" style=\"\" >\n  <div layout=\"width: 0; height: 0; top: 0; left: 0;\" style=\"\" ></div>\n  <div layout=\"width: 0; height: 0; top: 0; left: 0;\" style=\"\" ></div>\n</div>";
@@ -57,9 +56,9 @@ namespace Yoga.Net.Tests
             YGNode child1 = YGNodeNewWithConfig(config);
             YGNodeInsertChild(root, child0, 0);
             YGNodeInsertChild(root, child1, 1);
-            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
             YGConfigSetLogger(config, null);
-            
+
 
             string expected = "";
             Assert.AreEqual(expected, writeBuffer.ToString());
@@ -71,10 +70,10 @@ namespace Yoga.Net.Tests
             YogaConfig config = YGConfigNew();
             YGConfigSetLogger(config, _unmanagedLogger);
             YGNode root = YGNodeNewWithConfig(config);
-            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, YGDirection.LTR);
-            YGNodePrint(root, (YGPrintOptions.Layout | YGPrintOptions.Children | YGPrintOptions.Style));
+            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
+            YGNodePrint(root, (PrintOptions.Layout | PrintOptions.Children | PrintOptions.Style));
             YGConfigSetLogger(config, null);
-            
+
 
             string expected = "<div layout=\"width: 0; height: 0; top: 0; left: 0;\" style=\"\" ></div>";
             Assert.AreEqual(expected, writeBuffer.ToString());
@@ -86,16 +85,16 @@ namespace Yoga.Net.Tests
             YogaConfig config = YGConfigNew();
             YGConfigSetLogger(config, _unmanagedLogger);
             YGNode root = YGNodeNewWithConfig(config);
-            YGNodeStyleSetPositionType(root, YGPositionType.Absolute);
+            YGNodeStyleSetPositionType(root, PositionType.Absolute);
             YGNodeStyleSetWidthPercent(root, 50);
             YGNodeStyleSetHeightPercent(root, 75);
             YGNodeStyleSetFlex(root, 1);
-            YGNodeStyleSetMargin(root, YGEdge.Right, 10);
-            YGNodeStyleSetMarginAuto(root, YGEdge.Left);
-            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, YGDirection.LTR);
-            YGNodePrint(root, (YGPrintOptions.Layout | YGPrintOptions.Children | YGPrintOptions.Style));
+            YGNodeStyleSetMargin(root, Edge.Right, 10);
+            YGNodeStyleSetMarginAuto(root, Edge.Left);
+            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
+            YGNodePrint(root, (PrintOptions.Layout | PrintOptions.Children | PrintOptions.Style));
             YGConfigSetLogger(config, null);
-            
+
 
             string expected = "<div layout=\"width: 0; height: 0; top: 0; left: 0;\" style=\"flex: 1; margin-left: auto; margin-right: 10px; width: 50%; height: 75%; position: absolute; \" ></div>";
             Assert.AreEqual(expected, writeBuffer.ToString());
@@ -111,10 +110,10 @@ namespace Yoga.Net.Tests
             YGNode child1 = YGNodeNewWithConfig(config);
             YGNodeInsertChild(root, child0, 0);
             YGNodeInsertChild(root, child1, 1);
-            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, YGDirection.LTR);
-            YGNodePrint(root, (YGPrintOptions.Layout | YGPrintOptions.Children | YGPrintOptions.Style));
+            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
+            YGNodePrint(root, (PrintOptions.Layout | PrintOptions.Children | PrintOptions.Style));
             YGConfigSetLogger(config, null);
-            
+
 
             string expected = "<div layout=\"width: 0; height: 0; top: 0; left: 0;\" style=\"\" >\n  <div layout=\"width: 0; height: 0; top: 0; left: 0;\" style=\"\" ></div>\n  <div layout=\"width: 0; height: 0; top: 0; left: 0;\" style=\"\" ></div>\n</div>";
             Assert.AreEqual(expected, writeBuffer.ToString());

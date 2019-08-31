@@ -20,9 +20,19 @@ namespace Yoga.Net
             return float.IsNaN(value) || float.IsInfinity(value);
         }
 
+        public static bool IsZero(this float value)
+        {
+            return Math.Abs(value) < float.Epsilon;
+        }
+
+        public static bool IsNotZero(this float value)
+        {
+            return Math.Abs(value) > float.Epsilon;
+        }
+
         // This custom float equality function returns true if either absolute
         // difference between two floats is less than 0.0001f or both are undefined.
-        public static bool FloatsEqual(in float a, in float b)
+        public static bool FloatsEqual(float a, float b)
         {
             if (!YogaIsUndefined(a) && !YogaIsUndefined(b))
                 return Math.Abs(a - b) < 0.0001f;
@@ -30,7 +40,7 @@ namespace Yoga.Net
             return YogaIsUndefined(a) && YogaIsUndefined(b);
         }
 
-        public static float FloatMax(in float a, in float b)
+        public static float FloatMax(float a, float b)
         {
             if (!YogaIsUndefined(a) && !YogaIsUndefined(b))
                 return Math.Max(a, b);
@@ -57,7 +67,7 @@ namespace Yoga.Net
         }
 
         // This function returns 0 if YGFloatIsUndefined(val) is true and val otherwise
-        public static float FloatSanitize(in float val)
+        public static float FloatSanitize(float val)
         {
             return YogaIsUndefined(val) ? 0 : val;
         }
@@ -67,15 +77,15 @@ namespace Yoga.Net
             Trace.Write(message);
             switch (level)
             {
-            case YGLogLevel.Error:
-            case YGLogLevel.Fatal:
+            case LogLevel.Error:
+            case LogLevel.Fatal:
                 Console.Error.Write(message);
                 break;
 
-            case YGLogLevel.Warn:
-            case YGLogLevel.Info:
-            case YGLogLevel.Debug:
-            case YGLogLevel.Verbose:
+            case LogLevel.Warn:
+            case LogLevel.Info:
+            case LogLevel.Debug:
+            case LogLevel.Verbose:
             default:
                 Console.Write(message);
                 break;

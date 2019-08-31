@@ -20,6 +20,7 @@ namespace Yoga.Net
         MeasureChild = 5,
         AbsMeasureChild = 6,
         FlexMeasure = 7,
+
         // ReSharper disable once InconsistentNaming Used for Sizing
         COUNT
     };
@@ -62,6 +63,7 @@ namespace Yoga.Net
             Config = config;
         }
     }
+
     public class NodeDeallocationEventArgs : YGNodeEventArgs
     {
         public YogaConfig Config { get; }
@@ -71,6 +73,7 @@ namespace Yoga.Net
             Config = config;
         }
     }
+
     public class LayoutPassStartEventArgs : YGNodeEventArgs
     {
         public object LayoutContext { get; }
@@ -81,6 +84,7 @@ namespace Yoga.Net
             LayoutContext = layoutContext;
         }
     }
+
     public class LayoutPassEndEventArgs : YGNodeEventArgs
     {
         public object LayoutContext { get; }
@@ -90,9 +94,10 @@ namespace Yoga.Net
         public LayoutPassEndEventArgs(YGNode node, object layoutContext, LayoutData layoutData) : base(node)
         {
             LayoutContext = layoutContext;
-            LayoutData = layoutData;
+            LayoutData    = layoutData;
         }
     }
+
     public class NodeLayoutEventArgs : YGNodeEventArgs
     {
         public LayoutType LayoutType { get; }
@@ -101,17 +106,18 @@ namespace Yoga.Net
         /// <inheritdoc />
         public NodeLayoutEventArgs(YGNode node, LayoutType layoutType, object layoutContext) : base(node)
         {
-            LayoutType = layoutType;
+            LayoutType    = layoutType;
             LayoutContext = layoutContext;
         }
     }
+
     public class MeasureCallbackEndEventArgs : YGNodeEventArgs
     {
         public object LayoutContext { get; }
         public float Width { get; }
-        public YGMeasureMode WidthMeasureMode { get; }
+        public MeasureMode WidthMeasureMode { get; }
         public float Height { get; }
-        public YGMeasureMode HeightMeasureMode { get; }
+        public MeasureMode HeightMeasureMode { get; }
         public float MeasuredWidth { get; }
         public float MeasuredHeight { get; }
         public LayoutPassReason Reason { get; }
@@ -121,22 +127,22 @@ namespace Yoga.Net
             YGNode node,
             object layoutContext,
             float width,
-            YGMeasureMode widthMeasureMode,
+            MeasureMode widthMeasureMode,
             float height,
-            YGMeasureMode heightMeasureMode ,
-            float measuredWidth ,
+            MeasureMode heightMeasureMode,
+            float measuredWidth,
             float measuredHeight,
-            LayoutPassReason reason 
+            LayoutPassReason reason
         ) : base(node)
         {
-            LayoutContext = layoutContext;
-            Width = width;
-            WidthMeasureMode = widthMeasureMode;
-            Height = height;
+            LayoutContext     = layoutContext;
+            Width             = width;
+            WidthMeasureMode  = widthMeasureMode;
+            Height            = height;
             HeightMeasureMode = heightMeasureMode;
-            MeasuredWidth = measuredWidth;
-            MeasuredHeight = measuredHeight;
-            Reason = reason;
+            MeasuredWidth     = measuredWidth;
+            MeasuredHeight    = measuredHeight;
+            Reason            = reason;
         }
     }
 
@@ -145,11 +151,13 @@ namespace Yoga.Net
         /// <inheritdoc />
         public MeasureCallbackStartEventArgs(YGNode node) : base(node) { }
     }
+
     public class NodeBaselineStartEventArgs : YGNodeEventArgs
     {
         /// <inheritdoc />
         public NodeBaselineStartEventArgs(YGNode node) : base(node) { }
     }
+
     public class NodeBaselineEndEventArgs : YGNodeEventArgs
     {
         /// <inheritdoc />

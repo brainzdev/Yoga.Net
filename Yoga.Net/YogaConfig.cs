@@ -22,7 +22,7 @@ namespace Yoga.Net
             LoggerFunc    = config.LoggerFunc;
         }
 
-        public void Log(YogaConfig config, YGNode node, YGLogLevel level, string message)
+        public void Log(YogaConfig config, YGNode node, LogLevel level, string message)
         {
             LoggerFunc(config, node, level, message);
         }

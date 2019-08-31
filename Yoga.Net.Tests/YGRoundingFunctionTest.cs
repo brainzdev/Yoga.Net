@@ -2,14 +2,14 @@ using NUnit.Framework;
 using static Yoga.Net.YogaGlobal;
 
 
-
 namespace Yoga.Net.Tests
 {
     [TestFixture]
     public class YGRoundingFunctionTest
     {
-
-        [Test] public void rounding_value() {
+        [Test]
+        public void rounding_value()
+        {
             // Test that whole numbers are rounded to whole despite ceil/floor flags
             Assert.AreEqual(6.0f, YGRoundValueToPixelGrid(6.000001f, 2.0f, false, false));
             Assert.AreEqual(6.0f, YGRoundValueToPixelGrid(6.000001f, 2.0f, true, false));

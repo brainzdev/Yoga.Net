@@ -2,13 +2,11 @@ using NUnit.Framework;
 using static Yoga.Net.YogaGlobal;
 
 
-
 namespace Yoga.Net.Tests
 {
     [TestFixture]
     public class YGDirtiedTest
     {
-
         static void _dirtied(YGNode node)
         {
             int dirtiedCount = (int)node.Context;
@@ -16,13 +14,15 @@ namespace Yoga.Net.Tests
             node.Context = dirtiedCount;
         }
 
-        [Test] public void dirtied() {
+        [Test]
+        public void dirtied()
+        {
             YGNode root = YGNodeNew();
-            YGNodeStyleSetAlignItems(root, YGAlign.FlexStart);
+            YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
             //int dirtiedCount = 0;
             root.Context = 0;
@@ -39,9 +39,11 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(1, (int)root.Context);
         }
 
-        [Test] public void dirtied_propagation() {
+        [Test]
+        public void dirtied_propagation()
+        {
             YGNode root = YGNodeNew();
-            YGNodeStyleSetAlignItems(root, YGAlign.FlexStart);
+            YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
@@ -55,7 +57,7 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetHeight(root_child1, 20);
             YGNodeInsertChild(root, root_child1, 1);
 
-            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
             root.Context = 0;
             root.SetDirtiedFunc(_dirtied);
@@ -71,9 +73,11 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(1, (int)root.Context);
         }
 
-        [Test] public void dirtied_hierarchy() {
+        [Test]
+        public void dirtied_hierarchy()
+        {
             YGNode root = YGNodeNew();
-            YGNodeStyleSetAlignItems(root, YGAlign.FlexStart);
+            YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
@@ -87,7 +91,7 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetHeight(root_child1, 20);
             YGNodeInsertChild(root, root_child1, 1);
 
-            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
             root_child0.Context = 0;
             root_child0.SetDirtiedFunc(_dirtied);

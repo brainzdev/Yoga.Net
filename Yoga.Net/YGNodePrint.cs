@@ -32,7 +32,7 @@ namespace Yoga.Net
             string key,
             FloatOptional num)
         {
-            if (!num.IsUndefined())
+            if (!num.IsUndefined)
             {
                 sb.Append($"{key}: {num.Unwrap():G}; ");
             }
@@ -42,10 +42,10 @@ namespace Yoga.Net
             string key,
             YogaValue number)
         {
-            if (number.Unit == YGUnit.Undefined)
+            if (number.Unit == YogaUnit.Undefined)
                 return;
 
-            if (number.Unit == YGUnit.Auto)
+            if (number.Unit == YogaUnit.Auto)
                 sb.Append($"{key}: auto; ");
             else
                 sb.Append($"{key}: {number}; ");
@@ -55,7 +55,7 @@ namespace Yoga.Net
             string key,
             YogaValue number)
         {
-            if (number.Unit != YGUnit.Auto)
+            if (number.Unit != YogaUnit.Auto)
                 AppendNumberIfNotUndefined(key, number);
         }
 
@@ -63,7 +63,7 @@ namespace Yoga.Net
             string str,
             YogaValue number)
         {
-            if (number.Unit == YGUnit.Auto)
+            if (number.Unit == YogaUnit.Auto)
             {
                 sb.Append(str + ": auto; ");
             }
@@ -79,11 +79,11 @@ namespace Yoga.Net
         {
             if (AreFourValuesEqual(edges))
             {
-                AppendNumberIfNotZero(key, edges[YGEdge.Left]);
+                AppendNumberIfNotZero(key, edges[Edge.Left]);
             }
             else
             {
-                for (var edge = YGEdge.Left; edge != YGEdge.All; ++edge)
+                for (var edge = Edge.Left; edge != Edge.All; ++edge)
                 {
                     string str = key + "-" + (edge.ToString().ToLower());
                     AppendNumberIfNotZero(str, edges[edge]);
@@ -94,32 +94,32 @@ namespace Yoga.Net
         void AppendEdgeIfNotUndefined(
             string str,
             Edges edges,
-            YGEdge edge)
+            Edge edge)
         {
             AppendNumberIfNotUndefined(
                 str,
-                edges.ComputedEdgeValue(edge, CompactValue.Undefined));
+                edges.ComputedEdgeValue(edge, YogaValue.Undefined));
         }
 
         public void YGNodeToString(
             YGNode node,
-            YGPrintOptions options,
+            PrintOptions options,
             int level)
         {
             Indent(level);
             AppendString("<div ");
 
-            if (options.HasFlag(YGPrintOptions.Layout))
+            if (options.HasFlag(PrintOptions.Layout))
             {
                 AppendString("layout=\"");
-                AppendString($"width: {node.GetLayout().Dimensions[(int)YGDimension.Width]:G}; ");
-                AppendString($"height: {node.GetLayout().Dimensions[(int)YGDimension.Height]:G}; ");
-                AppendString($"top: {node.GetLayout().Position[(int)YGEdge.Top]:G}; ");
-                AppendString($"left: {node.GetLayout().Position[(int)YGEdge.Left]:G};");
+                AppendString($"width: {node.GetLayout().Dimensions[(int)Dimension.Width]:G}; ");
+                AppendString($"height: {node.GetLayout().Dimensions[(int)Dimension.Height]:G}; ");
+                AppendString($"top: {node.GetLayout().Position[(int)Edge.Top]:G}; ");
+                AppendString($"left: {node.GetLayout().Position[(int)Edge.Left]:G};");
                 AppendString("\" ");
             }
 
-            if (options.HasFlag(YGPrintOptions.Style))
+            if (options.HasFlag(PrintOptions.Style))
             {
                 AppendString("style=\"");
                 var style = node.GetStyle();
@@ -172,22 +172,22 @@ namespace Yoga.Net
                 AppendEdges("padding", style.Padding);
                 AppendEdges("border", style.Border);
 
-                AppendNumberIfNotAuto("width", style.Dimensions[YGDimension.Width]);
-                AppendNumberIfNotAuto("height", style.Dimensions[YGDimension.Height]);
-                AppendNumberIfNotAuto("max-width", style.MaxDimensions[YGDimension.Width]);
-                AppendNumberIfNotAuto("max-height", style.MaxDimensions[YGDimension.Height]);
-                AppendNumberIfNotAuto("min-width", style.MinDimensions[YGDimension.Width]);
-                AppendNumberIfNotAuto("min-height", style.MinDimensions[YGDimension.Height]);
+                AppendNumberIfNotAuto("width", style.Dimensions[Dimension.Width]);
+                AppendNumberIfNotAuto("height", style.Dimensions[Dimension.Height]);
+                AppendNumberIfNotAuto("max-width", style.MaxDimensions[Dimension.Width]);
+                AppendNumberIfNotAuto("max-height", style.MaxDimensions[Dimension.Height]);
+                AppendNumberIfNotAuto("min-width", style.MinDimensions[Dimension.Width]);
+                AppendNumberIfNotAuto("min-height", style.MinDimensions[Dimension.Height]);
 
                 if (style.PositionType != DefaultYGNode.GetStyle().PositionType)
                 {
                     AppendString($"position: {style.PositionType.ToString().ToLower()}; ");
                 }
 
-                AppendEdgeIfNotUndefined("left", style.Position, YGEdge.Left);
-                AppendEdgeIfNotUndefined("right", style.Position, YGEdge.Right);
-                AppendEdgeIfNotUndefined("top", style.Position, YGEdge.Top);
-                AppendEdgeIfNotUndefined("bottom", style.Position, YGEdge.Bottom);
+                AppendEdgeIfNotUndefined("left", style.Position, Edge.Left);
+                AppendEdgeIfNotUndefined("right", style.Position, Edge.Right);
+                AppendEdgeIfNotUndefined("top", style.Position, Edge.Top);
+                AppendEdgeIfNotUndefined("bottom", style.Position, Edge.Bottom);
                 AppendString("\" ");
 
                 if (node.HasMeasureFunc())
@@ -199,7 +199,7 @@ namespace Yoga.Net
             AppendString(">");
 
             var childCount = node.GetChildren().Count;
-            if (options.HasFlag(YGPrintOptions.Children) && childCount > 0)
+            if (options.HasFlag(PrintOptions.Children) && childCount > 0)
             {
                 for (int i = 0; i < childCount; i++)
                 {

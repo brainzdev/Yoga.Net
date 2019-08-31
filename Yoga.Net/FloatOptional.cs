@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Text;
+﻿using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 
 namespace Yoga.Net
@@ -17,12 +14,14 @@ namespace Yoga.Net
 
         // returns the wrapped value, or a value x with YGIsUndefined(x) == true
         public float Unwrap() => _value;
-        public bool IsUndefined() => float.IsNaN(_value);
+        public bool IsUndefined => float.IsNaN(_value);
 
         public bool Equals([CanBeNull] FloatOptional other)
         {
+            if (ReferenceEquals(other, null))
+                return false;
             return _value.Equals(other._value) ||
-                IsUndefined() && other.IsUndefined();
+                IsUndefined && other.IsUndefined;
         }
 
         /// <inheritdoc />
@@ -76,8 +75,7 @@ namespace Yoga.Net
             if (rhs > lhs)
                 return rhs;
 
-            return lhs.IsUndefined() ? rhs : lhs;
+            return lhs.IsUndefined ? rhs : lhs;
         }
-
     }
 }

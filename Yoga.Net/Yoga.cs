@@ -8,13 +8,15 @@ using System.Text;
 
 namespace Yoga.Net
 {
-    public delegate YogaSize YGMeasureFunc(YGNode node, float width, YGMeasureMode widthMode, float height, YGMeasureMode heightMode, object layoutContext = null);
-    public delegate float YGBaselineFunc(YGNode node, float width, float height, object layoutContext = null);
-    public delegate void YGPrintFunc(YGNode node, object layoutContext = null);
+    public delegate YogaSize MeasureFunc(YGNode node, float width, MeasureMode widthMode, float height, MeasureMode heightMode, object layoutContext = null);
 
-    public delegate void YGDirtiedFunc(YGNode node);
-    public delegate void YGNodeCleanupFunc(YGNode node);
-    public delegate int LoggerFunc(YogaConfig config, YGNode node, YGLogLevel level, string message);
+    public delegate float BaselineFunc(YGNode node, float width, float height, object layoutContext = null);
+
+    public delegate void PrintFunc(YGNode node, object layoutContext = null);
+
+    public delegate void DirtiedFunc(YGNode node);
+
+    public delegate int LoggerFunc(YogaConfig config, YGNode node, LogLevel level, string message);
 
     public delegate YGNode YogaCloneNodeFunc(YGNode oldNode, YGNode owner, int childIndex, object context);
 
@@ -35,7 +37,7 @@ namespace Yoga.Net
             return node.HasMeasureFunc();
         }
 
-        public static void YGNodeSetMeasureFunc(YGNode node, YGMeasureFunc measureFunc)
+        public static void YGNodeSetMeasureFunc(YGNode node, MeasureFunc measureFunc)
         {
             node.SetMeasureFunc(measureFunc);
         }
@@ -45,22 +47,22 @@ namespace Yoga.Net
             return node.HasBaselineFunc();
         }
 
-        public static void YGNodeSetBaselineFunc(YGNode node, YGBaselineFunc baselineFunc)
+        public static void YGNodeSetBaselineFunc(YGNode node, BaselineFunc baselineFunc)
         {
             node.SetBaselineFunc(baselineFunc);
         }
 
-        public static YGDirtiedFunc YGNodeGetDirtiedFunc(YGNode node)
+        public static DirtiedFunc YGNodeGetDirtiedFunc(YGNode node)
         {
             return node.GetDirtied();
         }
 
-        public static void YGNodeSetDirtiedFunc(YGNode node, YGDirtiedFunc dirtiedFunc)
+        public static void YGNodeSetDirtiedFunc(YGNode node, DirtiedFunc dirtiedFunc)
         {
             node.SetDirtiedFunc(dirtiedFunc);
         }
 
-        public static void YGNodeSetPrintFunc(YGNode node, YGPrintFunc printFunc)
+        public static void YGNodeSetPrintFunc(YGNode node, PrintFunc printFunc)
         {
             node.SetPrintFunc(printFunc);
         }
@@ -80,12 +82,12 @@ namespace Yoga.Net
             node.SetHasNewLayout(hasNewLayout);
         }
 
-        public static YGNodeType YGNodeGetNodeType(YGNode node)
+        public static NodeType YGNodeGetNodeType(YGNode node)
         {
             return node.GetNodeType();
         }
 
-        public static void YGNodeSetNodeType(YGNode node, YGNodeType nodeType)
+        public static void YGNodeSetNodeType(YGNode node, NodeType nodeType)
         {
             node.SetNodeType(nodeType);
         }
@@ -389,14 +391,14 @@ namespace Yoga.Net
 
         public static float YGNodeStyleGetFlexGrow(in YGNode node)
         {
-            return node.GetStyle().FlexGrow.IsUndefined()
+            return node.GetStyle().FlexGrow.IsUndefined
                 ? DefaultFlexGrow
                 : node.GetStyle().FlexGrow.Unwrap();
         }
 
         public static float YGNodeStyleGetFlexShrink(in YGNode node)
         {
-            return node.GetStyle().FlexShrink.IsUndefined()
+            return node.GetStyle().FlexShrink.IsUndefined
                 ? DefaultFlexShrink
                 : node.GetStyle().FlexShrink.Unwrap();
         }
@@ -437,15 +439,15 @@ namespace Yoga.Net
         }
 
         //template <typename Ref, typename Idx>
-        public static void updateIndexedStyleProp<T>(
+        public static void updateIndexedStyleProp<TKey, TValue>(
             YGNode node,
-            Values<T> values,
+            Values<TKey, TValue> values,
             int idx,
-            CompactValue value) where T : struct, IConvertible
+            TValue value) where TKey : struct, IConvertible
         {
             var propValue = values[idx];
 
-            if (value != propValue)
+            if (!value.Equals(propValue))
             {
                 values[idx] = value;
                 node.MarkDirtyAndPropogate();
@@ -461,111 +463,111 @@ namespace Yoga.Net
         // decltype, MSVC will prefer the non-version.
         //#define MSVC_HINT(PROP) decltype(YogaStyle{}.PROP())
 
-        public static void YGNodeStyleSetDirection(YGNode node, YGDirection value)
+        public static void YGNodeStyleSetDirection(YGNode node, Direction value)
         {
-            updateStyle<Net.YogaStyle, Net.YGDirection>(node, s => s.Direction, value);
+            updateStyle<Net.YogaStyle, Net.Direction>(node, s => s.Direction, value);
             //updateStyle<MSVC_HINT(direction)>(node, &Net.YogaStyle::direction, value);
         }
 
-        public static YGDirection YGNodeStyleGetDirection(in YGNode node)
+        public static Direction YGNodeStyleGetDirection(in YGNode node)
         {
             return node.GetStyle().Direction;
         }
 
         public static void YGNodeStyleSetFlexDirection(
             YGNode node,
-            YGFlexDirection flexDirection)
+            FlexDirection flexDirection)
         {
-            updateStyle<Net.YogaStyle, Net.YGFlexDirection>(node, s => s.FlexDirection, flexDirection);
+            updateStyle<Net.YogaStyle, Net.FlexDirection>(node, s => s.FlexDirection, flexDirection);
         }
 
-        public static YGFlexDirection YGNodeStyleGetFlexDirection(in YGNode node)
+        public static FlexDirection YGNodeStyleGetFlexDirection(in YGNode node)
         {
             return node.GetStyle().FlexDirection;
         }
 
         public static void YGNodeStyleSetJustifyContent(
             YGNode node,
-            YGJustify justifyContent)
+            Justify justifyContent)
         {
-            updateStyle<Net.YogaStyle, Net.YGJustify>(node, s => s.JustifyContent, justifyContent);
+            updateStyle<Net.YogaStyle, Net.Justify>(node, s => s.JustifyContent, justifyContent);
         }
 
-        public static YGJustify YGNodeStyleGetJustifyContent(in YGNode node)
+        public static Justify YGNodeStyleGetJustifyContent(in YGNode node)
         {
             return node.GetStyle().JustifyContent;
         }
 
         public static void YGNodeStyleSetAlignContent(
             YGNode node,
-            YGAlign alignContent)
+            YogaAlign alignContent)
         {
-            updateStyle<Net.YogaStyle, Net.YGAlign>(node, s => s.AlignContent, alignContent);
+            updateStyle<Net.YogaStyle, Net.YogaAlign>(node, s => s.AlignContent, alignContent);
         }
 
-        public static YGAlign YGNodeStyleGetAlignContent(in YGNode node)
+        public static YogaAlign YGNodeStyleGetAlignContent(in YGNode node)
         {
             return node.GetStyle().AlignContent;
         }
 
-        public static void YGNodeStyleSetAlignItems(YGNode node, YGAlign alignItems)
+        public static void YGNodeStyleSetAlignItems(YGNode node, YogaAlign alignItems)
         {
-            updateStyle<Net.YogaStyle, Net.YGAlign>(node, s => s.AlignItems, alignItems);
+            updateStyle<Net.YogaStyle, Net.YogaAlign>(node, s => s.AlignItems, alignItems);
         }
 
-        public static YGAlign YGNodeStyleGetAlignItems(in YGNode node)
+        public static YogaAlign YGNodeStyleGetAlignItems(in YGNode node)
         {
             return node.GetStyle().AlignItems;
         }
 
-        public static void YGNodeStyleSetAlignSelf(YGNode node, YGAlign alignSelf)
+        public static void YGNodeStyleSetAlignSelf(YGNode node, YogaAlign alignSelf)
         {
-            updateStyle<Net.YogaStyle, Net.YGAlign>(node, s => s.AlignSelf, alignSelf);
+            updateStyle<Net.YogaStyle, Net.YogaAlign>(node, s => s.AlignSelf, alignSelf);
         }
 
-        public static YGAlign YGNodeStyleGetAlignSelf(in YGNode node)
+        public static YogaAlign YGNodeStyleGetAlignSelf(in YGNode node)
         {
             return node.GetStyle().AlignSelf;
         }
 
         public static void YGNodeStyleSetPositionType(
             YGNode node,
-            YGPositionType positionType)
+            PositionType positionType)
         {
-            updateStyle<Net.YogaStyle, Net.YGPositionType>(node, s => s.PositionType, positionType);
+            updateStyle<Net.YogaStyle, Net.PositionType>(node, s => s.PositionType, positionType);
         }
 
-        public static YGPositionType YGNodeStyleGetPositionType(in YGNode node)
+        public static PositionType YGNodeStyleGetPositionType(in YGNode node)
         {
             return node.GetStyle().PositionType;
         }
 
-        public static void YGNodeStyleSetFlexWrap(YGNode node, YGWrap flexWrap)
+        public static void YGNodeStyleSetFlexWrap(YGNode node, Wrap flexWrap)
         {
-            updateStyle<Net.YogaStyle, Net.YGWrap>(node, s => s.FlexWrap, flexWrap);
+            updateStyle<Net.YogaStyle, Net.Wrap>(node, s => s.FlexWrap, flexWrap);
         }
 
-        public static YGWrap YGNodeStyleGetFlexWrap(in YGNode node)
+        public static Wrap YGNodeStyleGetFlexWrap(in YGNode node)
         {
             return node.GetStyle().FlexWrap;
         }
 
-        public static void YGNodeStyleSetOverflow(YGNode node, YGOverflow overflow)
+        public static void YGNodeStyleSetOverflow(YGNode node, Overflow overflow)
         {
-            updateStyle<Net.YogaStyle, Net.YGOverflow>(node, s => s.Overflow, overflow);
+            updateStyle<Net.YogaStyle, Net.Overflow>(node, s => s.Overflow, overflow);
         }
 
-        public static YGOverflow YGNodeStyleGetOverflow(in YGNode node)
+        public static Overflow YGNodeStyleGetOverflow(in YGNode node)
         {
             return node.GetStyle().Overflow;
         }
 
-        public static void YGNodeStyleSetDisplay(YGNode node, YGDisplay display)
+        public static void YGNodeStyleSetDisplay(YGNode node, Display display)
         {
-            updateStyle<Net.YogaStyle, Net.YGDisplay>(node, s => s.Display, display);
+            updateStyle<Net.YogaStyle, Net.Display>(node, s => s.Display, display);
         }
 
-        public static YGDisplay YGNodeStyleGetDisplay(in YGNode node)
+        public static Display YGNodeStyleGetDisplay(in YGNode node)
         {
             return node.GetStyle().Display;
         }
@@ -579,7 +581,7 @@ namespace Yoga.Net
         // TODO(T26792433): Change the API to accept FloatOptional.
         public static float YGNodeStyleGetFlex(in YGNode node)
         {
-            return node.GetStyle().Flex.IsUndefined()
+            return node.GetStyle().Flex.IsUndefined
                 ? YogaValue.YGUndefined
                 : node.GetStyle().Flex.Unwrap();
         }
@@ -600,7 +602,7 @@ namespace Yoga.Net
         {
             return node.GetStyle().FlexBasis;
             //YogaValue flexBasis = node.getStyle().flexBasis;
-            //if (flexBasis.unit == YGUnit.Undefined || flexBasis.unit == YGUnit.Auto)
+            //if (flexBasis.unit == YogaUnit.Undefined || flexBasis.unit == YogaUnit.Auto)
             //{
             //    // TODO(T26792433): Get rid off the use of YGUndefined at client side
             //    flexBasis.value = YogaValue.YGUndefined;
@@ -610,8 +612,8 @@ namespace Yoga.Net
 
         public static void YGNodeStyleSetFlexBasis(YGNode node, float flexBasis)
         {
-            var value = CompactValue.OfMaybe(flexBasis, YGUnit.Point);
-            updateStyleObject<Net.YogaStyle, CompactValue>(node, s => s.FlexBasis, value);
+            var value = new YogaValue(flexBasis, YogaUnit.Point);
+            updateStyleObject<Net.YogaStyle, YogaValue>(node, s => s.FlexBasis, value);
             //updateStyle<MSVC_HINT(flexBasis)>(node, &YogaStyle::flexBasis, value);
         }
 
@@ -619,82 +621,82 @@ namespace Yoga.Net
             YGNode node,
             float flexBasisPercent)
         {
-            var value = CompactValue.OfMaybe(flexBasisPercent, YGUnit.Percent);
-            updateStyleObject<Net.YogaStyle, CompactValue>(node, s => s.FlexBasis, value);
+            var value = new YogaValue(flexBasisPercent, YogaUnit.Percent);
+            updateStyleObject<Net.YogaStyle, YogaValue>(node, s => s.FlexBasis, value);
         }
 
         public static void YGNodeStyleSetFlexBasisAuto(YGNode node)
         {
-            updateStyleObject<Net.YogaStyle, CompactValue>(node, s => s.FlexBasis, CompactValue.Auto);
+            updateStyleObject<Net.YogaStyle, YogaValue>(node, s => s.FlexBasis, YogaValue.Auto);
         }
 
-        public static void YGNodeStyleSetPosition(YGNode node, YGEdge edge, float points)
+        public static void YGNodeStyleSetPosition(YGNode node, Edge edge, float points)
         {
-            var value = CompactValue.OfMaybe(points, YGUnit.Point);
+            var value = new YogaValue(points, YogaUnit.Point);
             updateIndexedStyleProp(node, node.GetStyle().Position, (int)edge, value);
 
-            //var value = CompactValue::ofMaybe<YGUnitPoint>(points);
+            //var value = YogaValue::ofMaybe<YGUnitPoint>(points);
             //updateIndexedStyleProp<MSVC_HINT(position)>(node, &YogaStyle::position, edge, value);
         }
 
-        public static void YGNodeStyleSetPositionPercent(YGNode node, YGEdge edge, float percent)
+        public static void YGNodeStyleSetPositionPercent(YGNode node, Edge edge, float percent)
         {
-            var value = CompactValue.OfMaybe(percent, YGUnit.Percent);
+            var value = new YogaValue(percent, YogaUnit.Percent);
             updateIndexedStyleProp(node, node.GetStyle().Position, (int)edge, value);
         }
 
-        public static YogaValue YGNodeStyleGetPosition(in YGNode node, YGEdge edge)
+        public static YogaValue YGNodeStyleGetPosition(in YGNode node, Edge edge)
         {
             return node.GetStyle().Position[edge];
         }
 
-        public static void YGNodeStyleSetMargin(YGNode node, YGEdge edge, float points)
+        public static void YGNodeStyleSetMargin(YGNode node, Edge edge, float points)
         {
-            var value = CompactValue.OfMaybe(points, YGUnit.Point);
+            var value = new YogaValue(points, YogaUnit.Point);
             updateIndexedStyleProp(node, node.GetStyle().Margin, (int)edge, value);
         }
 
-        public static void YGNodeStyleSetMarginPercent(YGNode node, YGEdge edge, float percent)
+        public static void YGNodeStyleSetMarginPercent(YGNode node, Edge edge, float percent)
         {
-            var value = CompactValue.OfMaybe(percent, YGUnit.Percent);
+            var value = new YogaValue(percent, YogaUnit.Percent);
             updateIndexedStyleProp(node, node.GetStyle().Margin, (int)edge, value);
         }
 
-        public static void YGNodeStyleSetMarginAuto(YGNode node, YGEdge edge)
+        public static void YGNodeStyleSetMarginAuto(YGNode node, Edge edge)
         {
-            updateIndexedStyleProp(node, node.GetStyle().Margin, (int)edge, CompactValue.Auto);
+            updateIndexedStyleProp(node, node.GetStyle().Margin, (int)edge, YogaValue.Auto);
         }
 
-        public static YogaValue YGNodeStyleGetMargin(in YGNode node, YGEdge edge)
+        public static YogaValue YGNodeStyleGetMargin(in YGNode node, Edge edge)
         {
             return node.GetStyle().Margin[edge];
         }
 
-        public static void YGNodeStyleSetPadding(YGNode node, YGEdge edge, float points)
+        public static void YGNodeStyleSetPadding(YGNode node, Edge edge, float points)
         {
-            var value = CompactValue.OfMaybe(points, YGUnit.Point);
+            var value = new YogaValue(points, YogaUnit.Point);
             updateIndexedStyleProp(node, node.GetStyle().Padding, (int)edge, value);
         }
 
-        public static void YGNodeStyleSetPaddingPercent(YGNode node, YGEdge edge, float percent)
+        public static void YGNodeStyleSetPaddingPercent(YGNode node, Edge edge, float percent)
         {
-            var value = CompactValue.OfMaybe(percent, YGUnit.Percent);
+            var value = new YogaValue(percent, YogaUnit.Percent);
             updateIndexedStyleProp(node, node.GetStyle().Padding, (int)edge, value);
         }
 
-        public static YogaValue YGNodeStyleGetPadding(in YGNode node, YGEdge edge)
+        public static YogaValue YGNodeStyleGetPadding(in YGNode node, Edge edge)
         {
             return node.GetStyle().Padding[edge];
         }
 
         // TODO(T26792433): Change the API to accept FloatOptional.
-        public static void YGNodeStyleSetBorder(YGNode node, YGEdge edge, float points)
+        public static void YGNodeStyleSetBorder(YGNode node, Edge edge, float points)
         {
-            var value = CompactValue.OfMaybe(points, YGUnit.Point);
+            var value = new YogaValue(points, YogaUnit.Point);
             updateIndexedStyleProp(node, node.GetStyle().Border, (int)edge, value);
         }
 
-        public static float YGNodeStyleGetBorder(in YGNode node, YGEdge edge)
+        public static float YGNodeStyleGetBorder(in YGNode node, Edge edge)
         {
             var border = node.GetStyle().Border[edge];
             if (border.IsUndefined || border.IsAuto)
@@ -713,7 +715,7 @@ namespace Yoga.Net
         public static float YGNodeStyleGetAspectRatio(in YGNode node)
         {
             FloatOptional op = node.GetStyle().AspectRatio;
-            return op.IsUndefined() ? YogaValue.YGUndefined : op.Unwrap();
+            return op.IsUndefined ? YogaValue.YGUndefined : op.Unwrap();
         }
 
         // TODO(T26792433): Change the API to accept FloatOptional.
@@ -741,155 +743,155 @@ namespace Yoga.Net
 
         public static void YGNodeStyleSetWidth(YGNode node, float points)
         {
-            var value = CompactValue.OfMaybe(points, YGUnit.Point);
-            updateIndexedStyleProp(node, node.GetStyle().Dimensions, (int)YGDimension.Width, value);
+            var value = new YogaValue(points, YogaUnit.Point);
+            updateIndexedStyleProp(node, node.GetStyle().Dimensions, (int)Dimension.Width, value);
         }
 
         public static void YGNodeStyleSetWidthPercent(YGNode node, float percent)
         {
-            var value = CompactValue.OfMaybe(percent, YGUnit.Percent);
-            updateIndexedStyleProp(node, node.GetStyle().Dimensions, (int)YGDimension.Width, value);
+            var value = new YogaValue(percent, YogaUnit.Percent);
+            updateIndexedStyleProp(node, node.GetStyle().Dimensions, (int)Dimension.Width, value);
         }
 
         public static void YGNodeStyleSetWidthAuto(YGNode node)
         {
-            updateIndexedStyleProp(node, node.GetStyle().Dimensions, (int)YGDimension.Width, CompactValue.Auto);
+            updateIndexedStyleProp(node, node.GetStyle().Dimensions, (int)Dimension.Width, YogaValue.Auto);
         }
 
         public static YogaValue YGNodeStyleGetWidth(in YGNode node)
         {
-            return node.GetStyle().Dimensions[(int)YGDimension.Width];
+            return node.GetStyle().Dimensions[(int)Dimension.Width];
         }
 
         public static void YGNodeStyleSetHeight(YGNode node, float points)
         {
-            var value = CompactValue.OfMaybe(points, YGUnit.Point);
-            updateIndexedStyleProp(node, node.GetStyle().Dimensions, (int)YGDimension.Height, value);
+            var value = new YogaValue(points, YogaUnit.Point);
+            updateIndexedStyleProp(node, node.GetStyle().Dimensions, (int)Dimension.Height, value);
         }
 
         public static void YGNodeStyleSetHeightPercent(YGNode node, float percent)
         {
-            var value = CompactValue.OfMaybe(percent, YGUnit.Percent);
-            updateIndexedStyleProp(node, node.GetStyle().Dimensions, (int)YGDimension.Height, value);
+            var value = new YogaValue(percent, YogaUnit.Percent);
+            updateIndexedStyleProp(node, node.GetStyle().Dimensions, (int)Dimension.Height, value);
         }
 
         public static void YGNodeStyleSetHeightAuto(YGNode node)
         {
-            updateIndexedStyleProp(node, node.GetStyle().Dimensions, (int)YGDimension.Height, CompactValue.Auto);
+            updateIndexedStyleProp(node, node.GetStyle().Dimensions, (int)Dimension.Height, YogaValue.Auto);
         }
 
         public static YogaValue YGNodeStyleGetHeight(in YGNode node)
         {
-            return node.GetStyle().Dimensions[(int)YGDimension.Height];
+            return node.GetStyle().Dimensions[(int)Dimension.Height];
         }
 
         public static void YGNodeStyleSetMinWidth(YGNode node, float points)
         {
-            var value = CompactValue.OfMaybe(points, YGUnit.Point);
-            updateIndexedStyleProp(node, node.GetStyle().MinDimensions, (int)YGDimension.Width, value);
+            var value = new YogaValue(points, YogaUnit.Point);
+            updateIndexedStyleProp(node, node.GetStyle().MinDimensions, (int)Dimension.Width, value);
         }
 
         public static void YGNodeStyleSetMinWidthPercent(YGNode node, float percent)
         {
-            var value = CompactValue.OfMaybe(percent, YGUnit.Percent);
-            updateIndexedStyleProp(node, node.GetStyle().MinDimensions, (int)YGDimension.Width, value);
+            var value = new YogaValue(percent, YogaUnit.Percent);
+            updateIndexedStyleProp(node, node.GetStyle().MinDimensions, (int)Dimension.Width, value);
         }
 
         public static YogaValue YGNodeStyleGetMinWidth(in YGNode node)
         {
-            return node.GetStyle().MinDimensions[(int)YGDimension.Width];
+            return node.GetStyle().MinDimensions[(int)Dimension.Width];
         }
 
         public static void YGNodeStyleSetMinHeight(YGNode node, float points)
         {
-            var value = CompactValue.OfMaybe(points, YGUnit.Point);
-            updateIndexedStyleProp(node, node.GetStyle().MinDimensions, (int)YGDimension.Height, value);
+            var value = new YogaValue(points, YogaUnit.Point);
+            updateIndexedStyleProp(node, node.GetStyle().MinDimensions, (int)Dimension.Height, value);
         }
 
         public static void YGNodeStyleSetMinHeightPercent(YGNode node, float percent)
         {
-            var value = CompactValue.OfMaybe(percent, YGUnit.Percent);
-            updateIndexedStyleProp(node, node.GetStyle().MinDimensions, (int)YGDimension.Height, value);
+            var value = new YogaValue(percent, YogaUnit.Percent);
+            updateIndexedStyleProp(node, node.GetStyle().MinDimensions, (int)Dimension.Height, value);
         }
 
         public static YogaValue YGNodeStyleGetMinHeight(in YGNode node)
         {
-            return node.GetStyle().MinDimensions[(int)YGDimension.Height];
+            return node.GetStyle().MinDimensions[(int)Dimension.Height];
         }
 
         public static void YGNodeStyleSetMaxWidth(YGNode node, float points)
         {
-            var value = CompactValue.OfMaybe(points, YGUnit.Point);
-            updateIndexedStyleProp(node, node.GetStyle().MaxDimensions, (int)YGDimension.Width, value);
+            var value = new YogaValue(points, YogaUnit.Point);
+            updateIndexedStyleProp(node, node.GetStyle().MaxDimensions, (int)Dimension.Width, value);
         }
 
         public static void YGNodeStyleSetMaxWidthPercent(YGNode node, float percent)
         {
-            var value = CompactValue.OfMaybe(percent, YGUnit.Percent);
-            updateIndexedStyleProp(node, node.GetStyle().MaxDimensions, (int)YGDimension.Width, value);
+            var value = new YogaValue(percent, YogaUnit.Percent);
+            updateIndexedStyleProp(node, node.GetStyle().MaxDimensions, (int)Dimension.Width, value);
         }
 
         public static YogaValue YGNodeStyleGetMaxWidth(in YGNode node)
         {
-            return node.GetStyle().MaxDimensions[(int)YGDimension.Width];
+            return node.GetStyle().MaxDimensions[(int)Dimension.Width];
         }
 
         public static void YGNodeStyleSetMaxHeight(YGNode node, float points)
         {
-            var value = CompactValue.OfMaybe(points, YGUnit.Point);
-            updateIndexedStyleProp(node, node.GetStyle().MaxDimensions, (int)YGDimension.Height, value);
+            var value = new YogaValue(points, YogaUnit.Point);
+            updateIndexedStyleProp(node, node.GetStyle().MaxDimensions, (int)Dimension.Height, value);
         }
 
         public static void YGNodeStyleSetMaxHeightPercent(YGNode node, float percent)
         {
-            var value = CompactValue.OfMaybe(percent, YGUnit.Percent);
-            updateIndexedStyleProp(node, node.GetStyle().MaxDimensions, (int)YGDimension.Height, value);
+            var value = new YogaValue(percent, YogaUnit.Percent);
+            updateIndexedStyleProp(node, node.GetStyle().MaxDimensions, (int)Dimension.Height, value);
         }
 
         public static YogaValue YGNodeStyleGetMaxHeight(in YGNode node)
         {
-            return node.GetStyle().MaxDimensions[(int)YGDimension.Height];
+            return node.GetStyle().MaxDimensions[(int)Dimension.Height];
         }
 
-        public static float YGNodeLayoutGetLeft(YGNode node) => node.GetLayout().Position[(int)YGEdge.Left];
-        public static float YGNodeLayoutGetTop(YGNode node) => node.GetLayout().Position[(int)YGEdge.Top];
-        public static float YGNodeLayoutGetRight(YGNode node) => node.GetLayout().Position[(int)YGEdge.Right];
-        public static float YGNodeLayoutGetBottom(YGNode node) => node.GetLayout().Position[(int)YGEdge.Bottom];
-        public static float YGNodeLayoutGetWidth(YGNode node) => node.GetLayout().Dimensions[(int)YGDimension.Width];
-        public static float YGNodeLayoutGetHeight(YGNode node) => node.GetLayout().Dimensions[(int)YGDimension.Height];
-        public static YGDirection YGNodeLayoutGetDirection(YGNode node) => node.GetLayout().Direction;
+        public static float YGNodeLayoutGetLeft(YGNode node) => node.GetLayout().Position[(int)Edge.Left];
+        public static float YGNodeLayoutGetTop(YGNode node) => node.GetLayout().Position[(int)Edge.Top];
+        public static float YGNodeLayoutGetRight(YGNode node) => node.GetLayout().Position[(int)Edge.Right];
+        public static float YGNodeLayoutGetBottom(YGNode node) => node.GetLayout().Position[(int)Edge.Bottom];
+        public static float YGNodeLayoutGetWidth(YGNode node) => node.GetLayout().Dimensions[(int)Dimension.Width];
+        public static float YGNodeLayoutGetHeight(YGNode node) => node.GetLayout().Dimensions[(int)Dimension.Height];
+        public static Direction YGNodeLayoutGetDirection(YGNode node) => node.GetLayout().Direction;
         public static bool YGNodeLayoutGetHadOverflow(YGNode node) => node.GetLayout().HadOverflow;
 
         // Get the computed values for these nodes after performing layout. If they were
         // set using point values then the returned value will be the same as
         // YGNodeStyleGetXXX. However if they were set using a percentage value then the
         // returned value is the computed value used during layout.
-        public static float YGNodeLayoutGetMargin(YGNode node, YGEdge edge) => LayoutResolvedProperty(node, node.GetLayout().Margin, edge);
-        public static float YGNodeLayoutGetBorder(YGNode node, YGEdge edge) => LayoutResolvedProperty(node, node.GetLayout().Border, edge);
-        public static float YGNodeLayoutGetPadding(YGNode node, YGEdge edge) => LayoutResolvedProperty(node, node.GetLayout().Padding, edge);
+        public static float YGNodeLayoutGetMargin(YGNode node, Edge edge) => LayoutResolvedProperty(node, node.GetLayout().Margin, edge);
+        public static float YGNodeLayoutGetBorder(YGNode node, Edge edge) => LayoutResolvedProperty(node, node.GetLayout().Border, edge);
+        public static float YGNodeLayoutGetPadding(YGNode node, Edge edge) => LayoutResolvedProperty(node, node.GetLayout().Padding, edge);
 
-        public static float Margin(YGNode node, YGEdge edge) => LayoutResolvedProperty(node, node.GetLayout().Margin, edge);
-        public static float Border(YGNode node, YGEdge edge) => LayoutResolvedProperty(node, node.GetLayout().Border, edge);
-        public static float Padding(YGNode node, YGEdge edge) => LayoutResolvedProperty(node, node.GetLayout().Padding, edge);
+        public static float Margin(YGNode node, Edge edge) => LayoutResolvedProperty(node, node.GetLayout().Margin, edge);
+        public static float Border(YGNode node, Edge edge) => LayoutResolvedProperty(node, node.GetLayout().Border, edge);
+        public static float Padding(YGNode node, Edge edge) => LayoutResolvedProperty(node, node.GetLayout().Padding, edge);
 
-        public static float LayoutResolvedProperty(YGNode node, float[] instanceName, YGEdge edge)
+        public static float LayoutResolvedProperty(YGNode node, float[] instanceName, Edge edge)
         {
             YGAssertWithNode(
                 node,
-                edge <= YGEdge.End,
+                edge <= Edge.End,
                 "Cannot get layout properties of multi-edge shorthands");
-            if (edge == YGEdge.Start)
+            if (edge == Edge.Start)
             {
-                if (node.GetLayout().Direction == YGDirection.RTL)
-                    return instanceName[(int)YGEdge.Right];
-                return instanceName[(int)YGEdge.Left];
+                if (node.GetLayout().Direction == Direction.RTL)
+                    return instanceName[(int)Edge.Right];
+                return instanceName[(int)Edge.Left];
             }
 
-            if (edge == YGEdge.End)
+            if (edge == Edge.End)
             {
-                if (node.GetLayout().Direction == YGDirection.RTL)
-                    return instanceName[(int)YGEdge.Left];
-                return instanceName[(int)YGEdge.Right];
+                if (node.GetLayout().Direction == Direction.RTL)
+                    return instanceName[(int)Edge.Left];
+                return instanceName[(int)Edge.Right];
             }
 
             return instanceName[(int)edge];
@@ -900,28 +902,28 @@ namespace Yoga.Net
 #if DEBUG
         public static void YGNodePrintInternal(
             YGNode node,
-            YGPrintOptions options)
+            PrintOptions options)
         {
             var sb = new StringBuilder();
 
             var np = new YGNodePrint(sb);
             np.YGNodeToString(node, options, 0);
-            Logger.Log(node, YGLogLevel.Debug, sb.ToString());
+            Logger.Log(node, LogLevel.Debug, sb.ToString());
         }
 
-        public static void YGNodePrint(YGNode node, YGPrintOptions options)
+        public static void YGNodePrint(YGNode node, PrintOptions options)
         {
             YGNodePrintInternal(node, options);
         }
 #endif
 
-        internal static readonly YGEdge[] leading = { YGEdge.Top, YGEdge.Bottom, YGEdge.Left, YGEdge.Right };
-        internal static readonly YGEdge[] trailing = { YGEdge.Bottom, YGEdge.Top, YGEdge.Right, YGEdge.Left };
-        internal static readonly YGEdge[] pos = { YGEdge.Top, YGEdge.Bottom, YGEdge.Left, YGEdge.Right };
-        internal static YGDimension[] dim = {YGDimension.Height, YGDimension.Height, YGDimension.Width, YGDimension.Width};
+        internal static readonly Edge[] leading = {Edge.Top, Edge.Bottom, Edge.Left, Edge.Right};
+        internal static readonly Edge[] trailing = {Edge.Bottom, Edge.Top, Edge.Right, Edge.Left};
+        internal static readonly Edge[] pos = {Edge.Top, Edge.Bottom, Edge.Left, Edge.Right};
+        internal static Dimension[] dim = {Dimension.Height, Dimension.Height, Dimension.Width, Dimension.Width};
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static float YGNodePaddingAndBorderForAxis(in YGNode node, YGFlexDirection axis, float widthSize)
+        public static float YGNodePaddingAndBorderForAxis(in YGNode node, FlexDirection axis, float widthSize)
         {
             return (node.GetLeadingPaddingAndBorder(axis, widthSize) +
                     node.GetTrailingPaddingAndBorder(axis, widthSize))
@@ -929,14 +931,14 @@ namespace Yoga.Net
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static YGAlign YGNodeAlignItem(YGNode node, YGNode child)
+        public static YogaAlign YGNodeAlignItem(YGNode node, YGNode child)
         {
-            YGAlign align = child.GetStyle().AlignSelf == YGAlign.Auto
+            YogaAlign align = child.GetStyle().AlignSelf == YogaAlign.Auto
                 ? node.GetStyle().AlignItems
                 : child.GetStyle().AlignSelf;
-            if (align == YGAlign.Baseline && node.GetStyle().FlexDirection.IsColumn())
+            if (align == YogaAlign.Baseline && node.GetStyle().FlexDirection.IsColumn())
             {
-                return YGAlign.FlexStart;
+                return YogaAlign.FlexStart;
             }
 
             return align;
@@ -949,8 +951,8 @@ namespace Yoga.Net
                 Event.Hub.Publish(new NodeBaselineStartEventArgs(node));
 
                 float layoutBaseline = node.Baseline(
-                    node.GetLayout().MeasuredDimensions[(int)YGDimension.Width],
-                    node.GetLayout().MeasuredDimensions[(int)YGDimension.Height],
+                    node.GetLayout().MeasuredDimensions[(int)Dimension.Width],
+                    node.GetLayout().MeasuredDimensions[(int)Dimension.Height],
                     layoutContext);
 
                 Event.Hub.Publish(new NodeBaselineEndEventArgs(node));
@@ -972,12 +974,12 @@ namespace Yoga.Net
                     break;
                 }
 
-                if (child.GetStyle().PositionType == YGPositionType.Absolute)
+                if (child.GetStyle().PositionType == PositionType.Absolute)
                 {
                     continue;
                 }
 
-                if (YGNodeAlignItem(node, child) == YGAlign.Baseline ||
+                if (YGNodeAlignItem(node, child) == YogaAlign.Baseline ||
                     child.IsReferenceBaseline)
                 {
                     baselineChild = child;
@@ -992,11 +994,11 @@ namespace Yoga.Net
 
             if (baselineChild == null)
             {
-                return node.GetLayout().MeasuredDimensions[(int)YGDimension.Height];
+                return node.GetLayout().MeasuredDimensions[(int)Dimension.Height];
             }
 
             float baseline = YGBaseline(baselineChild, layoutContext);
-            return baseline + baselineChild.GetLayout().Position[(int)YGEdge.Top];
+            return baseline + baselineChild.GetLayout().Position[(int)Edge.Top];
         }
 
         public static bool YGIsBaselineLayout(YGNode node)
@@ -1006,7 +1008,7 @@ namespace Yoga.Net
                 return false;
             }
 
-            if (node.GetStyle().AlignItems == YGAlign.Baseline)
+            if (node.GetStyle().AlignItems == YogaAlign.Baseline)
             {
                 return true;
             }
@@ -1015,8 +1017,8 @@ namespace Yoga.Net
             for (int i = 0; i < childCount; i++)
             {
                 YGNode child = node.Children[i];
-                if (child.GetStyle().PositionType == YGPositionType.Relative &&
-                    child.GetStyle().AlignSelf == YGAlign.Baseline)
+                if (child.GetStyle().PositionType == PositionType.Relative &&
+                    child.GetStyle().AlignSelf == YogaAlign.Baseline)
                 {
                     return true;
                 }
@@ -1028,7 +1030,7 @@ namespace Yoga.Net
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float YGNodeDimWithMargin(
             YGNode node,
-            YGFlexDirection axis,
+            FlexDirection axis,
             float widthSize)
         {
             return node.GetLayout().MeasuredDimensions[(int)dim[(int)axis]] +
@@ -1040,16 +1042,16 @@ namespace Yoga.Net
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool YGNodeIsStyleDimDefined(
             YGNode node,
-            YGFlexDirection axis,
+            FlexDirection axis,
             float ownerSize)
         {
             bool isUndefined = YogaIsUndefined(node.GetResolvedDimension(dim[(int)axis]).Value);
             return !(
-                node.GetResolvedDimension(dim[(int)axis]).Unit == YGUnit.Auto ||
-                node.GetResolvedDimension(dim[(int)axis]).Unit == YGUnit.Undefined ||
-                (node.GetResolvedDimension(dim[(int)axis]).Unit == YGUnit.Point &&
+                node.GetResolvedDimension(dim[(int)axis]).Unit == YogaUnit.Auto ||
+                node.GetResolvedDimension(dim[(int)axis]).Unit == YogaUnit.Undefined ||
+                (node.GetResolvedDimension(dim[(int)axis]).Unit == YogaUnit.Point &&
                     !isUndefined && node.GetResolvedDimension(dim[(int)axis]).Value < 0.0f) ||
-                (node.GetResolvedDimension(dim[(int)axis]).Unit == YGUnit.Percent &&
+                (node.GetResolvedDimension(dim[(int)axis]).Unit == YogaUnit.Percent &&
                     !isUndefined &&
                     (node.GetResolvedDimension(dim[(int)axis]).Value < 0.0f ||
                         YogaIsUndefined(ownerSize))));
@@ -1058,7 +1060,7 @@ namespace Yoga.Net
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool YGNodeIsLayoutDimDefined(
             YGNode node,
-            YGFlexDirection axis)
+            FlexDirection axis)
         {
             float value = node.GetLayout().MeasuredDimensions[(int)dim[(int)axis]];
             return !YogaIsUndefined(value) && value >= 0.0f;
@@ -1066,7 +1068,7 @@ namespace Yoga.Net
 
         public static FloatOptional YGNodeBoundAxisWithinMinAndMax(
             in YGNode node,
-            YGFlexDirection axis,
+            FlexDirection axis,
             FloatOptional value,
             float axisSize)
         {
@@ -1075,13 +1077,13 @@ namespace Yoga.Net
 
             if (axis.IsColumn())
             {
-                min = node.GetStyle().MinDimensions[(int)YGDimension.Height].Resolve(axisSize);
-                max = node.GetStyle().MaxDimensions[(int)YGDimension.Height].Resolve(axisSize);
+                min = node.GetStyle().MinDimensions[(int)Dimension.Height].Resolve(axisSize);
+                max = node.GetStyle().MaxDimensions[(int)Dimension.Height].Resolve(axisSize);
             }
             else if (axis.IsRow())
             {
-                min = node.GetStyle().MinDimensions[(int)YGDimension.Width].Resolve(axisSize);
-                max = node.GetStyle().MaxDimensions[(int)YGDimension.Width].Resolve(axisSize);
+                min = node.GetStyle().MinDimensions[(int)Dimension.Width].Resolve(axisSize);
+                max = node.GetStyle().MaxDimensions[(int)Dimension.Width].Resolve(axisSize);
             }
 
             if (max >= new FloatOptional(0) && value > max)
@@ -1102,7 +1104,7 @@ namespace Yoga.Net
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float YGNodeBoundAxis(
             YGNode node,
-            YGFlexDirection axis,
+            FlexDirection axis,
             float value,
             float axisSize,
             float widthSize)
@@ -1120,7 +1122,7 @@ namespace Yoga.Net
         public static void YGNodeSetChildTrailingPosition(
             YGNode node,
             YGNode child,
-            YGFlexDirection axis)
+            FlexDirection axis)
         {
             float size = child.GetLayout().MeasuredDimensions[(int)dim[(int)axis]];
             child.SetLayoutPosition(
@@ -1131,26 +1133,26 @@ namespace Yoga.Net
 
         public static void YGConstrainMaxSizeForMode(
             in YGNode node,
-            YGFlexDirection axis,
+            FlexDirection axis,
             float ownerAxisSize,
             float ownerWidth,
-            ref YGMeasureMode mode,
+            ref MeasureMode mode,
             ref float size)
         {
             FloatOptional maxSize =
                 node.GetStyle().MaxDimensions[(int)dim[(int)axis]].Resolve(ownerAxisSize) + node.GetMarginForAxis(axis, ownerWidth);
             switch (mode)
             {
-            case YGMeasureMode.Exactly:
-            case YGMeasureMode.AtMost:
-                size = (maxSize.IsUndefined() || size < maxSize.Unwrap())
+            case MeasureMode.Exactly:
+            case MeasureMode.AtMost:
+                size = (maxSize.IsUndefined || size < maxSize.Unwrap())
                     ? size
                     : maxSize.Unwrap();
                 break;
-            case YGMeasureMode.Undefined:
-                if (!maxSize.IsUndefined())
+            case MeasureMode.Undefined:
+                if (!maxSize.IsUndefined)
                 {
-                    mode = YGMeasureMode.AtMost;
+                    mode = MeasureMode.AtMost;
                     size = maxSize.Unwrap();
                 }
 
@@ -1162,37 +1164,37 @@ namespace Yoga.Net
             YGNode node,
             YGNode child,
             float width,
-            YGMeasureMode widthMode,
+            MeasureMode widthMode,
             float height,
             float ownerWidth,
             float ownerHeight,
-            YGMeasureMode heightMode,
-            YGDirection direction,
+            MeasureMode heightMode,
+            Direction direction,
             YogaConfig config,
             LayoutData layoutMarkerData,
             object layoutContext,
             int depth,
             int generationCount)
         {
-            YGFlexDirection mainAxis = node.GetStyle().FlexDirection.Resolve(direction);
+            FlexDirection mainAxis = node.GetStyle().FlexDirection.Resolve(direction);
             bool isMainAxisRow = mainAxis.IsRow();
             float mainAxisSize = isMainAxisRow ? width : height;
             float mainAxisownerSize = isMainAxisRow ? ownerWidth : ownerHeight;
 
             float childWidth;
             float childHeight;
-            YGMeasureMode childWidthMeasureMode;
-            YGMeasureMode childHeightMeasureMode;
+            MeasureMode childWidthMeasureMode;
+            MeasureMode childHeightMeasureMode;
 
             FloatOptional resolvedFlexBasis = child.ResolveFlexBasisPtr().Resolve(mainAxisownerSize);
-            bool isRowStyleDimDefined = YGNodeIsStyleDimDefined(child, YGFlexDirection.Row, ownerWidth);
-            bool isColumnStyleDimDefined = YGNodeIsStyleDimDefined(child, YGFlexDirection.Column, ownerHeight);
+            bool isRowStyleDimDefined = YGNodeIsStyleDimDefined(child, FlexDirection.Row, ownerWidth);
+            bool isColumnStyleDimDefined = YGNodeIsStyleDimDefined(child, FlexDirection.Column, ownerHeight);
 
-            if (!resolvedFlexBasis.IsUndefined() && !YogaIsUndefined(mainAxisSize))
+            if (!resolvedFlexBasis.IsUndefined && !YogaIsUndefined(mainAxisSize))
             {
-                if (child.GetLayout().ComputedFlexBasis.IsUndefined() ||
-                    (YGConfigIsExperimentalFeatureEnabled(child.GetConfig(),YGExperimentalFeature.WebFlexBasis) &&
-                    child.GetLayout().ComputedFlexBasisGeneration != generationCount))
+                if (child.GetLayout().ComputedFlexBasis.IsUndefined ||
+                    (YGConfigIsExperimentalFeatureEnabled(child.GetConfig(), ExperimentalFeature.WebFlexBasis) &&
+                        child.GetLayout().ComputedFlexBasisGeneration != generationCount))
                 {
                     FloatOptional paddingAndBorder = new FloatOptional(
                         YGNodePaddingAndBorderForAxis(child, mainAxis, ownerWidth));
@@ -1202,16 +1204,16 @@ namespace Yoga.Net
             else if (isMainAxisRow && isRowStyleDimDefined)
             {
                 // The width is definite, so use that as the flex basis.
-                FloatOptional paddingAndBorder = new FloatOptional(YGNodePaddingAndBorderForAxis(child, YGFlexDirection.Row, ownerWidth));
+                FloatOptional paddingAndBorder = new FloatOptional(YGNodePaddingAndBorderForAxis(child, FlexDirection.Row, ownerWidth));
 
-                child.SetLayoutComputedFlexBasis(FloatOptional.Max(child.GetResolvedDimensions()[(int)YGDimension.Width].Resolve(ownerWidth), paddingAndBorder));
+                child.SetLayoutComputedFlexBasis(FloatOptional.Max(child.GetResolvedDimensions()[(int)Dimension.Width].Resolve(ownerWidth), paddingAndBorder));
             }
             else if (!isMainAxisRow && isColumnStyleDimDefined)
             {
                 // The height is definite, so use that as the flex basis.
                 FloatOptional paddingAndBorder =
-                    new FloatOptional(YGNodePaddingAndBorderForAxis(child, YGFlexDirection.Column, ownerWidth));
-                child.SetLayoutComputedFlexBasis(FloatOptional.Max(child.GetResolvedDimensions()[(int)YGDimension.Height].Resolve(ownerHeight), paddingAndBorder));
+                    new FloatOptional(YGNodePaddingAndBorderForAxis(child, FlexDirection.Column, ownerWidth));
+                child.SetLayoutComputedFlexBasis(FloatOptional.Max(child.GetResolvedDimensions()[(int)Dimension.Height].Resolve(ownerHeight), paddingAndBorder));
             }
             else
             {
@@ -1219,68 +1221,68 @@ namespace Yoga.Net
                 // basis).
                 childWidth             = YogaValue.YGUndefined;
                 childHeight            = YogaValue.YGUndefined;
-                childWidthMeasureMode  = YGMeasureMode.Undefined;
-                childHeightMeasureMode = YGMeasureMode.Undefined;
+                childWidthMeasureMode  = MeasureMode.Undefined;
+                childHeightMeasureMode = MeasureMode.Undefined;
 
                 var marginRow =
-                    child.GetMarginForAxis(YGFlexDirection.Row, ownerWidth).Unwrap();
+                    child.GetMarginForAxis(FlexDirection.Row, ownerWidth).Unwrap();
                 var marginColumn =
-                    child.GetMarginForAxis(YGFlexDirection.Column, ownerWidth).Unwrap();
+                    child.GetMarginForAxis(FlexDirection.Column, ownerWidth).Unwrap();
 
                 if (isRowStyleDimDefined)
                 {
-                    childWidth = child.GetResolvedDimensions()[(int)YGDimension.Width]
+                    childWidth = child.GetResolvedDimensions()[(int)Dimension.Width]
                                       .Resolve(ownerWidth)
                                       .Unwrap() + marginRow;
-                    childWidthMeasureMode = YGMeasureMode.Exactly;
+                    childWidthMeasureMode = MeasureMode.Exactly;
                 }
 
                 if (isColumnStyleDimDefined)
                 {
-                    childHeight = child.GetResolvedDimensions()[(int)YGDimension.Height]
+                    childHeight = child.GetResolvedDimensions()[(int)Dimension.Height]
                                        .Resolve(ownerHeight)
                                        .Unwrap() +
                         marginColumn;
-                    childHeightMeasureMode = YGMeasureMode.Exactly;
+                    childHeightMeasureMode = MeasureMode.Exactly;
                 }
 
                 // The W3C spec doesn't say anything about the 'overflow' property, but all
                 // major browsers appear to implement the following logic.
-                if ((!isMainAxisRow && node.GetStyle().Overflow == YGOverflow.Scroll) ||
-                    node.GetStyle().Overflow != YGOverflow.Scroll)
+                if ((!isMainAxisRow && node.GetStyle().Overflow == Overflow.Scroll) ||
+                    node.GetStyle().Overflow != Overflow.Scroll)
                 {
                     if (YogaIsUndefined(childWidth) && !YogaIsUndefined(width))
                     {
                         childWidth            = width;
-                        childWidthMeasureMode = YGMeasureMode.AtMost;
+                        childWidthMeasureMode = MeasureMode.AtMost;
                     }
                 }
 
-                if ((isMainAxisRow && node.GetStyle().Overflow == YGOverflow.Scroll) ||
-                    node.GetStyle().Overflow != YGOverflow.Scroll)
+                if ((isMainAxisRow && node.GetStyle().Overflow == Overflow.Scroll) ||
+                    node.GetStyle().Overflow != Overflow.Scroll)
                 {
                     if (YogaIsUndefined(childHeight) && !YogaIsUndefined(height))
                     {
                         childHeight            = height;
-                        childHeightMeasureMode = YGMeasureMode.AtMost;
+                        childHeightMeasureMode = MeasureMode.AtMost;
                     }
                 }
 
                 var childStyle = child.GetStyle();
-                if (!childStyle.AspectRatio.IsUndefined())
+                if (!childStyle.AspectRatio.IsUndefined)
                 {
-                    if (!isMainAxisRow && childWidthMeasureMode == YGMeasureMode.Exactly)
+                    if (!isMainAxisRow && childWidthMeasureMode == MeasureMode.Exactly)
                     {
                         childHeight = marginColumn +
                             (childWidth - marginRow) / childStyle.AspectRatio.Unwrap();
-                        childHeightMeasureMode = YGMeasureMode.Exactly;
+                        childHeightMeasureMode = MeasureMode.Exactly;
                     }
                     else if (
-                        isMainAxisRow && childHeightMeasureMode == YGMeasureMode.Exactly)
+                        isMainAxisRow && childHeightMeasureMode == MeasureMode.Exactly)
                     {
                         childWidth = marginRow +
                             (childHeight - marginColumn) * childStyle.AspectRatio.Unwrap();
-                        childWidthMeasureMode = YGMeasureMode.Exactly;
+                        childWidthMeasureMode = MeasureMode.Exactly;
                     }
                 }
 
@@ -1288,51 +1290,51 @@ namespace Yoga.Net
                 // the cross axis to be measured exactly with the available inner width
 
                 bool hasExactWidth =
-                    !YogaIsUndefined(width) && widthMode == YGMeasureMode.Exactly;
+                    !YogaIsUndefined(width) && widthMode == MeasureMode.Exactly;
                 bool childWidthStretch =
-                    YGNodeAlignItem(node, child) == YGAlign.Stretch &&
-                    childWidthMeasureMode != YGMeasureMode.Exactly;
+                    YGNodeAlignItem(node, child) == YogaAlign.Stretch &&
+                    childWidthMeasureMode != MeasureMode.Exactly;
                 if (!isMainAxisRow && !isRowStyleDimDefined && hasExactWidth &&
                     childWidthStretch)
                 {
                     childWidth            = width;
-                    childWidthMeasureMode = YGMeasureMode.Exactly;
-                    if (!childStyle.AspectRatio.IsUndefined())
+                    childWidthMeasureMode = MeasureMode.Exactly;
+                    if (!childStyle.AspectRatio.IsUndefined)
                     {
                         childHeight =
                             (childWidth - marginRow) / childStyle.AspectRatio.Unwrap();
-                        childHeightMeasureMode = YGMeasureMode.Exactly;
+                        childHeightMeasureMode = MeasureMode.Exactly;
                     }
                 }
 
                 bool hasExactHeight =
-                    !YogaIsUndefined(height) && heightMode == YGMeasureMode.Exactly;
+                    !YogaIsUndefined(height) && heightMode == MeasureMode.Exactly;
                 bool childHeightStretch =
-                    YGNodeAlignItem(node, child) == YGAlign.Stretch &&
-                    childHeightMeasureMode != YGMeasureMode.Exactly;
+                    YGNodeAlignItem(node, child) == YogaAlign.Stretch &&
+                    childHeightMeasureMode != MeasureMode.Exactly;
                 if (isMainAxisRow && !isColumnStyleDimDefined && hasExactHeight &&
                     childHeightStretch)
                 {
                     childHeight            = height;
-                    childHeightMeasureMode = YGMeasureMode.Exactly;
+                    childHeightMeasureMode = MeasureMode.Exactly;
 
-                    if (!childStyle.AspectRatio.IsUndefined())
+                    if (!childStyle.AspectRatio.IsUndefined)
                     {
                         childWidth            = (childHeight - marginColumn) * childStyle.AspectRatio.Unwrap();
-                        childWidthMeasureMode = YGMeasureMode.Exactly;
+                        childWidthMeasureMode = MeasureMode.Exactly;
                     }
                 }
 
                 YGConstrainMaxSizeForMode(
                     child,
-                    YGFlexDirection.Row,
+                    FlexDirection.Row,
                     ownerWidth,
                     ownerWidth,
                     ref childWidthMeasureMode,
                     ref childWidth);
                 YGConstrainMaxSizeForMode(
                     child,
-                    YGFlexDirection.Column,
+                    FlexDirection.Column,
                     ownerHeight,
                     ownerWidth,
                     ref childHeightMeasureMode,
@@ -1370,32 +1372,32 @@ namespace Yoga.Net
             YGNode node,
             YGNode child,
             float width,
-            YGMeasureMode widthMode,
+            MeasureMode widthMode,
             float height,
-            YGDirection direction,
+            Direction direction,
             YogaConfig config,
             LayoutData layoutMarkerData,
             object layoutContext,
             int depth,
             int generationCount)
         {
-            YGFlexDirection mainAxis = node.GetStyle().FlexDirection.Resolve(direction);
-            YGFlexDirection crossAxis = mainAxis.CrossAxis(direction);
+            FlexDirection mainAxis = node.GetStyle().FlexDirection.Resolve(direction);
+            FlexDirection crossAxis = mainAxis.CrossAxis(direction);
             bool isMainAxisRow = mainAxis.IsRow();
 
             float childWidth = YogaValue.YGUndefined;
             float childHeight = YogaValue.YGUndefined;
-            YGMeasureMode childWidthMeasureMode = YGMeasureMode.Undefined;
-            YGMeasureMode childHeightMeasureMode = YGMeasureMode.Undefined;
+            MeasureMode childWidthMeasureMode = MeasureMode.Undefined;
+            MeasureMode childHeightMeasureMode = MeasureMode.Undefined;
 
-            var marginRow = child.GetMarginForAxis(YGFlexDirection.Row, width).Unwrap();
+            var marginRow = child.GetMarginForAxis(FlexDirection.Row, width).Unwrap();
             var marginColumn =
-                child.GetMarginForAxis(YGFlexDirection.Column, width).Unwrap();
+                child.GetMarginForAxis(FlexDirection.Column, width).Unwrap();
 
-            if (YGNodeIsStyleDimDefined(child, YGFlexDirection.Row, width))
+            if (YGNodeIsStyleDimDefined(child, FlexDirection.Row, width))
             {
                 childWidth =
-                    child.GetResolvedDimensions()[(int)YGDimension.Width]
+                    child.GetResolvedDimensions()[(int)Dimension.Width]
                          .Resolve(width)
                          .Unwrap() +
                     marginRow;
@@ -1404,23 +1406,23 @@ namespace Yoga.Net
             {
                 // If the child doesn't have a specified width, compute the width based on
                 // the left/right offsets if they're defined.
-                if (child.IsLeadingPositionDefined(YGFlexDirection.Row) &&
-                    child.IsTrailingPosDefined(YGFlexDirection.Row))
+                if (child.IsLeadingPositionDefined(FlexDirection.Row) &&
+                    child.IsTrailingPosDefined(FlexDirection.Row))
                 {
-                    childWidth = node.GetLayout().MeasuredDimensions[(int)YGDimension.Width] -
-                        (node.GetLeadingBorder(YGFlexDirection.Row) +
-                            node.GetTrailingBorder(YGFlexDirection.Row)) -
-                        (child.GetLeadingPosition(YGFlexDirection.Row, width) +
-                            child.GetTrailingPosition(YGFlexDirection.Row, width))
+                    childWidth = node.GetLayout().MeasuredDimensions[(int)Dimension.Width] -
+                        (node.GetLeadingBorder(FlexDirection.Row) +
+                            node.GetTrailingBorder(FlexDirection.Row)) -
+                        (child.GetLeadingPosition(FlexDirection.Row, width) +
+                            child.GetTrailingPosition(FlexDirection.Row, width))
                        .Unwrap();
                     childWidth =
-                        YGNodeBoundAxis(child, YGFlexDirection.Row, childWidth, width, width);
+                        YGNodeBoundAxis(child, FlexDirection.Row, childWidth, width, width);
                 }
             }
 
-            if (YGNodeIsStyleDimDefined(child, YGFlexDirection.Column, height))
+            if (YGNodeIsStyleDimDefined(child, FlexDirection.Column, height))
             {
-                childHeight = child.GetResolvedDimensions()[(int)YGDimension.Height]
+                childHeight = child.GetResolvedDimensions()[(int)Dimension.Height]
                                    .Resolve(height)
                                    .Unwrap() + marginColumn;
             }
@@ -1428,18 +1430,18 @@ namespace Yoga.Net
             {
                 // If the child doesn't have a specified height, compute the height based on
                 // the top/bottom offsets if they're defined.
-                if (child.IsLeadingPositionDefined(YGFlexDirection.Column) &&
-                    child.IsTrailingPosDefined(YGFlexDirection.Column))
+                if (child.IsLeadingPositionDefined(FlexDirection.Column) &&
+                    child.IsTrailingPosDefined(FlexDirection.Column))
                 {
-                    childHeight = node.GetLayout().MeasuredDimensions[(int)YGDimension.Height] -
-                        (node.GetLeadingBorder(YGFlexDirection.Column) +
-                            node.GetTrailingBorder(YGFlexDirection.Column)) -
-                        (child.GetLeadingPosition(YGFlexDirection.Column, height) +
-                            child.GetTrailingPosition(YGFlexDirection.Column, height))
+                    childHeight = node.GetLayout().MeasuredDimensions[(int)Dimension.Height] -
+                        (node.GetLeadingBorder(FlexDirection.Column) +
+                            node.GetTrailingBorder(FlexDirection.Column)) -
+                        (child.GetLeadingPosition(FlexDirection.Column, height) +
+                            child.GetTrailingPosition(FlexDirection.Column, height))
                        .Unwrap();
                     childHeight = YGNodeBoundAxis(
                         child,
-                        YGFlexDirection.Column,
+                        FlexDirection.Column,
                         childHeight,
                         height,
                         width);
@@ -1452,7 +1454,7 @@ namespace Yoga.Net
             var childStyle = child.GetStyle();
             if (YogaIsUndefined(childWidth) ^ YogaIsUndefined(childHeight))
             {
-                if (!childStyle.AspectRatio.IsUndefined())
+                if (!childStyle.AspectRatio.IsUndefined)
                 {
                     if (YogaIsUndefined(childWidth))
                     {
@@ -1471,22 +1473,22 @@ namespace Yoga.Net
             if (YogaIsUndefined(childWidth) || YogaIsUndefined(childHeight))
             {
                 childWidthMeasureMode = YogaIsUndefined(childWidth)
-                    ? YGMeasureMode.Undefined
-                    : YGMeasureMode.Exactly;
+                    ? MeasureMode.Undefined
+                    : MeasureMode.Exactly;
                 childHeightMeasureMode = YogaIsUndefined(childHeight)
-                    ? YGMeasureMode.Undefined
-                    : YGMeasureMode.Exactly;
+                    ? MeasureMode.Undefined
+                    : MeasureMode.Exactly;
 
                 // If the size of the owner is defined then try to constrain the absolute
                 // child to that size as well. This allows text within the absolute child to
                 // wrap to the size of its owner. This is the same behavior as many browsers
                 // implement.
                 if (!isMainAxisRow && YogaIsUndefined(childWidth) &&
-                    widthMode != YGMeasureMode.Undefined && !YogaIsUndefined(width) &&
+                    widthMode != MeasureMode.Undefined && !YogaIsUndefined(width) &&
                     width > 0)
                 {
                     childWidth            = width;
-                    childWidthMeasureMode = YGMeasureMode.AtMost;
+                    childWidthMeasureMode = MeasureMode.AtMost;
                 }
 
                 YGLayoutNodeInternal(
@@ -1505,10 +1507,10 @@ namespace Yoga.Net
                     layoutContext,
                     depth,
                     generationCount);
-                childWidth = child.GetLayout().MeasuredDimensions[(int)YGDimension.Width] +
-                    child.GetMarginForAxis(YGFlexDirection.Row, width).Unwrap();
-                childHeight = child.GetLayout().MeasuredDimensions[(int)YGDimension.Height] +
-                    child.GetMarginForAxis(YGFlexDirection.Column, width).Unwrap();
+                childWidth = child.GetLayout().MeasuredDimensions[(int)Dimension.Width] +
+                    child.GetMarginForAxis(FlexDirection.Row, width).Unwrap();
+                childHeight = child.GetLayout().MeasuredDimensions[(int)Dimension.Height] +
+                    child.GetMarginForAxis(FlexDirection.Column, width).Unwrap();
             }
 
             YGLayoutNodeInternal(
@@ -1516,8 +1518,8 @@ namespace Yoga.Net
                 childWidth,
                 childHeight,
                 direction,
-                YGMeasureMode.Exactly,
-                YGMeasureMode.Exactly,
+                MeasureMode.Exactly,
+                MeasureMode.Exactly,
                 childWidth,
                 childHeight,
                 true,
@@ -1542,7 +1544,7 @@ namespace Yoga.Net
             }
             else if (
                 !child.IsLeadingPositionDefined(mainAxis) &&
-                node.GetStyle().JustifyContent == YGJustify.Center)
+                node.GetStyle().JustifyContent == Justify.Center)
             {
                 child.SetLayoutPosition(
                     (node.GetLayout().MeasuredDimensions[(int)dim[(int)mainAxis]] -
@@ -1552,7 +1554,7 @@ namespace Yoga.Net
             }
             else if (
                 !child.IsLeadingPositionDefined(mainAxis) &&
-                node.GetStyle().JustifyContent == YGJustify.FlexEnd)
+                node.GetStyle().JustifyContent == Justify.FlexEnd)
             {
                 child.SetLayoutPosition(
                     (node.GetLayout().MeasuredDimensions[(int)dim[(int)mainAxis]] -
@@ -1575,7 +1577,7 @@ namespace Yoga.Net
             }
             else if (
                 !child.IsLeadingPositionDefined(crossAxis) &&
-                YGNodeAlignItem(node, child) == YGAlign.Center)
+                YGNodeAlignItem(node, child) == YogaAlign.Center)
             {
                 child.SetLayoutPosition(
                     (node.GetLayout().MeasuredDimensions[(int)dim[(int)crossAxis]] -
@@ -1585,8 +1587,8 @@ namespace Yoga.Net
             }
             else if (
                 !child.IsLeadingPositionDefined(crossAxis) &&
-                ((YGNodeAlignItem(node, child) == YGAlign.FlexEnd) ^
-                    (node.GetStyle().FlexWrap == YGWrap.WrapReverse)))
+                ((YGNodeAlignItem(node, child) == YogaAlign.FlexEnd) ^
+                    (node.GetStyle().FlexWrap == Wrap.WrapReverse)))
             {
                 child.SetLayoutPosition(
                     (node.GetLayout().MeasuredDimensions[(int)dim[(int)crossAxis]] -
@@ -1599,8 +1601,8 @@ namespace Yoga.Net
             YGNode node,
             float availableWidth,
             float availableHeight,
-            YGMeasureMode widthMeasureMode,
-            YGMeasureMode heightMeasureMode,
+            MeasureMode widthMeasureMode,
+            MeasureMode heightMeasureMode,
             float ownerWidth,
             float ownerHeight,
             LayoutData layoutMarkerData,
@@ -1613,15 +1615,15 @@ namespace Yoga.Net
                 "Expected node to have custom measure function");
 
             float paddingAndBorderAxisRow =
-                YGNodePaddingAndBorderForAxis(node, YGFlexDirection.Row, availableWidth);
+                YGNodePaddingAndBorderForAxis(node, FlexDirection.Row, availableWidth);
             float paddingAndBorderAxisColumn = YGNodePaddingAndBorderForAxis(
                 node,
-                YGFlexDirection.Column,
+                FlexDirection.Column,
                 availableWidth);
             float marginAxisRow =
-                node.GetMarginForAxis(YGFlexDirection.Row, availableWidth).Unwrap();
+                node.GetMarginForAxis(FlexDirection.Row, availableWidth).Unwrap();
             float marginAxisColumn =
-                node.GetMarginForAxis(YGFlexDirection.Column, availableWidth).Unwrap();
+                node.GetMarginForAxis(FlexDirection.Column, availableWidth).Unwrap();
 
             // We want to make sure we don't call measure with negative size
             float innerWidth = YogaIsUndefined(availableWidth)
@@ -1633,26 +1635,26 @@ namespace Yoga.Net
                     0,
                     availableHeight - marginAxisColumn - paddingAndBorderAxisColumn);
 
-            if (widthMeasureMode == YGMeasureMode.Exactly &&
-                heightMeasureMode == YGMeasureMode.Exactly)
+            if (widthMeasureMode == MeasureMode.Exactly &&
+                heightMeasureMode == MeasureMode.Exactly)
             {
                 // Don't bother sizing the text if both dimensions are already defined.
                 node.SetLayoutMeasuredDimension(
                     YGNodeBoundAxis(
                         node,
-                        YGFlexDirection.Row,
+                        FlexDirection.Row,
                         availableWidth - marginAxisRow,
                         ownerWidth,
                         ownerWidth),
-                    YGDimension.Width);
+                    Dimension.Width);
                 node.SetLayoutMeasuredDimension(
                     YGNodeBoundAxis(
                         node,
-                        YGFlexDirection.Column,
+                        FlexDirection.Column,
                         availableHeight - marginAxisColumn,
                         ownerHeight,
                         ownerWidth),
-                    YGDimension.Height);
+                    Dimension.Height);
             }
             else
             {
@@ -1672,7 +1674,8 @@ namespace Yoga.Net
                     layoutMarkerData.MeasureCallbackReasonsCount[(int)reason] += 1;
                 }
 
-                Event.Hub.Publish( new MeasureCallbackEndEventArgs(
+                Event.Hub.Publish(
+                    new MeasureCallbackEndEventArgs(
                         node,
                         layoutContext,
                         innerWidth,
@@ -1686,26 +1689,26 @@ namespace Yoga.Net
                 node.SetLayoutMeasuredDimension(
                     YGNodeBoundAxis(
                         node,
-                        YGFlexDirection.Row,
-                        (widthMeasureMode == YGMeasureMode.Undefined ||
-                            widthMeasureMode == YGMeasureMode.AtMost)
+                        FlexDirection.Row,
+                        (widthMeasureMode == MeasureMode.Undefined ||
+                            widthMeasureMode == MeasureMode.AtMost)
                             ? measuredSize.Width + paddingAndBorderAxisRow
                             : availableWidth - marginAxisRow,
                         ownerWidth,
                         ownerWidth),
-                    YGDimension.Width);
+                    Dimension.Width);
 
                 node.SetLayoutMeasuredDimension(
                     YGNodeBoundAxis(
                         node,
-                        YGFlexDirection.Column,
-                        (heightMeasureMode == YGMeasureMode.Undefined ||
-                            heightMeasureMode == YGMeasureMode.AtMost)
+                        FlexDirection.Column,
+                        (heightMeasureMode == MeasureMode.Undefined ||
+                            heightMeasureMode == MeasureMode.AtMost)
                             ? measuredSize.Height + paddingAndBorderAxisColumn
                             : availableHeight - marginAxisColumn,
                         ownerHeight,
                         ownerWidth),
-                    YGDimension.Height);
+                    Dimension.Height);
             }
         }
 
@@ -1715,91 +1718,91 @@ namespace Yoga.Net
             YGNode node,
             float availableWidth,
             float availableHeight,
-            YGMeasureMode widthMeasureMode,
-            YGMeasureMode heightMeasureMode,
+            MeasureMode widthMeasureMode,
+            MeasureMode heightMeasureMode,
             float ownerWidth,
             float ownerHeight)
         {
             float paddingAndBorderAxisRow =
-                YGNodePaddingAndBorderForAxis(node, YGFlexDirection.Row, ownerWidth);
+                YGNodePaddingAndBorderForAxis(node, FlexDirection.Row, ownerWidth);
             float paddingAndBorderAxisColumn =
-                YGNodePaddingAndBorderForAxis(node, YGFlexDirection.Column, ownerWidth);
+                YGNodePaddingAndBorderForAxis(node, FlexDirection.Column, ownerWidth);
             float marginAxisRow =
-                node.GetMarginForAxis(YGFlexDirection.Row, ownerWidth).Unwrap();
+                node.GetMarginForAxis(FlexDirection.Row, ownerWidth).Unwrap();
             float marginAxisColumn =
-                node.GetMarginForAxis(YGFlexDirection.Column, ownerWidth).Unwrap();
+                node.GetMarginForAxis(FlexDirection.Column, ownerWidth).Unwrap();
 
             node.SetLayoutMeasuredDimension(
                 YGNodeBoundAxis(
                     node,
-                    YGFlexDirection.Row,
-                    (widthMeasureMode == YGMeasureMode.Undefined ||
-                        widthMeasureMode == YGMeasureMode.AtMost)
+                    FlexDirection.Row,
+                    (widthMeasureMode == MeasureMode.Undefined ||
+                        widthMeasureMode == MeasureMode.AtMost)
                         ? paddingAndBorderAxisRow
                         : availableWidth - marginAxisRow,
                     ownerWidth,
                     ownerWidth),
-                YGDimension.Width);
+                Dimension.Width);
 
             node.SetLayoutMeasuredDimension(
                 YGNodeBoundAxis(
                     node,
-                    YGFlexDirection.Column,
-                    (heightMeasureMode == YGMeasureMode.Undefined ||
-                        heightMeasureMode == YGMeasureMode.AtMost)
+                    FlexDirection.Column,
+                    (heightMeasureMode == MeasureMode.Undefined ||
+                        heightMeasureMode == MeasureMode.AtMost)
                         ? paddingAndBorderAxisColumn
                         : availableHeight - marginAxisColumn,
                     ownerHeight,
                     ownerWidth),
-                YGDimension.Height);
+                Dimension.Height);
         }
 
         public static bool YGNodeFixedSizeSetMeasuredDimensions(
             YGNode node,
             float availableWidth,
             float availableHeight,
-            YGMeasureMode widthMeasureMode,
-            YGMeasureMode heightMeasureMode,
+            MeasureMode widthMeasureMode,
+            MeasureMode heightMeasureMode,
             float ownerWidth,
             float ownerHeight)
         {
             if ((!YogaIsUndefined(availableWidth) &&
-                    widthMeasureMode == YGMeasureMode.AtMost && availableWidth <= 0.0f) ||
+                    widthMeasureMode == MeasureMode.AtMost && availableWidth <= 0.0f) ||
                 (!YogaIsUndefined(availableHeight) &&
-                    heightMeasureMode == YGMeasureMode.AtMost && availableHeight <= 0.0f) ||
-                (widthMeasureMode == YGMeasureMode.Exactly &&
-                    heightMeasureMode == YGMeasureMode.Exactly))
+                    heightMeasureMode == MeasureMode.AtMost && availableHeight <= 0.0f) ||
+                (widthMeasureMode == MeasureMode.Exactly &&
+                    heightMeasureMode == MeasureMode.Exactly))
             {
                 var marginAxisColumn =
-                    node.GetMarginForAxis(YGFlexDirection.Column, ownerWidth).Unwrap();
+                    node.GetMarginForAxis(FlexDirection.Column, ownerWidth).Unwrap();
                 var marginAxisRow =
-                    node.GetMarginForAxis(YGFlexDirection.Row, ownerWidth).Unwrap();
+                    node.GetMarginForAxis(FlexDirection.Row, ownerWidth).Unwrap();
 
                 node.SetLayoutMeasuredDimension(
                     YGNodeBoundAxis(
                         node,
-                        YGFlexDirection.Row,
+                        FlexDirection.Row,
                         YogaIsUndefined(availableWidth) ||
-                        (widthMeasureMode == YGMeasureMode.AtMost &&
+                        (widthMeasureMode == MeasureMode.AtMost &&
                             availableWidth < 0.0f)
                             ? 0.0f
                             : availableWidth - marginAxisRow,
                         ownerWidth,
                         ownerWidth),
-                    YGDimension.Width);
+                    Dimension.Width);
 
                 node.SetLayoutMeasuredDimension(
                     YGNodeBoundAxis(
                         node,
-                        YGFlexDirection.Column,
+                        FlexDirection.Column,
                         YogaIsUndefined(availableHeight) ||
-                        (heightMeasureMode == YGMeasureMode.AtMost &&
+                        (heightMeasureMode == MeasureMode.AtMost &&
                             availableHeight < 0.0f)
                             ? 0.0f
                             : availableHeight - marginAxisColumn,
                         ownerHeight,
                         ownerWidth),
-                    YGDimension.Height);
+                    Dimension.Height);
                 return true;
             }
 
@@ -1822,12 +1825,12 @@ namespace Yoga.Net
 
         public static float YGNodeCalculateAvailableInnerDim(
             in YGNode node,
-            YGFlexDirection axis,
+            FlexDirection axis,
             float availableDim,
             float ownerDim)
         {
-            YGFlexDirection direction = axis.IsRow() ? YGFlexDirection.Row : YGFlexDirection.Column;
-            YGDimension dimension = axis.IsRow() ? YGDimension.Width : YGDimension.Height;
+            FlexDirection direction = axis.IsRow() ? FlexDirection.Row : FlexDirection.Column;
+            Dimension dimension = axis.IsRow() ? Dimension.Width : Dimension.Height;
 
             float margin = node.GetMarginForAxis(direction, ownerDim).Unwrap();
             float paddingAndBorder =
@@ -1841,13 +1844,13 @@ namespace Yoga.Net
                 // We want to make sure our available height does not violate min and max
                 // constraints
                 FloatOptional minDimensionOptional = node.GetStyle().MinDimensions[dimension].Resolve(ownerDim);
-                float minInnerDim = minDimensionOptional.IsUndefined()
+                float minInnerDim = minDimensionOptional.IsUndefined
                     ? 0.0f
                     : minDimensionOptional.Unwrap() - paddingAndBorder;
 
                 FloatOptional maxDimensionOptional = node.GetStyle().MaxDimensions[dimension].Resolve(ownerDim);
 
-                float maxInnerDim = maxDimensionOptional.IsUndefined()
+                float maxInnerDim = maxDimensionOptional.IsUndefined
                     ? float.MaxValue
                     : maxDimensionOptional.Unwrap() - paddingAndBorder;
                 availableInnerDim = FloatMax(FloatMin(availableInnerDim, maxInnerDim), minInnerDim);
@@ -1860,10 +1863,10 @@ namespace Yoga.Net
             YGNode node,
             float availableInnerWidth,
             float availableInnerHeight,
-            YGMeasureMode widthMeasureMode,
-            YGMeasureMode heightMeasureMode,
-            YGDirection direction,
-            YGFlexDirection mainAxis,
+            MeasureMode widthMeasureMode,
+            MeasureMode heightMeasureMode,
+            Direction direction,
+            FlexDirection mainAxis,
             YogaConfig config,
             bool performLayout,
             LayoutData layoutMarkerData,
@@ -1874,12 +1877,12 @@ namespace Yoga.Net
             float totalOuterFlexBasis = 0.0f;
             YGNode singleFlexChild = null;
             YGVector children = node.GetChildren();
-            YGMeasureMode measureModeMainDim =
+            MeasureMode measureModeMainDim =
                 mainAxis.IsRow() ? widthMeasureMode : heightMeasureMode;
             // If there is only one child with flexGrow + flexShrink it means we can set
             // the computedFlexBasis to 0 instead of measuring and shrinking / flexing the
             // child to exactly match the remaining space
-            if (measureModeMainDim == YGMeasureMode.Exactly)
+            if (measureModeMainDim == MeasureMode.Exactly)
             {
                 foreach (var child in children)
                 {
@@ -1905,7 +1908,7 @@ namespace Yoga.Net
             foreach (var child in children)
             {
                 child.ResolveDimension();
-                if (child.GetStyle().Display == YGDisplay.None)
+                if (child.GetStyle().Display == Display.None)
                 {
                     YGZeroOutLayoutRecursivly(child, layoutContext);
                     child.SetHasNewLayout(true);
@@ -1916,7 +1919,7 @@ namespace Yoga.Net
                 if (performLayout)
                 {
                     // Set the initial position (relative to the owner).
-                    YGDirection childDirection = child.ResolveDirection(direction);
+                    Direction childDirection = child.ResolveDirection(direction);
                     float mainDim = mainAxis.IsRow() ? availableInnerWidth : availableInnerHeight;
                     float crossDim = mainAxis.IsRow() ? availableInnerHeight : availableInnerWidth;
                     child.SetPosition(
@@ -1926,7 +1929,7 @@ namespace Yoga.Net
                         availableInnerWidth);
                 }
 
-                if (child.GetStyle().PositionType == YGPositionType.Absolute)
+                if (child.GetStyle().PositionType == PositionType.Absolute)
                 {
                     continue;
                 }
@@ -1970,7 +1973,7 @@ namespace Yoga.Net
         // YGCollectFlexItemsRowMeasurement
         public static CollectFlexItemsRowValues YGCalculateCollectFlexItemsRowValues(
             YGNode node,
-            YGDirection ownerDirection,
+            Direction ownerDirection,
             float mainAxisownerSize,
             float availableInnerWidth,
             float availableInnerMainDim,
@@ -1981,16 +1984,16 @@ namespace Yoga.Net
             flexAlgoRowMeasurement.RelativeChildren = new List<YGNode>(node.GetChildren().Count);
 
             float sizeConsumedOnCurrentLineIncludingMinConstraint = 0;
-            YGFlexDirection mainAxis = node.GetStyle().FlexDirection.Resolve(node.ResolveDirection(ownerDirection));
-            bool isNodeFlexWrap = node.GetStyle().FlexWrap != YGWrap.NoWrap;
+            FlexDirection mainAxis = node.GetStyle().FlexDirection.Resolve(node.ResolveDirection(ownerDirection));
+            bool isNodeFlexWrap = node.GetStyle().FlexWrap != Wrap.NoWrap;
 
             // Add items to the current line until it's full or we run out of items.
             int endOfLineIndex = startOfLineIndex;
             for (; endOfLineIndex < node.GetChildren().Count; endOfLineIndex++)
             {
                 YGNode child = node.Children[endOfLineIndex];
-                if (child.GetStyle().Display == YGDisplay.None ||
-                    child.GetStyle().PositionType == YGPositionType.Absolute)
+                if (child.GetStyle().Display == Display.None ||
+                    child.GetStyle().PositionType == PositionType.Absolute)
                 {
                     continue;
                 }
@@ -2062,15 +2065,15 @@ namespace Yoga.Net
         public static float YGDistributeFreeSpaceSecondPass(
             CollectFlexItemsRowValues collectedFlexItemsValues,
             YGNode node,
-            YGFlexDirection mainAxis,
-            YGFlexDirection crossAxis,
+            FlexDirection mainAxis,
+            FlexDirection crossAxis,
             float mainAxisownerSize,
             float availableInnerMainDim,
             float availableInnerCrossDim,
             float availableInnerWidth,
             float availableInnerHeight,
             bool flexBasisOverflows,
-            YGMeasureMode measureModeCrossDim,
+            MeasureMode measureModeCrossDim,
             bool performLayout,
             YogaConfig config,
             LayoutData layoutMarkerData,
@@ -2083,7 +2086,7 @@ namespace Yoga.Net
             float flexGrowFactor = 0;
             float deltaFreeSpace = 0;
             bool isMainAxisRow = mainAxis.IsRow();
-            bool isNodeFlexWrap = node.GetStyle().FlexWrap != YGWrap.NoWrap;
+            bool isNodeFlexWrap = node.GetStyle().FlexWrap != Wrap.NoWrap;
 
             foreach (var currentRelativeChild in collectedFlexItemsValues.RelativeChildren)
             {
@@ -2134,7 +2137,7 @@ namespace Yoga.Net
                     flexGrowFactor = currentRelativeChild.ResolveFlexGrow();
 
                     // Is this child able to grow?
-                    if (!YogaIsUndefined(flexGrowFactor) && flexGrowFactor != 0)
+                    if (!YogaIsUndefined(flexGrowFactor) && flexGrowFactor.IsNotZero())
                     {
                         updatedMainSize = YGNodeBoundAxis(
                             currentRelativeChild,
@@ -2159,16 +2162,16 @@ namespace Yoga.Net
 
                 float childCrossSize;
                 float childMainSize = updatedMainSize + marginMain;
-                YGMeasureMode childCrossMeasureMode;
-                YGMeasureMode childMainMeasureMode = YGMeasureMode.Exactly;
+                MeasureMode childCrossMeasureMode;
+                MeasureMode childMainMeasureMode = MeasureMode.Exactly;
 
                 var childStyle = currentRelativeChild.GetStyle();
-                if (!childStyle.AspectRatio.IsUndefined())
+                if (!childStyle.AspectRatio.IsUndefined)
                 {
                     childCrossSize = isMainAxisRow
                         ? (childMainSize - marginMain) / childStyle.AspectRatio.Unwrap()
                         : (childMainSize - marginMain) * childStyle.AspectRatio.Unwrap();
-                    childCrossMeasureMode = YGMeasureMode.Exactly;
+                    childCrossMeasureMode = MeasureMode.Exactly;
 
                     childCrossSize += marginCross;
                 }
@@ -2178,14 +2181,14 @@ namespace Yoga.Net
                         currentRelativeChild,
                         crossAxis,
                         availableInnerCrossDim) &&
-                    measureModeCrossDim == YGMeasureMode.Exactly &&
+                    measureModeCrossDim == MeasureMode.Exactly &&
                     !(isNodeFlexWrap && flexBasisOverflows) &&
-                    YGNodeAlignItem(node, currentRelativeChild) == YGAlign.Stretch &&
-                    currentRelativeChild.MarginLeadingValue(crossAxis).Unit != YGUnit.Auto &&
-                    currentRelativeChild.MarginTrailingValue(crossAxis).Unit != YGUnit.Auto)
+                    YGNodeAlignItem(node, currentRelativeChild) == YogaAlign.Stretch &&
+                    currentRelativeChild.MarginLeadingValue(crossAxis).Unit != YogaUnit.Auto &&
+                    currentRelativeChild.MarginTrailingValue(crossAxis).Unit != YogaUnit.Auto)
                 {
                     childCrossSize        = availableInnerCrossDim;
-                    childCrossMeasureMode = YGMeasureMode.Exactly;
+                    childCrossMeasureMode = MeasureMode.Exactly;
                 }
                 else if (!YGNodeIsStyleDimDefined(
                     currentRelativeChild,
@@ -2194,8 +2197,8 @@ namespace Yoga.Net
                 {
                     childCrossSize = availableInnerCrossDim;
                     childCrossMeasureMode = YogaIsUndefined(childCrossSize)
-                        ? YGMeasureMode.Undefined
-                        : YGMeasureMode.AtMost;
+                        ? MeasureMode.Undefined
+                        : MeasureMode.AtMost;
                 }
                 else
                 {
@@ -2203,12 +2206,12 @@ namespace Yoga.Net
                                                          .Resolve(availableInnerCrossDim)
                                                          .Unwrap() + marginCross;
                     bool isLoosePercentageMeasurement =
-                        currentRelativeChild.GetResolvedDimension(dim[(int)crossAxis]).Unit == YGUnit.Percent &&
-                        measureModeCrossDim != YGMeasureMode.Exactly;
+                        currentRelativeChild.GetResolvedDimension(dim[(int)crossAxis]).Unit == YogaUnit.Percent &&
+                        measureModeCrossDim != MeasureMode.Exactly;
                     childCrossMeasureMode =
                         YogaIsUndefined(childCrossSize) || isLoosePercentageMeasurement
-                            ? YGMeasureMode.Undefined
-                            : YGMeasureMode.Exactly;
+                            ? MeasureMode.Undefined
+                            : MeasureMode.Exactly;
                 }
 
                 YGConstrainMaxSizeForMode(
@@ -2231,17 +2234,17 @@ namespace Yoga.Net
                         currentRelativeChild,
                         crossAxis,
                         availableInnerCrossDim) &&
-                    YGNodeAlignItem(node, currentRelativeChild) == YGAlign.Stretch &&
+                    YGNodeAlignItem(node, currentRelativeChild) == YogaAlign.Stretch &&
                     currentRelativeChild.MarginLeadingValue(crossAxis).Unit !=
-                    YGUnit.Auto &&
-                    currentRelativeChild.MarginTrailingValue(crossAxis).Unit != YGUnit.Auto;
+                    YogaUnit.Auto &&
+                    currentRelativeChild.MarginTrailingValue(crossAxis).Unit != YogaUnit.Auto;
 
                 float childWidth = isMainAxisRow ? childMainSize : childCrossSize;
                 float childHeight = !isMainAxisRow ? childMainSize : childCrossSize;
 
-                YGMeasureMode childWidthMeasureMode =
+                MeasureMode childWidthMeasureMode =
                     isMainAxisRow ? childMainMeasureMode : childCrossMeasureMode;
-                YGMeasureMode childHeightMeasureMode =
+                MeasureMode childHeightMeasureMode =
                     !isMainAxisRow ? childMainMeasureMode : childCrossMeasureMode;
 
                 bool isLayoutPass = performLayout && !requiresStretchLayout;
@@ -2278,7 +2281,7 @@ namespace Yoga.Net
         // is removed from the remaingfreespace.
         public static void YGDistributeFreeSpaceFirstPass(
             CollectFlexItemsRowValues collectedFlexItemsValues,
-            YGFlexDirection mainAxis,
+            FlexDirection mainAxis,
             float mainAxisownerSize,
             float availableInnerMainDim,
             float availableInnerWidth)
@@ -2394,15 +2397,15 @@ namespace Yoga.Net
         public static void YGResolveFlexibleLength(
             YGNode node,
             CollectFlexItemsRowValues collectedFlexItemsValues,
-            YGFlexDirection mainAxis,
-            YGFlexDirection crossAxis,
+            FlexDirection mainAxis,
+            FlexDirection crossAxis,
             float mainAxisownerSize,
             float availableInnerMainDim,
             float availableInnerCrossDim,
             float availableInnerWidth,
             float availableInnerHeight,
             bool flexBasisOverflows,
-            YGMeasureMode measureModeCrossDim,
+            MeasureMode measureModeCrossDim,
             bool performLayout,
             YogaConfig config,
             LayoutData layoutMarkerData,
@@ -2447,10 +2450,10 @@ namespace Yoga.Net
             YGNode node,
             CollectFlexItemsRowValues collectedFlexItemsValues,
             int startOfLineIndex,
-            YGFlexDirection mainAxis,
-            YGFlexDirection crossAxis,
-            YGMeasureMode measureModeMainDim,
-            YGMeasureMode measureModeCrossDim,
+            FlexDirection mainAxis,
+            FlexDirection crossAxis,
+            MeasureMode measureModeMainDim,
+            MeasureMode measureModeCrossDim,
             float mainAxisownerSize,
             float ownerWidth,
             float availableInnerMainDim,
@@ -2466,11 +2469,11 @@ namespace Yoga.Net
                 node.GetTrailingPaddingAndBorder(mainAxis, ownerWidth).Unwrap();
             // If we are using "at most" rules in the main axis, make sure that
             // remainingFreeSpace is 0 when min main dimension is not given
-            if (measureModeMainDim == YGMeasureMode.AtMost &&
+            if (measureModeMainDim == MeasureMode.AtMost &&
                 collectedFlexItemsValues.RemainingFreeSpace > 0)
             {
                 if (!style.MinDimensions[(int)dim[(int)mainAxis]].IsUndefined &&
-                    !style.MinDimensions[(int)dim[(int)mainAxis]].Resolve(mainAxisownerSize).IsUndefined())
+                    !style.MinDimensions[(int)dim[(int)mainAxis]].Resolve(mainAxisownerSize).IsUndefined)
                 {
                     // This condition makes sure that if the size of main dimension(after
                     // considering child nodes main dim, leading and trailing padding etc)
@@ -2498,14 +2501,14 @@ namespace Yoga.Net
                  i++)
             {
                 YGNode child = node.Children[i];
-                if (child.GetStyle().PositionType == YGPositionType.Relative)
+                if (child.GetStyle().PositionType == PositionType.Relative)
                 {
-                    if (child.MarginLeadingValue(mainAxis).Unit == YGUnit.Auto)
+                    if (child.MarginLeadingValue(mainAxis).Unit == YogaUnit.Auto)
                     {
                         numberOfAutoMarginsOnCurrentLine++;
                     }
 
-                    if (child.MarginTrailingValue(mainAxis).Unit == YGUnit.Auto)
+                    if (child.MarginTrailingValue(mainAxis).Unit == YogaUnit.Auto)
                     {
                         numberOfAutoMarginsOnCurrentLine++;
                     }
@@ -2517,19 +2520,19 @@ namespace Yoga.Net
             // each two elements.
             float leadingMainDim = 0;
             float betweenMainDim = 0;
-            YGJustify justifyContent = node.GetStyle().JustifyContent;
+            Justify justifyContent = node.GetStyle().JustifyContent;
 
             if (numberOfAutoMarginsOnCurrentLine == 0)
             {
                 switch (justifyContent)
                 {
-                case YGJustify.Center:
+                case Justify.Center:
                     leadingMainDim = collectedFlexItemsValues.RemainingFreeSpace / 2;
                     break;
-                case YGJustify.FlexEnd:
+                case Justify.FlexEnd:
                     leadingMainDim = collectedFlexItemsValues.RemainingFreeSpace;
                     break;
-                case YGJustify.SpaceBetween:
+                case Justify.SpaceBetween:
                     if (collectedFlexItemsValues.ItemsOnLine > 1)
                     {
                         betweenMainDim =
@@ -2542,19 +2545,19 @@ namespace Yoga.Net
                     }
 
                     break;
-                case YGJustify.SpaceEvenly:
+                case Justify.SpaceEvenly:
                     // Space is distributed evenly across all elements
                     betweenMainDim = collectedFlexItemsValues.RemainingFreeSpace /
                         (collectedFlexItemsValues.ItemsOnLine + 1);
                     leadingMainDim = betweenMainDim;
                     break;
-                case YGJustify.SpaceAround:
+                case Justify.SpaceAround:
                     // Space on the edges is half of the space between elements
                     betweenMainDim = collectedFlexItemsValues.RemainingFreeSpace /
                         collectedFlexItemsValues.ItemsOnLine;
                     leadingMainDim = betweenMainDim / 2;
                     break;
-                case YGJustify.FlexStart:
+                case Justify.FlexStart:
                     break;
                 }
             }
@@ -2573,12 +2576,12 @@ namespace Yoga.Net
                 YGNode child = node.Children[i];
                 YogaStyle childStyle = child.GetStyle();
                 YogaLayout childLayout = child.GetLayout();
-                if (childStyle.Display == YGDisplay.None)
+                if (childStyle.Display == Display.None)
                 {
                     continue;
                 }
 
-                if (childStyle.PositionType == YGPositionType.Absolute &&
+                if (childStyle.PositionType == PositionType.Absolute &&
                     child.IsLeadingPositionDefined(mainAxis))
                 {
                     if (performLayout)
@@ -2599,9 +2602,9 @@ namespace Yoga.Net
                     // Now that we placed the element, we need to update the variables.
                     // We need to do that only for relative elements. Absolute elements do not
                     // take part in that phase.
-                    if (childStyle.PositionType == YGPositionType.Relative)
+                    if (childStyle.PositionType == PositionType.Relative)
                     {
-                        if (child.MarginLeadingValue(mainAxis).Unit == YGUnit.Auto)
+                        if (child.MarginLeadingValue(mainAxis).Unit == YogaUnit.Auto)
                         {
                             collectedFlexItemsValues.MainDim +=
                                 collectedFlexItemsValues.RemainingFreeSpace /
@@ -2616,7 +2619,7 @@ namespace Yoga.Net
                                 (int)pos[(int)mainAxis]);
                         }
 
-                        if (child.MarginTrailingValue(mainAxis).Unit == YGUnit.Auto)
+                        if (child.MarginTrailingValue(mainAxis).Unit == YogaUnit.Auto)
                         {
                             collectedFlexItemsValues.MainDim +=
                                 collectedFlexItemsValues.RemainingFreeSpace /
@@ -2624,7 +2627,7 @@ namespace Yoga.Net
                         }
 
                         bool canSkipFlex =
-                            !performLayout && measureModeCrossDim == YGMeasureMode.Exactly;
+                            !performLayout && measureModeCrossDim == MeasureMode.Exactly;
                         if (canSkipFlex)
                         {
                             // If we skipped the flex step, then we can't rely on the measuredDims
@@ -2649,14 +2652,14 @@ namespace Yoga.Net
                                 float ascent = YGBaseline(child, layoutContext) +
                                     child
                                        .GetLeadingMargin(
-                                            YGFlexDirection.Column,
+                                            FlexDirection.Column,
                                             availableInnerWidth)
                                        .Unwrap();
                                 float descent =
-                                    child.GetLayout().MeasuredDimensions[(int)YGDimension.Height] +
+                                    child.GetLayout().MeasuredDimensions[(int)Dimension.Height] +
                                     child
                                        .GetMarginForAxis(
-                                            YGFlexDirection.Column,
+                                            FlexDirection.Column,
                                             availableInnerWidth)
                                        .Unwrap() -
                                     ascent;
@@ -2753,21 +2756,21 @@ namespace Yoga.Net
         //    content" because we don't support default minimum main sizes (see above
         //    for details). Each of our measure modes maps to a layout mode from the
         //    spec (https://www.w3.org/TR/CSS3-sizing/#terms):
-        //      - YGMeasureMode.Undefined: max content
-        //      - YGMeasureMode.Exactly: fill available
-        //      - YGMeasureMode.AtMost: fit content
+        //      - MeasureMode.Undefined: max content
+        //      - MeasureMode.Exactly: fill available
+        //      - MeasureMode.AtMost: fit content
         //
         //    When calling YGNodelayoutImpl and YGLayoutNodeInternal, if the caller
         //    passes an available size of undefined then it must also pass a measure
-        //    mode of YGMeasureMode.Undefined in that dimension.
+        //    mode of MeasureMode.Undefined in that dimension.
         //
         public static void YGNodelayoutImpl(
             YGNode node,
             float availableWidth,
             float availableHeight,
-            YGDirection ownerDirection,
-            YGMeasureMode widthMeasureMode,
-            YGMeasureMode heightMeasureMode,
+            Direction ownerDirection,
+            MeasureMode widthMeasureMode,
+            MeasureMode heightMeasureMode,
             float ownerWidth,
             float ownerHeight,
             bool performLayout,
@@ -2781,15 +2784,15 @@ namespace Yoga.Net
             YGAssertWithNode(
                 node,
                 YogaIsUndefined(availableWidth)
-                    ? widthMeasureMode == YGMeasureMode.Undefined
+                    ? widthMeasureMode == MeasureMode.Undefined
                     : true,
-                "availableWidth is indefinite so widthMeasureMode must be YGMeasureMode.Undefined");
+                "availableWidth is indefinite so widthMeasureMode must be MeasureMode.Undefined");
             YGAssertWithNode(
                 node,
                 YogaIsUndefined(availableHeight)
-                    ? heightMeasureMode == YGMeasureMode.Undefined
+                    ? heightMeasureMode == MeasureMode.Undefined
                     : true,
-                "availableHeight is indefinite so heightMeasureMode must be YGMeasureMode.Undefined");
+                "availableHeight is indefinite so heightMeasureMode must be MeasureMode.Undefined");
 
             if (performLayout)
                 layoutMarkerData.Layouts++;
@@ -2797,15 +2800,15 @@ namespace Yoga.Net
                 layoutMarkerData.Measures++;
 
             // Set the resolved resolution in the node's layout.
-            YGDirection direction = node.ResolveDirection(ownerDirection);
+            Direction direction = node.ResolveDirection(ownerDirection);
             node.SetLayoutDirection(direction);
 
-            YGFlexDirection flexRowDirection = YGFlexDirection.Row.Resolve(direction);
-            YGFlexDirection flexColumnDirection = YGFlexDirection.Column.Resolve(direction);
+            FlexDirection flexRowDirection = FlexDirection.Row.Resolve(direction);
+            FlexDirection flexColumnDirection = FlexDirection.Column.Resolve(direction);
 
-            YGEdge startEdge =
-                direction == YGDirection.LTR ? YGEdge.Left : YGEdge.Right;
-            YGEdge endEdge = direction == YGDirection.LTR ? YGEdge.Right : YGEdge.Left;
+            Edge startEdge =
+                direction == Direction.LTR ? Edge.Left : Edge.Right;
+            Edge endEdge = direction == Direction.LTR ? Edge.Right : Edge.Left;
             node.SetLayoutMargin(
                 node.GetLeadingMargin(flexRowDirection, ownerWidth).Unwrap(),
                 startEdge);
@@ -2814,17 +2817,17 @@ namespace Yoga.Net
                 endEdge);
             node.SetLayoutMargin(
                 node.GetLeadingMargin(flexColumnDirection, ownerWidth).Unwrap(),
-                YGEdge.Top);
+                Edge.Top);
             node.SetLayoutMargin(
                 node.GetTrailingMargin(flexColumnDirection, ownerWidth).Unwrap(),
-                YGEdge.Bottom);
+                Edge.Bottom);
 
             node.SetLayoutBorder(node.GetLeadingBorder(flexRowDirection), startEdge);
             node.SetLayoutBorder(node.GetTrailingBorder(flexRowDirection), endEdge);
-            node.SetLayoutBorder(node.GetLeadingBorder(flexColumnDirection), YGEdge.Top);
+            node.SetLayoutBorder(node.GetLeadingBorder(flexColumnDirection), Edge.Top);
             node.SetLayoutBorder(
                 node.GetTrailingBorder(flexColumnDirection),
-                YGEdge.Bottom);
+                Edge.Bottom);
 
             node.SetLayoutPadding(
                 node.GetLeadingPadding(flexRowDirection, ownerWidth).Unwrap(),
@@ -2834,10 +2837,10 @@ namespace Yoga.Net
                 endEdge);
             node.SetLayoutPadding(
                 node.GetLeadingPadding(flexColumnDirection, ownerWidth).Unwrap(),
-                YGEdge.Top);
+                Edge.Top);
             node.SetLayoutPadding(
                 node.GetTrailingPadding(flexColumnDirection, ownerWidth).Unwrap(),
-                YGEdge.Bottom);
+                Edge.Bottom);
 
             if (node.HasMeasureFunc())
             {
@@ -2891,10 +2894,10 @@ namespace Yoga.Net
             node.SetLayoutHadOverflow(false);
 
             // STEP 1: CALCULATE VALUES FOR REMAINDER OF ALGORITHM
-            YGFlexDirection mainAxis = node.GetStyle().FlexDirection.Resolve(direction);
-            YGFlexDirection crossAxis = mainAxis.CrossAxis(direction);
+            FlexDirection mainAxis = node.GetStyle().FlexDirection.Resolve(direction);
+            FlexDirection crossAxis = mainAxis.CrossAxis(direction);
             bool isMainAxisRow = mainAxis.IsRow();
-            bool isNodeFlexWrap = node.GetStyle().FlexWrap != YGWrap.NoWrap;
+            bool isNodeFlexWrap = node.GetStyle().FlexWrap != Wrap.NoWrap;
 
             float mainAxisownerSize = isMainAxisRow ? ownerWidth : ownerHeight;
             float crossAxisownerSize = isMainAxisRow ? ownerHeight : ownerWidth;
@@ -2906,9 +2909,9 @@ namespace Yoga.Net
             float paddingAndBorderAxisCross =
                 YGNodePaddingAndBorderForAxis(node, crossAxis, ownerWidth);
 
-            YGMeasureMode measureModeMainDim =
+            MeasureMode measureModeMainDim =
                 isMainAxisRow ? widthMeasureMode : heightMeasureMode;
-            YGMeasureMode measureModeCrossDim =
+            MeasureMode measureModeCrossDim =
                 isMainAxisRow ? heightMeasureMode : widthMeasureMode;
 
             float paddingAndBorderAxisRow =
@@ -2917,16 +2920,16 @@ namespace Yoga.Net
                 isMainAxisRow ? paddingAndBorderAxisCross : paddingAndBorderAxisMain;
 
             float marginAxisRow =
-                node.GetMarginForAxis(YGFlexDirection.Row, ownerWidth).Unwrap();
+                node.GetMarginForAxis(FlexDirection.Row, ownerWidth).Unwrap();
             float marginAxisColumn =
-                node.GetMarginForAxis(YGFlexDirection.Column, ownerWidth).Unwrap();
+                node.GetMarginForAxis(FlexDirection.Column, ownerWidth).Unwrap();
 
             var minDimensions = node.GetStyle().MinDimensions;
             var maxDimensions = node.GetStyle().MaxDimensions;
-            float minInnerWidth = minDimensions[(int)YGDimension.Width].Resolve(ownerWidth).Unwrap() - paddingAndBorderAxisRow;
-            float maxInnerWidth = maxDimensions[(int)YGDimension.Width].Resolve(ownerWidth).Unwrap() - paddingAndBorderAxisRow;
-            float minInnerHeight = minDimensions[(int)YGDimension.Height].Resolve(ownerHeight).Unwrap() - paddingAndBorderAxisColumn;
-            float maxInnerHeight = maxDimensions[(int)YGDimension.Height].Resolve(ownerHeight).Unwrap() - paddingAndBorderAxisColumn;
+            float minInnerWidth = minDimensions[(int)Dimension.Width].Resolve(ownerWidth).Unwrap() - paddingAndBorderAxisRow;
+            float maxInnerWidth = maxDimensions[(int)Dimension.Width].Resolve(ownerWidth).Unwrap() - paddingAndBorderAxisRow;
+            float minInnerHeight = minDimensions[(int)Dimension.Height].Resolve(ownerHeight).Unwrap() - paddingAndBorderAxisColumn;
+            float maxInnerHeight = maxDimensions[(int)Dimension.Height].Resolve(ownerHeight).Unwrap() - paddingAndBorderAxisColumn;
 
             float minInnerMainDim = isMainAxisRow ? minInnerWidth : minInnerHeight;
             float maxInnerMainDim = isMainAxisRow ? maxInnerWidth : maxInnerHeight;
@@ -2935,12 +2938,12 @@ namespace Yoga.Net
 
             float availableInnerWidth = YGNodeCalculateAvailableInnerDim(
                 node,
-                YGFlexDirection.Row,
+                FlexDirection.Row,
                 availableWidth,
                 ownerWidth);
             float availableInnerHeight = YGNodeCalculateAvailableInnerDim(
                 node,
-                YGFlexDirection.Column,
+                FlexDirection.Column,
                 availableHeight,
                 ownerHeight);
 
@@ -2966,13 +2969,13 @@ namespace Yoga.Net
                 depth,
                 generationCount);
 
-            bool flexBasisOverflows = measureModeMainDim == YGMeasureMode.Undefined
+            bool flexBasisOverflows = measureModeMainDim == MeasureMode.Undefined
                 ? false
                 : totalOuterFlexBasis > availableInnerMainDim;
             if (isNodeFlexWrap && flexBasisOverflows &&
-                measureModeMainDim == YGMeasureMode.AtMost)
+                measureModeMainDim == MeasureMode.AtMost)
             {
-                measureModeMainDim = YGMeasureMode.Exactly;
+                measureModeMainDim = MeasureMode.Exactly;
             }
             // STEP 4: COLLECT FLEX ITEMS INTO FLEX LINES
 
@@ -3006,7 +3009,7 @@ namespace Yoga.Net
                 // If we don't need to measure the cross axis, we can skip the entire flex
                 // step.
                 bool canSkipFlex =
-                    !performLayout && measureModeCrossDim == YGMeasureMode.Exactly;
+                    !performLayout && measureModeCrossDim == MeasureMode.Exactly;
 
                 // STEP 5: RESOLVING FLEXIBLE LENGTHS ON MAIN AXIS
                 // Calculate the remaining available space that needs to be allocated. If
@@ -3016,7 +3019,7 @@ namespace Yoga.Net
                 bool sizeBasedOnContent = false;
                 // If we don't measure with exact main dimension we want to ensure we don't
                 // violate min and max
-                if (measureModeMainDim != YGMeasureMode.Exactly)
+                if (measureModeMainDim != MeasureMode.Exactly)
                 {
                     if (!YogaIsUndefined(minInnerMainDim) &&
                         collectedFlexItemsValues.SizeConsumedOnCurrentLine <
@@ -3111,8 +3114,8 @@ namespace Yoga.Net
                     layoutContext);
 
                 float containerCrossAxis = availableInnerCrossDim;
-                if (measureModeCrossDim == YGMeasureMode.Undefined ||
-                    measureModeCrossDim == YGMeasureMode.AtMost)
+                if (measureModeCrossDim == MeasureMode.Undefined ||
+                    measureModeCrossDim == MeasureMode.AtMost)
                 {
                     // Compute the cross axis from the max cross dimension of the children.
                     containerCrossAxis =
@@ -3126,7 +3129,7 @@ namespace Yoga.Net
                 }
 
                 // If there's no flex wrap, the cross dimension is defined by the container.
-                if (!isNodeFlexWrap && measureModeCrossDim == YGMeasureMode.Exactly)
+                if (!isNodeFlexWrap && measureModeCrossDim == MeasureMode.Exactly)
                 {
                     collectedFlexItemsValues.CrossDim = availableInnerCrossDim;
                 }
@@ -3148,12 +3151,12 @@ namespace Yoga.Net
                     for (var i = startOfLineIndex; i < endOfLineIndex; i++)
                     {
                         YGNode child = node.Children[i];
-                        if (child.GetStyle().Display == YGDisplay.None)
+                        if (child.GetStyle().Display == Display.None)
                         {
                             continue;
                         }
 
-                        if (child.GetStyle().PositionType == YGPositionType.Absolute)
+                        if (child.GetStyle().PositionType == PositionType.Absolute)
                         {
                             // If the child is absolutely positioned and has a
                             // top/left/bottom/right set, override all the previously computed
@@ -3188,14 +3191,14 @@ namespace Yoga.Net
                             // For a relative children, we're either using alignItems (owner) or
                             // alignSelf (child) in order to determine the position in the cross
                             // axis
-                            YGAlign alignItem = YGNodeAlignItem(node, child);
+                            YogaAlign alignItem = YGNodeAlignItem(node, child);
 
                             // If the child uses align stretch, we need to lay it out one more
                             // time, this time forcing the cross-axis size to be the computed
                             // cross size for the current line.
-                            if (alignItem == YGAlign.Stretch &&
-                                child.MarginLeadingValue(crossAxis).Unit != YGUnit.Auto &&
-                                child.MarginTrailingValue(crossAxis).Unit != YGUnit.Auto)
+                            if (alignItem == YogaAlign.Stretch &&
+                                child.MarginLeadingValue(crossAxis).Unit != YogaUnit.Auto &&
+                                child.MarginTrailingValue(crossAxis).Unit != YogaUnit.Auto)
                             {
                                 // If the child defines a definite size for its cross axis, there's
                                 // no need to stretch.
@@ -3207,7 +3210,7 @@ namespace Yoga.Net
                                     float childMainSize =
                                         child.GetLayout().MeasuredDimensions[(int)dim[(int)mainAxis]];
                                     var childStyle = child.GetStyle();
-                                    float childCrossSize = !childStyle.AspectRatio.IsUndefined()
+                                    float childCrossSize = !childStyle.AspectRatio.IsUndefined
                                         ? child.GetMarginForAxis(crossAxis, availableInnerWidth)
                                                .Unwrap() +
                                         (isMainAxisRow
@@ -3219,8 +3222,8 @@ namespace Yoga.Net
                                         child.GetMarginForAxis(mainAxis, availableInnerWidth)
                                              .Unwrap();
 
-                                    YGMeasureMode childMainMeasureMode = YGMeasureMode.Exactly;
-                                    YGMeasureMode childCrossMeasureMode = YGMeasureMode.Exactly;
+                                    MeasureMode childMainMeasureMode = MeasureMode.Exactly;
+                                    MeasureMode childCrossMeasureMode = MeasureMode.Exactly;
                                     YGConstrainMaxSizeForMode(
                                         child,
                                         mainAxis,
@@ -3243,17 +3246,17 @@ namespace Yoga.Net
 
                                     var alignContent = node.GetStyle().AlignContent;
                                     var crossAxisDoesNotGrow =
-                                        alignContent != YGAlign.Stretch && isNodeFlexWrap;
-                                    YGMeasureMode childWidthMeasureMode =
+                                        alignContent != YogaAlign.Stretch && isNodeFlexWrap;
+                                    MeasureMode childWidthMeasureMode =
                                         YogaIsUndefined(childWidth) ||
                                         (!isMainAxisRow && crossAxisDoesNotGrow)
-                                            ? YGMeasureMode.Undefined
-                                            : YGMeasureMode.Exactly;
-                                    YGMeasureMode childHeightMeasureMode =
+                                            ? MeasureMode.Undefined
+                                            : MeasureMode.Exactly;
+                                    MeasureMode childHeightMeasureMode =
                                         YogaIsUndefined(childHeight) ||
                                         (isMainAxisRow && crossAxisDoesNotGrow)
-                                            ? YGMeasureMode.Undefined
-                                            : YGMeasureMode.Exactly;
+                                            ? MeasureMode.Undefined
+                                            : MeasureMode.Exactly;
 
                                     YGLayoutNodeInternal(
                                         child,
@@ -3278,26 +3281,26 @@ namespace Yoga.Net
                                 float remainingCrossDim = containerCrossAxis -
                                     YGNodeDimWithMargin(child, crossAxis, availableInnerWidth);
 
-                                if (child.MarginLeadingValue(crossAxis).Unit == YGUnit.Auto &&
-                                    child.MarginTrailingValue(crossAxis).Unit == YGUnit.Auto)
+                                if (child.MarginLeadingValue(crossAxis).Unit == YogaUnit.Auto &&
+                                    child.MarginTrailingValue(crossAxis).Unit == YogaUnit.Auto)
                                 {
                                     leadingCrossDim += FloatMax(0.0f, remainingCrossDim / 2);
                                 }
                                 else if (
-                                    child.MarginTrailingValue(crossAxis).Unit == YGUnit.Auto)
+                                    child.MarginTrailingValue(crossAxis).Unit == YogaUnit.Auto)
                                 {
                                     // No-Op
                                 }
                                 else if (
-                                    child.MarginLeadingValue(crossAxis).Unit == YGUnit.Auto)
+                                    child.MarginLeadingValue(crossAxis).Unit == YogaUnit.Auto)
                                 {
                                     leadingCrossDim += FloatMax(0.0f, remainingCrossDim);
                                 }
-                                else if (alignItem == YGAlign.FlexStart)
+                                else if (alignItem == YogaAlign.FlexStart)
                                 {
                                     // No-Op
                                 }
-                                else if (alignItem == YGAlign.Center)
+                                else if (alignItem == YogaAlign.Center)
                                 {
                                     leadingCrossDim += remainingCrossDim / 2;
                                 }
@@ -3333,20 +3336,20 @@ namespace Yoga.Net
                         availableInnerCrossDim - totalLineCrossDim;
                     switch (node.GetStyle().AlignContent)
                     {
-                    case YGAlign.FlexEnd:
+                    case YogaAlign.FlexEnd:
                         currentLead += remainingAlignContentDim;
                         break;
-                    case YGAlign.Center:
+                    case YogaAlign.Center:
                         currentLead += remainingAlignContentDim / 2;
                         break;
-                    case YGAlign.Stretch:
+                    case YogaAlign.Stretch:
                         if (availableInnerCrossDim > totalLineCrossDim)
                         {
                             crossDimLead = remainingAlignContentDim / lineCount;
                         }
 
                         break;
-                    case YGAlign.SpaceAround:
+                    case YogaAlign.SpaceAround:
                         if (availableInnerCrossDim > totalLineCrossDim)
                         {
                             currentLead += remainingAlignContentDim / (2 * lineCount);
@@ -3361,16 +3364,16 @@ namespace Yoga.Net
                         }
 
                         break;
-                    case YGAlign.SpaceBetween:
+                    case YogaAlign.SpaceBetween:
                         if (availableInnerCrossDim > totalLineCrossDim && lineCount > 1)
                         {
                             crossDimLead = remainingAlignContentDim / (lineCount - 1);
                         }
 
                         break;
-                    case YGAlign.Auto:
-                    case YGAlign.FlexStart:
-                    case YGAlign.Baseline:
+                    case YogaAlign.Auto:
+                    case YogaAlign.FlexStart:
+                    case YogaAlign.Baseline:
                         break;
                     }
                 }
@@ -3388,12 +3391,12 @@ namespace Yoga.Net
                     for (ii = startIndex; ii < childCount; ii++)
                     {
                         YGNode child = node.Children[ii];
-                        if (child.GetStyle().Display == YGDisplay.None)
+                        if (child.GetStyle().Display == Display.None)
                         {
                             continue;
                         }
 
-                        if (child.GetStyle().PositionType == YGPositionType.Relative)
+                        if (child.GetStyle().PositionType == PositionType.Relative)
                         {
                             if (child.GetLineIndex() != i)
                             {
@@ -3409,19 +3412,19 @@ namespace Yoga.Net
                                          .Unwrap());
                             }
 
-                            if (YGNodeAlignItem(node, child) == YGAlign.Baseline)
+                            if (YGNodeAlignItem(node, child) == YogaAlign.Baseline)
                             {
                                 float ascent = YGBaseline(child, layoutContext) +
                                     child
                                        .GetLeadingMargin(
-                                            YGFlexDirection.Column,
+                                            FlexDirection.Column,
                                             availableInnerWidth)
                                        .Unwrap();
                                 float descent =
-                                    child.GetLayout().MeasuredDimensions[(int)YGDimension.Height] +
+                                    child.GetLayout().MeasuredDimensions[(int)Dimension.Height] +
                                     child
                                        .GetMarginForAxis(
-                                            YGFlexDirection.Column,
+                                            FlexDirection.Column,
                                             availableInnerWidth)
                                        .Unwrap() -
                                     ascent;
@@ -3444,16 +3447,16 @@ namespace Yoga.Net
                         for (ii = startIndex; ii < endIndex; ii++)
                         {
                             YGNode child = node.Children[ii];
-                            if (child.GetStyle().Display == YGDisplay.None)
+                            if (child.GetStyle().Display == Display.None)
                             {
                                 continue;
                             }
 
-                            if (child.GetStyle().PositionType == YGPositionType.Relative)
+                            if (child.GetStyle().PositionType == PositionType.Relative)
                             {
                                 switch (YGNodeAlignItem(node, child))
                                 {
-                                case YGAlign.FlexStart:
+                                case YogaAlign.FlexStart:
                                 {
                                     child.SetLayoutPosition(
                                         currentLead +
@@ -3462,7 +3465,7 @@ namespace Yoga.Net
                                         (int)pos[(int)crossAxis]);
                                     break;
                                 }
-                                case YGAlign.FlexEnd:
+                                case YogaAlign.FlexEnd:
                                 {
                                     child.SetLayoutPosition(
                                         currentLead + lineHeight -
@@ -3472,7 +3475,7 @@ namespace Yoga.Net
                                         (int)pos[(int)crossAxis]);
                                     break;
                                 }
-                                case YGAlign.Center:
+                                case YogaAlign.Center:
                                 {
                                     float childHeight =
                                         child.GetLayout().MeasuredDimensions[(int)dim[(int)crossAxis]];
@@ -3482,7 +3485,7 @@ namespace Yoga.Net
                                         (int)pos[(int)crossAxis]);
                                     break;
                                 }
-                                case YGAlign.Stretch:
+                                case YogaAlign.Stretch:
                                 {
                                     child.SetLayoutPosition(
                                         currentLead +
@@ -3499,14 +3502,14 @@ namespace Yoga.Net
                                     {
                                         float childWidth = isMainAxisRow
                                             ? (child.GetLayout()
-                                                    .MeasuredDimensions[(int)YGDimension.Width] +
+                                                    .MeasuredDimensions[(int)Dimension.Width] +
                                                 child.GetMarginForAxis(mainAxis, availableInnerWidth)
                                                      .Unwrap())
                                             : lineHeight;
 
                                         float childHeight = !isMainAxisRow
                                             ? (child.GetLayout()
-                                                    .MeasuredDimensions[(int)YGDimension.Height] +
+                                                    .MeasuredDimensions[(int)Dimension.Height] +
                                                 child.GetMarginForAxis(crossAxis, availableInnerWidth)
                                                      .Unwrap())
                                             : lineHeight;
@@ -3514,19 +3517,19 @@ namespace Yoga.Net
                                         if (!(FloatsEqual(
                                                 childWidth,
                                                 child.GetLayout()
-                                                     .MeasuredDimensions[(int)YGDimension.Width]) &&
+                                                     .MeasuredDimensions[(int)Dimension.Width]) &&
                                             FloatsEqual(
                                                 childHeight,
                                                 child.GetLayout()
-                                                     .MeasuredDimensions[(int)YGDimension.Height])))
+                                                     .MeasuredDimensions[(int)Dimension.Height])))
                                         {
                                             YGLayoutNodeInternal(
                                                 child,
                                                 childWidth,
                                                 childHeight,
                                                 direction,
-                                                YGMeasureMode.Exactly,
-                                                YGMeasureMode.Exactly,
+                                                MeasureMode.Exactly,
+                                                MeasureMode.Exactly,
                                                 availableInnerWidth,
                                                 availableInnerHeight,
                                                 true,
@@ -3541,23 +3544,23 @@ namespace Yoga.Net
 
                                     break;
                                 }
-                                case YGAlign.Baseline:
+                                case YogaAlign.Baseline:
                                 {
                                     child.SetLayoutPosition(
                                         currentLead + maxAscentForCurrentLine -
                                         YGBaseline(child, layoutContext) +
                                         child
                                            .GetLeadingPosition(
-                                                YGFlexDirection.Column,
+                                                FlexDirection.Column,
                                                 availableInnerCrossDim)
                                            .Unwrap(),
-                                        (int)YGEdge.Top);
+                                        (int)Edge.Top);
 
                                     break;
                                 }
-                                case YGAlign.Auto:
-                                case YGAlign.SpaceBetween:
-                                case YGAlign.SpaceAround:
+                                case YogaAlign.Auto:
+                                case YogaAlign.SpaceBetween:
+                                case YogaAlign.SpaceAround:
                                     break;
                                 }
                             }
@@ -3573,26 +3576,26 @@ namespace Yoga.Net
             node.SetLayoutMeasuredDimension(
                 YGNodeBoundAxis(
                     node,
-                    YGFlexDirection.Row,
+                    FlexDirection.Row,
                     availableWidth - marginAxisRow,
                     ownerWidth,
                     ownerWidth),
-                (int)YGDimension.Width);
+                (int)Dimension.Width);
 
             node.SetLayoutMeasuredDimension(
                 YGNodeBoundAxis(
                     node,
-                    YGFlexDirection.Column,
+                    FlexDirection.Column,
                     availableHeight - marginAxisColumn,
                     ownerHeight,
                     ownerWidth),
-                (int)YGDimension.Height);
+                (int)Dimension.Height);
 
             // If the user didn't specify a width or height for the node, set the
             // dimensions based on the children.
-            if (measureModeMainDim == YGMeasureMode.Undefined ||
-                (node.GetStyle().Overflow != YGOverflow.Scroll &&
-                    measureModeMainDim == YGMeasureMode.AtMost))
+            if (measureModeMainDim == MeasureMode.Undefined ||
+                (node.GetStyle().Overflow != Overflow.Scroll &&
+                    measureModeMainDim == MeasureMode.AtMost))
             {
                 // Clamp the size to the min/max size, if specified, and make sure it
                 // doesn't go below the padding and border amount.
@@ -3606,8 +3609,8 @@ namespace Yoga.Net
                     (int)dim[(int)mainAxis]);
             }
             else if (
-                measureModeMainDim == YGMeasureMode.AtMost &&
-                node.GetStyle().Overflow == YGOverflow.Scroll)
+                measureModeMainDim == MeasureMode.AtMost &&
+                node.GetStyle().Overflow == Overflow.Scroll)
             {
                 node.SetLayoutMeasuredDimension(
                     FloatMax(
@@ -3623,9 +3626,9 @@ namespace Yoga.Net
                     (int)dim[(int)mainAxis]);
             }
 
-            if (measureModeCrossDim == YGMeasureMode.Undefined ||
-                (node.GetStyle().Overflow != YGOverflow.Scroll &&
-                    measureModeCrossDim == YGMeasureMode.AtMost))
+            if (measureModeCrossDim == MeasureMode.Undefined ||
+                (node.GetStyle().Overflow != Overflow.Scroll &&
+                    measureModeCrossDim == MeasureMode.AtMost))
             {
                 // Clamp the size to the min/max size, if specified, and make sure it
                 // doesn't go below the padding and border amount.
@@ -3639,8 +3642,8 @@ namespace Yoga.Net
                     (int)dim[(int)crossAxis]);
             }
             else if (
-                measureModeCrossDim == YGMeasureMode.AtMost &&
-                node.GetStyle().Overflow == YGOverflow.Scroll)
+                measureModeCrossDim == MeasureMode.AtMost &&
+                node.GetStyle().Overflow == Overflow.Scroll)
             {
                 node.SetLayoutMeasuredDimension(
                     FloatMax(
@@ -3658,12 +3661,12 @@ namespace Yoga.Net
 
             // As we only wrapped in normal direction yet, we need to reverse the
             // positions on wrap-reverse.
-            if (performLayout && node.GetStyle().FlexWrap == YGWrap.WrapReverse)
+            if (performLayout && node.GetStyle().FlexWrap == Wrap.WrapReverse)
             {
                 for (var i = 0; i < childCount; i++)
                 {
                     YGNode child = node.Children[i];
-                    if (child.GetStyle().PositionType == YGPositionType.Relative)
+                    if (child.GetStyle().PositionType == PositionType.Relative)
                     {
                         child.SetLayoutPosition(
                             node.GetLayout().MeasuredDimensions[(int)dim[(int)crossAxis]] -
@@ -3679,7 +3682,7 @@ namespace Yoga.Net
                 // STEP 10: SIZING AND POSITIONING ABSOLUTE CHILDREN
                 foreach (var child in node.GetChildren())
                 {
-                    if (child.GetStyle().PositionType != YGPositionType.Absolute)
+                    if (child.GetStyle().PositionType != PositionType.Absolute)
                     {
                         continue;
                     }
@@ -3699,10 +3702,10 @@ namespace Yoga.Net
                 }
 
                 // STEP 11: SETTING TRAILING POSITIONS FOR CHILDREN
-                bool needsMainTrailingPos = mainAxis == YGFlexDirection.RowReverse ||
-                    mainAxis == YGFlexDirection.ColumnReverse;
-                bool needsCrossTrailingPos = crossAxis == YGFlexDirection.RowReverse ||
-                    crossAxis == YGFlexDirection.ColumnReverse;
+                bool needsMainTrailingPos = mainAxis == FlexDirection.RowReverse ||
+                    mainAxis == FlexDirection.ColumnReverse;
+                bool needsCrossTrailingPos = crossAxis == FlexDirection.RowReverse ||
+                    crossAxis == FlexDirection.ColumnReverse;
 
                 // Set trailing position if necessary.
                 if (needsMainTrailingPos || needsCrossTrailingPos)
@@ -3710,7 +3713,7 @@ namespace Yoga.Net
                     for (int i = 0; i < childCount; i++)
                     {
                         YGNode child = node.Children[i];
-                        if (child.GetStyle().Display == YGDisplay.None)
+                        if (child.GetStyle().Display == Display.None)
                         {
                             continue;
                         }
@@ -3729,13 +3732,13 @@ namespace Yoga.Net
             }
         }
 
-        #if DEBUG
+#if DEBUG
         public static bool gPrintChanges = false;
         public static bool gPrintSkips = false;
-        #else
+#else
         public static bool gPrintChanges = false;
         public static bool gPrintSkips = false;
-        #endif
+#endif
 
         public static string spacer = "                                                            ";
 
@@ -3748,19 +3751,23 @@ namespace Yoga.Net
         }
 
         public static string YGMeasureModeName(
-            YGMeasureMode mode,
+            MeasureMode mode,
             bool performLayout)
         {
-            var kMeasureModeNames = new Dictionary<YGMeasureMode, string>{
-                {YGMeasureMode.Undefined, "UNDEFINED" },
-                {YGMeasureMode.Exactly, "EXACTLY" },
-                {YGMeasureMode.AtMost, "AT_MOST" } };
-            var kLayoutModeNames = new Dictionary<YGMeasureMode, string> {
-                {YGMeasureMode.Undefined, "LAY_UNDEFINED" },
-                {YGMeasureMode.Exactly, "LAY_EXACTLY" },
-                {YGMeasureMode.AtMost, "LAY_AT_MOST" } };
+            var kMeasureModeNames = new Dictionary<MeasureMode, string>
+            {
+                {MeasureMode.Undefined, "UNDEFINED"},
+                {MeasureMode.Exactly, "EXACTLY"},
+                {MeasureMode.AtMost, "AT_MOST"}
+            };
+            var kLayoutModeNames = new Dictionary<MeasureMode, string>
+            {
+                {MeasureMode.Undefined, "LAY_UNDEFINED"},
+                {MeasureMode.Exactly, "LAY_EXACTLY"},
+                {MeasureMode.AtMost, "LAY_AT_MOST"}
+            };
 
-            if (mode >= YGMeasureMode.AtMost)
+            if (mode >= MeasureMode.AtMost)
                 return "";
 
             return performLayout ? kLayoutModeNames[mode] : kMeasureModeNames[mode];
@@ -3768,36 +3775,36 @@ namespace Yoga.Net
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool YGMeasureModeSizeIsExactAndMatchesOldMeasuredSize(
-            YGMeasureMode sizeMode,
+            MeasureMode sizeMode,
             float size,
             float lastComputedSize)
         {
-            return sizeMode == YGMeasureMode.Exactly &&
+            return sizeMode == MeasureMode.Exactly &&
                 FloatsEqual(size, lastComputedSize);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool YGMeasureModeOldSizeIsUnspecifiedAndStillFits(
-            YGMeasureMode sizeMode,
+            MeasureMode sizeMode,
             float size,
-            YGMeasureMode lastSizeMode,
+            MeasureMode lastSizeMode,
             float lastComputedSize)
         {
-            return sizeMode == YGMeasureMode.AtMost &&
-                lastSizeMode == YGMeasureMode.Undefined &&
+            return sizeMode == MeasureMode.AtMost &&
+                lastSizeMode == MeasureMode.Undefined &&
                 (size >= lastComputedSize || FloatsEqual(size, lastComputedSize));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool YGMeasureModeNewMeasureSizeIsStricterAndStillValid(
-            YGMeasureMode sizeMode,
+            MeasureMode sizeMode,
             float size,
-            YGMeasureMode lastSizeMode,
+            MeasureMode lastSizeMode,
             float lastSize,
             float lastComputedSize)
         {
-            return lastSizeMode == YGMeasureMode.AtMost &&
-                sizeMode == YGMeasureMode.AtMost && !YogaIsUndefined(lastSize) &&
+            return lastSizeMode == MeasureMode.AtMost &&
+                sizeMode == MeasureMode.AtMost && !YogaIsUndefined(lastSize) &&
                 !YogaIsUndefined(size) && !YogaIsUndefined(lastComputedSize) &&
                 lastSize > size &&
                 (lastComputedSize <= size || FloatsEqual(size, lastComputedSize));
@@ -3870,13 +3877,13 @@ namespace Yoga.Net
         }
 
         public static bool YGNodeCanUseCachedMeasurement(
-            YGMeasureMode widthMode,
+            MeasureMode widthMode,
             float width,
-            YGMeasureMode heightMode,
+            MeasureMode heightMode,
             float height,
-            YGMeasureMode lastWidthMode,
+            MeasureMode lastWidthMode,
             float lastWidth,
-            YGMeasureMode lastHeightMode,
+            MeasureMode lastHeightMode,
             float lastHeight,
             float lastComputedWidth,
             float lastComputedHeight,
@@ -3969,9 +3976,9 @@ namespace Yoga.Net
             YGNode node,
             float availableWidth,
             float availableHeight,
-            YGDirection ownerDirection,
-            YGMeasureMode widthMeasureMode,
-            YGMeasureMode heightMeasureMode,
+            Direction ownerDirection,
+            MeasureMode widthMeasureMode,
+            MeasureMode heightMeasureMode,
             float ownerWidth,
             float ownerHeight,
             bool performLayout,
@@ -3994,13 +4001,13 @@ namespace Yoga.Net
             {
                 // Invalidate the cached results.
                 layout.NextCachedMeasurementsIndex    = 0;
-                layout.CachedLayout.widthMeasureMode  = YGMeasureMode.Undefined;
-                layout.CachedLayout.heightMeasureMode = YGMeasureMode.Undefined;
-                layout.CachedLayout.computedWidth     = -1;
-                layout.CachedLayout.computedHeight    = -1;
+                layout.CachedLayout.WidthMeasureMode  = MeasureMode.Undefined;
+                layout.CachedLayout.HeightMeasureMode = MeasureMode.Undefined;
+                layout.CachedLayout.ComputedWidth     = -1;
+                layout.CachedLayout.ComputedHeight    = -1;
             }
 
-            YGCachedMeasurement cachedResults = null;
+            YogaCachedMeasurement cachedResults = null;
 
             // Determine whether the results are already cached. We maintain a separate
             // cache for layouts and measurements. A layout operation modifies the
@@ -4013,9 +4020,9 @@ namespace Yoga.Net
             if (node.HasMeasureFunc())
             {
                 float marginAxisRow =
-                    node.GetMarginForAxis(YGFlexDirection.Row, ownerWidth).Unwrap();
+                    node.GetMarginForAxis(FlexDirection.Row, ownerWidth).Unwrap();
                 float marginAxisColumn =
-                    node.GetMarginForAxis(YGFlexDirection.Column, ownerWidth).Unwrap();
+                    node.GetMarginForAxis(FlexDirection.Column, ownerWidth).Unwrap();
 
                 // First, try to use the layout cache.
                 if (YGNodeCanUseCachedMeasurement(
@@ -4023,12 +4030,12 @@ namespace Yoga.Net
                     availableWidth,
                     heightMeasureMode,
                     availableHeight,
-                    layout.CachedLayout.widthMeasureMode,
-                    layout.CachedLayout.availableWidth,
-                    layout.CachedLayout.heightMeasureMode,
-                    layout.CachedLayout.availableHeight,
-                    layout.CachedLayout.computedWidth,
-                    layout.CachedLayout.computedHeight,
+                    layout.CachedLayout.WidthMeasureMode,
+                    layout.CachedLayout.AvailableWidth,
+                    layout.CachedLayout.HeightMeasureMode,
+                    layout.CachedLayout.AvailableHeight,
+                    layout.CachedLayout.ComputedWidth,
+                    layout.CachedLayout.ComputedHeight,
                     marginAxisRow,
                     marginAxisColumn,
                     config))
@@ -4045,12 +4052,12 @@ namespace Yoga.Net
                             availableWidth,
                             heightMeasureMode,
                             availableHeight,
-                            layout.CachedMeasurements[i].widthMeasureMode,
-                            layout.CachedMeasurements[i].availableWidth,
-                            layout.CachedMeasurements[i].heightMeasureMode,
-                            layout.CachedMeasurements[i].availableHeight,
-                            layout.CachedMeasurements[i].computedWidth,
-                            layout.CachedMeasurements[i].computedHeight,
+                            layout.CachedMeasurements[i].WidthMeasureMode,
+                            layout.CachedMeasurements[i].AvailableWidth,
+                            layout.CachedMeasurements[i].HeightMeasureMode,
+                            layout.CachedMeasurements[i].AvailableHeight,
+                            layout.CachedMeasurements[i].ComputedWidth,
+                            layout.CachedMeasurements[i].ComputedHeight,
                             marginAxisRow,
                             marginAxisColumn,
                             config))
@@ -4063,10 +4070,10 @@ namespace Yoga.Net
             }
             else if (performLayout)
             {
-                if (FloatsEqual(layout.CachedLayout.availableWidth, availableWidth) &&
-                    FloatsEqual(layout.CachedLayout.availableHeight, availableHeight) &&
-                    layout.CachedLayout.widthMeasureMode == widthMeasureMode &&
-                    layout.CachedLayout.heightMeasureMode == heightMeasureMode)
+                if (FloatsEqual(layout.CachedLayout.AvailableWidth, availableWidth) &&
+                    FloatsEqual(layout.CachedLayout.AvailableHeight, availableHeight) &&
+                    layout.CachedLayout.WidthMeasureMode == widthMeasureMode &&
+                    layout.CachedLayout.HeightMeasureMode == heightMeasureMode)
                 {
                     cachedResults = layout.CachedLayout;
                 }
@@ -4076,13 +4083,13 @@ namespace Yoga.Net
                 for (var i = 0; i < layout.NextCachedMeasurementsIndex; i++)
                 {
                     if (FloatsEqual(
-                            layout.CachedMeasurements[i].availableWidth,
+                            layout.CachedMeasurements[i].AvailableWidth,
                             availableWidth) &&
                         FloatsEqual(
-                            layout.CachedMeasurements[i].availableHeight,
+                            layout.CachedMeasurements[i].AvailableHeight,
                             availableHeight) &&
-                        layout.CachedMeasurements[i].widthMeasureMode == widthMeasureMode &&
-                        layout.CachedMeasurements[i].heightMeasureMode ==
+                        layout.CachedMeasurements[i].WidthMeasureMode == widthMeasureMode &&
+                        layout.CachedMeasurements[i].HeightMeasureMode ==
                         heightMeasureMode)
                     {
                         cachedResults = layout.CachedMeasurements[i];
@@ -4093,8 +4100,8 @@ namespace Yoga.Net
 
             if (!needToVisitNode && cachedResults != null)
             {
-                layout.MeasuredDimensions[(int)YGDimension.Width]  = cachedResults.computedWidth;
-                layout.MeasuredDimensions[(int)YGDimension.Height] = cachedResults.computedHeight;
+                layout.MeasuredDimensions[(int)Dimension.Width]  = cachedResults.ComputedWidth;
+                layout.MeasuredDimensions[(int)Dimension.Height] = cachedResults.ComputedHeight;
                 if (performLayout)
                     layoutMarkerData.CachedLayouts++;
                 else
@@ -4104,13 +4111,13 @@ namespace Yoga.Net
                 {
                     Logger.Log(
                         node,
-                        YGLogLevel.Verbose,
+                        LogLevel.Verbose,
                         $"{YGSpacer(depth)}{depth}.([skipped] ");
                     node.Print(layoutContext);
                     Logger.Log(
                         node,
-                        YGLogLevel.Verbose,
-                        $"wm: {YGMeasureModeName(widthMeasureMode, performLayout)}, hm: {YGMeasureModeName(heightMeasureMode, performLayout)}, aw: {availableWidth} ah: {availableHeight} => d: ({cachedResults.computedWidth}, {cachedResults.computedHeight}) {reason.ToString()}\n");
+                        LogLevel.Verbose,
+                        $"wm: {YGMeasureModeName(widthMeasureMode, performLayout)}, hm: {YGMeasureModeName(heightMeasureMode, performLayout)}, aw: {availableWidth} ah: {availableHeight} => d: ({cachedResults.ComputedWidth}, {cachedResults.ComputedHeight}) {reason.ToString()}\n");
                 }
             }
             else
@@ -4119,12 +4126,12 @@ namespace Yoga.Net
                 {
                     Logger.Log(
                         node,
-                        YGLogLevel.Verbose,
+                        LogLevel.Verbose,
                         $"{YGSpacer(depth)}{depth}.({(needToVisitNode ? "*" : "")}");
                     node.Print(layoutContext);
                     Logger.Log(
                         node,
-                        YGLogLevel.Verbose,
+                        LogLevel.Verbose,
                         $"wm: {YGMeasureModeName(widthMeasureMode, performLayout)}, hm: {YGMeasureModeName(heightMeasureMode, performLayout)}, aw: {availableWidth} ah: {availableHeight} {reason.ToString()}\n");
                 }
 
@@ -4149,13 +4156,13 @@ namespace Yoga.Net
                 {
                     Logger.Log(
                         node,
-                        YGLogLevel.Verbose,
+                        LogLevel.Verbose,
                         $"{YGSpacer(depth)}{depth}.){(needToVisitNode ? "*" : "")}");
                     node.Print(layoutContext);
                     Logger.Log(
                         node,
-                        YGLogLevel.Verbose,
-                        $"wm: {YGMeasureModeName(widthMeasureMode, performLayout)}, hm: {YGMeasureModeName(heightMeasureMode, performLayout)}, d: ({layout.MeasuredDimensions[(int)YGDimension.Width]}, {layout.MeasuredDimensions[(int)YGDimension.Height]}) {reason.ToString()}\n");
+                        LogLevel.Verbose,
+                        $"wm: {YGMeasureModeName(widthMeasureMode, performLayout)}, hm: {YGMeasureModeName(heightMeasureMode, performLayout)}, d: ({layout.MeasuredDimensions[(int)Dimension.Width]}, {layout.MeasuredDimensions[(int)Dimension.Height]}) {reason.ToString()}\n");
                 }
 
                 layout.LastOwnerDirection = ownerDirection;
@@ -4172,13 +4179,13 @@ namespace Yoga.Net
                     {
                         if (gPrintChanges)
                         {
-                            Logger.Log(node, YGLogLevel.Verbose, "Out of cache entries!\n");
+                            Logger.Log(node, LogLevel.Verbose, "Out of cache entries!\n");
                         }
 
                         layout.NextCachedMeasurementsIndex = 0;
                     }
 
-                    YGCachedMeasurement newCacheEntry;
+                    YogaCachedMeasurement newCacheEntry;
                     if (performLayout)
                     {
                         // Use the single layout cache entry.
@@ -4191,19 +4198,19 @@ namespace Yoga.Net
                         layout.NextCachedMeasurementsIndex++;
                     }
 
-                    newCacheEntry.availableWidth    = availableWidth;
-                    newCacheEntry.availableHeight   = availableHeight;
-                    newCacheEntry.widthMeasureMode  = widthMeasureMode;
-                    newCacheEntry.heightMeasureMode = heightMeasureMode;
-                    newCacheEntry.computedWidth     = layout.MeasuredDimensions[(int)YGDimension.Width];
-                    newCacheEntry.computedHeight    = layout.MeasuredDimensions[(int)YGDimension.Height];
+                    newCacheEntry.AvailableWidth    = availableWidth;
+                    newCacheEntry.AvailableHeight   = availableHeight;
+                    newCacheEntry.WidthMeasureMode  = widthMeasureMode;
+                    newCacheEntry.HeightMeasureMode = heightMeasureMode;
+                    newCacheEntry.ComputedWidth     = layout.MeasuredDimensions[(int)Dimension.Width];
+                    newCacheEntry.ComputedHeight    = layout.MeasuredDimensions[(int)Dimension.Height];
                 }
             }
 
             if (performLayout)
             {
-                node.SetLayoutDimension(node.GetLayout().MeasuredDimensions[(int)YGDimension.Width], (int)YGDimension.Width);
-                node.SetLayoutDimension(node.GetLayout().MeasuredDimensions[(int)YGDimension.Height], (int)YGDimension.Height);
+                node.SetLayoutDimension(node.GetLayout().MeasuredDimensions[(int)Dimension.Width], (int)Dimension.Width);
+                node.SetLayoutDimension(node.GetLayout().MeasuredDimensions[(int)Dimension.Height], (int)Dimension.Height);
 
                 node.SetHasNewLayout(true);
                 node.SetDirty(false);
@@ -4266,11 +4273,11 @@ namespace Yoga.Net
                 return;
             }
 
-            float nodeLeft = node.GetLayout().Position[(int)YGEdge.Left];
-            float nodeTop = node.GetLayout().Position[(int)YGEdge.Top];
+            float nodeLeft = node.GetLayout().Position[(int)Edge.Left];
+            float nodeTop = node.GetLayout().Position[(int)Edge.Top];
 
-            float nodeWidth = node.GetLayout().Dimensions[(int)YGDimension.Width];
-            float nodeHeight = node.GetLayout().Dimensions[(int)YGDimension.Height];
+            float nodeWidth = node.GetLayout().Dimensions[(int)Dimension.Width];
+            float nodeHeight = node.GetLayout().Dimensions[(int)Dimension.Height];
 
             float absoluteNodeLeft = absoluteLeft + nodeLeft;
             float absoluteNodeTop = absoluteTop + nodeTop;
@@ -4280,15 +4287,15 @@ namespace Yoga.Net
 
             // If a node has a custom measure function we never want to round down its
             // size as this could lead to unwanted text truncation.
-            bool textRounding = node.GetNodeType() == YGNodeType.Text;
+            bool textRounding = node.GetNodeType() == NodeType.Text;
 
             node.SetLayoutPosition(
                 YGRoundValueToPixelGrid(nodeLeft, pointScaleFactor, false, textRounding),
-                (int)YGEdge.Left);
+                (int)Edge.Left);
 
             node.SetLayoutPosition(
                 YGRoundValueToPixelGrid(nodeTop, pointScaleFactor, false, textRounding),
-                (int)YGEdge.Top);
+                (int)Edge.Top);
 
             // We multiply dimension by scale factor and if the result is close to the
             // whole number, we don't have any fraction To verify if the result is close
@@ -4311,7 +4318,7 @@ namespace Yoga.Net
                     pointScaleFactor,
                     false,
                     textRounding),
-                (int)YGDimension.Width);
+                (int)Dimension.Width);
 
             node.SetLayoutDimension(
                 YGRoundValueToPixelGrid(
@@ -4324,7 +4331,7 @@ namespace Yoga.Net
                     pointScaleFactor,
                     false,
                     textRounding),
-                (int)YGDimension.Height);
+                (int)Dimension.Height);
 
             int childCount = YGNodeGetChildCount(node);
             for (int i = 0; i < childCount; i++)
@@ -4341,7 +4348,7 @@ namespace Yoga.Net
             YGNode node,
             float ownerWidth,
             float ownerHeight,
-            YGDirection ownerDirection,
+            Direction ownerDirection,
             object layoutContext)
         {
             Event.Hub.Publish(new LayoutPassStartEventArgs(node, layoutContext));
@@ -4353,50 +4360,50 @@ namespace Yoga.Net
             gCurrentGenerationCount++;
             node.ResolveDimension();
             float width = YogaValue.YGUndefined;
-            YGMeasureMode widthMeasureMode = YGMeasureMode.Undefined;
+            MeasureMode widthMeasureMode = MeasureMode.Undefined;
             var maxDimensions = node.GetStyle().MaxDimensions;
-            if (YGNodeIsStyleDimDefined(node, YGFlexDirection.Row, ownerWidth))
+            if (YGNodeIsStyleDimDefined(node, FlexDirection.Row, ownerWidth))
             {
                 width =
-                    (node.GetResolvedDimension(dim[(int)YGFlexDirection.Row]).Resolve(ownerWidth) +
-                        node.GetMarginForAxis(YGFlexDirection.Row, ownerWidth))
+                    (node.GetResolvedDimension(dim[(int)FlexDirection.Row]).Resolve(ownerWidth) +
+                        node.GetMarginForAxis(FlexDirection.Row, ownerWidth))
                    .Unwrap();
-                widthMeasureMode = YGMeasureMode.Exactly;
+                widthMeasureMode = MeasureMode.Exactly;
             }
-            else if (!maxDimensions[(int)YGDimension.Width].Resolve(ownerWidth).IsUndefined())
+            else if (!maxDimensions[(int)Dimension.Width].Resolve(ownerWidth).IsUndefined)
             {
-                width = maxDimensions[(int)YGDimension.Width].Resolve(ownerWidth).Unwrap();
-                widthMeasureMode = YGMeasureMode.AtMost;
+                width            = maxDimensions[(int)Dimension.Width].Resolve(ownerWidth).Unwrap();
+                widthMeasureMode = MeasureMode.AtMost;
             }
             else
             {
                 width = ownerWidth;
                 widthMeasureMode = YogaIsUndefined(width)
-                    ? YGMeasureMode.Undefined
-                    : YGMeasureMode.Exactly;
+                    ? MeasureMode.Undefined
+                    : MeasureMode.Exactly;
             }
 
             float height = YogaValue.YGUndefined;
-            YGMeasureMode heightMeasureMode = YGMeasureMode.Undefined;
-            if (YGNodeIsStyleDimDefined(node, YGFlexDirection.Column, ownerHeight))
+            MeasureMode heightMeasureMode = MeasureMode.Undefined;
+            if (YGNodeIsStyleDimDefined(node, FlexDirection.Column, ownerHeight))
             {
-                height = (node.GetResolvedDimension(dim[(int)YGFlexDirection.Column])
-                              .Resolve(ownerHeight) 
-                        + node.GetMarginForAxis(YGFlexDirection.Column, ownerWidth))
-                              .Unwrap();
-                heightMeasureMode = YGMeasureMode.Exactly;
+                height = (node.GetResolvedDimension(dim[(int)FlexDirection.Column])
+                              .Resolve(ownerHeight)
+                        + node.GetMarginForAxis(FlexDirection.Column, ownerWidth))
+                   .Unwrap();
+                heightMeasureMode = MeasureMode.Exactly;
             }
-            else if (!maxDimensions[(int)YGDimension.Height].Resolve(ownerHeight).IsUndefined())
+            else if (!maxDimensions[(int)Dimension.Height].Resolve(ownerHeight).IsUndefined)
             {
-                height = maxDimensions[(int)YGDimension.Height].Resolve(ownerHeight).Unwrap();
-                heightMeasureMode = YGMeasureMode.AtMost;
+                height            = maxDimensions[(int)Dimension.Height].Resolve(ownerHeight).Unwrap();
+                heightMeasureMode = MeasureMode.AtMost;
             }
             else
             {
                 height = ownerHeight;
                 heightMeasureMode = YogaIsUndefined(height)
-                    ? YGMeasureMode.Undefined
-                    : YGMeasureMode.Exactly;
+                    ? MeasureMode.Undefined
+                    : MeasureMode.Exactly;
             }
 
             if (YGLayoutNodeInternal(
@@ -4426,7 +4433,7 @@ namespace Yoga.Net
 #if DEBUG
                 if (node.GetConfig().PrintTree)
                 {
-                    YGNodePrint(node, YGPrintOptions.Layout | YGPrintOptions.Children | YGPrintOptions.Style);
+                    YGNodePrint(node, PrintOptions.Layout | PrintOptions.Children | PrintOptions.Style);
                 }
 #endif
             }
@@ -4438,7 +4445,7 @@ namespace Yoga.Net
             YGNode node,
             float ownerWidth,
             float ownerHeight,
-            YGDirection ownerDirection)
+            Direction ownerDirection)
         {
             YGNodeCalculateLayoutWithContext(
                 node,
@@ -4457,7 +4464,7 @@ namespace Yoga.Net
         {
             if (!condition)
             {
-                Logger.Log(YGLogLevel.Fatal, $"{message}\n");
+                Logger.Log(LogLevel.Fatal, $"{message}\n");
             }
         }
 
@@ -4468,7 +4475,7 @@ namespace Yoga.Net
         {
             if (!condition)
             {
-                Logger.Log(node, YGLogLevel.Fatal, $"{message}\n");
+                Logger.Log(node, LogLevel.Fatal, $"{message}\n");
             }
         }
 
@@ -4479,13 +4486,13 @@ namespace Yoga.Net
         {
             if (!condition)
             {
-                Logger.Log(config, YGLogLevel.Fatal, $"{message}\n");
+                Logger.Log(config, LogLevel.Fatal, $"{message}\n");
             }
         }
 
         public static void YGConfigSetExperimentalFeatureEnabled(
             YogaConfig config,
-            YGExperimentalFeature feature,
+            ExperimentalFeature feature,
             bool enabled)
         {
             config.ExperimentalFeatures[(int)feature] = enabled;
@@ -4494,7 +4501,7 @@ namespace Yoga.Net
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool YGConfigIsExperimentalFeatureEnabled(
             YogaConfig config,
-            YGExperimentalFeature feature)
+            ExperimentalFeature feature)
         {
             return config.ExperimentalFeatures[(int)feature];
         }
