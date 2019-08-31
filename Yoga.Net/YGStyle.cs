@@ -92,7 +92,7 @@ namespace Yoga.Net
                 flexWrap == other.flexWrap && 
                 overflow == other.overflow &&
                 display == other.display &&
-                YGGlobal.YGValueEqual(flexBasis, other.flexBasis) &&
+                flexBasis == other.flexBasis &&
                 margin == other.margin && 
                 position == other.position &&
                 padding == other.padding && 

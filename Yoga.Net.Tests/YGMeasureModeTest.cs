@@ -29,7 +29,7 @@ namespace Yoga.Net.Tests
                                YGMeasureMode heightMode,
             object context) =>
         {
-            var constraintList = (_MeasureConstraintList)node.getContext();
+            var constraintList = (_MeasureConstraintList)node.Context;
 
             constraintList.Add(new YGMeasureModeTest._MeasureConstraint
             {
@@ -57,8 +57,8 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetHeight(root, 100);
 
             YGNode root_child0 = YGNodeNew();
-            //  root_child0.setContext(&constraintList);
-            root_child0.setContext(constraintList);
+            //  root_child0.Context = &constraintList);
+            root_child0.Context = constraintList;
             root_child0.setMeasureFunc(_measure);
             //  root_child0.setMeasureFunc(_measure);
             YGNodeInsertChild(root, root_child0, 0);
@@ -85,8 +85,8 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetHeight(root, 100);
 
             YGNode root_child0 = YGNodeNew();
-            //  root_child0.setContext(&constraintList);
-            root_child0.setContext(constraintList);
+            //  root_child0.Context = &constraintList);
+            root_child0.Context = constraintList;
             root_child0.setMeasureFunc(_measure);
             YGNodeInsertChild(root, root_child0, 0);
 
@@ -111,7 +111,7 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetHeight(root, 100);
 
             YGNode root_child0 = YGNodeNew();
-            root_child0.setContext(constraintList);
+            root_child0.Context = constraintList;
             root_child0.setMeasureFunc(_measure);
             YGNodeInsertChild(root, root_child0, 0);
 
@@ -137,7 +137,7 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetHeight(root, 100);
 
             YGNode root_child0 = YGNodeNew();
-            root_child0.setContext(constraintList);
+            root_child0.Context = constraintList;
             root_child0.setMeasureFunc(_measure);
             YGNodeInsertChild(root, root_child0, 0);
 
@@ -163,7 +163,7 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetHeight(root, 100);
 
             YGNode root_child0 = YGNodeNew();
-            root_child0.setContext(constraintList);
+            root_child0.Context = constraintList;
             root_child0.setMeasureFunc(_measure);
             YGNodeInsertChild(root, root_child0, 0);
 
@@ -190,7 +190,7 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetHeight(root, 100);
 
             YGNode root_child0 = YGNodeNew();
-            root_child0.setContext(constraintList);
+            root_child0.Context = constraintList;
             root_child0.setMeasureFunc(_measure);
             YGNodeInsertChild(root, root_child0, 0);
 
@@ -215,7 +215,7 @@ namespace Yoga.Net.Tests
 
             YGNode root_child0 = YGNodeNew();
             YGNodeStyleSetFlexGrow(root_child0, 1);
-            root_child0.setContext(constraintList);
+            root_child0.Context = constraintList;
             root_child0.setMeasureFunc(_measure);
             YGNodeInsertChild(root, root_child0, 0);
 
@@ -244,7 +244,7 @@ namespace Yoga.Net.Tests
             YGNode root_child0 = YGNodeNew();
             YGNodeStyleSetFlexGrow(root_child0, 1);
             YGNodeStyleSetFlexBasis(root_child0, 0);
-            root_child0.setContext(constraintList);
+            root_child0.Context = constraintList;
             root_child0.setMeasureFunc(_measure);
             YGNodeInsertChild(root, root_child0, 0);
 
@@ -271,7 +271,7 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
 
             YGNode root_child0 = YGNodeNew();
-            root_child0.setContext(constraintList);
+            root_child0.Context = constraintList;
             root_child0.setMeasureFunc(_measure);
             YGNodeInsertChild(root, root_child0, 0);
 
@@ -302,7 +302,7 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
 
             YGNode root_child0 = YGNodeNew();
-            root_child0.setContext(constraintList);
+            root_child0.Context = constraintList;
             root_child0.setMeasureFunc(_measure);
             YGNodeInsertChild(root, root_child0, 0);
 

@@ -24,7 +24,7 @@ namespace Yoga.Net
 
         public int NextCachedMeasurementsIndex { get; set; }
 
-        public readonly YGCachedMeasurement[] CachedMeasurements = new YGCachedMeasurement[YG_MAX_CACHED_RESULT_COUNT];
+        public readonly YGCachedMeasurement[] CachedMeasurements = new YGCachedMeasurement[YGMaxCachedResultCount];
         public readonly float[] MeasuredDimensions = {YGValue.YGUndefined, YGValue.YGUndefined};
 
         public YGCachedMeasurement CachedLayout = new YGCachedMeasurement();
@@ -63,11 +63,11 @@ namespace Yoga.Net
 
         protected bool Equals(YGLayout other)
         {
-            bool isEqual = YGFloatArrayEqual(Position, other.Position) &&
-                YGFloatArrayEqual(Dimensions, other.Dimensions) &&
-                YGFloatArrayEqual(Margin, other.Margin) &&
-                YGFloatArrayEqual(Border, other.Border) &&
-                YGFloatArrayEqual(Padding, other.Padding) &&
+            bool isEqual = FloatArrayEqual(Position, other.Position) &&
+                FloatArrayEqual(Dimensions, other.Dimensions) &&
+                FloatArrayEqual(Margin, other.Margin) &&
+                FloatArrayEqual(Border, other.Border) &&
+                FloatArrayEqual(Padding, other.Padding) &&
                 Direction == other.Direction &&
                 HadOverflow == other.HadOverflow &&
                 LastOwnerDirection == other.LastOwnerDirection &&
@@ -80,12 +80,12 @@ namespace Yoga.Net
 
             if (!YogaIsUndefined(MeasuredDimensions[0]) || !YogaIsUndefined(other.MeasuredDimensions[0])) 
             {
-                isEqual = isEqual && YGFloatsEqual(MeasuredDimensions[0],  other.MeasuredDimensions[0]);
+                isEqual = isEqual && FloatsEqual(MeasuredDimensions[0],  other.MeasuredDimensions[0]);
             }
 
             if (!YogaIsUndefined(MeasuredDimensions[1]) || !YogaIsUndefined(other.MeasuredDimensions[1])) 
             {
-                isEqual = isEqual && YGFloatsEqual(MeasuredDimensions[1], other.MeasuredDimensions[1]);
+                isEqual = isEqual && FloatsEqual(MeasuredDimensions[1], other.MeasuredDimensions[1]);
             }
 
             return isEqual;

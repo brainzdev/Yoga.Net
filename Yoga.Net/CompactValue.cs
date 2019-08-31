@@ -109,6 +109,8 @@ namespace Yoga.Net
         }
 
         public static CompactValue Of(float value, YGUnit unit) => new CompactValue(Build(value, unit));
+        public static CompactValue OfPercent(float value) => OfMaybe(value, YGUnit.Percent);
+        public static CompactValue OfPoint(float value) => OfMaybe(value, YGUnit.Point);
 
         public static CompactValue OfMaybe(float value, YGUnit unit)
         {
@@ -173,12 +175,12 @@ namespace Yoga.Net
 
         public static bool operator ==(CompactValue left, CompactValue right)
         {
-            return Equals(left, right);
+            return left?.Equals(right) ?? false;
         }
 
         public static bool operator !=(CompactValue left, CompactValue right)
         {
-            return !Equals(left, right);
+            return !left?.Equals(right) ?? true;
         }
 
         public override string ToString()

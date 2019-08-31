@@ -52,22 +52,22 @@ namespace Yoga.Net
 
             if (!YogaIsUndefined(availableWidth) || !YogaIsUndefined(other.availableWidth))
             {
-                isEqual = isEqual && YGFloatsEqual(availableWidth, other.availableWidth);
+                isEqual = isEqual && FloatsEqual(availableWidth, other.availableWidth);
             }
 
             if (!YogaIsUndefined(availableHeight) || !YogaIsUndefined(other.availableHeight))
             {
-                isEqual = isEqual && YGFloatsEqual(availableHeight, other.availableHeight);
+                isEqual = isEqual && FloatsEqual(availableHeight, other.availableHeight);
             }
 
             if (!YogaIsUndefined(computedWidth) || !YogaIsUndefined(other.computedWidth))
             {
-                isEqual = isEqual && YGFloatsEqual(computedWidth , other.computedWidth);
+                isEqual = isEqual && FloatsEqual(computedWidth , other.computedWidth);
             }
 
             if (!YogaIsUndefined(computedHeight) || !YogaIsUndefined(other.computedHeight))
             {
-                isEqual = isEqual && YGFloatsEqual(computedHeight , other.computedHeight);
+                isEqual = isEqual && FloatsEqual(computedHeight , other.computedHeight);
             }
 
             return isEqual;

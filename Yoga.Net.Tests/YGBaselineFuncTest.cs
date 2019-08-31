@@ -12,7 +12,7 @@ namespace Yoga.Net.Tests
 
         static YGBaselineFunc _baseline = (YGNode node, float width, float height, object context) =>
         {
-            return (float)node.getContext();
+            return (float)node.Context;
         };
 
         [Test] public void align_baseline_customer_func() {
@@ -34,7 +34,7 @@ namespace Yoga.Net.Tests
 
             float baselineValue = 10;
             YGNode root_child1_child0 = YGNodeNew();
-            root_child1_child0.setContext(baselineValue);
+            root_child1_child0.Context = baselineValue;
             YGNodeStyleSetWidth(root_child1_child0, 50);
             root_child1_child0.setBaselineFunc(_baseline);
             YGNodeStyleSetHeight(root_child1_child0, 20);

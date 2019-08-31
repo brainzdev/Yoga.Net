@@ -16,9 +16,9 @@ namespace Yoga.Net
         static bool areFourValuesEqual(Edges four)
         {
             return
-                YGValueEqual(four[0], four[1]) &&
-                YGValueEqual(four[0], four[2]) &&
-                YGValueEqual(four[0], four[3]);
+                four[0] == four[1] &&
+                four[0] == four[2] &&
+                four[0] == four[3];
         }
 
         static void appendString(StringBuilder sb, string str) => sb.Append(str);
@@ -66,7 +66,7 @@ namespace Yoga.Net
             {
                 sb.Append(str + ": auto; ");
             }
-            else if (!YGFloatsEqual(number.value, 0))
+            else if (!FloatsEqual(number.value, 0))
             {
                 appendNumberIfNotUndefined(sb, str, number);
             }

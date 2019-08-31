@@ -67,17 +67,15 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetFlexGrow(node0, 3);
             Assert.AreEqual(
                 0,
-                YGNodeStyleGetFlexShrink(
-                    node0)); // Default value is Zero, if flex shrink is not defined
+                YGNodeStyleGetFlexShrink(node0)); // Default value is Zero, if flex shrink is not defined
             Assert.AreEqual(3, YGNodeStyleGetFlexGrow(node0));
 
             YGNodeStyleSetFlexGrow(node0, YGValue.YGUndefined);
             YGNodeStyleSetFlexShrink(node0, 3);
             Assert.AreEqual(
                 0,
-                YGNodeStyleGetFlexGrow(
-                    node0)); // Default value is Zero, if flex grow is not defined
-            Assert.AreEqual(3, YGNodeStyleGetFlexShrink(node0));
+                YGNodeStyleGetFlexGrow(node0)); // Default value is Zero, if flex grow is not defined
+                Assert.AreEqual(3, YGNodeStyleGetFlexShrink(node0));
             
         }
     }

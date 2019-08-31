@@ -11,9 +11,9 @@ namespace Yoga.Net.Tests
 
         static void _dirtied(YGNode node)
         {
-            int dirtiedCount = (int)node.getContext();
+            int dirtiedCount = (int)node.Context;
             dirtiedCount++;
-            node.setContext(dirtiedCount);
+            node.Context = dirtiedCount;
         }
 
         [Test] public void dirtied() {
@@ -25,18 +25,18 @@ namespace Yoga.Net.Tests
             YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
 
             //int dirtiedCount = 0;
-            root.setContext(0);
+            root.Context = 0;
             root.setDirtiedFunc(_dirtied);
 
-            Assert.AreEqual(0, (int)root.getContext());
+            Assert.AreEqual(0, (int)root.Context);
 
             // `_dirtied` MUST be called in case of explicit dirtying.
             root.setDirty(true);
-            Assert.AreEqual(1, (int)root.getContext());
+            Assert.AreEqual(1, (int)root.Context);
 
             // `_dirtied` MUST be called ONCE.
             root.setDirty(true);
-            Assert.AreEqual(1, (int)root.getContext());
+            Assert.AreEqual(1, (int)root.Context);
         }
 
         [Test] public void dirtied_propagation() {
@@ -57,18 +57,18 @@ namespace Yoga.Net.Tests
 
             YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
 
-            root.setContext(0);
+            root.Context = 0;
             root.setDirtiedFunc(_dirtied);
 
-            Assert.AreEqual(0, (int)root.getContext());
+            Assert.AreEqual(0, (int)root.Context);
 
             // `_dirtied` MUST be called for the first time.
             root_child0.markDirtyAndPropogate();
-            Assert.AreEqual(1, (int)root.getContext());
+            Assert.AreEqual(1, (int)root.Context);
 
             // `_dirtied` must NOT be called for the second time.
             root_child0.markDirtyAndPropogate();
-            Assert.AreEqual(1, (int)root.getContext());
+            Assert.AreEqual(1, (int)root.Context);
         }
 
         [Test] public void dirtied_hierarchy() {
@@ -89,22 +89,22 @@ namespace Yoga.Net.Tests
 
             YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
 
-            root_child0.setContext(0);
+            root_child0.Context = 0;
             root_child0.setDirtiedFunc(_dirtied);
 
-            Assert.AreEqual(0, (int)root_child0.getContext());
+            Assert.AreEqual(0, (int)root_child0.Context);
 
             // `_dirtied` must NOT be called for descendants.
             root.markDirtyAndPropogate();
-            Assert.AreEqual(0, (int)root_child0.getContext());
+            Assert.AreEqual(0, (int)root_child0.Context);
 
             // `_dirtied` must NOT be called for the sibling node.
             root_child1.markDirtyAndPropogate();
-            Assert.AreEqual(0, (int)root_child0.getContext());
+            Assert.AreEqual(0, (int)root_child0.Context);
 
             // `_dirtied` MUST be called in case of explicit dirtying.
             root_child0.markDirtyAndPropogate();
-            Assert.AreEqual(1, (int)root_child0.getContext());
+            Assert.AreEqual(1, (int)root_child0.Context);
         }
     }
 }

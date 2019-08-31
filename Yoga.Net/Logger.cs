@@ -1,5 +1,7 @@
 ﻿using System;
 
+using static Yoga.Net.YGGlobal;
+
 namespace Yoga.Net
 {
     public static class Logger
@@ -21,7 +23,7 @@ namespace Yoga.Net
 
         static void Log(YGConfig config, YGNode node, YGLogLevel level, object context, string message) 
         {
-            YGConfig logConfig = config ?? YGGlobal.YGConfigGetDefault();
+            YGConfig logConfig = config ?? DefaultConfig;
             logConfig.Log(logConfig, node, level, context, message);
 
             if (level == YGLogLevel.Fatal) 
