@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace Yoga.Net
 {
-    // This class stores YGValue in 32 bits.
+    // This class stores YogaValue in 32 bits.
     // - The value does not matter for Undefined and Auto. NaNs are used for their
     //   representation.
     // - To differentiate between Point and Percent, one exponent bit is used.
@@ -67,10 +67,10 @@ namespace Yoga.Net
             _payload = payload;
         }
 
-        public CompactValue(YGValue x)
+        public CompactValue(YogaValue x)
         {
             _payload.repr = 0;
-            switch (x.unit)
+            switch (x.Unit)
             {
                 case YGUnit.Undefined:
                     _payload.value = Undefined._payload.value;
@@ -80,7 +80,7 @@ namespace Yoga.Net
                     break;
                 case YGUnit.Point:
                 case YGUnit.Percent:
-                    _payload = Build(x.value, x.unit);
+                    _payload = Build(x.Value, x.Unit);
                     break;
             }
         }
@@ -119,28 +119,28 @@ namespace Yoga.Net
             return Of(value, unit);
         }
 
-        public static implicit operator YGValue(CompactValue cv)
+        public static implicit operator YogaValue(CompactValue cv)
         {
             switch (cv._payload.repr)
             {
                 case AUTO_BITS:
-                    return YGValue.Auto;
+                    return YogaValue.Auto;
                 case ZERO_BITS_POINT:
-                    return new YGValue(0f, YGUnit.Point);
+                    return new YogaValue(0f, YGUnit.Point);
                 case ZERO_BITS_PERCENT:
-                    return new YGValue(0f, YGUnit.Percent);
+                    return new YogaValue(0f, YGUnit.Percent);
             }
 
             if (float.IsNaN(cv._payload.value))
             {
-                return YGValue.Undefined;
+                return YogaValue.Undefined;
             }
 
             var data = cv._payload;
             data.repr &= ~PERCENT_BIT;
             data.repr += BIAS;
 
-            return new YGValue(
+            return new YogaValue(
                 data.value,
                 ((cv._payload.repr & 0x40000000) == 0x40000000) ? YGUnit.Percent : YGUnit.Point);
         }
@@ -185,7 +185,7 @@ namespace Yoga.Net
 
         public override string ToString()
         {
-            return ((YGValue)this).ToString();
+            return ((YogaValue)this).ToString();
         }
     }
 }

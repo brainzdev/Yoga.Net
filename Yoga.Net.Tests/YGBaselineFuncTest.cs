@@ -1,5 +1,5 @@
 using NUnit.Framework;
-using static Yoga.Net.YGGlobal;
+using static Yoga.Net.YogaGlobal;
 
 
 
@@ -36,10 +36,10 @@ namespace Yoga.Net.Tests
             YGNode root_child1_child0 = YGNodeNew();
             root_child1_child0.Context = baselineValue;
             YGNodeStyleSetWidth(root_child1_child0, 50);
-            root_child1_child0.setBaselineFunc(_baseline);
+            root_child1_child0.SetBaselineFunc(_baseline);
             YGNodeStyleSetHeight(root_child1_child0, 20);
             YGNodeInsertChild(root_child1, root_child1_child0, 0);
-            YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, YGDirection.LTR);
 
             Assert.AreEqual(0, YGNodeLayoutGetLeft(root));
             Assert.AreEqual(0, YGNodeLayoutGetTop(root));

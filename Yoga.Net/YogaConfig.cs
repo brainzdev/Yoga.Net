@@ -1,37 +1,30 @@
-﻿using static Yoga.Net.YGGlobal;
+﻿using static Yoga.Net.YogaGlobal;
 
 namespace Yoga.Net
 {
-    public class YGConfig
+    public class YogaConfig
     {
-        public YGCloneNodeFunc CloneNodeFunc { get; set; }
-        public YGLoggerFunc LoggerFunc { get; set; }
+        public YogaCloneNodeFunc CloneNodeFunc { get; set; }
+        public LoggerFunc LoggerFunc { get; set; }
         public bool PrintTree { get; set; }
         public float PointScaleFactor { get; set; } = 1.0f;
 
-        public object Context { get; set; }
-
         public bool[] ExperimentalFeatures { get; } = {false};
 
-        public YGConfig(YGLoggerFunc logger)
+        public YogaConfig(LoggerFunc logger)
         {
             LoggerFunc = logger;
         }
 
-        public YGConfig(YGConfig config)
+        public YogaConfig(YogaConfig config)
         {
             CloneNodeFunc = config.CloneNodeFunc;
             LoggerFunc    = config.LoggerFunc;
         }
 
-        public void Log(YGConfig config, YGNode node, YGLogLevel level, object context, string message)
+        public void Log(YogaConfig config, YGNode node, YGLogLevel level, string message)
         {
-            LoggerFunc(config, node, level, context, message);
-        }
-
-        public void Log(YGConfig config, YGNode node, YGLogLevel level, string message)
-        {
-            LoggerFunc(config, node, level, Context, message);
+            LoggerFunc(config, node, level, message);
         }
 
         public YGNode CloneNode(

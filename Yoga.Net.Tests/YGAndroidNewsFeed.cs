@@ -1,5 +1,5 @@
 using NUnit.Framework;
-using static Yoga.Net.YGGlobal;
+using static Yoga.Net.YogaGlobal;
 
 
 
@@ -11,7 +11,7 @@ namespace Yoga.Net.Tests
     {
 
         [Test] public void android_news_feed() {
-            YGConfig config = YGConfigNew();
+            YogaConfig config = YGConfigNew();
 
             YGNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetAlignContent(root, YGAlign.Stretch);
@@ -179,7 +179,7 @@ namespace Yoga.Net.Tests
                 root_child0_child0_child1_child0_child1,
                 root_child0_child0_child1_child0_child1_child1,
                 1);
-            YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, YGDirection.LTR);
 
             Assert.AreEqual(0, YGNodeLayoutGetLeft(root));
             Assert.AreEqual(0, YGNodeLayoutGetTop(root));
@@ -309,7 +309,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(
                 0, YGNodeLayoutGetHeight(root_child0_child0_child1_child0_child1_child1));
 
-            YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.RTL);
+            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, YGDirection.RTL);
 
             Assert.AreEqual(0, YGNodeLayoutGetLeft(root));
             Assert.AreEqual(0, YGNodeLayoutGetTop(root));

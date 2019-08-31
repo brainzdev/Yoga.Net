@@ -55,18 +55,18 @@ namespace Yoga.Net
 
     public class NodeAllocationEventArgs : YGNodeEventArgs
     {
-        public YGConfig Config { get; }
+        public YogaConfig Config { get; }
 
-        public NodeAllocationEventArgs(YGNode node, YGConfig config) : base(node)
+        public NodeAllocationEventArgs(YGNode node, YogaConfig config) : base(node)
         {
             Config = config;
         }
     }
     public class NodeDeallocationEventArgs : YGNodeEventArgs
     {
-        public YGConfig Config { get; }
+        public YogaConfig Config { get; }
 
-        public NodeDeallocationEventArgs(YGNode node, YGConfig config) : base(node)
+        public NodeDeallocationEventArgs(YGNode node, YogaConfig config) : base(node)
         {
             Config = config;
         }

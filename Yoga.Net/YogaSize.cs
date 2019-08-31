@@ -1,13 +1,13 @@
-﻿namespace Yoga.Net 
+﻿namespace Yoga.Net
 {
-    public struct YGSize 
+    public struct YogaSize
     {
         public float Width { get; }
         public float Height { get; }
 
-        public YGSize(float width, float height)
+        public YogaSize(float width, float height)
         {
-            Width = width;
+            Width  = width;
             Height = height;
         }
     }

@@ -4,7 +4,7 @@ using System.Linq;
 
 
 using size_t = System.Int32;
-using static Yoga.Net.YGGlobal;
+using static Yoga.Net.YogaGlobal;
 
 namespace Yoga.Net
 {
@@ -123,7 +123,7 @@ namespace Yoga.Net
             _values.Fill(CompactValue.Undefined);
         }
 
-        public Values(YGValue defaultValue) : this()
+        public Values(YogaValue defaultValue) : this()
         {
             var cv = new CompactValue(defaultValue);
             _values.Fill(cv);

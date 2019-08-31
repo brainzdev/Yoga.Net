@@ -1,5 +1,5 @@
 using NUnit.Framework;
-using static Yoga.Net.YGGlobal;
+using static Yoga.Net.YogaGlobal;
 
 
 using System.Collections.Generic;
@@ -68,10 +68,10 @@ namespace Yoga.Net.Tests
             YGNode root_child2 = YGNodeNew();
             YGNode root_child3 = YGNodeNew();
 
-            root_child0.setLineIndex(0);
-            root_child1.setLineIndex(1);
-            root_child2.setLineIndex(2);
-            root_child3.setLineIndex(3);
+            root_child0.SetLineIndex(0);
+            root_child1.SetLineIndex(1);
+            root_child2.SetLineIndex(2);
+            root_child3.SetLineIndex(3);
 
             YGNodeSetChildren(root, new List<YGNode> { root_child0, root_child1 });
 
@@ -97,10 +97,10 @@ namespace Yoga.Net.Tests
             YGNode root_child2 = YGNodeNew();
             YGNode root_child3 = YGNodeNew();
 
-            root_child0.setLineIndex(0);
-            root_child1.setLineIndex(1);
-            root_child2.setLineIndex(2);
-            root_child3.setLineIndex(3);
+            root_child0.SetLineIndex(0);
+            root_child1.SetLineIndex(1);
+            root_child2.SetLineIndex(2);
+            root_child3.SetLineIndex(3);
 
             YGNodeSetChildren(root, new YGNode[] { root_child0, root_child1, root_child2 });
 

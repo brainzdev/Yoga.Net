@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using static Yoga.Net.YGGlobal;
+using static Yoga.Net.YogaGlobal;
 
 namespace Yoga.Net
 {
@@ -26,22 +26,22 @@ namespace Yoga.Net
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static YGFloatOptional Resolve(this YGValue value, float ownerSize) 
+        public static FloatOptional Resolve(this YogaValue value, float ownerSize) 
         {
-            switch (value.unit) {
+            switch (value.Unit) {
             case YGUnit.Point:
-                return new YGFloatOptional(value.value);
+                return new FloatOptional(value.Value);
             case YGUnit.Percent:
-                return new YGFloatOptional(value.value * ownerSize * 0.01f);
+                return new FloatOptional(value.Value * ownerSize * 0.01f);
             default:
-                return new YGFloatOptional();
+                return new FloatOptional();
             }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static YGFloatOptional Resolve(this CompactValue value, float ownerSize) 
+        public static FloatOptional Resolve(this CompactValue value, float ownerSize) 
         {
-            return Resolve((YGValue) value, ownerSize);
+            return Resolve((YogaValue) value, ownerSize);
         }
 
         public static YGFlexDirection CrossAxis(this YGFlexDirection flexDirection, YGDirection direction)
@@ -74,9 +74,9 @@ namespace Yoga.Net
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static YGFloatOptional ResolveValueMargin(this CompactValue value, in float ownerSize) 
+        public static FloatOptional ResolveValueMargin(this CompactValue value, in float ownerSize) 
         {
-            return value.IsAuto ? new YGFloatOptional(0) : value.Resolve(ownerSize);
+            return value.IsAuto ? new FloatOptional(0) : value.Resolve(ownerSize);
         }
     }
 

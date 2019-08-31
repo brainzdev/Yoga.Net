@@ -1,5 +1,5 @@
 using NUnit.Framework;
-using static Yoga.Net.YGGlobal;
+using static Yoga.Net.YogaGlobal;
 
 
 
@@ -24,19 +24,19 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetHeight(root_child1, 20);
             YGNodeInsertChild(root, root_child1, 1);
 
-            YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, YGDirection.LTR);
 
             YGNodeStyleSetWidth(root_child0, 20);
 
-            Assert.IsTrue(root_child0.isDirty());
-            Assert.IsFalse(root_child1.isDirty());
-            Assert.IsTrue(root.isDirty());
+            Assert.IsTrue(root_child0.IsDirty);
+            Assert.IsFalse(root_child1.IsDirty);
+            Assert.IsTrue(root.IsDirty);
 
-            YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, YGDirection.LTR);
 
-            Assert.IsFalse(root_child0.isDirty());
-            Assert.IsFalse(root_child1.isDirty());
-            Assert.IsFalse(root.isDirty());
+            Assert.IsFalse(root_child0.IsDirty);
+            Assert.IsFalse(root_child1.IsDirty);
+            Assert.IsFalse(root.IsDirty);
 
             
         }
@@ -57,13 +57,13 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetHeight(root_child1, 20);
             YGNodeInsertChild(root, root_child1, 1);
 
-            YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, YGDirection.LTR);
 
             YGNodeStyleSetWidth(root_child0, 50);
 
-            Assert.IsFalse(root_child0.isDirty());
-            Assert.IsFalse(root_child1.isDirty());
-            Assert.IsFalse(root.isDirty());
+            Assert.IsFalse(root_child0.IsDirty);
+            Assert.IsFalse(root_child1.IsDirty);
+            Assert.IsFalse(root.IsDirty);
 
             
         }
@@ -91,25 +91,25 @@ namespace Yoga.Net.Tests
 
             YGNodeStyleSetDisplay(child0, YGDisplay.Flex);
             YGNodeStyleSetDisplay(child1, YGDisplay.None);
-            YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, YGDirection.LTR);
             Assert.AreEqual(0, YGNodeLayoutGetWidth(child1_child0_child0));
             Assert.AreEqual(0, YGNodeLayoutGetHeight(child1_child0_child0));
 
             YGNodeStyleSetDisplay(child0, YGDisplay.None);
             YGNodeStyleSetDisplay(child1, YGDisplay.Flex);
-            YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, YGDirection.LTR);
             Assert.AreEqual(8, YGNodeLayoutGetWidth(child1_child0_child0));
             Assert.AreEqual(16, YGNodeLayoutGetHeight(child1_child0_child0));
 
             YGNodeStyleSetDisplay(child0, YGDisplay.Flex);
             YGNodeStyleSetDisplay(child1, YGDisplay.None);
-            YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, YGDirection.LTR);
             Assert.AreEqual(0, YGNodeLayoutGetWidth(child1_child0_child0));
             Assert.AreEqual(0, YGNodeLayoutGetHeight(child1_child0_child0));
 
             YGNodeStyleSetDisplay(child0, YGDisplay.None);
             YGNodeStyleSetDisplay(child1, YGDisplay.Flex);
-            YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, YGDirection.LTR);
             Assert.AreEqual(8, YGNodeLayoutGetWidth(child1_child0_child0));
             Assert.AreEqual(16, YGNodeLayoutGetHeight(child1_child0_child0));
 
@@ -127,15 +127,15 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetHeight(child0, 25);
             YGNodeInsertChild(root, child0, 0);
 
-            YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, YGDirection.LTR);
 
             YGNode child1 = YGNodeNew();
             YGNodeRemoveChild(root, child1);
-            Assert.IsFalse(root.isDirty());
+            Assert.IsFalse(root.IsDirty);
             
 
             YGNodeRemoveChild(root, child0);
-            Assert.IsTrue(root.isDirty());
+            Assert.IsTrue(root.IsDirty);
             
 
             
@@ -145,15 +145,15 @@ namespace Yoga.Net.Tests
             YGNode root = YGNodeNew();
             YGNodeStyleSetWidth(root, 50);
             YGNodeStyleSetHeight(root, 50);
-            YGNodeStyleSetMinWidth(root, YGValue.YGUndefined);
+            YGNodeStyleSetMinWidth(root, YogaValue.YGUndefined);
 
-            YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, YGDirection.LTR);
 
-            Assert.IsFalse(root.isDirty());
+            Assert.IsFalse(root.IsDirty);
 
-            YGNodeStyleSetMinWidth(root, YGValue.YGUndefined);
+            YGNodeStyleSetMinWidth(root, YogaValue.YGUndefined);
 
-            Assert.IsFalse(root.isDirty());
+            Assert.IsFalse(root.IsDirty);
 
             
         }

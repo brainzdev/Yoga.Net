@@ -1,5 +1,5 @@
 using NUnit.Framework;
-using static Yoga.Net.YGGlobal;
+using static Yoga.Net.YogaGlobal;
 
 
 using System.Text;
@@ -17,10 +17,9 @@ namespace Yoga.Net.Tests
             writeBuffer = new StringBuilder();
         }
 
-        int _unmanagedLogger(YGConfig config,
+        int _unmanagedLogger(YogaConfig config,
                              YGNode node,
                              YGLogLevel level,
-                             object context,
                              string message)
         {
             writeBuffer.Append(message);
@@ -30,7 +29,7 @@ namespace Yoga.Net.Tests
         [Test]
         public void config_print_tree_enabled()
         {
-            YGConfig config = YGConfigNew();
+            YogaConfig config = YGConfigNew();
             YGConfigSetPrintTreeFlag(config, true);
             YGConfigSetLogger(config, _unmanagedLogger);
             YGNode root = YGNodeNewWithConfig(config);
@@ -38,7 +37,7 @@ namespace Yoga.Net.Tests
             YGNode child1 = YGNodeNewWithConfig(config);
             YGNodeInsertChild(root, child0, 0);
             YGNodeInsertChild(root, child1, 1);
-            YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, YGDirection.LTR);
             YGConfigSetLogger(config, null);
             
 
@@ -50,7 +49,7 @@ namespace Yoga.Net.Tests
         [Test]
         public void config_print_tree_disabled()
         {
-            YGConfig config = YGConfigNew();
+            YogaConfig config = YGConfigNew();
             YGConfigSetPrintTreeFlag(config, false);
             YGConfigSetLogger(config, _unmanagedLogger);
             YGNode root = YGNodeNewWithConfig(config);
@@ -58,7 +57,7 @@ namespace Yoga.Net.Tests
             YGNode child1 = YGNodeNewWithConfig(config);
             YGNodeInsertChild(root, child0, 0);
             YGNodeInsertChild(root, child1, 1);
-            YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, YGDirection.LTR);
             YGConfigSetLogger(config, null);
             
 
@@ -69,10 +68,10 @@ namespace Yoga.Net.Tests
         [Test]
         public void logger_default_node_should_print_no_style_info()
         {
-            YGConfig config = YGConfigNew();
+            YogaConfig config = YGConfigNew();
             YGConfigSetLogger(config, _unmanagedLogger);
             YGNode root = YGNodeNewWithConfig(config);
-            YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, YGDirection.LTR);
             YGNodePrint(root, (YGPrintOptions.Layout | YGPrintOptions.Children | YGPrintOptions.Style));
             YGConfigSetLogger(config, null);
             
@@ -84,7 +83,7 @@ namespace Yoga.Net.Tests
         [Test]
         public void logger_node_with_percentage_absolute_position_and_margin()
         {
-            YGConfig config = YGConfigNew();
+            YogaConfig config = YGConfigNew();
             YGConfigSetLogger(config, _unmanagedLogger);
             YGNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetPositionType(root, YGPositionType.Absolute);
@@ -93,7 +92,7 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetFlex(root, 1);
             YGNodeStyleSetMargin(root, YGEdge.Right, 10);
             YGNodeStyleSetMarginAuto(root, YGEdge.Left);
-            YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, YGDirection.LTR);
             YGNodePrint(root, (YGPrintOptions.Layout | YGPrintOptions.Children | YGPrintOptions.Style));
             YGConfigSetLogger(config, null);
             
@@ -105,14 +104,14 @@ namespace Yoga.Net.Tests
         [Test]
         public void logger_node_with_children_should_print_indented()
         {
-            YGConfig config = YGConfigNew();
+            YogaConfig config = YGConfigNew();
             YGConfigSetLogger(config, _unmanagedLogger);
             YGNode root = YGNodeNewWithConfig(config);
             YGNode child0 = YGNodeNewWithConfig(config);
             YGNode child1 = YGNodeNewWithConfig(config);
             YGNodeInsertChild(root, child0, 0);
             YGNodeInsertChild(root, child1, 1);
-            YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, YGDirection.LTR);
             YGNodePrint(root, (YGPrintOptions.Layout | YGPrintOptions.Children | YGPrintOptions.Style));
             YGConfigSetLogger(config, null);
             

@@ -1,21 +1,21 @@
 ﻿using System;
-
-//using uint32_t = System.UInt32;
-using static Yoga.Net.YGGlobal;
+using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
+using static Yoga.Net.YogaGlobal;
 
 namespace Yoga.Net
 {
-    public class YGLayout
+    public class YogaLayout
     {
         public readonly float[] Position = {0f, 0f, 0f, 0f};
-        public readonly float[] Dimensions = {YGValue.YGUndefined, YGValue.YGUndefined};
+        public readonly float[] Dimensions = {YogaValue.YGUndefined, YogaValue.YGUndefined};
 
         public readonly float[] Margin = {0f, 0f, 0f, 0f};
         public readonly float[] Border = {0f, 0f, 0f, 0f};
         public readonly float[] Padding = {0f, 0f, 0f, 0f};
 
         public int ComputedFlexBasisGeneration { get; set; }
-        public YGFloatOptional ComputedFlexBasis { get; set; } = new YGFloatOptional();
+        public FloatOptional ComputedFlexBasis { get; set; } = new FloatOptional();
 
         // Instead of recomputing the entire layout every single time, we cache some
         // information to break early when nothing changed
@@ -24,20 +24,20 @@ namespace Yoga.Net
 
         public int NextCachedMeasurementsIndex { get; set; }
 
-        public readonly YGCachedMeasurement[] CachedMeasurements = new YGCachedMeasurement[YGMaxCachedResultCount];
-        public readonly float[] MeasuredDimensions = {YGValue.YGUndefined, YGValue.YGUndefined};
+        public readonly YGCachedMeasurement[] CachedMeasurements = new YGCachedMeasurement[MaxCachedResultCount];
+        public readonly float[] MeasuredDimensions = {YogaValue.YGUndefined, YogaValue.YGUndefined};
 
-        public YGCachedMeasurement CachedLayout = new YGCachedMeasurement();
+        public YGCachedMeasurement CachedLayout { get; } = new YGCachedMeasurement();
 
         public YGDirection Direction { get; internal set; }
         public bool HadOverflow { get; internal set; }
 
-        public YGLayout()
+        public YogaLayout()
         {
             CachedMeasurements.Fill(() => new YGCachedMeasurement());
         }
 
-        public YGLayout(YGLayout other)
+        public YogaLayout(YogaLayout other)
         {
             Array.Copy(other.Position, Position, Position.Length);
             Array.Copy(other.Dimensions, Dimensions, Dimensions.Length);
@@ -46,7 +46,7 @@ namespace Yoga.Net
             Array.Copy(other.Padding, Padding, Padding.Length);
 
             ComputedFlexBasisGeneration = other.ComputedFlexBasisGeneration;
-            ComputedFlexBasis = other.ComputedFlexBasis;
+            ComputedFlexBasis           = other.ComputedFlexBasis;
 
             GenerationCount = other.GenerationCount;
 
@@ -57,11 +57,11 @@ namespace Yoga.Net
             Array.Copy(other.MeasuredDimensions, MeasuredDimensions, MeasuredDimensions.Length);
 
             CachedLayout = new YGCachedMeasurement(other.CachedLayout);
-            Direction = other.Direction;
-            HadOverflow = other.HadOverflow;
+            Direction    = other.Direction;
+            HadOverflow  = other.HadOverflow;
         }
 
-        protected bool Equals(YGLayout other)
+        protected bool Equals(YogaLayout other)
         {
             bool isEqual = FloatArrayEqual(Position, other.Position) &&
                 FloatArrayEqual(Dimensions, other.Dimensions) &&
@@ -75,15 +75,15 @@ namespace Yoga.Net
                 CachedLayout == other.CachedLayout &&
                 ComputedFlexBasis == other.ComputedFlexBasis;
 
-            for (var i = 0; i < CachedMeasurements.Length && isEqual; ++i) 
+            for (var i = 0; i < CachedMeasurements.Length && isEqual; ++i)
                 isEqual = CachedMeasurements[i] == other.CachedMeasurements[i];
 
-            if (!YogaIsUndefined(MeasuredDimensions[0]) || !YogaIsUndefined(other.MeasuredDimensions[0])) 
+            if (!YogaIsUndefined(MeasuredDimensions[0]) || !YogaIsUndefined(other.MeasuredDimensions[0]))
             {
-                isEqual = isEqual && FloatsEqual(MeasuredDimensions[0],  other.MeasuredDimensions[0]);
+                isEqual = isEqual && FloatsEqual(MeasuredDimensions[0], other.MeasuredDimensions[0]);
             }
 
-            if (!YogaIsUndefined(MeasuredDimensions[1]) || !YogaIsUndefined(other.MeasuredDimensions[1])) 
+            if (!YogaIsUndefined(MeasuredDimensions[1]) || !YogaIsUndefined(other.MeasuredDimensions[1]))
             {
                 isEqual = isEqual && FloatsEqual(MeasuredDimensions[1], other.MeasuredDimensions[1]);
             }
@@ -97,7 +97,7 @@ namespace Yoga.Net
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((YGLayout)obj);
+            return Equals((YogaLayout)obj);
         }
 
         /// <inheritdoc />
@@ -110,11 +110,11 @@ namespace Yoga.Net
                 hashCode = (hashCode * 397) ^ (Margin != null ? Margin.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Border != null ? Border.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Padding != null ? Padding.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (int)ComputedFlexBasisGeneration;
+                hashCode = (hashCode * 397) ^ ComputedFlexBasisGeneration;
                 hashCode = (hashCode * 397) ^ ComputedFlexBasis.GetHashCode();
-                hashCode = (hashCode * 397) ^ (int)GenerationCount;
+                hashCode = (hashCode * 397) ^ GenerationCount;
                 hashCode = (hashCode * 397) ^ (int)LastOwnerDirection;
-                hashCode = (hashCode * 397) ^ (int)NextCachedMeasurementsIndex;
+                hashCode = (hashCode * 397) ^ NextCachedMeasurementsIndex;
                 hashCode = (hashCode * 397) ^ (CachedMeasurements != null ? CachedMeasurements.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (MeasuredDimensions != null ? MeasuredDimensions.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (CachedLayout != null ? CachedLayout.GetHashCode() : 0);
@@ -124,14 +124,20 @@ namespace Yoga.Net
             }
         }
 
-        public static bool operator ==(YGLayout left, YGLayout right)
+        public static bool operator ==(YogaLayout left, YogaLayout right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(YGLayout left, YGLayout right)
+        public static bool operator !=(YogaLayout left, YogaLayout right)
         {
             return !Equals(left, right);
+        }
+
+        public float this[int p]
+        {
+            get => Position[p];
+            set => Position[p] = value;
         }
     }
 }

@@ -1,5 +1,5 @@
 using NUnit.Framework;
-using static Yoga.Net.YGGlobal;
+using static Yoga.Net.YogaGlobal;
 
 
 
@@ -12,7 +12,7 @@ namespace Yoga.Net.Tests
         // because percentages are calculated with parent constraints.
         // However, we need to make sure we fail gracefully in this case, not returning NaN
         [Test] public void percent_absolute_position_infinite_height() {
-            YGConfig config = YGConfigNew();
+            YogaConfig config = YGConfigNew();
 
             YGNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -30,7 +30,7 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidthPercent(root_child1, 20);
             YGNodeStyleSetHeightPercent(root_child1, 20);
             YGNodeInsertChild(root, root_child1, 1);
-            YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, YGDirection.LTR);
 
             Assert.AreEqual(0, YGNodeLayoutGetLeft(root));
             Assert.AreEqual(0, YGNodeLayoutGetTop(root));

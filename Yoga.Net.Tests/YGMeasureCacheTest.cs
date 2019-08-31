@@ -1,5 +1,5 @@
 using NUnit.Framework;
-using static Yoga.Net.YGGlobal;
+using static Yoga.Net.YogaGlobal;
 
 
 
@@ -20,7 +20,7 @@ namespace Yoga.Net.Tests
             measureCount++;
             node.Context = measureCount;
 
-            return new YGSize(
+            return new YogaSize(
                 widthMode == YGMeasureMode.Undefined ? 10 : width,
                 heightMode == YGMeasureMode.Undefined ? 10 : height);
         };
@@ -34,7 +34,7 @@ namespace Yoga.Net.Tests
             int measureCount = (int)node.Context;
             measureCount = measureCount + 1;
             node.Context = measureCount;
-            return new YGSize(
+            return new YogaSize(
                 widthMode == YGMeasureMode.Undefined || (widthMode == YGMeasureMode.AtMost && width > 10)
                     ? 10
                     : width,
@@ -54,7 +54,7 @@ namespace Yoga.Net.Tests
             measureCount++;
             node.Context = measureCount;
 
-            return new YGSize(84f, 49f);
+            return new YogaSize(84f, 49f);
         };
 
         [Test] public void measure_once_single_flexible_child() {
@@ -66,11 +66,11 @@ namespace Yoga.Net.Tests
 
             YGNode root_child0 = YGNodeNew();
             root_child0.Context = 0;
-            root_child0.setMeasureFunc(_measureMax);
+            root_child0.SetMeasureFunc(_measureMax);
             YGNodeStyleSetFlexGrow(root_child0, 1);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, YGDirection.LTR);
 
             Assert.AreEqual(1, (int)root_child0.Context);
 
@@ -82,7 +82,7 @@ namespace Yoga.Net.Tests
 
             YGNode root_child0 = YGNodeNew();
             root_child0.Context = 0;
-            root_child0.setMeasureFunc(_measureMin);
+            root_child0.SetMeasureFunc(_measureMin);
             YGNodeInsertChild(root, root_child0, 0);
 
             YGNodeCalculateLayout(root, 100, 100, YGDirection.LTR);
@@ -99,7 +99,7 @@ namespace Yoga.Net.Tests
 
             YGNode root_child0 = YGNodeNew();
             root_child0.Context = 0;
-            root_child0.setMeasureFunc(_measureMin);
+            root_child0.SetMeasureFunc(_measureMin);
             YGNodeInsertChild(root, root_child0, 0);
 
             YGNodeCalculateLayout(root, 100, 100, YGDirection.LTR);
@@ -116,7 +116,7 @@ namespace Yoga.Net.Tests
 
             YGNode root_child0 = YGNodeNew();
             root_child0.Context = 0;
-            root_child0.setMeasureFunc(_measureMin);
+            root_child0.SetMeasureFunc(_measureMin);
             YGNodeInsertChild(root, root_child0, 0);
 
             YGNodeCalculateLayout(root, 100, 100, YGDirection.LTR);
@@ -134,11 +134,11 @@ namespace Yoga.Net.Tests
 
             YGNode root_child0 = YGNodeNew();
             root_child0.Context = 0;
-            root_child0.setMeasureFunc(_measureMin);
+            root_child0.SetMeasureFunc(_measureMin);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNodeCalculateLayout(root, 100, YGValue.YGUndefined, YGDirection.LTR);
-            YGNodeCalculateLayout(root, 10, YGValue.YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root, 100, YogaValue.YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root, 10, YogaValue.YGUndefined, YGDirection.LTR);
 
             Assert.AreEqual(1, (int)root_child0.Context);
 
@@ -159,10 +159,10 @@ namespace Yoga.Net.Tests
 
             YGNode root_child0_child0 = YGNodeNew();
             root_child0_child0.Context = 0;
-            root_child0_child0.setMeasureFunc(_measure_84_49);
+            root_child0_child0.SetMeasureFunc(_measure_84_49);
             YGNodeInsertChild(root_child0, root_child0_child0, 0);
 
-            YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, YGDirection.LTR);
 
             
 

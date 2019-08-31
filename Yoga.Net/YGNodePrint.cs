@@ -1,19 +1,24 @@
 ﻿using System.Text;
-
-using uint32_t = System.UInt32;
-using static Yoga.Net.YGGlobal;
+using static Yoga.Net.YogaGlobal;
 
 namespace Yoga.Net
 {
-    public static class YGNodePrint
+    public class YGNodePrint
     {
-        static void indent(StringBuilder sb, uint32_t level)
+        StringBuilder sb;
+
+        public YGNodePrint(StringBuilder sb)
         {
-            for (uint32_t i = 0; i < level; ++i)
+            this.sb = sb;
+        }
+
+        void Indent(int level)
+        {
+            for (int i = 0; i < level; ++i)
                 sb.Append("  ");
         }
 
-        static bool areFourValuesEqual(Edges four)
+        bool AreFourValuesEqual(Edges four)
         {
             return
                 four[0] == four[1] &&
@@ -21,12 +26,11 @@ namespace Yoga.Net
                 four[0] == four[3];
         }
 
-        static void appendString(StringBuilder sb, string str) => sb.Append(str);
+        void AppendString(string str) => sb.Append(str);
 
-        static void appendFloatOptionalIfDefined(
-            StringBuilder sb,
+        void AppendFloatOptionalIfDefined(
             string key,
-            YGFloatOptional num)
+            FloatOptional num)
         {
             if (!num.IsUndefined())
             {
@@ -34,187 +38,180 @@ namespace Yoga.Net
             }
         }
 
-        static void appendNumberIfNotUndefined(
-            StringBuilder sb,
+        void AppendNumberIfNotUndefined(
             string key,
-            YGValue number)
+            YogaValue number)
         {
-            if (number.unit == YGUnit.Undefined)
+            if (number.Unit == YGUnit.Undefined)
                 return;
 
-            if (number.unit == YGUnit.Auto)
+            if (number.Unit == YGUnit.Auto)
                 sb.Append($"{key}: auto; ");
             else
                 sb.Append($"{key}: {number}; ");
         }
 
-        static void appendNumberIfNotAuto(
-            StringBuilder sb,
+        void AppendNumberIfNotAuto(
             string key,
-            YGValue number)
+            YogaValue number)
         {
-            if (number.unit != YGUnit.Auto)
-                appendNumberIfNotUndefined(sb, key, number);
+            if (number.Unit != YGUnit.Auto)
+                AppendNumberIfNotUndefined(key, number);
         }
 
-        static void appendNumberIfNotZero(
-            StringBuilder sb,
+        void AppendNumberIfNotZero(
             string str,
-            YGValue number)
+            YogaValue number)
         {
-            if (number.unit == YGUnit.Auto)
+            if (number.Unit == YGUnit.Auto)
             {
                 sb.Append(str + ": auto; ");
             }
-            else if (!FloatsEqual(number.value, 0))
+            else if (!FloatsEqual(number.Value, 0))
             {
-                appendNumberIfNotUndefined(sb, str, number);
+                AppendNumberIfNotUndefined(str, number);
             }
         }
 
-        static void appendEdges(
-            StringBuilder sb,
+        void AppendEdges(
             string key,
             Edges edges)
         {
-            if (areFourValuesEqual(edges))
+            if (AreFourValuesEqual(edges))
             {
-                appendNumberIfNotZero(sb, key, edges[YGEdge.Left]);
+                AppendNumberIfNotZero(key, edges[YGEdge.Left]);
             }
             else
             {
                 for (var edge = YGEdge.Left; edge != YGEdge.All; ++edge)
                 {
                     string str = key + "-" + (edge.ToString().ToLower());
-                    appendNumberIfNotZero(sb, str, edges[edge]);
+                    AppendNumberIfNotZero(str, edges[edge]);
                 }
             }
         }
 
-        static void appendEdgeIfNotUndefined(
-            StringBuilder sb,
+        void AppendEdgeIfNotUndefined(
             string str,
             Edges edges,
             YGEdge edge)
         {
-            appendNumberIfNotUndefined(
-                sb,
+            AppendNumberIfNotUndefined(
                 str,
-                YGComputedEdgeValue(edges, edge, CompactValue.Undefined));
+                edges.ComputedEdgeValue(edge, CompactValue.Undefined));
         }
 
-        public static void YGNodeToString(
-            StringBuilder sb,
+        public void YGNodeToString(
             YGNode node,
             YGPrintOptions options,
-            uint32_t level)
+            int level)
         {
-            indent(sb, level);
-            appendString(sb, "<div ");
+            Indent(level);
+            AppendString("<div ");
 
             if (options.HasFlag(YGPrintOptions.Layout))
             {
-                appendString(sb, "layout=\"");
-                appendString(sb, $"width: {node.getLayout().Dimensions[(int)YGDimension.Width]:G}; ");
-                appendString(sb, $"height: {node.getLayout().Dimensions[(int)YGDimension.Height]:G}; ");
-                appendString(sb, $"top: {node.getLayout().Position[(int)YGEdge.Top]:G}; ");
-                appendString(sb, $"left: {node.getLayout().Position[(int)YGEdge.Left]:G};");
-                appendString(sb, "\" ");
+                AppendString("layout=\"");
+                AppendString($"width: {node.GetLayout().Dimensions[(int)YGDimension.Width]:G}; ");
+                AppendString($"height: {node.GetLayout().Dimensions[(int)YGDimension.Height]:G}; ");
+                AppendString($"top: {node.GetLayout().Position[(int)YGEdge.Top]:G}; ");
+                AppendString($"left: {node.GetLayout().Position[(int)YGEdge.Left]:G};");
+                AppendString("\" ");
             }
 
             if (options.HasFlag(YGPrintOptions.Style))
             {
-                appendString(sb, "style=\"");
-                var style = node.getStyle();
-                if (style.flexDirection != DefaultYGNode.getStyle().flexDirection)
+                AppendString("style=\"");
+                var style = node.GetStyle();
+                if (style.FlexDirection != DefaultYGNode.GetStyle().FlexDirection)
                 {
-                    appendString(sb,$"flex-direction: {style.flexDirection.ToString().ToLower()}; ");
+                    AppendString($"flex-direction: {style.FlexDirection.ToString().ToLower()}; ");
                 }
 
-                if (style.justifyContent != DefaultYGNode.getStyle().justifyContent)
+                if (style.JustifyContent != DefaultYGNode.GetStyle().JustifyContent)
                 {
-                    appendString(sb,$"justify-content: {style.justifyContent.ToString().ToLower()}; ");
+                    AppendString($"justify-content: {style.JustifyContent.ToString().ToLower()}; ");
                 }
 
-                if (style.alignItems != DefaultYGNode.getStyle().alignItems)
+                if (style.AlignItems != DefaultYGNode.GetStyle().AlignItems)
                 {
-                    appendString(sb,$"align-items: {style.alignItems.ToString().ToLower()}; ");
+                    AppendString($"align-items: {style.AlignItems.ToString().ToLower()}; ");
                 }
 
-                if (style.alignContent != DefaultYGNode.getStyle().alignContent)
+                if (style.AlignContent != DefaultYGNode.GetStyle().AlignContent)
                 {
-                    appendString(sb,$"align-content: {style.alignContent.ToString().ToLower()}; ");
+                    AppendString($"align-content: {style.AlignContent.ToString().ToLower()}; ");
                 }
 
-                if (style.alignSelf != DefaultYGNode.getStyle().alignSelf)
+                if (style.AlignSelf != DefaultYGNode.GetStyle().AlignSelf)
                 {
-                    appendString(sb,$"align-self: {style.alignSelf.ToString().ToLower()}; ");
+                    AppendString($"align-self: {style.AlignSelf.ToString().ToLower()}; ");
                 }
 
-                appendFloatOptionalIfDefined(sb, "flex-grow", style.flexGrow);
-                appendFloatOptionalIfDefined(sb, "flex-shrink", style.flexShrink);
-                appendNumberIfNotAuto(sb, "flex-basis", style.flexBasis);
-                appendFloatOptionalIfDefined(sb, "flex", style.flex);
+                AppendFloatOptionalIfDefined("flex-grow", style.FlexGrow);
+                AppendFloatOptionalIfDefined("flex-shrink", style.FlexShrink);
+                AppendNumberIfNotAuto("flex-basis", style.FlexBasis);
+                AppendFloatOptionalIfDefined("flex", style.Flex);
 
-                if (style.flexWrap != DefaultYGNode.getStyle().flexWrap)
+                if (style.FlexWrap != DefaultYGNode.GetStyle().FlexWrap)
                 {
-                    appendString(sb,$"flex-wrap: {style.flexWrap.ToString().ToLower()}; ");
+                    AppendString($"flex-wrap: {style.FlexWrap.ToString().ToLower()}; ");
                 }
 
-                if (style.overflow != DefaultYGNode.getStyle().overflow)
+                if (style.Overflow != DefaultYGNode.GetStyle().Overflow)
                 {
-                    appendString(sb,$"overflow: {style.overflow.ToString().ToLower()}; ");
+                    AppendString($"overflow: {style.Overflow.ToString().ToLower()}; ");
                 }
 
-                if (style.display != DefaultYGNode.getStyle().display)
+                if (style.Display != DefaultYGNode.GetStyle().Display)
                 {
-                    appendString(sb,$"display: {style.display.ToString().ToLower()}; ");
+                    AppendString($"display: {style.Display.ToString().ToLower()}; ");
                 }
 
-                appendEdges(sb, "margin", style.margin);
-                appendEdges(sb, "padding", style.padding);
-                appendEdges(sb, "border", style.border);
+                AppendEdges("margin", style.Margin);
+                AppendEdges("padding", style.Padding);
+                AppendEdges("border", style.Border);
 
-                appendNumberIfNotAuto(sb, "width", style.dimensions[YGDimension.Width]);
-                appendNumberIfNotAuto(sb, "height", style.dimensions[YGDimension.Height]);
-                appendNumberIfNotAuto(sb, "max-width", style.maxDimensions[YGDimension.Width]);
-                appendNumberIfNotAuto(sb, "max-height", style.maxDimensions[YGDimension.Height]);
-                appendNumberIfNotAuto(sb, "min-width", style.minDimensions[YGDimension.Width]);
-                appendNumberIfNotAuto(sb, "min-height", style.minDimensions[YGDimension.Height]);
+                AppendNumberIfNotAuto("width", style.Dimensions[YGDimension.Width]);
+                AppendNumberIfNotAuto("height", style.Dimensions[YGDimension.Height]);
+                AppendNumberIfNotAuto("max-width", style.MaxDimensions[YGDimension.Width]);
+                AppendNumberIfNotAuto("max-height", style.MaxDimensions[YGDimension.Height]);
+                AppendNumberIfNotAuto("min-width", style.MinDimensions[YGDimension.Width]);
+                AppendNumberIfNotAuto("min-height", style.MinDimensions[YGDimension.Height]);
 
-                if (style.positionType != DefaultYGNode.getStyle().positionType)
+                if (style.PositionType != DefaultYGNode.GetStyle().PositionType)
                 {
-                    appendString(sb, $"position: {style.positionType.ToString().ToLower()}; ");
+                    AppendString($"position: {style.PositionType.ToString().ToLower()}; ");
                 }
 
-                appendEdgeIfNotUndefined(sb, "left", style.position, YGEdge.Left);
-                appendEdgeIfNotUndefined(sb, "right", style.position, YGEdge.Right);
-                appendEdgeIfNotUndefined(sb, "top", style.position, YGEdge.Top);
-                appendEdgeIfNotUndefined(sb, "bottom", style.position, YGEdge.Bottom);
-                appendString(sb, "\" ");
+                AppendEdgeIfNotUndefined("left", style.Position, YGEdge.Left);
+                AppendEdgeIfNotUndefined("right", style.Position, YGEdge.Right);
+                AppendEdgeIfNotUndefined("top", style.Position, YGEdge.Top);
+                AppendEdgeIfNotUndefined("bottom", style.Position, YGEdge.Bottom);
+                AppendString("\" ");
 
-                if (node.hasMeasureFunc())
+                if (node.HasMeasureFunc())
                 {
-                    appendString(sb, "has-custom-measure=\"true\"");
+                    AppendString("has-custom-measure=\"true\"");
                 }
             }
 
-            appendString(sb, ">");
+            AppendString(">");
 
-            var childCount = node.getChildren().Count;
+            var childCount = node.GetChildren().Count;
             if (options.HasFlag(YGPrintOptions.Children) && childCount > 0)
             {
                 for (int i = 0; i < childCount; i++)
                 {
-                    appendString(sb, "\n");
-                    YGNodeToString(sb, node.Children[i], options, level + 1);
+                    AppendString("\n");
+                    YGNodeToString(node.Children[i], options, level + 1);
                 }
 
-                appendString(sb, "\n");
-                indent(sb, level);
+                AppendString("\n");
+                Indent(level);
             }
 
-            appendString(sb, "</div>");
+            AppendString("</div>");
         }
     }
 }

@@ -1,5 +1,5 @@
 using NUnit.Framework;
-using static Yoga.Net.YGGlobal;
+using static Yoga.Net.YogaGlobal;
 
 
 
@@ -29,7 +29,7 @@ namespace Yoga.Net.Tests
         }
 
         YGNode root;
-        YGConfig config;
+        YogaConfig config;
 
     [Test] public void children_overflow_no_wrap_and_no_flex_children() {
         YGNode child0 = YGNodeNewWithConfig(config);

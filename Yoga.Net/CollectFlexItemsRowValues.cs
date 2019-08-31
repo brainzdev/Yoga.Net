@@ -6,7 +6,7 @@ namespace Yoga.Net
     /// This struct is an helper model to hold the data for step 4 of flexbox algorithm,
     /// which is collecting the flex items in a line.
     /// </summary>
-    public class YGCollectFlexItemsRowValues
+    public class CollectFlexItemsRowValues
     {
         /// <summary>
         /// Number of items which can fit in a line considering the

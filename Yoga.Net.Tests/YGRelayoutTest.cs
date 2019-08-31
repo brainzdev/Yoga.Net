@@ -1,5 +1,5 @@
 using NUnit.Framework;
-using static Yoga.Net.YGGlobal;
+using static Yoga.Net.YogaGlobal;
 
 
 
@@ -10,7 +10,7 @@ namespace Yoga.Net.Tests
     {
 
         [Test] public void dont_cache_computed_flex_basis_between_layouts() {
-            YGConfig config = YGConfigNew();
+            YogaConfig config = YGConfigNew();
             YGConfigSetExperimentalFeatureEnabled(config, YGExperimentalFeature.WebFlexBasis, true);
 
             YGNode root = YGNodeNewWithConfig(config);
@@ -21,7 +21,7 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetFlexBasisPercent(root_child0, 100);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNodeCalculateLayout(root, 100, YGValue.YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root, 100, YogaValue.YGUndefined, YGDirection.LTR);
             YGNodeCalculateLayout(root, 100, 100, YGDirection.LTR);
 
             Assert.AreEqual(100, YGNodeLayoutGetHeight(root_child0));
@@ -39,11 +39,11 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetMaxHeight(root_child0, 10);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, YGDirection.LTR);
             Assert.AreEqual(10, YGNodeLayoutGetHeight(root_child0));
 
-            YGNodeStyleSetMinHeight(root_child0, YGValue.YGUndefined);
-            YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
+            YGNodeStyleSetMinHeight(root_child0, YogaValue.YGUndefined);
+            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, YGDirection.LTR);
 
             Assert.AreEqual(0, YGNodeLayoutGetHeight(root_child0));
 

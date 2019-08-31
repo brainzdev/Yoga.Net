@@ -1,5 +1,5 @@
 using NUnit.Framework;
-using static Yoga.Net.YGGlobal;
+using static Yoga.Net.YogaGlobal;
 
 
 
@@ -10,7 +10,7 @@ namespace Yoga.Net.Tests
     {
 
         [Test] public void cloning_shared_root() {
-            YGConfig config = YGConfigNew();
+            YogaConfig config = YGConfigNew();
             YGConfigSetPrintTreeFlag(config, true);
 
             YGNode root = YGNodeNewWithConfig(config);
@@ -25,7 +25,7 @@ namespace Yoga.Net.Tests
             YGNode root_child1 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child1, 1);
             YGNodeInsertChild(root, root_child1, 1);
-            YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, YGDirection.LTR);
 
             Assert.AreEqual(0, YGNodeLayoutGetLeft(root));
             Assert.AreEqual(0, YGNodeLayoutGetTop(root));
@@ -50,7 +50,7 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(root_child0, root2.Children[0]);
             Assert.AreEqual(root_child1, root2.Children[1]);
 
-            YGNodeCalculateLayout(root2, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root2, YogaValue.YGUndefined, YogaValue.YGUndefined, YGDirection.LTR);
 
             Assert.AreEqual(2, YGNodeGetChildCount(root2));
             // Relayout with no changed input should result in referential equality.
@@ -59,7 +59,7 @@ namespace Yoga.Net.Tests
 
             YGNodeStyleSetWidth(root2, 150);
             YGNodeStyleSetHeight(root2, 200);
-            YGNodeCalculateLayout(root2, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root2, YogaValue.YGUndefined, YogaValue.YGUndefined, YGDirection.LTR);
 
             Assert.AreEqual(2, YGNodeGetChildCount(root2));
             // Relayout with changed input should result in cloned children.
@@ -105,7 +105,7 @@ namespace Yoga.Net.Tests
         }
 
         [Test] public void mutating_children_of_a_clone_clones() {
-            YGConfig config = YGConfigNew();
+            YogaConfig config = YGConfigNew();
             YGConfigSetPrintTreeFlag(config, true);
 
             YGNode root = YGNodeNewWithConfig(config);
@@ -142,7 +142,7 @@ namespace Yoga.Net.Tests
         }
 
         [Test] public void cloning_two_levels() {
-            YGConfig config = YGConfigNew();
+            YogaConfig config = YGConfigNew();
             YGConfigSetPrintTreeFlag(config, true);
 
             YGNode root = YGNodeNewWithConfig(config);
@@ -167,7 +167,7 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetFlexBasis(root_child1_1, 25);
             YGNodeInsertChild(root_child1, root_child1_1, 1);
 
-            YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, YGDirection.LTR);
 
             Assert.AreEqual(40, YGNodeLayoutGetHeight(root_child0));
             Assert.AreEqual(60, YGNodeLayoutGetHeight(root_child1));
@@ -186,7 +186,7 @@ namespace Yoga.Net.Tests
             YGNodeInsertChild(root2, root2_child1, 1);
             Assert.AreEqual(2, YGNodeGetChildCount(root2));
 
-            YGNodeCalculateLayout(root2, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root2, YogaValue.YGUndefined, YogaValue.YGUndefined, YGDirection.LTR);
 
             // Original root is unchanged
             Assert.AreEqual(40, YGNodeLayoutGetHeight(root_child0));
@@ -207,7 +207,7 @@ namespace Yoga.Net.Tests
         [Test] public void cloning_and_freeing() {
             //int initialInstanceCount = YGNodeGetInstanceCount();
 
-            YGConfig config = YGConfigNew();
+            YogaConfig config = YGConfigNew();
             YGConfigSetPrintTreeFlag(config, true);
 
             YGNode root = YGNodeNewWithConfig(config);
@@ -218,7 +218,7 @@ namespace Yoga.Net.Tests
             YGNode root_child1 = YGNodeNewWithConfig(config);
             YGNodeInsertChild(root, root_child1, 1);
 
-            YGNodeCalculateLayout(root, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, YGDirection.LTR);
 
             YGNode root2 = YGNodeClone(root);
 
@@ -226,7 +226,7 @@ namespace Yoga.Net.Tests
             // children.
             
 
-            YGNodeCalculateLayout(root2, YGValue.YGUndefined, YGValue.YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root2, YogaValue.YGUndefined, YogaValue.YGUndefined, YGDirection.LTR);
 
             //Assert.AreEqual(initialInstanceCount, YGNodeGetInstanceCount());
         }
