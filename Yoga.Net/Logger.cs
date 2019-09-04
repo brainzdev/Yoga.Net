@@ -12,7 +12,7 @@ namespace Yoga.Net
 
         public static void Log(YGNode node, LogLevel level, string message)
         {
-            Log(node?.GetConfig(), node, level, message);
+            Log(node?.Config, node, level, message);
         }
 
         public static void Log(YogaConfig config, LogLevel level, string message)
