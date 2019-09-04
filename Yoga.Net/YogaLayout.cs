@@ -7,12 +7,13 @@ namespace Yoga.Net
 {
     public class YogaLayout
     {
-        public readonly float[] Position = {0f, 0f, 0f, 0f};
-        public readonly float[] Dimensions = {YogaValue.YGUndefined, YogaValue.YGUndefined};
+        public readonly LTRBEdge Position = new LTRBEdge(0f);
+        public float Width { get; set; } = float.NaN;
+        public float Height { get; set; } = float.NaN;
 
-        public readonly float[] Margin = {0f, 0f, 0f, 0f};
-        public readonly float[] Border = {0f, 0f, 0f, 0f};
-        public readonly float[] Padding = {0f, 0f, 0f, 0f};
+        public readonly LTRBEdge Margin = new LTRBEdge(0f);
+        public readonly LTRBEdge Border = new LTRBEdge(0f);
+        public readonly LTRBEdge Padding = new LTRBEdge(0f);
 
         public int ComputedFlexBasisGeneration { get; set; }
         public FloatOptional ComputedFlexBasis { get; set; } = new FloatOptional();
@@ -39,11 +40,12 @@ namespace Yoga.Net
 
         public YogaLayout(YogaLayout other)
         {
-            Array.Copy(other.Position, Position, Position.Length);
-            Array.Copy(other.Dimensions, Dimensions, Dimensions.Length);
-            Array.Copy(other.Margin, Margin, Margin.Length);
-            Array.Copy(other.Border, Border, Border.Length);
-            Array.Copy(other.Padding, Padding, Padding.Length);
+            Position = new LTRBEdge(other.Position);
+            Width = other.Width;
+            Height = other.Height;
+            Margin = new LTRBEdge(other.Margin);
+            Border = new LTRBEdge(other.Border);
+            Padding = new LTRBEdge(other.Padding);
 
             ComputedFlexBasisGeneration = other.ComputedFlexBasisGeneration;
             ComputedFlexBasis           = other.ComputedFlexBasis;
@@ -63,11 +65,12 @@ namespace Yoga.Net
 
         protected bool Equals(YogaLayout other)
         {
-            bool isEqual = FloatArrayEqual(Position, other.Position) &&
-                FloatArrayEqual(Dimensions, other.Dimensions) &&
-                FloatArrayEqual(Margin, other.Margin) &&
-                FloatArrayEqual(Border, other.Border) &&
-                FloatArrayEqual(Padding, other.Padding) &&
+            bool isEqual = Position == other.Position &&
+                FloatsEqual(Width, other.Width) &&
+                FloatsEqual(Height ,other.Height) &&
+                Margin == other.Margin &&
+                Border == other.Border &&
+                Padding == other.Padding &&
                 Direction == other.Direction &&
                 HadOverflow == other.HadOverflow &&
                 LastOwnerDirection == other.LastOwnerDirection &&
@@ -106,7 +109,8 @@ namespace Yoga.Net
             unchecked
             {
                 var hashCode = (Position != null ? Position.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Dimensions != null ? Dimensions.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ Width.GetHashCode();
+                hashCode = (hashCode * 397) ^ Height.GetHashCode();
                 hashCode = (hashCode * 397) ^ (Margin != null ? Margin.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Border != null ? Border.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Padding != null ? Padding.GetHashCode() : 0);

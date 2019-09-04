@@ -7,9 +7,9 @@ namespace Yoga.Net
     {
         StringBuilder sb;
 
-        public YGNodePrint(StringBuilder sb)
+        public YGNodePrint(StringBuilder sb = null)
         {
-            this.sb = sb;
+            this.sb = sb ?? new StringBuilder();
         }
 
         void Indent(int level)
@@ -101,10 +101,7 @@ namespace Yoga.Net
                 edges.ComputedEdgeValue(edge, YogaValue.Undefined));
         }
 
-        public void YGNodeToString(
-            YGNode node,
-            PrintOptions options,
-            int level)
+        public void Output(YGNode node, PrintOptions options, int level)
         {
             Indent(level);
             AppendString("<div ");
@@ -112,38 +109,38 @@ namespace Yoga.Net
             if (options.HasFlag(PrintOptions.Layout))
             {
                 AppendString("layout=\"");
-                AppendString($"width: {node.GetLayout().Dimensions[(int)Dimension.Width]:G}; ");
-                AppendString($"height: {node.GetLayout().Dimensions[(int)Dimension.Height]:G}; ");
-                AppendString($"top: {node.GetLayout().Position[(int)Edge.Top]:G}; ");
-                AppendString($"left: {node.GetLayout().Position[(int)Edge.Left]:G};");
+                AppendString($"width: {node.Layout.Width:G}; ");
+                AppendString($"height: {node.Layout.Height:G}; ");
+                AppendString($"top: {node.Layout.Position[Edge.Top]:G}; ");
+                AppendString($"left: {node.Layout.Position[(int)Edge.Left]:G};");
                 AppendString("\" ");
             }
 
             if (options.HasFlag(PrintOptions.Style))
             {
                 AppendString("style=\"");
-                var style = node.GetStyle();
-                if (style.FlexDirection != DefaultYGNode.GetStyle().FlexDirection)
+                var style = node.Style;
+                if (style.FlexDirection != DefaultYGNode.Style.FlexDirection)
                 {
                     AppendString($"flex-direction: {style.FlexDirection.ToString().ToLower()}; ");
                 }
 
-                if (style.JustifyContent != DefaultYGNode.GetStyle().JustifyContent)
+                if (style.JustifyContent != DefaultYGNode.Style.JustifyContent)
                 {
                     AppendString($"justify-content: {style.JustifyContent.ToString().ToLower()}; ");
                 }
 
-                if (style.AlignItems != DefaultYGNode.GetStyle().AlignItems)
+                if (style.AlignItems != DefaultYGNode.Style.AlignItems)
                 {
                     AppendString($"align-items: {style.AlignItems.ToString().ToLower()}; ");
                 }
 
-                if (style.AlignContent != DefaultYGNode.GetStyle().AlignContent)
+                if (style.AlignContent != DefaultYGNode.Style.AlignContent)
                 {
                     AppendString($"align-content: {style.AlignContent.ToString().ToLower()}; ");
                 }
 
-                if (style.AlignSelf != DefaultYGNode.GetStyle().AlignSelf)
+                if (style.AlignSelf != DefaultYGNode.Style.AlignSelf)
                 {
                     AppendString($"align-self: {style.AlignSelf.ToString().ToLower()}; ");
                 }
@@ -153,17 +150,17 @@ namespace Yoga.Net
                 AppendNumberIfNotAuto("flex-basis", style.FlexBasis);
                 AppendFloatOptionalIfDefined("flex", style.Flex);
 
-                if (style.FlexWrap != DefaultYGNode.GetStyle().FlexWrap)
+                if (style.FlexWrap != DefaultYGNode.Style.FlexWrap)
                 {
                     AppendString($"flex-wrap: {style.FlexWrap.ToString().ToLower()}; ");
                 }
 
-                if (style.Overflow != DefaultYGNode.GetStyle().Overflow)
+                if (style.Overflow != DefaultYGNode.Style.Overflow)
                 {
                     AppendString($"overflow: {style.Overflow.ToString().ToLower()}; ");
                 }
 
-                if (style.Display != DefaultYGNode.GetStyle().Display)
+                if (style.Display != DefaultYGNode.Style.Display)
                 {
                     AppendString($"display: {style.Display.ToString().ToLower()}; ");
                 }
@@ -179,7 +176,7 @@ namespace Yoga.Net
                 AppendNumberIfNotAuto("min-width", style.MinDimensions[Dimension.Width]);
                 AppendNumberIfNotAuto("min-height", style.MinDimensions[Dimension.Height]);
 
-                if (style.PositionType != DefaultYGNode.GetStyle().PositionType)
+                if (style.PositionType != DefaultYGNode.Style.PositionType)
                 {
                     AppendString($"position: {style.PositionType.ToString().ToLower()}; ");
                 }
@@ -198,13 +195,13 @@ namespace Yoga.Net
 
             AppendString(">");
 
-            var childCount = node.GetChildren().Count;
+            var childCount = node.Children.Count;
             if (options.HasFlag(PrintOptions.Children) && childCount > 0)
             {
                 for (int i = 0; i < childCount; i++)
                 {
                     AppendString("\n");
-                    YGNodeToString(node.Children[i], options, level + 1);
+                    Output(node.Children[i], options, level + 1);
                 }
 
                 AppendString("\n");
@@ -212,6 +209,12 @@ namespace Yoga.Net
             }
 
             AppendString("</div>");
+        }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return sb.ToString();
         }
     }
 }

@@ -65,11 +65,11 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(0, (int)root.Context);
 
             // `_dirtied` MUST be called for the first time.
-            root_child0.MarkDirtyAndPropogate();
+            root_child0.MarkDirtyAndPropagate();
             Assert.AreEqual(1, (int)root.Context);
 
             // `_dirtied` must NOT be called for the second time.
-            root_child0.MarkDirtyAndPropogate();
+            root_child0.MarkDirtyAndPropagate();
             Assert.AreEqual(1, (int)root.Context);
         }
 
@@ -99,15 +99,15 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(0, (int)root_child0.Context);
 
             // `_dirtied` must NOT be called for descendants.
-            root.MarkDirtyAndPropogate();
+            root.MarkDirtyAndPropagate();
             Assert.AreEqual(0, (int)root_child0.Context);
 
             // `_dirtied` must NOT be called for the sibling node.
-            root_child1.MarkDirtyAndPropogate();
+            root_child1.MarkDirtyAndPropagate();
             Assert.AreEqual(0, (int)root_child0.Context);
 
             // `_dirtied` MUST be called in case of explicit dirtying.
-            root_child0.MarkDirtyAndPropogate();
+            root_child0.MarkDirtyAndPropagate();
             Assert.AreEqual(1, (int)root_child0.Context);
         }
     }

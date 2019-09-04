@@ -24,6 +24,12 @@ namespace Yoga.Net
             Value = (unit == YogaUnit.Auto || unit == YogaUnit.Undefined) ? YGUndefined : value;
         }
 
+        public YogaValue(FloatOptional value, YogaUnit unit)
+        {
+            Unit = unit;
+            Value = (unit == YogaUnit.Auto || unit == YogaUnit.Undefined) ? YGUndefined : value.Unwrap();
+        }
+
         public bool IsNaN => float.IsNaN(Value) || float.IsInfinity(Value);
 
         public bool IsAuto => Unit == YogaUnit.Auto;
