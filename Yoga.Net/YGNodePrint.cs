@@ -30,12 +30,10 @@ namespace Yoga.Net
 
         void AppendFloatOptionalIfDefined(
             string key,
-            FloatOptional num)
+            float num)
         {
-            if (!num.IsUndefined)
-            {
-                sb.Append($"{key}: {num.Unwrap():G}; ");
-            }
+            if (num.IsValid())
+                sb.Append($"{key}: {num:G}; ");
         }
 
         void AppendNumberIfNotUndefined(

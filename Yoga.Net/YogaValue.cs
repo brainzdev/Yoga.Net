@@ -20,14 +20,8 @@ namespace Yoga.Net
 
         public YogaValue(float value, YogaUnit unit)
         {
-            Unit  = unit;
-            Value = (unit == YogaUnit.Auto || unit == YogaUnit.Undefined) ? YGUndefined : value;
-        }
-
-        public YogaValue(FloatOptional value, YogaUnit unit)
-        {
             Unit = unit;
-            Value = (unit == YogaUnit.Auto || unit == YogaUnit.Undefined) ? YGUndefined : value.Unwrap();
+            Value = (unit == YogaUnit.Auto || unit == YogaUnit.Undefined) ? YGUndefined : value;
         }
 
         public bool IsNaN => float.IsNaN(Value) || float.IsInfinity(Value);
@@ -37,6 +31,8 @@ namespace Yoga.Net
         public bool IsUndefined =>
             Unit == YogaUnit.Undefined ||
             (IsNaN && (Unit == YogaUnit.Point || Unit == YogaUnit.Percent));
+
+        public bool IsValid => !IsUndefined;
 
         public bool Equals(YogaValue other)
         {

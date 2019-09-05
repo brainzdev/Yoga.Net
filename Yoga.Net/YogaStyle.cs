@@ -13,9 +13,9 @@
         public Overflow Overflow { get; set; } = Overflow.Visible;
         public Display Display { get; set; } = Display.Flex;
 
-        public FloatOptional Flex { get; set; } = new FloatOptional();
-        public FloatOptional FlexGrow { get; set; } = new FloatOptional();
-        public FloatOptional FlexShrink { get; set; } = new FloatOptional();
+        public float Flex { get; set; } = float.NaN;
+        public float FlexGrow { get; set; } = float.NaN;
+        public float FlexShrink { get; set; } = float.NaN;
         public YogaValue FlexBasis { get; set; } = YogaValue.Auto;
         public Edges Margin { get; set; } = new Edges(YogaValue.Undefined);
         public Edges Position { get; set; } = new Edges(YogaValue.Undefined);
@@ -26,7 +26,7 @@
         public Dimensions MaxDimensions { get; set; } = new Dimensions(YogaValue.Undefined);
 
         // Yoga specific properties, not compatible with flexbox specification
-        public FloatOptional AspectRatio { get; set; } = new FloatOptional();
+        public float AspectRatio { get; set; } = float.NaN;
 
         public YogaStyle() { }
 
@@ -79,25 +79,25 @@
                 MinDimensions == other.MinDimensions &&
                 MaxDimensions == other.MaxDimensions;
 
-            areNonFloatValuesEqual = areNonFloatValuesEqual && Flex.IsUndefined == other.Flex.IsUndefined;
-            if (areNonFloatValuesEqual && !Flex.IsUndefined && !other.Flex.IsUndefined)
+            areNonFloatValuesEqual = areNonFloatValuesEqual && Flex.IsUndefined() == other.Flex.IsUndefined();
+            if (areNonFloatValuesEqual && Flex.IsValid() && other.Flex.IsValid())
             {
                 areNonFloatValuesEqual = Flex == other.Flex;
             }
 
-            areNonFloatValuesEqual = areNonFloatValuesEqual && FlexGrow.IsUndefined == other.FlexGrow.IsUndefined;
-            if (areNonFloatValuesEqual && !FlexGrow.IsUndefined)
+            areNonFloatValuesEqual = areNonFloatValuesEqual && FlexGrow.IsUndefined() == other.FlexGrow.IsUndefined();
+            if (areNonFloatValuesEqual && FlexGrow.IsValid())
             {
                 areNonFloatValuesEqual = FlexGrow == other.FlexGrow;
             }
 
-            areNonFloatValuesEqual = areNonFloatValuesEqual && FlexShrink.IsUndefined == other.FlexShrink.IsUndefined;
-            if (areNonFloatValuesEqual && !other.FlexShrink.IsUndefined)
+            areNonFloatValuesEqual = areNonFloatValuesEqual && FlexShrink.IsUndefined() == other.FlexShrink.IsUndefined();
+            if (areNonFloatValuesEqual && other.FlexShrink.IsValid())
             {
                 areNonFloatValuesEqual = FlexShrink == other.FlexShrink;
             }
 
-            if (!(AspectRatio.IsUndefined && other.AspectRatio.IsUndefined))
+            if (!(AspectRatio.IsUndefined() && other.AspectRatio.IsUndefined()))
             {
                 areNonFloatValuesEqual = areNonFloatValuesEqual && AspectRatio == other.AspectRatio;
             }

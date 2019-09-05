@@ -16,7 +16,7 @@ namespace Yoga.Net
         public readonly LTRBEdge Padding = new LTRBEdge(0f);
 
         public int ComputedFlexBasisGeneration { get; set; }
-        public FloatOptional ComputedFlexBasis { get; set; } = new FloatOptional();
+        public float ComputedFlexBasis { get; set; } = float.NaN;
 
         // Instead of recomputing the entire layout every single time, we cache some
         // information to break early when nothing changed

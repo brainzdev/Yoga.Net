@@ -24,16 +24,16 @@ namespace Yoga.Net
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static FloatOptional Resolve(this YogaValue value, float ownerSize)
+        public static float Resolve(this YogaValue value, float ownerSize)
         {
             switch (value.Unit)
             {
             case YogaUnit.Point:
-                return new FloatOptional(value.Value);
+                return value.Value;
             case YogaUnit.Percent:
-                return new FloatOptional(value.Value * ownerSize * 0.01f);
+                return (value.Value * ownerSize * 0.01f);
             default:
-                return new FloatOptional();
+                return float.NaN;
             }
         }
 
@@ -67,9 +67,9 @@ namespace Yoga.Net
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static FloatOptional ResolveValueMargin(this YogaValue value, in float ownerSize)
+        public static float ResolveValueMargin(this YogaValue value, in float ownerSize)
         {
-            return value.IsAuto ? new FloatOptional(0) : value.Resolve(ownerSize);
+            return value.IsAuto ? 0f : value.Resolve(ownerSize);
         }
     }
 }

@@ -20,6 +20,16 @@ namespace Yoga.Net
             return float.IsNaN(value) || float.IsInfinity(value);
         }
 
+        public static bool IsValid(this float value)
+        {
+            return !float.IsNaN(value) && !float.IsInfinity(value);
+        }
+
+        public static bool IsUndefined(this float value)
+        {
+            return float.IsNaN(value) || float.IsInfinity(value);
+        }
+
         public static bool IsZero(this float value)
         {
             return Math.Abs(value) < float.Epsilon;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using static Yoga.Net.YogaGlobal;
 using uint8_t = System.Byte;
 
@@ -20,6 +21,8 @@ namespace Yoga.Net
         public object Context { get; set; }
         public YogaConfig Config { get; private set; }
         public YogaLayout Layout { get; set; } = new YogaLayout();
+
+        public string Trace { get; set; }
 
         public YogaStyle Style
         {
@@ -102,7 +105,7 @@ namespace Yoga.Net
 
         // If both left and right are defined, then use left. Otherwise return +left or
         // -right depending on which is defined.
-        FloatOptional RelativePosition(
+        float RelativePosition(
             FlexDirection axis,
             float axisSize)
         {
@@ -111,10 +114,10 @@ namespace Yoga.Net
                 return GetLeadingPosition(axis, axisSize);
             }
 
-            FloatOptional trailingPosition = GetTrailingPosition(axis, axisSize);
-            if (!trailingPosition.IsUndefined)
+            float trailingPosition = GetTrailingPosition(axis, axisSize);
+            if (trailingPosition.IsValid())
             {
-                trailingPosition = new FloatOptional(-1 * trailingPosition.Unwrap());
+                trailingPosition = (-1f * trailingPosition);
             }
 
             return trailingPosition;
@@ -210,7 +213,7 @@ namespace Yoga.Net
         }
 
         // Methods related to positions, margin, padding and border
-        public FloatOptional GetLeadingPosition(FlexDirection axis, in float axisSize)
+        public float GetLeadingPosition(FlexDirection axis, in float axisSize)
         {
             if (axis.IsRow())
             {
@@ -223,7 +226,7 @@ namespace Yoga.Net
 
             var leadingPosition = Style.Position.ComputedEdgeValue(leading[(int)axis]);
 
-            return leadingPosition.IsUndefined ? new FloatOptional(0f) : leadingPosition.Resolve(axisSize);
+            return leadingPosition.IsUndefined ? 0f : leadingPosition.Resolve(axisSize);
         }
 
         public bool IsLeadingPositionDefined(FlexDirection axis)
@@ -240,7 +243,7 @@ namespace Yoga.Net
                 !Style.Position.ComputedEdgeValue(trailing[(int)axis]).IsUndefined;
         }
 
-        public FloatOptional GetTrailingPosition(FlexDirection axis, in float axisSize)
+        public float GetTrailingPosition(FlexDirection axis, in float axisSize)
         {
             if (axis.IsRow())
             {
@@ -253,10 +256,10 @@ namespace Yoga.Net
 
             var trailingPosition = Style.Position.ComputedEdgeValue(trailing[(int)axis]);
 
-            return trailingPosition.IsUndefined ? new FloatOptional(0f) : trailingPosition.Resolve(axisSize);
+            return trailingPosition.IsUndefined ? 0f : trailingPosition.Resolve(axisSize);
         }
 
-        public FloatOptional GetLeadingMargin(FlexDirection axis, in float widthSize)
+        public float GetLeadingMargin(FlexDirection axis, in float widthSize)
         {
             if (axis.IsRow() &&
                 !Style.Margin[Edge.Start].IsUndefined)
@@ -268,7 +271,7 @@ namespace Yoga.Net
                          .ResolveValueMargin(widthSize);
         }
 
-        public FloatOptional GetTrailingMargin(FlexDirection axis, in float widthSize)
+        public float GetTrailingMargin(FlexDirection axis, in float widthSize)
         {
             if (axis.IsRow() && !Style.Margin[Edge.End].IsUndefined)
             {
@@ -310,44 +313,44 @@ namespace Yoga.Net
             return FloatMax(trailingBorder.Value, 0.0f);
         }
 
-        public FloatOptional GetLeadingPadding(FlexDirection axis, in float widthSize)
+        public float GetLeadingPadding(FlexDirection axis, in float widthSize)
         {
-            FloatOptional paddingEdgeStart = Style.Padding[Edge.Start].Resolve(widthSize);
+            float paddingEdgeStart = Style.Padding[Edge.Start].Resolve(widthSize);
             if (axis.IsRow() &&
                 !Style.Padding[Edge.Start].IsUndefined &&
-                !paddingEdgeStart.IsUndefined && paddingEdgeStart.Unwrap() >= 0.0f)
+                paddingEdgeStart.IsValid() && paddingEdgeStart >= 0.0f)
             {
                 return paddingEdgeStart;
             }
 
             var resolvedValue = Style.Padding.ComputedEdgeValue(leading[(int)axis], YogaValue.Zero).Resolve(widthSize);
-            return FloatOptional.Max(resolvedValue, new FloatOptional(0.0f));
+            return Math.Max(resolvedValue, 0f);
         }
 
-        public FloatOptional GetTrailingPadding(FlexDirection axis, in float widthSize)
+        public float GetTrailingPadding(FlexDirection axis, in float widthSize)
         {
-            FloatOptional paddingEdgeEnd = Style.Padding[Edge.End].Resolve(widthSize);
-            if (axis.IsRow() && paddingEdgeEnd >= new FloatOptional(0.0f))
+            float paddingEdgeEnd = Style.Padding[Edge.End].Resolve(widthSize);
+            if (axis.IsRow() && paddingEdgeEnd >= 0f)
             {
                 return paddingEdgeEnd;
             }
 
             var resolvedValue = Style.Padding.ComputedEdgeValue(trailing[(int)axis], YogaValue.Zero).Resolve(widthSize);
 
-            return FloatOptional.Max(resolvedValue, new FloatOptional(0.0f));
+            return Math.Max(resolvedValue, 0f);
         }
 
-        public FloatOptional GetLeadingPaddingAndBorder(FlexDirection axis, in float widthSize)
+        public float GetLeadingPaddingAndBorder(FlexDirection axis, in float widthSize)
         {
-            return GetLeadingPadding(axis, widthSize) + new FloatOptional(GetLeadingBorder(axis));
+            return GetLeadingPadding(axis, widthSize) + GetLeadingBorder(axis);
         }
 
-        public FloatOptional GetTrailingPaddingAndBorder(FlexDirection axis, in float widthSize)
+        public float GetTrailingPaddingAndBorder(FlexDirection axis, in float widthSize)
         {
-            return GetTrailingPadding(axis, widthSize) + new FloatOptional(GetTrailingBorder(axis));
+            return GetTrailingPadding(axis, widthSize) + GetTrailingBorder(axis);
         }
 
-        public FloatOptional GetMarginForAxis(FlexDirection axis, in float widthSize)
+        public float GetMarginForAxis(FlexDirection axis, in float widthSize)
         {
             return GetLeadingMargin(axis, widthSize) + GetTrailingMargin(axis, widthSize);
         }
@@ -436,7 +439,7 @@ namespace Yoga.Net
             Layout.LastOwnerDirection = direction;
         }
 
-        public void SetLayoutComputedFlexBasis(FloatOptional computedFlexBasis)
+        public void SetLayoutComputedFlexBasis(float computedFlexBasis)
         {
             Layout.ComputedFlexBasis = computedFlexBasis;
         }
@@ -476,6 +479,10 @@ namespace Yoga.Net
         {
             Layout.Position[index] = position;
         }
+        public void SetLayoutPosition(float position, Edge edge)
+        {
+            Layout.Position[edge] = position;
+        }
 
         public void SetPosition(
             in Direction direction,
@@ -489,21 +496,21 @@ namespace Yoga.Net
             FlexDirection mainAxis = Style.FlexDirection.Resolve(directionRespectingRoot);
             FlexDirection crossAxis = mainAxis.CrossAxis(directionRespectingRoot);
 
-            FloatOptional relativePositionMain = RelativePosition(mainAxis, mainSize);
-            FloatOptional relativePositionCross = RelativePosition(crossAxis, crossSize);
+            float relativePositionMain = RelativePosition(mainAxis, mainSize);
+            float relativePositionCross = RelativePosition(crossAxis, crossSize);
 
             SetLayoutPosition(
-                (GetLeadingMargin(mainAxis, ownerWidth) + relativePositionMain).Unwrap(),
-                (int)leading[(int)mainAxis]);
+                (GetLeadingMargin(mainAxis, ownerWidth) + relativePositionMain),
+                leading[(int)mainAxis]);
             SetLayoutPosition(
-                (GetTrailingMargin(mainAxis, ownerWidth) + relativePositionMain).Unwrap(),
-                (int)trailing[(int)mainAxis]);
+                (GetTrailingMargin(mainAxis, ownerWidth) + relativePositionMain),
+                trailing[(int)mainAxis]);
             SetLayoutPosition(
-                (GetLeadingMargin(crossAxis, ownerWidth) + relativePositionCross).Unwrap(),
-                (int)leading[(int)crossAxis]);
+                (GetLeadingMargin(crossAxis, ownerWidth) + relativePositionCross),
+                leading[(int)crossAxis]);
             SetLayoutPosition(
-                (GetTrailingMargin(crossAxis, ownerWidth) + relativePositionCross).Unwrap(),
-                (int)trailing[(int)crossAxis]);
+                (GetTrailingMargin(crossAxis, ownerWidth) + relativePositionCross),
+                trailing[(int)crossAxis]);
         }
 
         public void MarkDirtyAndPropagateDownwards()
@@ -538,7 +545,7 @@ namespace Yoga.Net
                 return flexBasis;
             }
 
-            if (!Style.Flex.IsUndefined && Style.Flex.Unwrap() > 0.0f)
+            if (Style.Flex.IsValid() && Style.Flex > 0.0f)
                 return YogaValue.Zero;
             return YogaValue.Auto;
         }
@@ -613,7 +620,7 @@ namespace Yoga.Net
             if (!IsDirty)
             {
                 SetDirty(true);
-                SetLayoutComputedFlexBasis(new FloatOptional());
+                SetLayoutComputedFlexBasis(float.NaN);
                 Owner?.MarkDirtyAndPropagate();
             }
         }
@@ -624,11 +631,11 @@ namespace Yoga.Net
             if (Owner == null)
                 return 0.0f;
 
-            if (!Style.FlexGrow.IsUndefined)
-                return Style.FlexGrow.Unwrap();
+            if (Style.FlexGrow.IsValid())
+                return Style.FlexGrow;
 
-            if (!Style.Flex.IsUndefined && Style.Flex.Unwrap() > 0.0f)
-                return Style.Flex.Unwrap();
+            if (Style.Flex.IsValid() && Style.Flex > 0.0f)
+                return Style.Flex;
 
             return DefaultFlexGrow;
         }
@@ -638,13 +645,11 @@ namespace Yoga.Net
             if (Owner == null)
                 return 0.0f;
 
-            if (!Style.FlexShrink.IsUndefined)
-                return Style.FlexShrink.Unwrap();
+            if (Style.FlexShrink.IsValid())
+                return Style.FlexShrink;
 
-            if (!Style.Flex.IsUndefined && Style.Flex.Unwrap() < 0.0f)
-            {
-                return -Style.Flex.Unwrap();
-            }
+            if (Style.Flex.IsValid() && Style.Flex < 0.0f)
+                return -Style.Flex;
 
             return DefaultFlexShrink;
         }
