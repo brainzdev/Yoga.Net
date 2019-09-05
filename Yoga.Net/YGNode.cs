@@ -21,6 +21,12 @@ namespace Yoga.Net
         public object Context { get; set; }
         public YogaConfig Config { get; private set; }
         public YogaLayout Layout { get; set; } = new YogaLayout();
+        public int LineIndex { get; set; }
+
+        public BaselineFunc BaselineFunc { get; set; }
+        public DirtiedFunc DirtiedFunc { get; set; }
+        public MeasureFunc MeasureFunc { get; private set; }
+        public PrintFunc PrintFunc { get; set; }
 
         public string Trace { get; set; }
 
@@ -42,23 +48,11 @@ namespace Yoga.Net
 
         bool HasNewLayout { get; set; } = true;
         NodeType NodeType { get; set; } = NodeType.Default;
-
-        uint8_t _reserved = 0;
-
-        MeasureFunc _measureFunc;
-        BaselineFunc _baselineFunc;
-        PrintFunc _printFunc;
-        bool _isReferenceBaseline;
-
-        DirtiedFunc _dirtiedFunc = null;
-        
-        int _lineIndex = 0;
-
         YogaValue[] _resolvedDimensions = {YogaValue.Undefined, YogaValue.Undefined};
-
 
         public bool IsDirty { get; set; }
 
+        bool _isReferenceBaseline;
         public bool IsReferenceBaseline
         {
             get => _isReferenceBaseline;
@@ -82,13 +76,13 @@ namespace Yoga.Net
         public YGNode(YGNode other)
         {
             Context       = other.Context;
-            _measureFunc  = other._measureFunc;
-            _baselineFunc = other._baselineFunc;
-            _printFunc    = other._printFunc;
-            _dirtiedFunc  = other._dirtiedFunc;
+            MeasureFunc  = other.MeasureFunc;
+            BaselineFunc = other.BaselineFunc;
+            PrintFunc    = other.PrintFunc;
+            DirtiedFunc  = other.DirtiedFunc;
             _style        = new YogaStyle(other.Style);
             Layout        = new YogaLayout(other.Layout);
-            _lineIndex    = other._lineIndex;
+            LineIndex    = other.LineIndex;
             Owner         = other.Owner;
             Config       = other.Config;
             Array.Copy(other._resolvedDimensions, _resolvedDimensions, _resolvedDimensions.Length);
@@ -123,14 +117,9 @@ namespace Yoga.Net
             return trailingPosition;
         }
 
-        public uint8_t Reserved()
-        {
-            return _reserved;
-        }
-
         public void Print(object printContext)
         {
-            _printFunc?.Invoke(this, printContext);
+            PrintFunc?.Invoke(this, printContext);
         }
 
         public bool GetHasNewLayout()
@@ -143,37 +132,16 @@ namespace Yoga.Net
             return NodeType;
         }
 
-        public bool HasMeasureFunc()
-        {
-            return _measureFunc != null;
-        }
-
         public YogaSize Measure(float width, MeasureMode widthMode, float height, MeasureMode heightMode, object layoutContext)
         {
-            return _measureFunc?.Invoke(this, width, widthMode, height, heightMode, layoutContext)
+            return MeasureFunc?.Invoke(this, width, widthMode, height, heightMode, layoutContext)
                 ?? new YogaSize();
-        }
-
-        public bool HasBaselineFunc()
-        {
-            return _baselineFunc != null;
         }
 
         public float Baseline(float width, float height, object layoutContext)
         {
-            return _baselineFunc?.Invoke(this, width, height, layoutContext) ?? 0f;
+            return BaselineFunc?.Invoke(this, width, height, layoutContext) ?? 0f;
         }
-
-        public DirtiedFunc GetDirtied()
-        {
-            return _dirtiedFunc;
-        }
-
-        public int GetLineIndex()
-        {
-            return _lineIndex;
-        }
-
 
         // Applies a callback to all children, after cloning them if they are not
         // owned.
@@ -355,11 +323,6 @@ namespace Yoga.Net
             return GetLeadingMargin(axis, widthSize) + GetTrailingMargin(axis, widthSize);
         }
 
-        public void SetPrintFunc(PrintFunc printFunc = null)
-        {
-            _printFunc = printFunc;
-        }
-
         public void SetHasNewLayout(bool hasNewLayout)
         {
             HasNewLayout = hasNewLayout;
@@ -370,9 +333,11 @@ namespace Yoga.Net
             NodeType = nodeType;
         }
 
-        void SetMeasureFunc() // decltype(measure_)
+        public void SetMeasureFunc(MeasureFunc measureFunc)
         {
-            if (_measureFunc == null)
+            MeasureFunc = measureFunc;
+
+            if (MeasureFunc == null)
             {
                 // TODO: t18095186 Move nodeType to opt-in function and mark appropriate places in Litho
                 NodeType = NodeType.Default;
@@ -387,31 +352,6 @@ namespace Yoga.Net
                 // TODO: t18095186 Move nodeType to opt-in function and mark appropriate places in Litho
                 SetNodeType(NodeType.Text);
             }
-        }
-
-        public void SetMeasureFunc(MeasureFunc measureFunc)
-        {
-            _measureFunc = measureFunc;
-            SetMeasureFunc();
-        }
-
-        public MeasureFunc GetMeasure() => _measureFunc;
-
-        public void SetBaselineFunc(BaselineFunc baseLineFunc)
-        {
-            _baselineFunc = baseLineFunc;
-        }
-
-        public BaselineFunc GetBaselineFunc() => _baselineFunc;
-
-        public void SetDirtiedFunc(DirtiedFunc dirtiedFunc)
-        {
-            _dirtiedFunc = dirtiedFunc;
-        }
-
-        public void SetLineIndex(int lineIndex)
-        {
-            _lineIndex = lineIndex;
         }
 
         public void SetIsReferenceBaseline(bool isReferenceBaseline)
@@ -431,7 +371,7 @@ namespace Yoga.Net
 
             IsDirty = isDirty;
             if (isDirty)
-                _dirtiedFunc?.Invoke(this);
+                DirtiedFunc?.Invoke(this);
         }
 
         public void SetLayoutLastOwnerDirection(Direction direction)
@@ -704,7 +644,7 @@ namespace Yoga.Net
 
             var isEqual = Equals(Style, other.Style);
             isEqual = isEqual & Equals(Layout, other.Layout);
-            isEqual = isEqual & _lineIndex == other._lineIndex;
+            isEqual = isEqual & LineIndex == other.LineIndex;
             isEqual = isEqual & Equals(Config, other.Config);
             isEqual = isEqual & HasNewLayout == other.HasNewLayout;
             isEqual = isEqual & IsReferenceBaseline == other.IsReferenceBaseline;
@@ -741,7 +681,7 @@ namespace Yoga.Net
             {
                 var hashCode = (Style != null ? Style.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Layout != null ? Layout.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ _lineIndex;
+                hashCode = (hashCode * 397) ^ LineIndex;
                 hashCode = (hashCode * 397) ^ (_children != null ? _children.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Config != null ? Config.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (_resolvedDimensions != null ? _resolvedDimensions.GetHashCode() : 0);

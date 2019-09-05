@@ -34,7 +34,7 @@ namespace Yoga.Net
 
         public static bool YGNodeHasMeasureFunc(YGNode node)
         {
-            return node.HasMeasureFunc();
+            return node.MeasureFunc != null;
         }
 
         public static void YGNodeSetMeasureFunc(YGNode node, MeasureFunc measureFunc)
@@ -44,27 +44,27 @@ namespace Yoga.Net
 
         public static bool YGNodeHasBaselineFunc(YGNode node)
         {
-            return node.HasBaselineFunc();
+            return node.BaselineFunc != null;
         }
 
         public static void YGNodeSetBaselineFunc(YGNode node, BaselineFunc baselineFunc)
         {
-            node.SetBaselineFunc(baselineFunc);
+            node.BaselineFunc = baselineFunc;
         }
 
         public static DirtiedFunc YGNodeGetDirtiedFunc(YGNode node)
         {
-            return node.GetDirtied();
+            return node.DirtiedFunc;
         }
 
         public static void YGNodeSetDirtiedFunc(YGNode node, DirtiedFunc dirtiedFunc)
         {
-            node.SetDirtiedFunc(dirtiedFunc);
+            node.DirtiedFunc = dirtiedFunc;
         }
 
         public static void YGNodeSetPrintFunc(YGNode node, PrintFunc printFunc)
         {
-            node.SetPrintFunc(printFunc);
+            node.PrintFunc = printFunc;
         }
 
         public static bool YGNodeGetHasNewLayout(YGNode node)
@@ -226,7 +226,7 @@ namespace Yoga.Net
 
             YGAssertWithNode(
                 owner,
-                !owner.HasMeasureFunc(),
+                owner.MeasureFunc == null,
                 "Cannot add child: Nodes with measure functions cannot have children.");
 
             owner.InsertChild(child, index);
@@ -390,7 +390,7 @@ namespace Yoga.Net
         {
             YGAssertWithNode(
                 node,
-                node.HasMeasureFunc(),
+                node.MeasureFunc != null,
                 "Only leaf nodes with custom measure functions should manually mark themselves as dirty");
 
             node.MarkDirtyAndPropagate();
@@ -963,7 +963,7 @@ namespace Yoga.Net
 
         public static float YGBaseline(YGNode node, object layoutContext)
         {
-            if (node.HasBaselineFunc())
+            if (node.BaselineFunc != null)
             {
                 Event.Hub.Publish(new NodeBaselineStartEventArgs(node));
 
@@ -986,7 +986,7 @@ namespace Yoga.Net
             for (int i = 0; i < childCount; i++)
             {
                 YGNode child = node.Children[i];
-                if (child.GetLineIndex() > 0)
+                if (child.LineIndex > 0)
                 {
                     break;
                 }
@@ -1606,7 +1606,7 @@ namespace Yoga.Net
         {
             YGAssertWithNode(
                 node,
-                node.HasMeasureFunc(),
+                node.MeasureFunc != null,
                 "Expected node to have custom measure function");
 
             float paddingAndBorderAxisRow =
@@ -1983,7 +1983,7 @@ namespace Yoga.Net
                     continue;
                 }
 
-                child.SetLineIndex(lineCount);
+                child.LineIndex = lineCount;
                 float childMarginMainAxis =
                     child.GetMarginForAxis(mainAxis, availableInnerWidth);
                 float flexBasisWithMinAndMaxConstraints =
@@ -2818,7 +2818,7 @@ namespace Yoga.Net
                 node.GetTrailingPadding(flexColumnDirection, ownerWidth),
                 Edge.Bottom);
 
-            if (node.HasMeasureFunc())
+            if (node.MeasureFunc != null)
             {
                 YGNodeWithMeasureFuncSetMeasuredDimensions(
                     node,
@@ -3372,7 +3372,7 @@ namespace Yoga.Net
 
                         if (child.Style.PositionType == PositionType.Relative)
                         {
-                            if (child.GetLineIndex() != i)
+                            if (child.LineIndex != i)
                             {
                                 break;
                             }
@@ -3984,7 +3984,7 @@ namespace Yoga.Net
             // dimensions. We handle nodes with measure functions specially here because
             // they are the most expensive to measure, so it's worth avoiding redundant
             // measurements if at all possible.
-            if (node.HasMeasureFunc())
+            if (node.MeasureFunc != null)
             {
                 float marginAxisRow = node.GetMarginForAxis(FlexDirection.Row, ownerWidth);
                 float marginAxisColumn = node.GetMarginForAxis(FlexDirection.Column, ownerWidth);

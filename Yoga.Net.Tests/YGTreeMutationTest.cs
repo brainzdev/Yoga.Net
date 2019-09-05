@@ -62,10 +62,10 @@ namespace Yoga.Net.Tests
             YGNode root_child2 = YGNodeNew();
             YGNode root_child3 = YGNodeNew();
 
-            root_child0.SetLineIndex(0);
-            root_child1.SetLineIndex(1);
-            root_child2.SetLineIndex(2);
-            root_child3.SetLineIndex(3);
+            root_child0.LineIndex = 0;
+            root_child1.LineIndex = 1;
+            root_child2.LineIndex = 2;
+            root_child3.LineIndex = 3;
 
             YGNodeSetChildren(root, new List<YGNode> {root_child0, root_child1});
 
@@ -89,10 +89,10 @@ namespace Yoga.Net.Tests
             YGNode root_child2 = YGNodeNew();
             YGNode root_child3 = YGNodeNew();
 
-            root_child0.SetLineIndex(0);
-            root_child1.SetLineIndex(1);
-            root_child2.SetLineIndex(2);
-            root_child3.SetLineIndex(3);
+            root_child0.LineIndex = 0;
+            root_child1.LineIndex = 1;
+            root_child2.LineIndex = 2;
+            root_child3.LineIndex = 3;
 
             YGNodeSetChildren(root, new YGNode[] {root_child0, root_child1, root_child2});
 

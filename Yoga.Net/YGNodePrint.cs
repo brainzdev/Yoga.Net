@@ -185,7 +185,7 @@ namespace Yoga.Net
                 AppendEdgeIfNotUndefined("bottom", style.Position, Edge.Bottom);
                 AppendString("\" ");
 
-                if (node.HasMeasureFunc())
+                if (node.MeasureFunc != null)
                 {
                     AppendString("has-custom-measure=\"true\"");
                 }

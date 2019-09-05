@@ -569,7 +569,7 @@ TEST(YogaDeathTest, cannot_add_nonnull_measure_func_to_non_leaf_node() {
             YGNode root = YGNodeNew();
             YGNodeInsertChild(root, YGNodeNew(), 0);
             root.SetMeasureFunc(null);
-            Assert.IsTrue(root.GetMeasure() == null);
+            Assert.IsTrue(root.MeasureFunc == null);
         }
 
         [Test]

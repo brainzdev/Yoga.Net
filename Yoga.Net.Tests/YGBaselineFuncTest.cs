@@ -32,7 +32,7 @@ namespace Yoga.Net.Tests
             YGNode root_child1_child0 = YGNodeNew();
             root_child1_child0.Context = baselineValue;
             YGNodeStyleSetWidth(root_child1_child0, 50);
-            root_child1_child0.SetBaselineFunc(_baseline);
+            root_child1_child0.BaselineFunc = _baseline;
             YGNodeStyleSetHeight(root_child1_child0, 20);
             YGNodeInsertChild(root_child1, root_child1_child0, 0);
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);

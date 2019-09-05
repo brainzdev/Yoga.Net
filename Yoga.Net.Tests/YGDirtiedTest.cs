@@ -26,7 +26,7 @@ namespace Yoga.Net.Tests
 
             //int dirtiedCount = 0;
             root.Context = 0;
-            root.SetDirtiedFunc(_dirtied);
+            root.DirtiedFunc = _dirtied;
 
             Assert.AreEqual(0, (int)root.Context);
 
@@ -60,7 +60,7 @@ namespace Yoga.Net.Tests
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
             root.Context = 0;
-            root.SetDirtiedFunc(_dirtied);
+            root.DirtiedFunc = _dirtied;
 
             Assert.AreEqual(0, (int)root.Context);
 
@@ -94,7 +94,7 @@ namespace Yoga.Net.Tests
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
             root_child0.Context = 0;
-            root_child0.SetDirtiedFunc(_dirtied);
+            root_child0.DirtiedFunc = _dirtied;
 
             Assert.AreEqual(0, (int)root_child0.Context);
 
