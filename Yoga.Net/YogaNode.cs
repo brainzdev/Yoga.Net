@@ -6,18 +6,18 @@ using uint8_t = System.Byte;
 
 namespace Yoga.Net
 {
-    public class YGNode
+    public class YogaNode
     {
         public const float DefaultFlexGrow = 0.0f;
         public const float DefaultFlexShrink = 0.0f;
 
         /// <summary>
-        /// the YGNode that owns this YGNode. An owner is used to identify
-        /// the YogaTree that a YGNode belongs to. This method will return the parent
-        /// of the YGNode when a YGNode only belongs to one YogaTree or null when
-        /// the YGNode is shared between two or more YogaTrees.
+        /// the YogaNode that owns this YogaNode. An owner is used to identify
+        /// the YogaTree that a YogaNode belongs to. This method will return the parent
+        /// of the YogaNode when a YogaNode only belongs to one YogaTree or null when
+        /// the YogaNode is shared between two or more YogaTrees.
         /// </summary>
-        public YGNode Owner { get; set; }
+        public YogaNode Owner { get; set; }
         public object Context { get; set; }
         public YogaConfig Config { get; private set; }
         public YogaLayout Layout { get; set; } = new YogaLayout();
@@ -44,7 +44,7 @@ namespace Yoga.Net
         }
 
         YogaStyle _style = new YogaStyle();
-        YGNodes _children = new YGNodes();
+        YogaNodes _children = new YogaNodes();
 
         bool HasNewLayout { get; set; } = true;
         NodeType NodeType { get; set; } = NodeType.Default;
@@ -66,14 +66,12 @@ namespace Yoga.Net
             }
         }
 
-        public YGNode() : this(DefaultConfig) { }
-
-        public YGNode(YogaConfig config)
+        public YogaNode(YogaConfig config = null)
         {
-            Config = config;
+            Config = config ?? YogaConfig.DefaultConfig;
         }
 
-        public YGNode(YGNode other)
+        public YogaNode(YogaNode other)
         {
             Context       = other.Context;
             MeasureFunc  = other.MeasureFunc;
@@ -92,7 +90,7 @@ namespace Yoga.Net
         }
 
         // for RB fabric
-        public YGNode(YGNode node, YogaConfig config) : this(node)
+        public YogaNode(YogaNode node, YogaConfig config) : this(node)
         {
             Config = config;
         }
@@ -146,7 +144,7 @@ namespace Yoga.Net
         // Applies a callback to all children, after cloning them if they are not
         // owned.
         //template <typename T>
-        public void IterChildrenAfterCloningIfNeeded(Action<YGNode, object> callback, object cloneContext)
+        public void IterChildrenAfterCloningIfNeeded(Action<YogaNode, object> callback, object cloneContext)
         {
             for (int i = 0; i < _children.Count; i++)
             {
@@ -163,12 +161,12 @@ namespace Yoga.Net
         }
 
         [Obsolete("use Children[i]")]
-        public YGNode GetChild(int index)
+        public YogaNode GetChild(int index)
         {
             return _children[index];
         }
 
-        public IReadOnlyList<YGNode> Children => _children;
+        public IReadOnlyList<YogaNode> Children => _children;
 
         public YogaValue[] GetResolvedDimensions()
         {
@@ -359,9 +357,9 @@ namespace Yoga.Net
             IsReferenceBaseline = isReferenceBaseline;
         }
 
-        public void SetChildren(IEnumerable<YGNode> nodes)
+        public void SetChildren(IEnumerable<YogaNode> nodes)
         {
-            _children = new YGNodes(nodes);
+            _children = new YogaNodes(nodes);
         }
 
         public void SetDirty(bool isDirty)
@@ -522,23 +520,23 @@ namespace Yoga.Net
         }
 
         /// Replaces the occurrences of oldChild with newChild
-        public void ReplaceChild(YGNode oldChild, YGNode newChild)
+        public void ReplaceChild(YogaNode oldChild, YogaNode newChild)
         {
             ReplaceChild(newChild, _children.IndexOf(oldChild));
         }
 
-        public void ReplaceChild(YGNode child, int index)
+        public void ReplaceChild(YogaNode child, int index)
         {
             _children[index] = child;
         }
 
-        public void InsertChild(YGNode child, int index)
+        public void InsertChild(YogaNode child, int index)
         {
             _children.Insert(index, child);
         }
 
         /// Removes the first occurrence of child
-        public bool RemoveChild(YGNode child)
+        public bool RemoveChild(YogaNode child)
         {
             if (_children.Contains(child))
                 return _children.Remove(child);
@@ -601,7 +599,7 @@ namespace Yoga.Net
                 (ResolveFlexGrow().IsNotZero() || ResolveFlexShrink().IsNotZero()));
         }
 
-        public bool IsLayoutTreeEqualToNode(YGNode node)
+        public bool IsLayoutTreeEqualToNode(YogaNode node)
         {
             if (_children.Count != node._children.Count)
                 return false;
@@ -623,7 +621,7 @@ namespace Yoga.Net
             return true;
         }
 
-        public YGNode Reset()
+        public YogaNode Reset()
         {
             YGAssertWithNode(
                 this,
@@ -634,10 +632,10 @@ namespace Yoga.Net
                 Owner == null,
                 "Cannot reset a node still attached to a owner");
 
-            return new YGNode(Config);
+            return new YogaNode(Config);
         }
 
-        protected bool Equals(YGNode other)
+        protected bool Equals(YogaNode other)
         {
             if (ReferenceEquals(this, other))
                 return true;
@@ -671,7 +669,7 @@ namespace Yoga.Net
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((YGNode)obj);
+            return Equals((YogaNode)obj);
         }
 
         /// <inheritdoc />
@@ -693,12 +691,12 @@ namespace Yoga.Net
             }
         }
 
-        public static bool operator ==(YGNode left, YGNode right)
+        public static bool operator ==(YogaNode left, YogaNode right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(YGNode left, YGNode right)
+        public static bool operator !=(YogaNode left, YogaNode right)
         {
             return !Equals(left, right);
         }

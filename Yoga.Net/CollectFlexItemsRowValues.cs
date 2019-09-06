@@ -44,7 +44,7 @@ namespace Yoga.Net
         /// <summary>
         /// Maintain a vector of the child nodes that can shrink and/or grow.
         /// </summary>
-        public List<YGNode> RelativeChildren;
+        public List<YogaNode> RelativeChildren;
 
         public float RemainingFreeSpace;
 

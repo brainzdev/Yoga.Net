@@ -10,17 +10,17 @@ namespace Yoga.Net.Tests
         [Test]
         public void dirty_propagation()
         {
-            YGNode root = YGNodeNew();
+            YogaNode root = YGNodeNew();
             YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNode root_child0 = YGNodeNew();
+            YogaNode root_child0 = YGNodeNew();
             YGNodeStyleSetWidth(root_child0, 50);
             YGNodeStyleSetHeight(root_child0, 20);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNode root_child1 = YGNodeNew();
+            YogaNode root_child1 = YGNodeNew();
             YGNodeStyleSetWidth(root_child1, 50);
             YGNodeStyleSetHeight(root_child1, 20);
             YGNodeInsertChild(root, root_child1, 1);
@@ -43,17 +43,17 @@ namespace Yoga.Net.Tests
         [Test]
         public void dirty_propagation_only_if_prop_changed()
         {
-            YGNode root = YGNodeNew();
+            YogaNode root = YGNodeNew();
             YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNode root_child0 = YGNodeNew();
+            YogaNode root_child0 = YGNodeNew();
             YGNodeStyleSetWidth(root_child0, 50);
             YGNodeStyleSetHeight(root_child0, 20);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNode root_child1 = YGNodeNew();
+            YogaNode root_child1 = YGNodeNew();
             YGNodeStyleSetWidth(root_child1, 50);
             YGNodeStyleSetHeight(root_child1, 20);
             YGNodeInsertChild(root, root_child1, 1);
@@ -70,17 +70,17 @@ namespace Yoga.Net.Tests
         [Test]
         public void dirty_mark_all_children_as_dirty_when_display_changes()
         {
-            YGNode root = YGNodeNew();
+            YogaNode root = YGNodeNew();
             YGNodeStyleSetFlexDirection(root, FlexDirection.Row);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNode child0 = YGNodeNew();
+            YogaNode child0 = YGNodeNew();
             YGNodeStyleSetFlexGrow(child0, 1);
-            YGNode child1 = YGNodeNew();
+            YogaNode child1 = YGNodeNew();
             YGNodeStyleSetFlexGrow(child1, 1);
 
-            YGNode child1_child0 = YGNodeNew();
-            YGNode child1_child0_child0 = YGNodeNew();
+            YogaNode child1_child0 = YGNodeNew();
+            YogaNode child1_child0_child0 = YGNodeNew();
             YGNodeStyleSetWidth(child1_child0_child0, 8);
             YGNodeStyleSetHeight(child1_child0_child0, 16);
 
@@ -118,19 +118,19 @@ namespace Yoga.Net.Tests
         [Test]
         public void dirty_node_only_if_children_are_actually_removed()
         {
-            YGNode root = YGNodeNew();
+            YogaNode root = YGNodeNew();
             YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
             YGNodeStyleSetWidth(root, 50);
             YGNodeStyleSetHeight(root, 50);
 
-            YGNode child0 = YGNodeNew();
+            YogaNode child0 = YGNodeNew();
             YGNodeStyleSetWidth(child0, 50);
             YGNodeStyleSetHeight(child0, 25);
             YGNodeInsertChild(root, child0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            YGNode child1 = YGNodeNew();
+            YogaNode child1 = YGNodeNew();
             YGNodeRemoveChild(root, child1);
             Assert.IsFalse(root.IsDirty);
 
@@ -142,7 +142,7 @@ namespace Yoga.Net.Tests
         [Test]
         public void dirty_node_only_if_undefined_values_gets_set_to_undefined()
         {
-            YGNode root = YGNodeNew();
+            YogaNode root = YGNodeNew();
             YGNodeStyleSetWidth(root, 50);
             YGNodeStyleSetHeight(root, 50);
             YGNodeStyleSetMinWidth(root, YogaValue.YGUndefined);

@@ -10,7 +10,7 @@ namespace Yoga.Net.Tests
         [Test]
         public void assert_default_values()
         {
-            YGNode root = YGNodeNew();
+            YogaNode root = YGNodeNew();
 
             Assert.AreEqual(0, YGNodeGetChildCount(root));
 

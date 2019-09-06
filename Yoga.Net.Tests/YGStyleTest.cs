@@ -10,8 +10,8 @@ namespace Yoga.Net.Tests
         [Test]
         public void copy_style_same()
         {
-            YGNode node0 = YGNodeNew();
-            YGNode node1 = YGNodeNew();
+            YogaNode node0 = YGNodeNew();
+            YogaNode node1 = YGNodeNew();
             Assert.IsFalse(node0.IsDirty);
 
             YGNodeCopyStyle(node0, node1);
@@ -21,12 +21,12 @@ namespace Yoga.Net.Tests
         [Test]
         public void copy_style_modified()
         {
-            YGNode node0 = YGNodeNew();
+            YogaNode node0 = YGNodeNew();
             Assert.IsFalse(node0.IsDirty);
             Assert.AreEqual(FlexDirection.Column, YGNodeStyleGetFlexDirection(node0));
             Assert.IsFalse(YGNodeStyleGetMaxHeight(node0).Unit != YogaUnit.Undefined);
 
-            YGNode node1 = YGNodeNew();
+            YogaNode node1 = YGNodeNew();
             YGNodeStyleSetFlexDirection(node1, FlexDirection.Row);
             YGNodeStyleSetMaxHeight(node1, 10);
 
@@ -39,13 +39,13 @@ namespace Yoga.Net.Tests
         [Test]
         public void copy_style_modified_same()
         {
-            YGNode node0 = YGNodeNew();
+            YogaNode node0 = YGNodeNew();
             YGNodeStyleSetFlexDirection(node0, FlexDirection.Row);
             YGNodeStyleSetMaxHeight(node0, 10);
             YGNodeCalculateLayout(node0, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
             Assert.IsFalse(node0.IsDirty);
 
-            YGNode node1 = YGNodeNew();
+            YogaNode node1 = YGNodeNew();
             YGNodeStyleSetFlexDirection(node1, FlexDirection.Row);
             YGNodeStyleSetMaxHeight(node1, 10);
 
@@ -56,7 +56,7 @@ namespace Yoga.Net.Tests
         [Test]
         public void initialise_flexShrink_flexGrow()
         {
-            YGNode node0 = YGNodeNew();
+            YogaNode node0 = YGNodeNew();
             YGNodeStyleSetFlexShrink(node0, 1);
             Assert.AreEqual(1, YGNodeStyleGetFlexShrink(node0));
 

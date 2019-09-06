@@ -10,9 +10,9 @@ namespace Yoga.Net.Tests
         [Test]
         public void reset_layout_when_child_removed()
         {
-            YGNode root = YGNodeNew();
+            YogaNode root = YGNodeNew();
 
-            YGNode root_child0 = YGNodeNew();
+            YogaNode root_child0 = YGNodeNew();
             YGNodeStyleSetWidth(root_child0, 100);
             YGNodeStyleSetHeight(root_child0, 100);
             YGNodeInsertChild(root, root_child0, 0);

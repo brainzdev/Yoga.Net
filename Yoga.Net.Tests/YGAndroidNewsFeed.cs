@@ -12,22 +12,22 @@ namespace Yoga.Net.Tests
         {
             YogaConfig config = YGConfigNew();
 
-            YGNode root = YGNodeNewWithConfig(config);
+            YogaNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetAlignContent(root, YogaAlign.Stretch);
             YGNodeStyleSetWidth(root, 1080);
 
-            YGNode root_child0 = YGNodeNewWithConfig(config);
+            YogaNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNode root_child0_child0 = YGNodeNewWithConfig(config);
+            YogaNode root_child0_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetAlignContent(root_child0_child0, YogaAlign.Stretch);
             YGNodeInsertChild(root_child0, root_child0_child0, 0);
 
-            YGNode root_child0_child0_child0 = YGNodeNewWithConfig(config);
+            YogaNode root_child0_child0_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetAlignContent(root_child0_child0_child0, YogaAlign.Stretch);
             YGNodeInsertChild(root_child0_child0, root_child0_child0_child0, 0);
 
-            YGNode root_child0_child0_child0_child0 =
+            YogaNode root_child0_child0_child0_child0 =
                 YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(
                 root_child0_child0_child0_child0,
@@ -41,7 +41,7 @@ namespace Yoga.Net.Tests
                 root_child0_child0_child0_child0,
                 0);
 
-            YGNode root_child0_child0_child0_child0_child0 =
+            YogaNode root_child0_child0_child0_child0_child0 =
                 YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(
                 root_child0_child0_child0_child0_child0,
@@ -54,7 +54,7 @@ namespace Yoga.Net.Tests
                 root_child0_child0_child0_child0_child0,
                 0);
 
-            YGNode root_child0_child0_child0_child0_child0_child0 =
+            YogaNode root_child0_child0_child0_child0_child0_child0 =
                 YGNodeNewWithConfig(config);
             YGNodeStyleSetAlignContent(
                 root_child0_child0_child0_child0_child0_child0,
@@ -66,7 +66,7 @@ namespace Yoga.Net.Tests
                 root_child0_child0_child0_child0_child0_child0,
                 0);
 
-            YGNode root_child0_child0_child0_child0_child1 =
+            YogaNode root_child0_child0_child0_child0_child1 =
                 YGNodeNewWithConfig(config);
             YGNodeStyleSetAlignContent(
                 root_child0_child0_child0_child0_child1,
@@ -94,7 +94,7 @@ namespace Yoga.Net.Tests
                 root_child0_child0_child0_child0_child1,
                 1);
 
-            YGNode root_child0_child0_child0_child0_child1_child0 =
+            YogaNode root_child0_child0_child0_child0_child1_child0 =
                 YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(
                 root_child0_child0_child0_child0_child1_child0,
@@ -108,7 +108,7 @@ namespace Yoga.Net.Tests
                 root_child0_child0_child0_child0_child1_child0,
                 0);
 
-            YGNode root_child0_child0_child0_child0_child1_child1 =
+            YogaNode root_child0_child0_child0_child0_child1_child1 =
                 YGNodeNewWithConfig(config);
             YGNodeStyleSetAlignContent(
                 root_child0_child0_child0_child0_child1_child1,
@@ -119,11 +119,11 @@ namespace Yoga.Net.Tests
                 root_child0_child0_child0_child0_child1_child1,
                 1);
 
-            YGNode root_child0_child0_child1 = YGNodeNewWithConfig(config);
+            YogaNode root_child0_child0_child1 = YGNodeNewWithConfig(config);
             YGNodeStyleSetAlignContent(root_child0_child0_child1, YogaAlign.Stretch);
             YGNodeInsertChild(root_child0_child0, root_child0_child0_child1, 1);
 
-            YGNode root_child0_child0_child1_child0 =
+            YogaNode root_child0_child0_child1_child0 =
                 YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(
                 root_child0_child0_child1_child0,
@@ -137,7 +137,7 @@ namespace Yoga.Net.Tests
                 root_child0_child0_child1_child0,
                 0);
 
-            YGNode root_child0_child0_child1_child0_child0 =
+            YogaNode root_child0_child0_child1_child0_child0 =
                 YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(
                 root_child0_child0_child1_child0_child0,
@@ -150,7 +150,7 @@ namespace Yoga.Net.Tests
                 root_child0_child0_child1_child0_child0,
                 0);
 
-            YGNode root_child0_child0_child1_child0_child0_child0 =
+            YogaNode root_child0_child0_child1_child0_child0_child0 =
                 YGNodeNewWithConfig(config);
             YGNodeStyleSetAlignContent(
                 root_child0_child0_child1_child0_child0_child0,
@@ -162,7 +162,7 @@ namespace Yoga.Net.Tests
                 root_child0_child0_child1_child0_child0_child0,
                 0);
 
-            YGNode root_child0_child0_child1_child0_child1 =
+            YogaNode root_child0_child0_child1_child0_child1 =
                 YGNodeNewWithConfig(config);
             YGNodeStyleSetAlignContent(
                 root_child0_child0_child1_child0_child1,
@@ -190,7 +190,7 @@ namespace Yoga.Net.Tests
                 root_child0_child0_child1_child0_child1,
                 1);
 
-            YGNode root_child0_child0_child1_child0_child1_child0 =
+            YogaNode root_child0_child0_child1_child0_child1_child0 =
                 YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(
                 root_child0_child0_child1_child0_child1_child0,
@@ -204,7 +204,7 @@ namespace Yoga.Net.Tests
                 root_child0_child0_child1_child0_child1_child0,
                 0);
 
-            YGNode root_child0_child0_child1_child0_child1_child1 =
+            YogaNode root_child0_child0_child1_child0_child1_child1 =
                 YGNodeNewWithConfig(config);
             YGNodeStyleSetAlignContent(
                 root_child0_child0_child1_child0_child1_child1,

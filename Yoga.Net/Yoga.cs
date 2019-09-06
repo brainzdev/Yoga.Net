@@ -8,66 +8,64 @@ using System.Text;
 
 namespace Yoga.Net
 {
-    public delegate YogaSize MeasureFunc(YGNode node, float width, MeasureMode widthMode, float height, MeasureMode heightMode, object layoutContext = null);
+    public delegate YogaSize MeasureFunc(YogaNode node, float width, MeasureMode widthMode, float height, MeasureMode heightMode, object layoutContext = null);
 
-    public delegate float BaselineFunc(YGNode node, float width, float height, object layoutContext = null);
+    public delegate float BaselineFunc(YogaNode node, float width, float height, object layoutContext = null);
 
-    public delegate void PrintFunc(YGNode node, object layoutContext = null);
+    public delegate void PrintFunc(YogaNode node, object layoutContext = null);
 
-    public delegate void DirtiedFunc(YGNode node);
+    public delegate void DirtiedFunc(YogaNode node);
 
-    public delegate int LoggerFunc(YogaConfig config, YGNode node, LogLevel level, string message);
-
-    public delegate YGNode YogaCloneNodeFunc(YGNode oldNode, YGNode owner, int childIndex, object context);
+    public delegate YogaNode YogaCloneNodeFunc(YogaNode oldNode, YogaNode owner, int childIndex, object context);
 
     public static partial class YogaGlobal
     {
-        public static object YGNodeGetContext(YGNode node)
+        public static object YGNodeGetContext(YogaNode node)
         {
             return node.Context;
         }
 
-        public static void YGNodeSetContext(YGNode node, object context)
+        public static void YGNodeSetContext(YogaNode node, object context)
         {
             node.Context = context;
         }
 
-        public static bool YGNodeHasMeasureFunc(YGNode node)
+        public static bool YGNodeHasMeasureFunc(YogaNode node)
         {
             return node.MeasureFunc != null;
         }
 
-        public static void YGNodeSetMeasureFunc(YGNode node, MeasureFunc measureFunc)
+        public static void YGNodeSetMeasureFunc(YogaNode node, MeasureFunc measureFunc)
         {
             node.SetMeasureFunc(measureFunc);
         }
 
-        public static bool YGNodeHasBaselineFunc(YGNode node)
+        public static bool YGNodeHasBaselineFunc(YogaNode node)
         {
             return node.BaselineFunc != null;
         }
 
-        public static void YGNodeSetBaselineFunc(YGNode node, BaselineFunc baselineFunc)
+        public static void YGNodeSetBaselineFunc(YogaNode node, BaselineFunc baselineFunc)
         {
             node.BaselineFunc = baselineFunc;
         }
 
-        public static DirtiedFunc YGNodeGetDirtiedFunc(YGNode node)
+        public static DirtiedFunc YGNodeGetDirtiedFunc(YogaNode node)
         {
             return node.DirtiedFunc;
         }
 
-        public static void YGNodeSetDirtiedFunc(YGNode node, DirtiedFunc dirtiedFunc)
+        public static void YGNodeSetDirtiedFunc(YogaNode node, DirtiedFunc dirtiedFunc)
         {
             node.DirtiedFunc = dirtiedFunc;
         }
 
-        public static void YGNodeSetPrintFunc(YGNode node, PrintFunc printFunc)
+        public static void YGNodeSetPrintFunc(YogaNode node, PrintFunc printFunc)
         {
             node.PrintFunc = printFunc;
         }
 
-        public static bool YGNodeGetHasNewLayout(YGNode node)
+        public static bool YGNodeGetHasNewLayout(YogaNode node)
         {
             return node.GetHasNewLayout();
         }
@@ -77,22 +75,22 @@ namespace Yoga.Net
             config.PrintTree = enabled;
         }
 
-        public static void YGNodeSetHasNewLayout(YGNode node, bool hasNewLayout)
+        public static void YGNodeSetHasNewLayout(YogaNode node, bool hasNewLayout)
         {
             node.SetHasNewLayout(hasNewLayout);
         }
 
-        public static NodeType YGNodeGetNodeType(YGNode node)
+        public static NodeType YGNodeGetNodeType(YogaNode node)
         {
             return node.GetNodeType();
         }
 
-        public static void YGNodeSetNodeType(YGNode node, NodeType nodeType)
+        public static void YGNodeSetNodeType(YogaNode node, NodeType nodeType)
         {
             node.SetNodeType(nodeType);
         }
 
-        public static bool YGNodeIsDirty(YGNode node)
+        public static bool YGNodeIsDirty(YogaNode node)
         {
             return node.IsDirty;
         }
@@ -103,20 +101,20 @@ namespace Yoga.Net
         /// Intended to be used for Uoga benchmarks. Don't use in production, as calling
         /// `YGCalculateLayout` will cause the recalculation of each and every node.
         /// </summary>
-        public static void YGNodeMarkDirtyAndPropagateToDescendants(YGNode node)
+        public static void YGNodeMarkDirtyAndPropagateToDescendants(YogaNode node)
         {
             node.MarkDirtyAndPropagateDownwards();
         }
 
 
-        public static YGNode YGNodeNew()
+        public static YogaNode YGNodeNew()
         {
-            return YGNodeNewWithConfig(DefaultConfig);
+            return YGNodeNewWithConfig(YogaConfig.DefaultConfig);
         }
 
-        public static YGNode YGNodeNewWithConfig(YogaConfig config)
+        public static YogaNode YGNodeNewWithConfig(YogaConfig config)
         {
-            YGNode node = new YGNode(config);
+            YogaNode node = new YogaNode(config);
             YGAssertWithConfig(
                 config,
                 node != null,
@@ -126,9 +124,9 @@ namespace Yoga.Net
             return node;
         }
 
-        public static YGNode YGNodeClone(YGNode oldNode)
+        public static YogaNode YGNodeClone(YogaNode oldNode)
         {
-            YGNode node = new YGNode(oldNode);
+            YogaNode node = new YogaNode(oldNode);
             YGAssertWithConfig(
                 oldNode.Config,
                 node != null,
@@ -144,12 +142,12 @@ namespace Yoga.Net
             return config;
         }
 
-        public static YGNode DeepClone(YGNode oldNode)
+        public static YogaNode DeepClone(YogaNode oldNode)
         {
-            var node = new YGNode(oldNode, new YogaConfig(oldNode.Config));
+            var node = new YogaNode(oldNode, new YogaConfig(oldNode.Config));
             node.Owner = null;
 
-            var children = new YGNodes(oldNode.Children.Count);
+            var children = new YogaNodes(oldNode.Children.Count);
             foreach (var item in oldNode.Children)
             {
                 var childNode = YGNodeDeepClone(item);
@@ -162,15 +160,15 @@ namespace Yoga.Net
             return node;
         }
 
-        public static YGNode YGNodeDeepClone(YGNode oldNode)
+        public static YogaNode YGNodeDeepClone(YogaNode oldNode)
         {
             var config = YGConfigClone(oldNode.Config);
-            var node = new YGNode(oldNode, config);
+            var node = new YogaNode(oldNode, config);
             node.Owner = null;
             Event.Hub.Publish(new NodeAllocationEventArgs(node, node.Config));
 
-            YGNodes vec = new YGNodes(); // .reserve(oldNode.Children.size());
-            YGNode childNode = null;
+            YogaNodes vec = new YogaNodes(); // .reserve(oldNode.Children.size());
+            YogaNode childNode = null;
             foreach (var item in oldNode.Children)
             {
                 childNode = YGNodeDeepClone(item);
@@ -183,24 +181,13 @@ namespace Yoga.Net
             return node;
         }
 
-        public static void YGNodeReset(YGNode node)
-        {
-            node.Reset();
-        }
+        public static void YGNodeReset(YogaNode node) => node.Reset();
 
-        public static YogaConfig YGConfigNew()
-        {
-            YogaConfig config = new YogaConfig(DefaultLogger);
-            return config;
-        }
+        public static YogaConfig YGConfigNew() => new YogaConfig();
 
-        public static void YGConfigCopy(YogaConfig dest, YogaConfig src)
-        {
-            throw new NotImplementedException();
-            //memcpy(dest, src, sizeof(YogaConfig));
-        }
+        public static void YGConfigCopy(YogaConfig dest, YogaConfig src) => dest.CopyFrom(src);
 
-        public static void YGNodeSetIsReferenceBaseline(YGNode node, bool isReferenceBaseline)
+        public static void YGNodeSetIsReferenceBaseline(YogaNode node, bool isReferenceBaseline)
         {
             if (node.IsReferenceBaseline != isReferenceBaseline)
             {
@@ -209,14 +196,14 @@ namespace Yoga.Net
             }
         }
 
-        public static bool YGNodeIsReferenceBaseline(YGNode node)
+        public static bool YGNodeIsReferenceBaseline(YogaNode node)
         {
             return node.IsReferenceBaseline;
         }
 
         public static void YGNodeInsertChild(
-            YGNode owner,
-            YGNode child,
+            YogaNode owner,
+            YogaNode child,
             int index)
         {
             YGAssertWithNode(
@@ -234,7 +221,7 @@ namespace Yoga.Net
             owner.MarkDirtyAndPropagate();
         }
 
-        public static void YGNodeRemoveChild(YGNode owner, YGNode excludedChild)
+        public static void YGNodeRemoveChild(YogaNode owner, YogaNode excludedChild)
         {
             if (YGNodeGetChildCount(owner) == 0)
             {
@@ -258,7 +245,7 @@ namespace Yoga.Net
             }
         }
 
-        public static void YGNodeRemoveAllChildren(YGNode owner)
+        public static void YGNodeRemoveAllChildren(YogaNode owner)
         {
             int childCount = YGNodeGetChildCount(owner);
             if (childCount == 0)
@@ -267,15 +254,15 @@ namespace Yoga.Net
                 return;
             }
 
-            YGNode firstChild = owner.Children[0];
+            YogaNode firstChild = owner.Children[0];
             if (firstChild.Owner == owner)
             {
                 // If the first child has this node as its owner, we assume that this child
                 // set is unique.
                 for (int i = 0; i < childCount; i++)
                 {
-                    YGNode oldChild = owner.Children[i];
-                    oldChild.Layout = new YGNode().Layout; // layout is no longer valid
+                    YogaNode oldChild = owner.Children[i];
+                    oldChild.Layout = new YogaNode().Layout; // layout is no longer valid
                     oldChild.Owner = null;
                 }
 
@@ -286,13 +273,13 @@ namespace Yoga.Net
 
             // Otherwise, we are not the owner of the child set. We don't have to do
             // anything to clear it.
-            owner.SetChildren(new YGNodes());
+            owner.SetChildren(new YogaNodes());
             owner.MarkDirtyAndPropagate();
         }
 
         public static void YGNodeSetChildrenInternal(
-            YGNode owner,
-            IEnumerable<YGNode> childs)
+            YogaNode owner,
+            IEnumerable<YogaNode> childs)
         {
             if (owner == null)
             {
@@ -304,13 +291,13 @@ namespace Yoga.Net
             {
                 if (YGNodeGetChildCount(owner) > 0)
                 {
-                    foreach (YGNode child in owner.Children)
+                    foreach (YogaNode child in owner.Children)
                     {
                         child.Layout = new YogaLayout();
                         child.Owner = null;
                     }
 
-                    owner.SetChildren(new YGNodes());
+                    owner.SetChildren(new YogaNodes());
                     owner.MarkDirtyAndPropagate();
                 }
             }
@@ -318,7 +305,7 @@ namespace Yoga.Net
             {
                 if (YGNodeGetChildCount(owner) > 0)
                 {
-                    foreach (YGNode oldChild in owner.Children)
+                    foreach (YogaNode oldChild in owner.Children)
                     {
                         // Our new children may have nodes in common with the old children. We don't reset these common nodes.
                         //if (std::find(children.begin(), children.end(), oldChild) == children.end()) 
@@ -331,7 +318,7 @@ namespace Yoga.Net
                 }
 
                 owner.SetChildren(newChildren);
-                foreach (YGNode child in newChildren)
+                foreach (YogaNode child in newChildren)
                     child.Owner = owner;
 
                 owner.MarkDirtyAndPropagate();
@@ -339,8 +326,8 @@ namespace Yoga.Net
         }
 
         public static void YGNodeSetChildren(
-            YGNode owner,
-            YGNode[] c,
+            YogaNode owner,
+            YogaNode[] c,
             int count)
         {
             var children = c.Take(count); // {c, c + count};
@@ -348,14 +335,14 @@ namespace Yoga.Net
         }
 
         public static void YGNodeSetChildren(
-            YGNode owner,
-            IEnumerable<YGNode> children)
+            YogaNode owner,
+            IEnumerable<YogaNode> children)
         {
             YGNodeSetChildrenInternal(owner, children);
         }
 
         [Obsolete("use node.Children[index]")]
-        public static YGNode YGNodeGetChild(YGNode node, int index)
+        public static YogaNode YGNodeGetChild(YogaNode node, int index)
         {
             if (index < node.Children.Count)
                 return node.Children[index];
@@ -363,17 +350,17 @@ namespace Yoga.Net
             return null;
         }
 
-        public static int YGNodeGetChildCount(YGNode node)
+        public static int YGNodeGetChildCount(YogaNode node)
         {
             return node.Children.Count;
         }
 
-        public static YGNode YGNodeGetOwner(YGNode node)
+        public static YogaNode YGNodeGetOwner(YogaNode node)
         {
             return node.Owner;
         }
 
-        public static YGNode YGNodeGetParent(YGNode node)
+        public static YogaNode YGNodeGetParent(YogaNode node)
         {
             return node.Owner;
         }
@@ -386,7 +373,7 @@ namespace Yoga.Net
         /// measure functions depend on information not known to Yoga they must perform
         /// this dirty marking manually.
         /// </summary>
-        public static void YGNodeMarkDirty(YGNode node)
+        public static void YGNodeMarkDirty(YogaNode node)
         {
             YGAssertWithNode(
                 node,
@@ -396,7 +383,7 @@ namespace Yoga.Net
             node.MarkDirtyAndPropagate();
         }
 
-        public static void YGNodeCopyStyle(YGNode dstNode, YGNode srcNode)
+        public static void YGNodeCopyStyle(YogaNode dstNode, YogaNode srcNode)
         {
             dstNode.Style = srcNode.Style;
 
@@ -407,14 +394,14 @@ namespace Yoga.Net
             //}
         }
 
-        public static float YGNodeStyleGetFlexGrow(YGNode node)
+        public static float YGNodeStyleGetFlexGrow(YogaNode node)
         {
             return node.Style.FlexGrow.IsUndefined()
                 ? DefaultFlexGrow
                 : node.Style.FlexGrow;
         }
 
-        public static float YGNodeStyleGetFlexShrink(YGNode node)
+        public static float YGNodeStyleGetFlexShrink(YogaNode node)
         {
             return node.Style.FlexShrink.IsUndefined()
                 ? DefaultFlexShrink
@@ -425,7 +412,7 @@ namespace Yoga.Net
 
         //template <typename Ref, typename T>
         public static void updateStyle<TEntity, T>(
-            YGNode node,
+            YogaNode node,
             Expression<Func<TEntity, T>> outExpr, //Ref (YogaStyle::*prop)(), 
             T value) where T : struct
         {
@@ -441,7 +428,7 @@ namespace Yoga.Net
         }
 
         public static void updateStyleObject<TEntity, T>(
-            YGNode node,
+            YogaNode node,
             Expression<Func<TEntity, T>> outExpr, //Ref (YogaStyle::*prop)(), 
             T value) where T : class
         {
@@ -458,7 +445,7 @@ namespace Yoga.Net
 
         //template <typename Ref, typename Idx>
         public static void updateIndexedStyleProp<TKey, TValue>(
-            YGNode node,
+            YogaNode node,
             Values<TKey, TValue> values,
             int idx,
             TValue value) where TKey : struct, IConvertible
@@ -481,123 +468,123 @@ namespace Yoga.Net
         // decltype, MSVC will prefer the non-version.
         //#define MSVC_HINT(PROP) decltype(YogaStyle{}.PROP())
 
-        public static void YGNodeStyleSetDirection(YGNode node, Direction value)
+        public static void YGNodeStyleSetDirection(YogaNode node, Direction value)
         {
             updateStyle<Net.YogaStyle, Net.Direction>(node, s => s.Direction, value);
             //updateStyle<MSVC_HINT(direction)>(node, &Net.YogaStyle::direction, value);
         }
 
-        public static Direction YGNodeStyleGetDirection(YGNode node)
+        public static Direction YGNodeStyleGetDirection(YogaNode node)
         {
             return node.Style.Direction;
         }
 
         public static void YGNodeStyleSetFlexDirection(
-            YGNode node,
+            YogaNode node,
             FlexDirection flexDirection)
         {
             updateStyle<Net.YogaStyle, Net.FlexDirection>(node, s => s.FlexDirection, flexDirection);
         }
 
-        public static FlexDirection YGNodeStyleGetFlexDirection(YGNode node)
+        public static FlexDirection YGNodeStyleGetFlexDirection(YogaNode node)
         {
             return node.Style.FlexDirection;
         }
 
         public static void YGNodeStyleSetJustifyContent(
-            YGNode node,
+            YogaNode node,
             Justify justifyContent)
         {
             updateStyle<Net.YogaStyle, Net.Justify>(node, s => s.JustifyContent, justifyContent);
         }
 
-        public static Justify YGNodeStyleGetJustifyContent(YGNode node)
+        public static Justify YGNodeStyleGetJustifyContent(YogaNode node)
         {
             return node.Style.JustifyContent;
         }
 
         public static void YGNodeStyleSetAlignContent(
-            YGNode node,
+            YogaNode node,
             YogaAlign alignContent)
         {
             updateStyle<Net.YogaStyle, Net.YogaAlign>(node, s => s.AlignContent, alignContent);
         }
 
-        public static YogaAlign YGNodeStyleGetAlignContent(YGNode node)
+        public static YogaAlign YGNodeStyleGetAlignContent(YogaNode node)
         {
             return node.Style.AlignContent;
         }
 
-        public static void YGNodeStyleSetAlignItems(YGNode node, YogaAlign alignItems)
+        public static void YGNodeStyleSetAlignItems(YogaNode node, YogaAlign alignItems)
         {
             updateStyle<Net.YogaStyle, Net.YogaAlign>(node, s => s.AlignItems, alignItems);
         }
 
-        public static YogaAlign YGNodeStyleGetAlignItems(YGNode node)
+        public static YogaAlign YGNodeStyleGetAlignItems(YogaNode node)
         {
             return node.Style.AlignItems;
         }
 
-        public static void YGNodeStyleSetAlignSelf(YGNode node, YogaAlign alignSelf)
+        public static void YGNodeStyleSetAlignSelf(YogaNode node, YogaAlign alignSelf)
         {
             updateStyle<Net.YogaStyle, Net.YogaAlign>(node, s => s.AlignSelf, alignSelf);
         }
 
-        public static YogaAlign YGNodeStyleGetAlignSelf(YGNode node)
+        public static YogaAlign YGNodeStyleGetAlignSelf(YogaNode node)
         {
             return node.Style.AlignSelf;
         }
 
         public static void YGNodeStyleSetPositionType(
-            YGNode node,
+            YogaNode node,
             PositionType positionType)
         {
             updateStyle<Net.YogaStyle, Net.PositionType>(node, s => s.PositionType, positionType);
         }
 
-        public static PositionType YGNodeStyleGetPositionType(YGNode node)
+        public static PositionType YGNodeStyleGetPositionType(YogaNode node)
         {
             return node.Style.PositionType;
         }
 
-        public static void YGNodeStyleSetFlexWrap(YGNode node, Wrap flexWrap)
+        public static void YGNodeStyleSetFlexWrap(YogaNode node, Wrap flexWrap)
         {
             updateStyle<Net.YogaStyle, Net.Wrap>(node, s => s.FlexWrap, flexWrap);
         }
 
-        public static Wrap YGNodeStyleGetFlexWrap(YGNode node)
+        public static Wrap YGNodeStyleGetFlexWrap(YogaNode node)
         {
             return node.Style.FlexWrap;
         }
 
-        public static void YGNodeStyleSetOverflow(YGNode node, Overflow overflow)
+        public static void YGNodeStyleSetOverflow(YogaNode node, Overflow overflow)
         {
             updateStyle<Net.YogaStyle, Net.Overflow>(node, s => s.Overflow, overflow);
         }
 
-        public static Overflow YGNodeStyleGetOverflow(YGNode node)
+        public static Overflow YGNodeStyleGetOverflow(YogaNode node)
         {
             return node.Style.Overflow;
         }
 
-        public static void YGNodeStyleSetDisplay(YGNode node, Display display)
+        public static void YGNodeStyleSetDisplay(YogaNode node, Display display)
         {
             updateStyle<Net.YogaStyle, Net.Display>(node, s => s.Display, display);
         }
 
-        public static Display YGNodeStyleGetDisplay(YGNode node)
+        public static Display YGNodeStyleGetDisplay(YogaNode node)
         {
             return node.Style.Display;
         }
 
         // TODO(T26792433): Change the API to accept float.
-        public static void YGNodeStyleSetFlex(YGNode node, float flex)
+        public static void YGNodeStyleSetFlex(YogaNode node, float flex)
         {
             updateStyle<Net.YogaStyle, float>(node, s => s.Flex, flex);
         }
 
         // TODO(T26792433): Change the API to accept float.
-        public static float YGNodeStyleGetFlex(YGNode node)
+        public static float YGNodeStyleGetFlex(YogaNode node)
         {
             return node.Style.Flex.IsUndefined()
                 ? YogaValue.YGUndefined
@@ -605,18 +592,18 @@ namespace Yoga.Net
         }
 
         // TODO(T26792433): Change the API to accept float.
-        public static void YGNodeStyleSetFlexGrow(YGNode node, float flexGrow)
+        public static void YGNodeStyleSetFlexGrow(YogaNode node, float flexGrow)
         {
             updateStyle<Net.YogaStyle, float>(node, s => s.FlexGrow, flexGrow);
         }
 
         // TODO(T26792433): Change the API to accept float.
-        public static void YGNodeStyleSetFlexShrink(YGNode node, float flexShrink)
+        public static void YGNodeStyleSetFlexShrink(YogaNode node, float flexShrink)
         {
             updateStyle<Net.YogaStyle, float>(node, s => s.FlexShrink, flexShrink);
         }
 
-        public static YogaValue YGNodeStyleGetFlexBasis(YGNode node)
+        public static YogaValue YGNodeStyleGetFlexBasis(YogaNode node)
         {
             return node.Style.FlexBasis;
             //YogaValue flexBasis = node.Style.flexBasis;
@@ -628,7 +615,7 @@ namespace Yoga.Net
             //return flexBasis;
         }
 
-        public static void YGNodeStyleSetFlexBasis(YGNode node, float flexBasis)
+        public static void YGNodeStyleSetFlexBasis(YogaNode node, float flexBasis)
         {
             var value = new YogaValue(flexBasis, YogaUnit.Point);
             updateStyleObject<Net.YogaStyle, YogaValue>(node, s => s.FlexBasis, value);
@@ -636,19 +623,19 @@ namespace Yoga.Net
         }
 
         public static void YGNodeStyleSetFlexBasisPercent(
-            YGNode node,
+            YogaNode node,
             float flexBasisPercent)
         {
             var value = new YogaValue(flexBasisPercent, YogaUnit.Percent);
             updateStyleObject<Net.YogaStyle, YogaValue>(node, s => s.FlexBasis, value);
         }
 
-        public static void YGNodeStyleSetFlexBasisAuto(YGNode node)
+        public static void YGNodeStyleSetFlexBasisAuto(YogaNode node)
         {
             updateStyleObject<Net.YogaStyle, YogaValue>(node, s => s.FlexBasis, YogaValue.Auto);
         }
 
-        public static void YGNodeStyleSetPosition(YGNode node, Edge edge, float points)
+        public static void YGNodeStyleSetPosition(YogaNode node, Edge edge, float points)
         {
             var value = new YogaValue(points, YogaUnit.Point);
             updateIndexedStyleProp(node, node.Style.Position, (int)edge, value);
@@ -657,64 +644,64 @@ namespace Yoga.Net
             //updateIndexedStyleProp<MSVC_HINT(position)>(node, &YogaStyle::position, edge, value);
         }
 
-        public static void YGNodeStyleSetPositionPercent(YGNode node, Edge edge, float percent)
+        public static void YGNodeStyleSetPositionPercent(YogaNode node, Edge edge, float percent)
         {
             var value = new YogaValue(percent, YogaUnit.Percent);
             updateIndexedStyleProp(node, node.Style.Position, (int)edge, value);
         }
 
-        public static YogaValue YGNodeStyleGetPosition(YGNode node, Edge edge)
+        public static YogaValue YGNodeStyleGetPosition(YogaNode node, Edge edge)
         {
             return node.Style.Position[edge];
         }
 
-        public static void YGNodeStyleSetMargin(YGNode node, Edge edge, float points)
+        public static void YGNodeStyleSetMargin(YogaNode node, Edge edge, float points)
         {
             var value = new YogaValue(points, YogaUnit.Point);
             updateIndexedStyleProp(node, node.Style.Margin, (int)edge, value);
         }
 
-        public static void YGNodeStyleSetMarginPercent(YGNode node, Edge edge, float percent)
+        public static void YGNodeStyleSetMarginPercent(YogaNode node, Edge edge, float percent)
         {
             var value = new YogaValue(percent, YogaUnit.Percent);
             updateIndexedStyleProp(node, node.Style.Margin, (int)edge, value);
         }
 
-        public static void YGNodeStyleSetMarginAuto(YGNode node, Edge edge)
+        public static void YGNodeStyleSetMarginAuto(YogaNode node, Edge edge)
         {
             updateIndexedStyleProp(node, node.Style.Margin, (int)edge, YogaValue.Auto);
         }
 
-        public static YogaValue YGNodeStyleGetMargin(YGNode node, Edge edge)
+        public static YogaValue YGNodeStyleGetMargin(YogaNode node, Edge edge)
         {
             return node.Style.Margin[edge];
         }
 
-        public static void YGNodeStyleSetPadding(YGNode node, Edge edge, float points)
+        public static void YGNodeStyleSetPadding(YogaNode node, Edge edge, float points)
         {
             var value = new YogaValue(points, YogaUnit.Point);
             updateIndexedStyleProp(node, node.Style.Padding, (int)edge, value);
         }
 
-        public static void YGNodeStyleSetPaddingPercent(YGNode node, Edge edge, float percent)
+        public static void YGNodeStyleSetPaddingPercent(YogaNode node, Edge edge, float percent)
         {
             var value = new YogaValue(percent, YogaUnit.Percent);
             updateIndexedStyleProp(node, node.Style.Padding, (int)edge, value);
         }
 
-        public static YogaValue YGNodeStyleGetPadding(YGNode node, Edge edge)
+        public static YogaValue YGNodeStyleGetPadding(YogaNode node, Edge edge)
         {
             return node.Style.Padding[edge];
         }
 
         // TODO(T26792433): Change the API to accept float.
-        public static void YGNodeStyleSetBorder(YGNode node, Edge edge, float points)
+        public static void YGNodeStyleSetBorder(YogaNode node, Edge edge, float points)
         {
             var value = new YogaValue(points, YogaUnit.Point);
             updateIndexedStyleProp(node, node.Style.Border, (int)edge, value);
         }
 
-        public static float YGNodeStyleGetBorder(YGNode node, Edge edge)
+        public static float YGNodeStyleGetBorder(YogaNode node, Edge edge)
         {
             var border = node.Style.Border[edge];
             if (border.IsUndefined || border.IsAuto)
@@ -730,7 +717,7 @@ namespace Yoga.Net
         // Yoga specific properties, not compatible with flexbox specification
 
         // TODO(T26792433): Change the API to accept float.
-        public static float YGNodeStyleGetAspectRatio(YGNode node)
+        public static float YGNodeStyleGetAspectRatio(YogaNode node)
         {
             float op = node.Style.AspectRatio;
             return op.IsUndefined() ? YogaValue.YGUndefined : op;
@@ -754,145 +741,145 @@ namespace Yoga.Net
         ///   in the cross axis if unset
         /// - Aspect ratio takes min/max dimensions into account
         /// </summary>
-        public static void YGNodeStyleSetAspectRatio(YGNode node, float aspectRatio)
+        public static void YGNodeStyleSetAspectRatio(YogaNode node, float aspectRatio)
         {
             updateStyle<Net.YogaStyle, float>(node, s => s.AspectRatio, aspectRatio);
         }
 
-        public static void YGNodeStyleSetWidth(YGNode node, float points)
+        public static void YGNodeStyleSetWidth(YogaNode node, float points)
         {
             var value = new YogaValue(points, YogaUnit.Point);
             updateIndexedStyleProp(node, node.Style.Dimensions, (int)Dimension.Width, value);
         }
 
-        public static void YGNodeStyleSetWidthPercent(YGNode node, float percent)
+        public static void YGNodeStyleSetWidthPercent(YogaNode node, float percent)
         {
             var value = new YogaValue(percent, YogaUnit.Percent);
             updateIndexedStyleProp(node, node.Style.Dimensions, (int)Dimension.Width, value);
         }
 
-        public static void YGNodeStyleSetWidthAuto(YGNode node)
+        public static void YGNodeStyleSetWidthAuto(YogaNode node)
         {
             updateIndexedStyleProp(node, node.Style.Dimensions, (int)Dimension.Width, YogaValue.Auto);
         }
 
-        public static YogaValue YGNodeStyleGetWidth(YGNode node)
+        public static YogaValue YGNodeStyleGetWidth(YogaNode node)
         {
             return node.Style.Dimensions[(int)Dimension.Width];
         }
 
-        public static void YGNodeStyleSetHeight(YGNode node, float points)
+        public static void YGNodeStyleSetHeight(YogaNode node, float points)
         {
             var value = new YogaValue(points, YogaUnit.Point);
             updateIndexedStyleProp(node, node.Style.Dimensions, (int)Dimension.Height, value);
         }
 
-        public static void YGNodeStyleSetHeightPercent(YGNode node, float percent)
+        public static void YGNodeStyleSetHeightPercent(YogaNode node, float percent)
         {
             var value = new YogaValue(percent, YogaUnit.Percent);
             updateIndexedStyleProp(node, node.Style.Dimensions, (int)Dimension.Height, value);
         }
 
-        public static void YGNodeStyleSetHeightAuto(YGNode node)
+        public static void YGNodeStyleSetHeightAuto(YogaNode node)
         {
             updateIndexedStyleProp(node, node.Style.Dimensions, (int)Dimension.Height, YogaValue.Auto);
         }
 
-        public static YogaValue YGNodeStyleGetHeight(YGNode node)
+        public static YogaValue YGNodeStyleGetHeight(YogaNode node)
         {
             return node.Style.Dimensions[(int)Dimension.Height];
         }
 
-        public static void YGNodeStyleSetMinWidth(YGNode node, float points)
+        public static void YGNodeStyleSetMinWidth(YogaNode node, float points)
         {
             var value = new YogaValue(points, YogaUnit.Point);
             updateIndexedStyleProp(node, node.Style.MinDimensions, (int)Dimension.Width, value);
         }
 
-        public static void YGNodeStyleSetMinWidthPercent(YGNode node, float percent)
+        public static void YGNodeStyleSetMinWidthPercent(YogaNode node, float percent)
         {
             var value = new YogaValue(percent, YogaUnit.Percent);
             updateIndexedStyleProp(node, node.Style.MinDimensions, (int)Dimension.Width, value);
         }
 
-        public static YogaValue YGNodeStyleGetMinWidth(YGNode node)
+        public static YogaValue YGNodeStyleGetMinWidth(YogaNode node)
         {
             return node.Style.MinDimensions[(int)Dimension.Width];
         }
 
-        public static void YGNodeStyleSetMinHeight(YGNode node, float points)
+        public static void YGNodeStyleSetMinHeight(YogaNode node, float points)
         {
             var value = new YogaValue(points, YogaUnit.Point);
             updateIndexedStyleProp(node, node.Style.MinDimensions, (int)Dimension.Height, value);
         }
 
-        public static void YGNodeStyleSetMinHeightPercent(YGNode node, float percent)
+        public static void YGNodeStyleSetMinHeightPercent(YogaNode node, float percent)
         {
             var value = new YogaValue(percent, YogaUnit.Percent);
             updateIndexedStyleProp(node, node.Style.MinDimensions, (int)Dimension.Height, value);
         }
 
-        public static YogaValue YGNodeStyleGetMinHeight(YGNode node)
+        public static YogaValue YGNodeStyleGetMinHeight(YogaNode node)
         {
             return node.Style.MinDimensions[(int)Dimension.Height];
         }
 
-        public static void YGNodeStyleSetMaxWidth(YGNode node, float points)
+        public static void YGNodeStyleSetMaxWidth(YogaNode node, float points)
         {
             var value = new YogaValue(points, YogaUnit.Point);
             updateIndexedStyleProp(node, node.Style.MaxDimensions, (int)Dimension.Width, value);
         }
 
-        public static void YGNodeStyleSetMaxWidthPercent(YGNode node, float percent)
+        public static void YGNodeStyleSetMaxWidthPercent(YogaNode node, float percent)
         {
             var value = new YogaValue(percent, YogaUnit.Percent);
             updateIndexedStyleProp(node, node.Style.MaxDimensions, (int)Dimension.Width, value);
         }
 
-        public static YogaValue YGNodeStyleGetMaxWidth(YGNode node)
+        public static YogaValue YGNodeStyleGetMaxWidth(YogaNode node)
         {
             return node.Style.MaxDimensions[(int)Dimension.Width];
         }
 
-        public static void YGNodeStyleSetMaxHeight(YGNode node, float points)
+        public static void YGNodeStyleSetMaxHeight(YogaNode node, float points)
         {
             var value = new YogaValue(points, YogaUnit.Point);
             updateIndexedStyleProp(node, node.Style.MaxDimensions, (int)Dimension.Height, value);
         }
 
-        public static void YGNodeStyleSetMaxHeightPercent(YGNode node, float percent)
+        public static void YGNodeStyleSetMaxHeightPercent(YogaNode node, float percent)
         {
             var value = new YogaValue(percent, YogaUnit.Percent);
             updateIndexedStyleProp(node, node.Style.MaxDimensions, (int)Dimension.Height, value);
         }
 
-        public static YogaValue YGNodeStyleGetMaxHeight(YGNode node)
+        public static YogaValue YGNodeStyleGetMaxHeight(YogaNode node)
         {
             return node.Style.MaxDimensions[(int)Dimension.Height];
         }
 
-        public static float YGNodeLayoutGetLeft(YGNode node) => node.Layout.Position[(int)Edge.Left];
-        public static float YGNodeLayoutGetTop(YGNode node) => node.Layout.Position[(int)Edge.Top];
-        public static float YGNodeLayoutGetRight(YGNode node) => node.Layout.Position[(int)Edge.Right];
-        public static float YGNodeLayoutGetBottom(YGNode node) => node.Layout.Position[(int)Edge.Bottom];
-        public static float YGNodeLayoutGetWidth(YGNode node) => node.Layout.Width;
-        public static float YGNodeLayoutGetHeight(YGNode node) => node.Layout.Height;
-        public static Direction YGNodeLayoutGetDirection(YGNode node) => node.Layout.Direction;
-        public static bool YGNodeLayoutGetHadOverflow(YGNode node) => node.Layout.HadOverflow;
+        public static float YGNodeLayoutGetLeft(YogaNode node) => node.Layout.Position[(int)Edge.Left];
+        public static float YGNodeLayoutGetTop(YogaNode node) => node.Layout.Position[(int)Edge.Top];
+        public static float YGNodeLayoutGetRight(YogaNode node) => node.Layout.Position[(int)Edge.Right];
+        public static float YGNodeLayoutGetBottom(YogaNode node) => node.Layout.Position[(int)Edge.Bottom];
+        public static float YGNodeLayoutGetWidth(YogaNode node) => node.Layout.Width;
+        public static float YGNodeLayoutGetHeight(YogaNode node) => node.Layout.Height;
+        public static Direction YGNodeLayoutGetDirection(YogaNode node) => node.Layout.Direction;
+        public static bool YGNodeLayoutGetHadOverflow(YogaNode node) => node.Layout.HadOverflow;
 
         // Get the computed values for these nodes after performing layout. If they were
         // set using point values then the returned value will be the same as
         // YGNodeStyleGetXXX. However if they were set using a percentage value then the
         // returned value is the computed value used during layout.
-        public static float YGNodeLayoutGetMargin(YGNode node, Edge edge) => LayoutResolvedProperty(node, node.Layout.Margin, edge);
-        public static float YGNodeLayoutGetBorder(YGNode node, Edge edge) => LayoutResolvedProperty(node, node.Layout.Border, edge);
-        public static float YGNodeLayoutGetPadding(YGNode node, Edge edge) => LayoutResolvedProperty(node, node.Layout.Padding, edge);
+        public static float YGNodeLayoutGetMargin(YogaNode node, Edge edge) => LayoutResolvedProperty(node, node.Layout.Margin, edge);
+        public static float YGNodeLayoutGetBorder(YogaNode node, Edge edge) => LayoutResolvedProperty(node, node.Layout.Border, edge);
+        public static float YGNodeLayoutGetPadding(YogaNode node, Edge edge) => LayoutResolvedProperty(node, node.Layout.Padding, edge);
 
-        public static float Margin(YGNode node, Edge edge) => LayoutResolvedProperty(node, node.Layout.Margin, edge);
-        public static float Border(YGNode node, Edge edge) => LayoutResolvedProperty(node, node.Layout.Border, edge);
-        public static float Padding(YGNode node, Edge edge) => LayoutResolvedProperty(node, node.Layout.Padding, edge);
+        public static float Margin(YogaNode node, Edge edge) => LayoutResolvedProperty(node, node.Layout.Margin, edge);
+        public static float Border(YogaNode node, Edge edge) => LayoutResolvedProperty(node, node.Layout.Border, edge);
+        public static float Padding(YogaNode node, Edge edge) => LayoutResolvedProperty(node, node.Layout.Padding, edge);
 
-        public static float LayoutResolvedProperty(YGNode node, LTRBEdge instanceName, Edge edge)
+        public static float LayoutResolvedProperty(YogaNode node, LTRBEdge instanceName, Edge edge)
         {
             YGAssertWithNode(
                 node,
@@ -919,17 +906,17 @@ namespace Yoga.Net
 
 #if DEBUG
         public static void YGNodePrintInternal(
-            YGNode node,
+            YogaNode node,
             PrintOptions options)
         {
             var sb = new StringBuilder();
 
-            var np = new YGNodePrint(sb);
+            var np = new YogaNodePrint(sb);
             np.Output(node, options, 0);
             Logger.Log(node, LogLevel.Debug, sb.ToString());
         }
 
-        public static void YGNodePrint(YGNode node, PrintOptions options)
+        public static void YGNodePrint(YogaNode node, PrintOptions options)
         {
             YGNodePrintInternal(node, options);
         }
@@ -941,14 +928,14 @@ namespace Yoga.Net
         internal static Dimension[] dim = {Dimension.Height, Dimension.Height, Dimension.Width, Dimension.Width};
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static float YGNodePaddingAndBorderForAxis(YGNode node, FlexDirection axis, float widthSize)
+        public static float YGNodePaddingAndBorderForAxis(YogaNode node, FlexDirection axis, float widthSize)
         {
             return node.GetLeadingPaddingAndBorder(axis, widthSize) +
                    node.GetTrailingPaddingAndBorder(axis, widthSize);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static YogaAlign YGNodeAlignItem(YGNode node, YGNode child)
+        public static YogaAlign YGNodeAlignItem(YogaNode node, YogaNode child)
         {
             YogaAlign align = child.Style.AlignSelf == YogaAlign.Auto
                 ? node.Style.AlignItems
@@ -961,7 +948,7 @@ namespace Yoga.Net
             return align;
         }
 
-        public static float YGBaseline(YGNode node, object layoutContext)
+        public static float YGBaseline(YogaNode node, object layoutContext)
         {
             if (node.BaselineFunc != null)
             {
@@ -981,11 +968,11 @@ namespace Yoga.Net
                 return layoutBaseline;
             }
 
-            YGNode baselineChild = null;
+            YogaNode baselineChild = null;
             int childCount = YGNodeGetChildCount(node);
             for (int i = 0; i < childCount; i++)
             {
-                YGNode child = node.Children[i];
+                YogaNode child = node.Children[i];
                 if (child.LineIndex > 0)
                 {
                     break;
@@ -1018,7 +1005,7 @@ namespace Yoga.Net
             return baseline + baselineChild.Layout.Position[(int)Edge.Top];
         }
 
-        public static bool YGIsBaselineLayout(YGNode node)
+        public static bool YGIsBaselineLayout(YogaNode node)
         {
             if (node.Style.FlexDirection.IsColumn())
             {
@@ -1033,7 +1020,7 @@ namespace Yoga.Net
             int childCount = YGNodeGetChildCount(node);
             for (int i = 0; i < childCount; i++)
             {
-                YGNode child = node.Children[i];
+                YogaNode child = node.Children[i];
                 if (child.Style.PositionType == PositionType.Relative &&
                     child.Style.AlignSelf == YogaAlign.Baseline)
                 {
@@ -1046,7 +1033,7 @@ namespace Yoga.Net
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float YGNodeDimWithMargin(
-            YGNode node,
+            YogaNode node,
             FlexDirection axis,
             float widthSize)
         {
@@ -1057,7 +1044,7 @@ namespace Yoga.Net
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool YGNodeIsStyleDimDefined(
-            YGNode node,
+            YogaNode node,
             FlexDirection axis,
             float ownerSize)
         {
@@ -1075,7 +1062,7 @@ namespace Yoga.Net
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool YGNodeIsLayoutDimDefined(
-            YGNode node,
+            YogaNode node,
             FlexDirection axis)
         {
             float value = node.Layout.MeasuredDimensions[(int)dim[(int)axis]];
@@ -1083,7 +1070,7 @@ namespace Yoga.Net
         }
 
         public static float YGNodeBoundAxisWithinMinAndMax(
-            in YGNode node,
+            in YogaNode node,
             FlexDirection axis,
             float value,
             float axisSize)
@@ -1119,7 +1106,7 @@ namespace Yoga.Net
         // go below the padding and border amount.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float YGNodeBoundAxis(
-            YGNode node,
+            YogaNode node,
             FlexDirection axis,
             float value,
             float axisSize,
@@ -1135,8 +1122,8 @@ namespace Yoga.Net
         }
 
         public static void YGNodeSetChildTrailingPosition(
-            YGNode node,
-            YGNode child,
+            YogaNode node,
+            YogaNode child,
             FlexDirection axis)
         {
             float size = child.Layout.MeasuredDimensions[(int)dim[(int)axis]];
@@ -1147,7 +1134,7 @@ namespace Yoga.Net
         }
 
         public static void YGConstrainMaxSizeForMode(
-            in YGNode node,
+            in YogaNode node,
             FlexDirection axis,
             float ownerAxisSize,
             float ownerWidth,
@@ -1176,8 +1163,8 @@ namespace Yoga.Net
         }
 
         public static void YGNodeComputeFlexBasisForChild(
-            YGNode node,
-            YGNode child,
+            YogaNode node,
+            YogaNode child,
             float width,
             MeasureMode widthMode,
             float height,
@@ -1376,8 +1363,8 @@ namespace Yoga.Net
         }
 
         public static void YGNodeAbsoluteLayoutChild(
-            YGNode node,
-            YGNode child,
+            YogaNode node,
+            YogaNode child,
             float width,
             MeasureMode widthMode,
             float height,
@@ -1593,7 +1580,7 @@ namespace Yoga.Net
         }
 
         public static void YGNodeWithMeasureFuncSetMeasuredDimensions(
-            YGNode node,
+            YogaNode node,
             float availableWidth,
             float availableHeight,
             MeasureMode widthMeasureMode,
@@ -1708,7 +1695,7 @@ namespace Yoga.Net
         // For nodes with no children, use the available values if they were provided,
         // or the minimum size as indicated by the padding and border sizes.
         public static void YGNodeEmptyContainerSetMeasuredDimensions(
-            YGNode node,
+            YogaNode node,
             float availableWidth,
             float availableHeight,
             MeasureMode widthMeasureMode,
@@ -1747,7 +1734,7 @@ namespace Yoga.Net
         }
 
         public static bool YGNodeFixedSizeSetMeasuredDimensions(
-            YGNode node,
+            YogaNode node,
             float availableWidth,
             float availableHeight,
             MeasureMode widthMeasureMode,
@@ -1797,7 +1784,7 @@ namespace Yoga.Net
         }
 
         public static void YGZeroOutLayoutRecursivly(
-            YGNode node,
+            YogaNode node,
             object layoutContext)
         {
             node.Layout = new YogaLayout();
@@ -1811,7 +1798,7 @@ namespace Yoga.Net
         }
 
         public static float YGNodeCalculateAvailableInnerDim(
-            in YGNode node,
+            in YogaNode node,
             FlexDirection axis,
             float availableDim,
             float ownerDim)
@@ -1847,7 +1834,7 @@ namespace Yoga.Net
         }
 
         public static float YGNodeComputeFlexBasisForChildren(
-            YGNode node,
+            YogaNode node,
             float availableInnerWidth,
             float availableInnerHeight,
             MeasureMode widthMeasureMode,
@@ -1862,8 +1849,8 @@ namespace Yoga.Net
             int generationCount)
         {
             float totalOuterFlexBasis = 0.0f;
-            YGNode singleFlexChild = null;
-            YGNodes children = new YGNodes(node.Children);
+            YogaNode singleFlexChild = null;
+            YogaNodes children = new YogaNodes(node.Children);
             MeasureMode measureModeMainDim =
                 mainAxis.IsRow() ? widthMeasureMode : heightMeasureMode;
             // If there is only one child with flexGrow + flexShrink it means we can set
@@ -1957,7 +1944,7 @@ namespace Yoga.Net
         // YGNodeComputeFlexBasisForChildren function). This function calculates
         // YGCollectFlexItemsRowMeasurement
         public static CollectFlexItemsRowValues YGCalculateCollectFlexItemsRowValues(
-            YGNode node,
+            YogaNode node,
             Direction ownerDirection,
             float mainAxisownerSize,
             float availableInnerWidth,
@@ -1966,7 +1953,7 @@ namespace Yoga.Net
             int lineCount)
         {
             CollectFlexItemsRowValues flexAlgoRowMeasurement = new CollectFlexItemsRowValues();
-            flexAlgoRowMeasurement.RelativeChildren = new List<YGNode>(node.Children.Count);
+            flexAlgoRowMeasurement.RelativeChildren = new List<YogaNode>(node.Children.Count);
 
             float sizeConsumedOnCurrentLineIncludingMinConstraint = 0;
             FlexDirection mainAxis = node.Style.FlexDirection.Resolve(node.ResolveDirection(ownerDirection));
@@ -1976,7 +1963,7 @@ namespace Yoga.Net
             int endOfLineIndex = startOfLineIndex;
             for (; endOfLineIndex < node.Children.Count; endOfLineIndex++)
             {
-                YGNode child = node.Children[endOfLineIndex];
+                YogaNode child = node.Children[endOfLineIndex];
                 if (child.Style.Display == Display.None ||
                     child.Style.PositionType == PositionType.Absolute)
                 {
@@ -2048,7 +2035,7 @@ namespace Yoga.Net
         // please ensure that YGDistributeFreeSpaceFirstPass is called.
         public static float YGDistributeFreeSpaceSecondPass(
             CollectFlexItemsRowValues collectedFlexItemsValues,
-            YGNode node,
+            YogaNode node,
             FlexDirection mainAxis,
             FlexDirection crossAxis,
             float mainAxisownerSize,
@@ -2375,7 +2362,7 @@ namespace Yoga.Net
         // assigned to them.
         //
         public static void YGResolveFlexibleLength(
-            YGNode node,
+            YogaNode node,
             CollectFlexItemsRowValues collectedFlexItemsValues,
             FlexDirection mainAxis,
             FlexDirection crossAxis,
@@ -2427,7 +2414,7 @@ namespace Yoga.Net
         }
 
         public static void YGJustifyMainAxis(
-            YGNode node,
+            YogaNode node,
             CollectFlexItemsRowValues collectedFlexItemsValues,
             int startOfLineIndex,
             FlexDirection mainAxis,
@@ -2479,7 +2466,7 @@ namespace Yoga.Net
                  i < collectedFlexItemsValues.EndOfLineIndex;
                  i++)
             {
-                YGNode child = node.Children[i];
+                YogaNode child = node.Children[i];
                 if (child.Style.PositionType == PositionType.Relative)
                 {
                     if (child.MarginLeadingValue(mainAxis).Unit == YogaUnit.Auto)
@@ -2552,7 +2539,7 @@ namespace Yoga.Net
                  i < collectedFlexItemsValues.EndOfLineIndex;
                  i++)
             {
-                YGNode child = node.Children[i];
+                YogaNode child = node.Children[i];
                 YogaStyle childStyle = child.Style;
                 YogaLayout childLayout = child.Layout;
                 if (childStyle.Display == Display.None)
@@ -2741,7 +2728,7 @@ namespace Yoga.Net
         //    mode of MeasureMode.Undefined in that dimension.
         //
         public static void YGNodelayoutImpl(
-            YGNode node,
+            YogaNode node,
             float availableWidth,
             float availableHeight,
             Direction ownerDirection,
@@ -3126,7 +3113,7 @@ namespace Yoga.Net
                 {
                     for (var i = startOfLineIndex; i < endOfLineIndex; i++)
                     {
-                        YGNode child = node.Children[i];
+                        YogaNode child = node.Children[i];
                         if (child.Style.Display == Display.None)
                         {
                             continue;
@@ -3364,7 +3351,7 @@ namespace Yoga.Net
                     float maxDescentForCurrentLine = 0;
                     for (ii = startIndex; ii < childCount; ii++)
                     {
-                        YGNode child = node.Children[ii];
+                        YogaNode child = node.Children[ii];
                         if (child.Style.Display == Display.None)
                         {
                             continue;
@@ -3417,7 +3404,7 @@ namespace Yoga.Net
                     {
                         for (ii = startIndex; ii < endIndex; ii++)
                         {
-                            YGNode child = node.Children[ii];
+                            YogaNode child = node.Children[ii];
                             if (child.Style.Display == Display.None)
                             {
                                 continue;
@@ -3632,7 +3619,7 @@ namespace Yoga.Net
             {
                 for (var i = 0; i < childCount; i++)
                 {
-                    YGNode child = node.Children[i];
+                    YogaNode child = node.Children[i];
                     if (child.Style.PositionType == PositionType.Relative)
                     {
                         child.SetLayoutPosition(
@@ -3679,7 +3666,7 @@ namespace Yoga.Net
                 {
                     for (int i = 0; i < childCount; i++)
                     {
-                        YGNode child = node.Children[i];
+                        YogaNode child = node.Children[i];
                         if (child.Style.Display == Display.None)
                         {
                             continue;
@@ -3786,7 +3773,7 @@ namespace Yoga.Net
             float scaledValue = value * pointScaleFactor;
             // We want to calculate `fractial` such that `floor(scaledValue) = scaledValue
             // - fractial`.
-            float f = 0.0000019f;
+            //float f = 0.0000019f;
             float fractial = FloatMod(scaledValue, 1.0f);
             if (fractial < 0)
             {
@@ -3940,7 +3927,7 @@ namespace Yoga.Net
         //  Return parameter is true if layout was performed, false if skipped
         //
         public static bool YGLayoutNodeInternal(
-            YGNode node,
+            YogaNode node,
             float availableWidth,
             float availableHeight,
             Direction ownerDirection,
@@ -4228,7 +4215,7 @@ namespace Yoga.Net
         }
 
         public static void YGRoundToPixelGrid(
-            YGNode node,
+            YogaNode node,
             float pointScaleFactor,
             float absoluteLeft,
             float absoluteTop)
@@ -4308,7 +4295,7 @@ namespace Yoga.Net
         }
 
         public static void YGNodeCalculateLayoutWithContext(
-            YGNode node,
+            YogaNode node,
             float ownerWidth,
             float ownerHeight,
             Direction ownerDirection,
@@ -4403,7 +4390,7 @@ namespace Yoga.Net
         }
 
         public static void YGNodeCalculateLayout(
-            YGNode node,
+            YogaNode node,
             float ownerWidth,
             float ownerHeight,
             Direction ownerDirection)
@@ -4416,28 +4403,21 @@ namespace Yoga.Net
                 null);
         }
 
-        public static void YGConfigSetLogger(YogaConfig config, LoggerFunc logger)
-        {
-            config.LoggerFunc = logger ?? DefaultLogger;
-        }
+        public static void YGConfigSetLogger(YogaConfig config, LoggerFunc logger) => config.LoggerFunc = logger;
 
         public static void YGAssert(bool condition, string message)
         {
             if (!condition)
-            {
                 Logger.Log(LogLevel.Fatal, $"{message}\n");
-            }
         }
 
         public static void YGAssertWithNode(
-            in YGNode node,
+            in YogaNode node,
             bool condition,
             string message)
         {
             if (!condition)
-            {
                 Logger.Log(node, LogLevel.Fatal, $"{message}\n");
-            }
         }
 
         public static void YGAssertWithConfig(
@@ -4446,9 +4426,7 @@ namespace Yoga.Net
             string message)
         {
             if (!condition)
-            {
                 Logger.Log(config, LogLevel.Fatal, $"{message}\n");
-            }
         }
 
         public static void YGConfigSetExperimentalFeatureEnabled(
@@ -4474,16 +4452,16 @@ namespace Yoga.Net
             config.CloneNodeFunc = cloneNodeFunc;
         }
 
-        public static void YGTraverseChildrenPreOrder(IReadOnlyCollection<YGNode> children, Action<YGNode> action)
+        public static void YGTraverseChildrenPreOrder(IReadOnlyCollection<YogaNode> children, Action<YogaNode> action)
         {
-            foreach (YGNode node in children)
+            foreach (YogaNode node in children)
             {
                 action(node);
                 YGTraverseChildrenPreOrder(node.Children, action);
             }
         }
 
-        public static void YGTraversePreOrder(YGNode node, Action<YGNode> action)
+        public static void YGTraversePreOrder(YogaNode node, Action<YogaNode> action)
         {
             if (node == null)
                 return;

@@ -4,14 +4,22 @@ namespace Yoga.Net
 {
     public class YogaConfig
     {
+        public static YogaConfig DefaultConfig { get; } = new YogaConfig();
+
         public YogaCloneNodeFunc CloneNodeFunc { get; set; }
-        public LoggerFunc LoggerFunc { get; set; }
         public bool PrintTree { get; set; }
         public float PointScaleFactor { get; set; } = 1.0f;
-
         public bool[] ExperimentalFeatures { get; } = {false};
+        public LoggerFunc LoggerFunc
+        {
+            get => _loggerFunc ?? Logger.DefaultLogger;
+            set => _loggerFunc = value;
+        }
 
-        public YogaConfig(LoggerFunc logger)
+
+        LoggerFunc _loggerFunc;
+
+        public YogaConfig(LoggerFunc logger = null)
         {
             LoggerFunc = logger;
         }
@@ -22,25 +30,20 @@ namespace Yoga.Net
             LoggerFunc    = config.LoggerFunc;
         }
 
-        public void Log(YogaConfig config, YGNode node, LogLevel level, string message)
+        public void CopyFrom(YogaConfig config)
         {
-            LoggerFunc(config, node, level, message);
+            CloneNodeFunc = config.CloneNodeFunc;
+            LoggerFunc    = config.LoggerFunc;
         }
 
-        public YGNode CloneNode(
-            YGNode node,
-            YGNode owner,
-            int childIndex,
-            object cloneContext)
-        {
-            YGNode clone = CloneNodeFunc?.Invoke(node, owner, childIndex, cloneContext);
+        public void Log(LogLevel level, string message) => LoggerFunc?.Invoke(level, message);
 
+        public YogaNode CloneNode(YogaNode node, YogaNode owner, int childIndex, object cloneContext)
+        {
+            YogaNode clone = CloneNodeFunc?.Invoke(node, owner, childIndex, cloneContext);
             return clone ?? YGNodeClone(node);
         }
 
-        public override string ToString()
-        {
-            return $"Config({PointScaleFactor:F2}; )";
-        }
+        public override string ToString() => $"Config({PointScaleFactor:F2}; )";
     }
 }

@@ -12,7 +12,7 @@ namespace Yoga.Net.Tests
         {
             YogaConfig config = YGConfigNew();
 
-            YGNode root = YGNodeNewWithConfig(config);
+            YogaNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetBorder(root, Edge.Left, 10);
             YGNodeStyleSetBorder(root, Edge.Top, 10);
             YGNodeStyleSetBorder(root, Edge.Right, 10);
@@ -37,13 +37,13 @@ namespace Yoga.Net.Tests
         {
             YogaConfig config = YGConfigNew();
 
-            YGNode root = YGNodeNewWithConfig(config);
+            YogaNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetBorder(root, Edge.Left, 10);
             YGNodeStyleSetBorder(root, Edge.Top, 10);
             YGNodeStyleSetBorder(root, Edge.Right, 10);
             YGNodeStyleSetBorder(root, Edge.Bottom, 10);
 
-            YGNode root_child0 = YGNodeNewWithConfig(config);
+            YogaNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root_child0, 10);
             YGNodeStyleSetHeight(root_child0, 10);
             YGNodeInsertChild(root, root_child0, 0);
@@ -77,7 +77,7 @@ namespace Yoga.Net.Tests
         {
             YogaConfig config = YGConfigNew();
 
-            YGNode root = YGNodeNewWithConfig(config);
+            YogaNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetBorder(root, Edge.Left, 10);
             YGNodeStyleSetBorder(root, Edge.Top, 10);
             YGNodeStyleSetBorder(root, Edge.Right, 10);
@@ -85,7 +85,7 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNode root_child0 = YGNodeNewWithConfig(config);
+            YogaNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child0, 1);
             YGNodeStyleSetWidth(root_child0, 10);
             YGNodeInsertChild(root, root_child0, 0);
@@ -119,7 +119,7 @@ namespace Yoga.Net.Tests
         {
             YogaConfig config = YGConfigNew();
 
-            YGNode root = YGNodeNewWithConfig(config);
+            YogaNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetBorder(root, Edge.Left, 10);
             YGNodeStyleSetBorder(root, Edge.Top, 10);
             YGNodeStyleSetBorder(root, Edge.Right, 10);
@@ -127,7 +127,7 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNode root_child0 = YGNodeNewWithConfig(config);
+            YogaNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetHeight(root_child0, 10);
             YGNodeInsertChild(root, root_child0, 0);
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
@@ -160,7 +160,7 @@ namespace Yoga.Net.Tests
         {
             YogaConfig config = YGConfigNew();
 
-            YGNode root = YGNodeNewWithConfig(config);
+            YogaNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetJustifyContent(root, Justify.Center);
             YGNodeStyleSetAlignItems(root, YogaAlign.Center);
             YGNodeStyleSetBorder(root, Edge.Start, 10);
@@ -169,7 +169,7 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNode root_child0 = YGNodeNewWithConfig(config);
+            YogaNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root_child0, 10);
             YGNodeStyleSetHeight(root_child0, 10);
             YGNodeInsertChild(root, root_child0, 0);

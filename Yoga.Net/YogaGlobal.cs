@@ -82,29 +82,6 @@ namespace Yoga.Net
             return YogaIsUndefined(val) ? 0 : val;
         }
 
-        public static readonly LoggerFunc DefaultLogger = (config, node, level, message) =>
-        {
-            Trace.Write(message);
-            switch (level)
-            {
-            case LogLevel.Error:
-            case LogLevel.Fatal:
-                Console.Error.Write(message);
-                break;
-
-            case LogLevel.Warn:
-            case LogLevel.Info:
-            case LogLevel.Debug:
-            case LogLevel.Verbose:
-            default:
-                Console.Write(message);
-                break;
-            }
-
-            return 0;
-        };
-
-        public static YogaConfig DefaultConfig { get; } = new YogaConfig(DefaultLogger);
-        public static YGNode DefaultYGNode { get; } = new YGNode();
+        public static YogaNode DefaultYogaNode { get; } = new YogaNode();
     }
 }

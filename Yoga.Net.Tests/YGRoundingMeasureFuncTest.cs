@@ -8,7 +8,7 @@ namespace Yoga.Net.Tests
     public class YGRoundingMeasureFuncTest
     {
         static MeasureFunc _measureFloor = (
-            YGNode node,
+            YogaNode node,
             float width,
             MeasureMode widthMode,
             float height,
@@ -19,7 +19,7 @@ namespace Yoga.Net.Tests
         };
 
         static MeasureFunc _measureCeil = (
-            YGNode node,
+            YogaNode node,
             float width,
             MeasureMode widthMode,
             float height,
@@ -30,7 +30,7 @@ namespace Yoga.Net.Tests
         };
 
         static MeasureFunc _measureFractial = (
-            YGNode node,
+            YogaNode node,
             float width,
             MeasureMode widthMode,
             float height,
@@ -43,9 +43,9 @@ namespace Yoga.Net.Tests
         public void rounding_feature_with_custom_measure_func_floor()
         {
             YogaConfig config = YGConfigNew();
-            YGNode root = YGNodeNewWithConfig(config);
+            YogaNode root = YGNodeNewWithConfig(config);
 
-            YGNode root_child0 = YGNodeNewWithConfig(config);
+            YogaNode root_child0 = YGNodeNewWithConfig(config);
             root_child0.SetMeasureFunc(_measureFloor);
             YGNodeInsertChild(root, root_child0, 0);
 
@@ -89,9 +89,9 @@ namespace Yoga.Net.Tests
         public void rounding_feature_with_custom_measure_func_ceil()
         {
             YogaConfig config = YGConfigNew();
-            YGNode root = YGNodeNewWithConfig(config);
+            YogaNode root = YGNodeNewWithConfig(config);
 
-            YGNode root_child0 = YGNodeNewWithConfig(config);
+            YogaNode root_child0 = YGNodeNewWithConfig(config);
             root_child0.SetMeasureFunc(_measureCeil);
             YGNodeInsertChild(root, root_child0, 0);
             YGConfigSetPointScaleFactor(config, 1.0f);
@@ -106,9 +106,9 @@ namespace Yoga.Net.Tests
         public void rounding_feature_with_custom_measure_and_fractial_matching_scale()
         {
             YogaConfig config = YGConfigNew();
-            YGNode root = YGNodeNewWithConfig(config);
+            YogaNode root = YGNodeNewWithConfig(config);
 
-            YGNode root_child0 = YGNodeNewWithConfig(config);
+            YogaNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetPosition(root_child0, Edge.Left, 73.625f);
             root_child0.SetMeasureFunc(_measureFractial);
             YGNodeInsertChild(root, root_child0, 0);

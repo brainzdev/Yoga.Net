@@ -10,12 +10,12 @@ namespace Yoga.Net.Tests
         [Test]
         public void zero_out_layout()
         {
-            YGNode root = YGNodeNew();
+            YogaNode root = YGNodeNew();
             YGNodeStyleSetFlexDirection(root, FlexDirection.Row);
             YGNodeStyleSetWidth(root, 200);
             YGNodeStyleSetHeight(root, 200);
 
-            YGNode child = YGNodeNew();
+            YogaNode child = YGNodeNew();
             YGNodeInsertChild(root, child, 0);
             YGNodeStyleSetWidth(child, 100);
             YGNodeStyleSetHeight(child, 100);

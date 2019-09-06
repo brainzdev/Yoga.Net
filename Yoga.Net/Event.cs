@@ -46,9 +46,9 @@ namespace Yoga.Net
 
     public abstract class YGNodeEventArgs : EventArgs
     {
-        public YGNode Node { get; }
+        public YogaNode Node { get; }
 
-        protected YGNodeEventArgs(YGNode node)
+        protected YGNodeEventArgs(YogaNode node)
         {
             Node = node;
         }
@@ -58,7 +58,7 @@ namespace Yoga.Net
     {
         public YogaConfig Config { get; }
 
-        public NodeAllocationEventArgs(YGNode node, YogaConfig config) : base(node)
+        public NodeAllocationEventArgs(YogaNode node, YogaConfig config) : base(node)
         {
             Config = config;
         }
@@ -68,7 +68,7 @@ namespace Yoga.Net
     {
         public YogaConfig Config { get; }
 
-        public NodeDeallocationEventArgs(YGNode node, YogaConfig config) : base(node)
+        public NodeDeallocationEventArgs(YogaNode node, YogaConfig config) : base(node)
         {
             Config = config;
         }
@@ -79,7 +79,7 @@ namespace Yoga.Net
         public object LayoutContext { get; }
 
         /// <inheritdoc />
-        public LayoutPassStartEventArgs(YGNode node, object layoutContext) : base(node)
+        public LayoutPassStartEventArgs(YogaNode node, object layoutContext) : base(node)
         {
             LayoutContext = layoutContext;
         }
@@ -91,7 +91,7 @@ namespace Yoga.Net
         public LayoutData LayoutData { get; }
 
         /// <inheritdoc />
-        public LayoutPassEndEventArgs(YGNode node, object layoutContext, LayoutData layoutData) : base(node)
+        public LayoutPassEndEventArgs(YogaNode node, object layoutContext, LayoutData layoutData) : base(node)
         {
             LayoutContext = layoutContext;
             LayoutData    = layoutData;
@@ -104,7 +104,7 @@ namespace Yoga.Net
         public object LayoutContext { get; }
 
         /// <inheritdoc />
-        public NodeLayoutEventArgs(YGNode node, LayoutType layoutType, object layoutContext) : base(node)
+        public NodeLayoutEventArgs(YogaNode node, LayoutType layoutType, object layoutContext) : base(node)
         {
             LayoutType    = layoutType;
             LayoutContext = layoutContext;
@@ -124,7 +124,7 @@ namespace Yoga.Net
 
         /// <inheritdoc />
         public MeasureCallbackEndEventArgs(
-            YGNode node,
+            YogaNode node,
             object layoutContext,
             float width,
             MeasureMode widthMeasureMode,
@@ -149,18 +149,18 @@ namespace Yoga.Net
     public class MeasureCallbackStartEventArgs : YGNodeEventArgs
     {
         /// <inheritdoc />
-        public MeasureCallbackStartEventArgs(YGNode node) : base(node) { }
+        public MeasureCallbackStartEventArgs(YogaNode node) : base(node) { }
     }
 
     public class NodeBaselineStartEventArgs : YGNodeEventArgs
     {
         /// <inheritdoc />
-        public NodeBaselineStartEventArgs(YGNode node) : base(node) { }
+        public NodeBaselineStartEventArgs(YogaNode node) : base(node) { }
     }
 
     public class NodeBaselineEndEventArgs : YGNodeEventArgs
     {
         /// <inheritdoc />
-        public NodeBaselineEndEventArgs(YGNode node) : base(node) { }
+        public NodeBaselineEndEventArgs(YogaNode node) : base(node) { }
     }
 }

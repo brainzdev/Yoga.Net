@@ -12,20 +12,20 @@ namespace Yoga.Net.Tests
         {
             YogaConfig config = YGConfigNew();
 
-            YGNode root = YGNodeNewWithConfig(config);
+            YogaNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, FlexDirection.Row);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNode root_child0 = YGNodeNewWithConfig(config);
+            YogaNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child0, 1);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNode root_child1 = YGNodeNewWithConfig(config);
+            YogaNode root_child1 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child1, 1);
             YGNodeInsertChild(root, root_child1, 1);
 
-            YGNode root_child2 = YGNodeNewWithConfig(config);
+            YogaNode root_child2 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child2, 1);
             YGNodeInsertChild(root, root_child2, 2);
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
@@ -78,28 +78,28 @@ namespace Yoga.Net.Tests
         {
             YogaConfig config = YGConfigNew();
 
-            YGNode root = YGNodeNewWithConfig(config);
+            YogaNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, FlexDirection.Row);
             YGNodeStyleSetWidth(root, 113);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNode root_child0 = YGNodeNewWithConfig(config);
+            YogaNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child0, 1);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNode root_child1 = YGNodeNewWithConfig(config);
+            YogaNode root_child1 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child1, 1);
             YGNodeInsertChild(root, root_child1, 1);
 
-            YGNode root_child2 = YGNodeNewWithConfig(config);
+            YogaNode root_child2 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child2, 1);
             YGNodeInsertChild(root, root_child2, 2);
 
-            YGNode root_child3 = YGNodeNewWithConfig(config);
+            YogaNode root_child3 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child3, 1);
             YGNodeInsertChild(root, root_child3, 3);
 
-            YGNode root_child4 = YGNodeNewWithConfig(config);
+            YogaNode root_child4 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child4, 1);
             YGNodeInsertChild(root, root_child4, 4);
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
@@ -172,21 +172,21 @@ namespace Yoga.Net.Tests
         {
             YogaConfig config = YGConfigNew();
 
-            YGNode root = YGNodeNewWithConfig(config);
+            YogaNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, FlexDirection.Row);
             YGNodeStyleSetWidth(root, 101);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNode root_child0 = YGNodeNewWithConfig(config);
+            YogaNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexShrink(root_child0, 1);
             YGNodeStyleSetFlexBasis(root_child0, 100);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNode root_child1 = YGNodeNewWithConfig(config);
+            YogaNode root_child1 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexBasis(root_child1, 25);
             YGNodeInsertChild(root, root_child1, 1);
 
-            YGNode root_child2 = YGNodeNewWithConfig(config);
+            YogaNode root_child2 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexBasis(root_child2, 25);
             YGNodeInsertChild(root, root_child2, 2);
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
@@ -239,22 +239,22 @@ namespace Yoga.Net.Tests
         {
             YogaConfig config = YGConfigNew();
 
-            YGNode root = YGNodeNewWithConfig(config);
+            YogaNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 113);
 
-            YGNode root_child0 = YGNodeNewWithConfig(config);
+            YogaNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child0, 1);
             YGNodeStyleSetFlexBasis(root_child0, 50);
             YGNodeStyleSetHeight(root_child0, 20);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNode root_child1 = YGNodeNewWithConfig(config);
+            YogaNode root_child1 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child1, 1);
             YGNodeStyleSetHeight(root_child1, 10);
             YGNodeInsertChild(root, root_child1, 1);
 
-            YGNode root_child2 = YGNodeNewWithConfig(config);
+            YogaNode root_child2 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child2, 1);
             YGNodeStyleSetHeight(root_child2, 10);
             YGNodeInsertChild(root, root_child2, 2);
@@ -308,22 +308,22 @@ namespace Yoga.Net.Tests
         {
             YogaConfig config = YGConfigNew();
 
-            YGNode root = YGNodeNewWithConfig(config);
+            YogaNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 87.4f);
             YGNodeStyleSetHeight(root, 113.4f);
 
-            YGNode root_child0 = YGNodeNewWithConfig(config);
+            YogaNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child0, 0.7f);
             YGNodeStyleSetFlexBasis(root_child0, 50.3f);
             YGNodeStyleSetHeight(root_child0, 20.3f);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNode root_child1 = YGNodeNewWithConfig(config);
+            YogaNode root_child1 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child1, 1.6f);
             YGNodeStyleSetHeight(root_child1, 10);
             YGNodeInsertChild(root, root_child1, 1);
 
-            YGNode root_child2 = YGNodeNewWithConfig(config);
+            YogaNode root_child2 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child2, 1.1f);
             YGNodeStyleSetHeight(root_child2, 10.7f);
             YGNodeInsertChild(root, root_child2, 2);
@@ -377,36 +377,36 @@ namespace Yoga.Net.Tests
         {
             YogaConfig config = YGConfigNew();
 
-            YGNode root = YGNodeNewWithConfig(config);
+            YogaNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 87.4f);
             YGNodeStyleSetHeight(root, 113.4f);
 
-            YGNode root_child0 = YGNodeNewWithConfig(config);
+            YogaNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child0, 0.7f);
             YGNodeStyleSetFlexBasis(root_child0, 50.3f);
             YGNodeStyleSetHeight(root_child0, 20.3f);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNode root_child0_child0 = YGNodeNewWithConfig(config);
+            YogaNode root_child0_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child0_child0, 1);
             YGNodeStyleSetFlexBasis(root_child0_child0, 0.3f);
             YGNodeStyleSetPosition(root_child0_child0, Edge.Bottom, 13.3f);
             YGNodeStyleSetHeight(root_child0_child0, 9.9f);
             YGNodeInsertChild(root_child0, root_child0_child0, 0);
 
-            YGNode root_child0_child1 = YGNodeNewWithConfig(config);
+            YogaNode root_child0_child1 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child0_child1, 4);
             YGNodeStyleSetFlexBasis(root_child0_child1, 0.3f);
             YGNodeStyleSetPosition(root_child0_child1, Edge.Top, 13.3f);
             YGNodeStyleSetHeight(root_child0_child1, 1.1f);
             YGNodeInsertChild(root_child0, root_child0_child1, 1);
 
-            YGNode root_child1 = YGNodeNewWithConfig(config);
+            YogaNode root_child1 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child1, 1.6f);
             YGNodeStyleSetHeight(root_child1, 10);
             YGNodeInsertChild(root, root_child1, 1);
 
-            YGNode root_child2 = YGNodeNewWithConfig(config);
+            YogaNode root_child2 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child2, 1.1f);
             YGNodeStyleSetHeight(root_child2, 10.7f);
             YGNodeInsertChild(root, root_child2, 2);
@@ -480,22 +480,22 @@ namespace Yoga.Net.Tests
         {
             YogaConfig config = YGConfigNew();
 
-            YGNode root = YGNodeNewWithConfig(config);
+            YogaNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 113.4f);
 
-            YGNode root_child0 = YGNodeNewWithConfig(config);
+            YogaNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child0, 1);
             YGNodeStyleSetFlexBasis(root_child0, 50);
             YGNodeStyleSetHeight(root_child0, 20);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNode root_child1 = YGNodeNewWithConfig(config);
+            YogaNode root_child1 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child1, 1);
             YGNodeStyleSetHeight(root_child1, 10);
             YGNodeInsertChild(root, root_child1, 1);
 
-            YGNode root_child2 = YGNodeNewWithConfig(config);
+            YogaNode root_child2 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child2, 1);
             YGNodeStyleSetHeight(root_child2, 10);
             YGNodeInsertChild(root, root_child2, 2);
@@ -549,22 +549,22 @@ namespace Yoga.Net.Tests
         {
             YogaConfig config = YGConfigNew();
 
-            YGNode root = YGNodeNewWithConfig(config);
+            YogaNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 113.6f);
 
-            YGNode root_child0 = YGNodeNewWithConfig(config);
+            YogaNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child0, 1);
             YGNodeStyleSetFlexBasis(root_child0, 50);
             YGNodeStyleSetHeight(root_child0, 20);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNode root_child1 = YGNodeNewWithConfig(config);
+            YogaNode root_child1 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child1, 1);
             YGNodeStyleSetHeight(root_child1, 10);
             YGNodeInsertChild(root, root_child1, 1);
 
-            YGNode root_child2 = YGNodeNewWithConfig(config);
+            YogaNode root_child2 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child2, 1);
             YGNodeStyleSetHeight(root_child2, 10);
             YGNodeInsertChild(root, root_child2, 2);
@@ -618,23 +618,23 @@ namespace Yoga.Net.Tests
         {
             YogaConfig config = YGConfigNew();
 
-            YGNode root = YGNodeNewWithConfig(config);
+            YogaNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetPosition(root, Edge.Top, 0.3f);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 113.4f);
 
-            YGNode root_child0 = YGNodeNewWithConfig(config);
+            YogaNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child0, 1);
             YGNodeStyleSetFlexBasis(root_child0, 50);
             YGNodeStyleSetHeight(root_child0, 20);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNode root_child1 = YGNodeNewWithConfig(config);
+            YogaNode root_child1 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child1, 1);
             YGNodeStyleSetHeight(root_child1, 10);
             YGNodeInsertChild(root, root_child1, 1);
 
-            YGNode root_child2 = YGNodeNewWithConfig(config);
+            YogaNode root_child2 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child2, 1);
             YGNodeStyleSetHeight(root_child2, 10);
             YGNodeInsertChild(root, root_child2, 2);
@@ -688,23 +688,23 @@ namespace Yoga.Net.Tests
         {
             YogaConfig config = YGConfigNew();
 
-            YGNode root = YGNodeNewWithConfig(config);
+            YogaNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetPosition(root, Edge.Top, 0.7f);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 113.4f);
 
-            YGNode root_child0 = YGNodeNewWithConfig(config);
+            YogaNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child0, 1);
             YGNodeStyleSetFlexBasis(root_child0, 50);
             YGNodeStyleSetHeight(root_child0, 20);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNode root_child1 = YGNodeNewWithConfig(config);
+            YogaNode root_child1 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child1, 1);
             YGNodeStyleSetHeight(root_child1, 10);
             YGNodeInsertChild(root, root_child1, 1);
 
-            YGNode root_child2 = YGNodeNewWithConfig(config);
+            YogaNode root_child2 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child2, 1);
             YGNodeStyleSetHeight(root_child2, 10);
             YGNodeInsertChild(root, root_child2, 2);
@@ -758,26 +758,26 @@ namespace Yoga.Net.Tests
         {
             YogaConfig config = YGConfigNew();
 
-            YGNode root = YGNodeNewWithConfig(config);
+            YogaNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, FlexDirection.Row);
             YGNodeStyleSetWidth(root, 320);
 
-            YGNode root_child0 = YGNodeNewWithConfig(config);
+            YogaNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child0, 1);
             YGNodeStyleSetHeight(root_child0, 10);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNode root_child1 = YGNodeNewWithConfig(config);
+            YogaNode root_child1 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child1, 1);
             YGNodeStyleSetHeight(root_child1, 10);
             YGNodeInsertChild(root, root_child1, 1);
 
-            YGNode root_child1_child0 = YGNodeNewWithConfig(config);
+            YogaNode root_child1_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child1_child0, 1);
             YGNodeStyleSetHeight(root_child1_child0, 10);
             YGNodeInsertChild(root_child1, root_child1_child0, 0);
 
-            YGNode root_child2 = YGNodeNewWithConfig(config);
+            YogaNode root_child2 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child2, 1);
             YGNodeStyleSetHeight(root_child2, 10);
             YGNodeInsertChild(root, root_child2, 2);
@@ -841,25 +841,25 @@ namespace Yoga.Net.Tests
         {
             YogaConfig config = YGConfigNew();
 
-            YGNode root = YGNodeNewWithConfig(config);
+            YogaNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetHeight(root, 320);
 
-            YGNode root_child0 = YGNodeNewWithConfig(config);
+            YogaNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child0, 1);
             YGNodeStyleSetWidth(root_child0, 10);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNode root_child1 = YGNodeNewWithConfig(config);
+            YogaNode root_child1 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child1, 1);
             YGNodeStyleSetWidth(root_child1, 10);
             YGNodeInsertChild(root, root_child1, 1);
 
-            YGNode root_child1_child0 = YGNodeNewWithConfig(config);
+            YogaNode root_child1_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child1_child0, 1);
             YGNodeStyleSetWidth(root_child1_child0, 10);
             YGNodeInsertChild(root_child1, root_child1_child0, 0);
 
-            YGNode root_child2 = YGNodeNewWithConfig(config);
+            YogaNode root_child2 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child2, 1);
             YGNodeStyleSetWidth(root_child2, 10);
             YGNodeInsertChild(root, root_child2, 2);
@@ -923,42 +923,42 @@ namespace Yoga.Net.Tests
         {
             YogaConfig config = YGConfigNew();
 
-            YGNode root = YGNodeNewWithConfig(config);
+            YogaNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, FlexDirection.Row);
             YGNodeStyleSetWidth(root, 640);
             YGNodeStyleSetHeight(root, 320);
 
-            YGNode root_child0 = YGNodeNewWithConfig(config);
+            YogaNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child0, 1);
             YGNodeStyleSetHeightPercent(root_child0, 100);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNode root_child1 = YGNodeNewWithConfig(config);
+            YogaNode root_child1 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child1, 1);
             YGNodeStyleSetHeightPercent(root_child1, 100);
             YGNodeInsertChild(root, root_child1, 1);
 
-            YGNode root_child1_child0 = YGNodeNewWithConfig(config);
+            YogaNode root_child1_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child1_child0, 1);
             YGNodeStyleSetWidthPercent(root_child1_child0, 100);
             YGNodeInsertChild(root_child1, root_child1_child0, 0);
 
-            YGNode root_child1_child1 = YGNodeNewWithConfig(config);
+            YogaNode root_child1_child1 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child1_child1, 1);
             YGNodeStyleSetWidthPercent(root_child1_child1, 100);
             YGNodeInsertChild(root_child1, root_child1_child1, 1);
 
-            YGNode root_child1_child1_child0 = YGNodeNewWithConfig(config);
+            YogaNode root_child1_child1_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child1_child1_child0, 1);
             YGNodeStyleSetWidthPercent(root_child1_child1_child0, 100);
             YGNodeInsertChild(root_child1_child1, root_child1_child1_child0, 0);
 
-            YGNode root_child1_child2 = YGNodeNewWithConfig(config);
+            YogaNode root_child1_child2 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child1_child2, 1);
             YGNodeStyleSetWidthPercent(root_child1_child2, 100);
             YGNodeInsertChild(root_child1, root_child1_child2, 2);
 
-            YGNode root_child2 = YGNodeNewWithConfig(config);
+            YogaNode root_child2 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child2, 1);
             YGNodeStyleSetHeightPercent(root_child2, 100);
             YGNodeInsertChild(root, root_child2, 2);

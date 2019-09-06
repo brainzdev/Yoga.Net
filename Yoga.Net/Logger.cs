@@ -1,16 +1,41 @@
 ﻿using System;
+using System.Diagnostics;
 using static Yoga.Net.YogaGlobal;
 
 namespace Yoga.Net
 {
+    public delegate int LoggerFunc(LogLevel level, string message);
+
     public static class Logger
     {
+        public static readonly LoggerFunc DefaultLogger = (level, message) =>
+        {
+            Trace.Write(message);
+            switch (level)
+            {
+            case LogLevel.Error:
+            case LogLevel.Fatal:
+                Console.Error.Write(message);
+                break;
+
+            case LogLevel.Warn:
+            case LogLevel.Info:
+            case LogLevel.Debug:
+            case LogLevel.Verbose:
+            default:
+                Console.Write(message);
+                break;
+            }
+
+            return 0;
+        };
+
         public static void Log(LogLevel level, string message)
         {
             Log(null, null, level, message);
         }
 
-        public static void Log(YGNode node, LogLevel level, string message)
+        public static void Log(YogaNode node, LogLevel level, string message)
         {
             Log(node?.Config, node, level, message);
         }
@@ -20,10 +45,9 @@ namespace Yoga.Net
             Log(config, null, level, message);
         }
 
-        static void Log(YogaConfig config, YGNode node, LogLevel level, string message)
+        static void Log(YogaConfig config, YogaNode node, LogLevel level, string message)
         {
-            YogaConfig logConfig = config ?? DefaultConfig;
-            logConfig.Log(logConfig, node, level, message);
+            (node?.Config?.LoggerFunc ?? config.LoggerFunc ?? DefaultLogger).Invoke(level, message);
 
             if (level == LogLevel.Fatal)
                 Environment.FailFast("Fatal exception");

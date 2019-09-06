@@ -13,11 +13,11 @@ namespace Yoga.Net.Tests
             YogaConfig config = YGConfigNew();
             YGConfigSetExperimentalFeatureEnabled(config, ExperimentalFeature.WebFlexBasis, true);
 
-            YGNode root = YGNodeNewWithConfig(config);
+            YogaNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetHeightPercent(root, 100);
             YGNodeStyleSetWidthPercent(root, 100);
 
-            YGNode root_child0 = YGNodeNewWithConfig(config);
+            YogaNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexBasisPercent(root_child0, 100);
             YGNodeInsertChild(root, root_child0, 0);
 
@@ -30,9 +30,9 @@ namespace Yoga.Net.Tests
         [Test]
         public void recalculate_resolvedDimonsion_onchange()
         {
-            YGNode root = YGNodeNew();
+            YogaNode root = YGNodeNew();
 
-            YGNode root_child0 = YGNodeNew();
+            YogaNode root_child0 = YGNodeNew();
             YGNodeStyleSetMinHeight(root_child0, 10);
             YGNodeStyleSetMaxHeight(root_child0, 10);
             YGNodeInsertChild(root, root_child0, 0);

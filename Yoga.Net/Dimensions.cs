@@ -11,4 +11,15 @@ namespace Yoga.Net
             Array.Copy(other._values, _values, _values.Length);
         }
     }
+
+    public class DimensionsFloat : Values<Dimension, float>
+    {
+        public DimensionsFloat(float defaultValue) : base(defaultValue) { }
+
+        public DimensionsFloat(DimensionsFloat other) : base(float.NaN)
+        {
+            Array.Copy(other._values, _values, _values.Length);
+        }
+    }
+
 }
