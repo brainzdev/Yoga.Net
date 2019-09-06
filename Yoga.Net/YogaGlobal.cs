@@ -93,7 +93,7 @@ namespace Yoga.Net
 
         public static bool YGNodeIsDirty(YogaNode node) => node.IsDirty;
 
-                /// <summary>
+        /// <summary>
         /// Marks the current node and all its descendants as dirty.
         ///
         /// Intended to be used for Uoga benchmarks. Don't use in production, as calling
@@ -101,64 +101,15 @@ namespace Yoga.Net
         /// </summary>
         public static void YGNodeMarkDirtyAndPropagateToDescendants(YogaNode node) => node.MarkDirtyAndPropagateDownwards();
 
-
         public static YogaNode YGNodeNew() => YGNodeNewWithConfig(YogaConfig.DefaultConfig);
 
-        public static YogaNode YGNodeNewWithConfig(YogaConfig config)
-        {
-            var node = new YogaNode(config);
-            YGAssertWithConfig(config, node != null, "Could not allocate memory for node");
-            Event.Hub.Publish(new NodeAllocationEventArgs(node, config));
+        public static YogaNode YGNodeNewWithConfig(YogaConfig config) => new YogaNode(config);
 
-            return node;
-        }
-
-        public static YogaNode YGNodeClone(YogaNode oldNode)
-        {
-            var node = new YogaNode(oldNode);
-            YGAssertWithConfig(oldNode.Config, node != null, "Could not allocate memory for node");
-            Event.Hub.Publish(new NodeAllocationEventArgs(node, node.Config));
-            node.Owner = null;
-            return node;
-        }
+        public static YogaNode YGNodeClone(YogaNode oldNode) => YogaNode.Clone(oldNode);
 
         public static YogaConfig YGConfigClone(YogaConfig oldConfig) => new YogaConfig(oldConfig);
 
-        public static YogaNode DeepClone(YogaNode oldNode)
-        {
-            var node = new YogaNode(oldNode, new YogaConfig(oldNode.Config)) {Owner = null};
-
-            var children = new YogaNodes(oldNode.Children.Count);
-            foreach (var item in oldNode.Children)
-            {
-                var childNode = YGNodeDeepClone(item);
-                childNode.Owner = node;
-                children.Add(childNode);
-            }
-
-            node.SetChildren(children);
-
-            return node;
-        }
-
-        public static YogaNode YGNodeDeepClone(YogaNode oldNode)
-        {
-            var config = YGConfigClone(oldNode.Config);
-            var node = new YogaNode(oldNode, config) {Owner = null};
-            Event.Hub.Publish(new NodeAllocationEventArgs(node, node.Config));
-
-            var vec = new YogaNodes(); // .reserve(oldNode.Children.size());
-            foreach (var item in oldNode.Children)
-            {
-                var childNode = YGNodeDeepClone(item);
-                childNode.Owner = node;
-                vec.Add(childNode);
-            }
-
-            node.SetChildren(vec);
-
-            return node;
-        }
+        public static YogaNode YGNodeDeepClone(YogaNode oldNode) => YogaNode.DeepClone(oldNode);
 
         public static void YGNodeReset(YogaNode node) => node.Reset();
 
@@ -170,123 +121,15 @@ namespace Yoga.Net
 
         public static bool YGNodeIsReferenceBaseline(YogaNode node) => node.IsReferenceBaseline;
 
-        public static void YGNodeInsertChild(YogaNode owner, YogaNode child, int index)
-        {
-            YGAssertWithNode(owner, child.Owner == null, "Child already has a owner, it must be removed first.");
-            YGAssertWithNode(owner, owner.MeasureFunc == null, "Cannot add child: Nodes with measure functions cannot have children.");
+        public static void YGNodeInsertChild(YogaNode owner, YogaNode child, int index) => owner.InsertChild(child, index);
 
-            owner.InsertChild(child, index);
-            child.Owner = owner;
-            owner.MarkDirtyAndPropagate();
-        }
+        public static void YGNodeRemoveChild(YogaNode owner, YogaNode excludedChild) => owner.RemoveChild(excludedChild);
 
-        public static void YGNodeRemoveChild(YogaNode owner, YogaNode excludedChild)
-        {
-            if (YGNodeGetChildCount(owner) == 0)
-            {
-                // This is an empty set. Nothing to remove.
-                return;
-            }
+        public static void YGNodeRemoveAllChildren(YogaNode owner) => owner.RemoveAllChildren();
 
-            // Children may be shared between parents, which is indicated by not having an
-            // owner. We only want to reset the child completely if it is owned
-            // exclusively by one node.
-            var childOwner = excludedChild.Owner;
-            if (owner.RemoveChild(excludedChild))
-            {
-                if (owner == childOwner)
-                {
-                    excludedChild.Layout = new YogaLayout(); // layout is no longer valid
-                    excludedChild.Owner  = null;
-                }
+        public static void YGNodeSetChildren(YogaNode owner, YogaNode[] c, int count) => owner.SetChildren(c.Take(count));
 
-                owner.MarkDirtyAndPropagate();
-            }
-        }
-
-        public static void YGNodeRemoveAllChildren(YogaNode owner)
-        {
-            var childCount = YGNodeGetChildCount(owner);
-            if (childCount == 0)
-            {
-                // This is an empty set already. Nothing to do.
-                return;
-            }
-
-            var firstChild = owner.Children[0];
-            if (firstChild.Owner == owner)
-            {
-                // If the first child has this node as its owner, we assume that this child
-                // set is unique.
-                for (var i = 0; i < childCount; i++)
-                {
-                    var oldChild = owner.Children[i];
-                    oldChild.Layout = new YogaNode().Layout; // layout is no longer valid
-                    oldChild.Owner  = null;
-                }
-
-                owner.ClearChildren();
-                owner.MarkDirtyAndPropagate();
-                return;
-            }
-
-            // Otherwise, we are not the owner of the child set. We don't have to do
-            // anything to clear it.
-            owner.SetChildren(new YogaNodes());
-            owner.MarkDirtyAndPropagate();
-        }
-
-        public static void YGNodeSetChildrenInternal(YogaNode owner, IEnumerable<YogaNode> childs)
-        {
-            if (owner == null)
-                return;
-
-            var newChildren = childs.ToList();
-            if (newChildren.Count == 0)
-            {
-                if (YGNodeGetChildCount(owner) > 0)
-                {
-                    foreach (var child in owner.Children)
-                    {
-                        child.Layout = new YogaLayout();
-                        child.Owner  = null;
-                    }
-
-                    owner.SetChildren(new YogaNodes());
-                    owner.MarkDirtyAndPropagate();
-                }
-            }
-            else
-            {
-                if (YGNodeGetChildCount(owner) > 0)
-                {
-                    foreach (var oldChild in owner.Children)
-                    {
-                        // Our new children may have nodes in common with the old children. We don't reset these common nodes.
-                        //if (std::find(children.begin(), children.end(), oldChild) == children.end()) 
-                        if (!newChildren.Contains(oldChild))
-                        {
-                            oldChild.Layout = new YogaLayout();
-                            oldChild.Owner  = null;
-                        }
-                    }
-                }
-
-                owner.SetChildren(newChildren);
-                foreach (var child in newChildren)
-                    child.Owner = owner;
-
-                owner.MarkDirtyAndPropagate();
-            }
-        }
-
-        public static void YGNodeSetChildren(YogaNode owner, YogaNode[] c, int count)
-        {
-            var children = c.Take(count); // {c, c + count};
-            YGNodeSetChildrenInternal(owner, children);
-        }
-
-        public static void YGNodeSetChildren(YogaNode owner, IEnumerable<YogaNode> children) => YGNodeSetChildrenInternal(owner, children);
+        public static void YGNodeSetChildren(YogaNode owner, IEnumerable<YogaNode> children) => owner.SetChildren(children);
 
         [Obsolete("use node.Children[index]")]
         public static YogaNode YGNodeGetChild(YogaNode node, int index) => index < node.Children.Count ? node.Children[index] : null;
@@ -297,19 +140,7 @@ namespace Yoga.Net
 
         public static YogaNode YGNodeGetParent(YogaNode node) => node.Owner;
 
-        /// <summary>
-        /// Mark a node as dirty. Only valid for nodes with a custom measure function
-        /// set.
-        ///
-        /// Yoga knows when to mark all other nodes as dirty but because nodes with
-        /// measure functions depend on information not known to Yoga they must perform
-        /// this dirty marking manually.
-        /// </summary>
-        public static void YGNodeMarkDirty(YogaNode node)
-        {
-            YGAssertWithNode(node, node.MeasureFunc != null, "Only leaf nodes with custom measure functions should manually mark themselves as dirty");
-            node.MarkDirtyAndPropagate();
-        }
+        public static void YGNodeMarkDirty(YogaNode node) => node.MarkDirty();
 
         public static void YGNodeCopyStyle(YogaNode dstNode, YogaNode srcNode) => dstNode.Style = srcNode.Style;
 

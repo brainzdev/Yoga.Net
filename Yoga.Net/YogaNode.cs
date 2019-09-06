@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
 using static Yoga.Net.YogaGlobal;
 
 namespace Yoga.Net
@@ -98,9 +101,10 @@ namespace Yoga.Net
         public YogaNode(YogaConfig config = null)
         {
             Config = config ?? YogaConfig.DefaultConfig;
+            Event.Hub.Publish(new NodeAllocationEventArgs(this, config));
         }
 
-        public YogaNode(YogaNode other)
+        public YogaNode([NotNull] YogaNode other, YogaConfig config = null)
         {
             Context      = other.Context;
             MeasureFunc  = other.MeasureFunc;
@@ -111,17 +115,123 @@ namespace Yoga.Net
             Layout       = new YogaLayout(other.Layout);
             LineIndex    = other.LineIndex;
             Owner        = other.Owner;
-            Config       = other.Config;
+            Config       = config ?? other.Config ?? YogaConfig.DefaultConfig;
             Array.Copy(other._resolvedDimensions, _resolvedDimensions, _resolvedDimensions.Length);
 
             // Lazy-clone
             _children.AddRange(other.Children);
+
+            Event.Hub.Publish(new NodeAllocationEventArgs(this, Config));
         }
 
-        // for RB fabric
-        public YogaNode(YogaNode node, YogaConfig config) : this(node)
+        public static YogaNode Clone(YogaNode oldNode) => new YogaNode(oldNode) { Owner = null };
+
+        public static YogaNode DeepClone(YogaNode oldNode)
         {
-            Config = config ?? YogaConfig.DefaultConfig;
+            var node = new YogaNode(oldNode, new YogaConfig(oldNode.Config)) {Owner = null};
+
+            var children = new YogaNodes(oldNode.Children.Count);
+            foreach (var item in oldNode.Children)
+            {
+                var childNode = YGNodeDeepClone(item);
+                childNode.Owner = node;
+                children.Add(childNode);
+            }
+
+            node.SetChildren(children);
+
+            return node;
+        }
+
+        public void InsertChild(YogaNode child, int index)
+        {
+            YGAssertWithNode(this, child.Owner == null, "Child already has a owner, it must be removed first.");
+            YGAssertWithNode(this, MeasureFunc == null, "Cannot add child: Nodes with measure functions cannot have children.");
+
+            _children.Insert(index, child);
+            child.Owner = this;
+            MarkDirtyAndPropagate();
+        }
+
+        public void RemoveChild(YogaNode excludedChild)
+        {
+            if (_children.Count == 0)
+                return;
+
+            // Children may be shared between parents, which is indicated by not having an
+            // owner. We only want to reset the child completely if it is owned exclusively by one node.
+            var childOwner = excludedChild.Owner;
+            if (_children.Contains(excludedChild) && _children.Remove(excludedChild))
+            {
+                if (this == childOwner)
+                {
+                    excludedChild.Layout = new YogaLayout(); // layout is no longer valid
+                    excludedChild.Owner  = null;
+                }
+
+                MarkDirtyAndPropagate();
+            }
+        }
+
+        public void RemoveAllChildren()
+        {
+            var childCount = _children.Count;
+            if (childCount == 0)
+                return;
+
+            var firstChild = _children[0];
+            if (firstChild.Owner == this)
+            {
+                // If the first child has this node as its owner, we assume that this child set is unique.
+                for (var i = 0; i < childCount; i++)
+                {
+                    var oldChild = _children[i];
+                    oldChild.Layout = new YogaNode().Layout; // layout is no longer valid
+                    oldChild.Owner  = null;
+                }
+            }
+            ClearChildren();
+            MarkDirtyAndPropagate();
+        }
+
+        public void SetChildren(IEnumerable<YogaNode> childs)
+        {
+            var newChildren = childs.ToList();
+            if (newChildren.Count == 0)
+            {
+                if (_children.Count > 0)
+                {
+                    foreach (var child in _children)
+                    {
+                        child.Layout = new YogaLayout();
+                        child.Owner  = null;
+                    }
+
+                    ClearChildren();
+                    MarkDirtyAndPropagate();
+                }
+            }
+            else
+            {
+                if (_children.Count > 0)
+                {
+                    foreach (var oldChild in _children)
+                    {
+                        // Our new children may have nodes in common with the old children. We don't reset these common nodes.
+                        if (!newChildren.Contains(oldChild))
+                        {
+                            oldChild.Layout = new YogaLayout();
+                            oldChild.Owner  = null;
+                        }
+                    }
+                }
+
+                _children = new YogaNodes(newChildren);
+                foreach (var child in newChildren)
+                    child.Owner = this;
+
+                MarkDirtyAndPropagate();
+            }
         }
 
         // If both left and right are defined, then use left. Otherwise return +left or
@@ -149,14 +259,170 @@ namespace Yoga.Net
             return MeasureFunc?.Invoke(this, width, widthMode, height, heightMode, layoutContext) ?? new YogaSize();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public YogaAlign AlignItem(YogaNode child)
+        {
+            var align = child.Style.AlignSelf == YogaAlign.Auto
+                ? Style.AlignItems
+                : child.Style.AlignSelf;
+            if (align == YogaAlign.Baseline && Style.FlexDirection.IsColumn())
+                return YogaAlign.FlexStart;
+
+            return align;
+        }
+
+
         public float Baseline(float width, float height, object layoutContext)
         {
             return BaselineFunc?.Invoke(this, width, height, layoutContext) ?? 0f;
         }
 
-        // Applies a callback to all children, after cloning them if they are not
-        // owned.
-        //template <typename T>
+        public float Baseline(object layoutContext = null)
+        {
+            if (BaselineFunc != null)
+            {
+                Event.Hub.Publish(new NodeBaselineStartEventArgs(this));
+
+                var layoutBaseline = Baseline(
+                    Layout.MeasuredDimensions[(int)Dimension.Width],
+                    Layout.MeasuredDimensions[(int)Dimension.Height],
+                    layoutContext);
+
+                Event.Hub.Publish(new NodeBaselineEndEventArgs(this));
+
+                YGAssertWithNode(this, !YogaIsUndefined(layoutBaseline), "Expect custom baseline function to not return NaN");
+                return layoutBaseline;
+            }
+
+            YogaNode baselineChild = null;
+            var childCount = _children.Count;
+            for (var i = 0; i < childCount; i++)
+            {
+                var child = _children[i];
+                if (child.LineIndex > 0)
+                    break;
+
+                if (child.Style.PositionType == PositionType.Absolute)
+                    continue;
+
+                if (AlignItem(child) == YogaAlign.Baseline || child.IsReferenceBaseline)
+                {
+                    baselineChild = child;
+                    break;
+                }
+
+                if (baselineChild == null)
+                    baselineChild = child;
+            }
+
+            if (baselineChild == null)
+                return Layout.MeasuredDimensions[(int)Dimension.Height];
+
+            var baseline = YGBaseline(baselineChild, layoutContext);
+            return baseline + baselineChild.Layout.Position[(int)Edge.Top];
+        }
+
+        public bool IsBaselineLayout()
+        {
+            if (Style.FlexDirection.IsColumn())
+                return false;
+
+            if (Style.AlignItems == YogaAlign.Baseline)
+                return true;
+
+            var childCount = _children.Count;
+            for (var i = 0; i < childCount; i++)
+            {
+                var child = _children[i];
+                if (child.Style.PositionType == PositionType.Relative && child.Style.AlignSelf == YogaAlign.Baseline)
+                    return true;
+            }
+
+            return false;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsStyleDimDefined(FlexDirection axis, float ownerSize)
+        {
+            var isUndefined = YogaIsUndefined(GetResolvedDimension(YogaArrange.Dim[(int)axis]).Value);
+            return !(
+                GetResolvedDimension(YogaArrange.Dim[(int)axis]).Unit == YogaUnit.Auto ||
+                GetResolvedDimension(YogaArrange.Dim[(int)axis]).Unit == YogaUnit.Undefined ||
+                GetResolvedDimension(YogaArrange.Dim[(int)axis]).Unit == YogaUnit.Point &&
+                !isUndefined && GetResolvedDimension(YogaArrange.Dim[(int)axis]).Value < 0.0f ||
+                GetResolvedDimension(YogaArrange.Dim[(int)axis]).Unit == YogaUnit.Percent &&
+                !isUndefined &&
+                (GetResolvedDimension(YogaArrange.Dim[(int)axis]).Value < 0.0f || YogaIsUndefined(ownerSize)));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsLayoutDimDefined(FlexDirection axis)
+        {
+            var value = Layout.MeasuredDimensions[(int)YogaArrange.Dim[(int)axis]];
+            return !YogaIsUndefined(value) && value >= 0.0f;
+        }
+
+        public float BoundAxisWithinMinAndMax(FlexDirection axis,float value,float axisSize)
+        {
+            var min = float.NaN;
+            var max = float.NaN;
+
+            if (axis.IsColumn())
+            {
+                min = Style.MinDimensions[(int)Dimension.Height].Resolve(axisSize);
+                max = Style.MaxDimensions[(int)Dimension.Height].Resolve(axisSize);
+            }
+            else if (axis.IsRow())
+            {
+                min = Style.MinDimensions[(int)Dimension.Width].Resolve(axisSize);
+                max = Style.MaxDimensions[(int)Dimension.Width].Resolve(axisSize);
+            }
+
+            if (max >= 0f && value > max)
+                return max;
+
+            if (min >= 0f && value < min)
+                return min;
+
+            return value;
+        }
+
+        // Like YGNodeBoundAxisWithinMinAndMax but also ensures that the value doesn't go below the padding and border amount.
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public float BoundAxis(FlexDirection axis,float value,float axisSize,float widthSize) =>
+            FloatMax(
+                BoundAxisWithinMinAndMax(axis,value,axisSize), 
+                GetLeadingPaddingAndBorder(axis, widthSize));
+
+        public void SetChildTrailingPosition(YogaNode child,FlexDirection axis)
+        {
+            var size = child.Layout.MeasuredDimensions[(int)YogaArrange.Dim[(int)axis]];
+            child.SetLayoutPosition(
+                Layout.MeasuredDimensions[(int)YogaArrange.Dim[(int)axis]] - size -
+                child.Layout.Position[(int)YogaArrange.Pos[(int)axis]],
+                (int)YogaArrange.Trailing[(int)axis]);
+        }
+
+        public void ConstrainMaxSizeForMode(FlexDirection axis,float ownerAxisSize,float ownerWidth,ref MeasureMode mode,ref float size)
+        {
+            var maxSize = Style.MaxDimensions[(int)YogaArrange.Dim[(int)axis]].Resolve(ownerAxisSize) + GetMarginForAxis(axis, ownerWidth);
+            switch (mode)
+            {
+            case MeasureMode.Exactly:
+            case MeasureMode.AtMost:
+                size = maxSize.IsUndefined() || size < maxSize ? size : maxSize;
+                break;
+            case MeasureMode.Undefined:
+                if (maxSize.IsValid())
+                {
+                    mode = MeasureMode.AtMost;
+                    size = maxSize;
+                }
+                break;
+            }
+        }
+
+        // Applies a callback to all children, after cloning them if they are not owned.
         public void IterChildrenAfterCloningIfNeeded(Action<YogaNode, object> callback, object cloneContext)
         {
             for (int i = 0; i < _children.Count; i++)
@@ -297,7 +563,7 @@ namespace Yoga.Net
             return Math.Max(resolvedValue, 0f);
         }
 
-        public float GetTrailingPadding(FlexDirection axis, in float widthSize)
+        public float GetTrailingPadding(FlexDirection axis, float widthSize)
         {
             float paddingEdgeEnd = Style.Padding[Edge.End].Resolve(widthSize);
             if (axis.IsRow() && paddingEdgeEnd >= 0f)
@@ -310,51 +576,25 @@ namespace Yoga.Net
             return Math.Max(resolvedValue, 0f);
         }
 
-        public float GetLeadingPaddingAndBorder(FlexDirection axis, in float widthSize) => GetLeadingPadding(axis, widthSize) + GetLeadingBorder(axis);
+        public float GetLeadingPaddingAndBorder(FlexDirection axis, float widthSize) => GetLeadingPadding(axis, widthSize) + GetLeadingBorder(axis);
 
-        public float GetTrailingPaddingAndBorder(FlexDirection axis, in float widthSize) => GetTrailingPadding(axis, widthSize) + GetTrailingBorder(axis);
+        public float GetTrailingPaddingAndBorder(FlexDirection axis, float widthSize) => GetTrailingPadding(axis, widthSize) + GetTrailingBorder(axis);
 
         public float GetMarginForAxis(FlexDirection axis, in float widthSize) => GetLeadingMargin(axis, widthSize) + GetTrailingMargin(axis, widthSize);
 
-        public void SetChildren(IEnumerable<YogaNode> nodes)
-        {
-            _children = new YogaNodes(nodes);
-        }
+        public void SetLayoutLastOwnerDirection(Direction direction) => Layout.LastOwnerDirection = direction;
 
-        public void SetLayoutLastOwnerDirection(Direction direction)
-        {
-            Layout.LastOwnerDirection = direction;
-        }
+        public void SetLayoutComputedFlexBasis(float computedFlexBasis) => Layout.ComputedFlexBasis = computedFlexBasis;
 
-        public void SetLayoutComputedFlexBasis(float computedFlexBasis)
-        {
-            Layout.ComputedFlexBasis = computedFlexBasis;
-        }
+        public void SetLayoutComputedFlexBasisGeneration(int computedFlexBasisGeneration) => Layout.ComputedFlexBasisGeneration = computedFlexBasisGeneration;
 
-        public void SetLayoutComputedFlexBasisGeneration(int computedFlexBasisGeneration)
-        {
-            Layout.ComputedFlexBasisGeneration = computedFlexBasisGeneration;
-        }
+        public void SetLayoutMeasuredDimension(float measuredDimension, int index) => Layout.MeasuredDimensions[index] = measuredDimension;
 
-        public void SetLayoutMeasuredDimension(float measuredDimension, int index)
-        {
-            Layout.MeasuredDimensions[index] = measuredDimension;
-        }
+        public void SetLayoutMeasuredDimension(float measuredDimension, Dimension index) => Layout.MeasuredDimensions[(int)index] = measuredDimension;
 
-        public void SetLayoutMeasuredDimension(float measuredDimension, Dimension index)
-        {
-            Layout.MeasuredDimensions[(int)index] = measuredDimension;
-        }
+        public void SetLayoutHadOverflow(bool hadOverflow) => Layout.HadOverflow = hadOverflow;
 
-        public void SetLayoutHadOverflow(bool hadOverflow)
-        {
-            Layout.HadOverflow = hadOverflow;
-        }
-
-        public void SetLayoutDirection(Direction direction)
-        {
-            Layout.Direction = direction;
-        }
+        public void SetLayoutDirection(Direction direction) => Layout.Direction = direction;
 
         public void SetLayoutMargin(float margin, Edge edge) => Layout.Margin[(int)edge] = margin;
 
@@ -362,15 +602,9 @@ namespace Yoga.Net
 
         public void SetLayoutPadding(float padding, Edge edge) => Layout.Padding[(int)edge] = padding;
 
-        public void SetLayoutPosition(float position, int index)
-        {
-            Layout.Position[index] = position;
-        }
+        public void SetLayoutPosition(float position, int index) => Layout.Position[index] = position;
 
-        public void SetLayoutPosition(float position, Edge edge)
-        {
-            Layout.Position[edge] = position;
-        }
+        public void SetLayoutPosition(float position, Edge edge) => Layout.Position[edge] = position;
 
         public void SetPosition(
             in Direction direction,
@@ -463,37 +697,24 @@ namespace Yoga.Net
             return Style.Direction;
         }
 
-        public void ClearChildren()
+        void ClearChildren()
         {
             _children.Clear();
             //children_.shrink_to_fit();
         }
 
         /// Replaces the occurrences of oldChild with newChild
-        public void ReplaceChild(YogaNode oldChild, YogaNode newChild)
+        void ReplaceChild(YogaNode oldChild, YogaNode newChild)
         {
             ReplaceChild(newChild, _children.IndexOf(oldChild));
         }
 
-        public void ReplaceChild(YogaNode child, int index)
+        void ReplaceChild(YogaNode child, int index)
         {
             _children[index] = child;
         }
 
-        public void InsertChild(YogaNode child, int index)
-        {
-            _children.Insert(index, child);
-        }
-
-        /// Removes the first occurrence of child
-        public bool RemoveChild(YogaNode child)
-        {
-            if (_children.Contains(child))
-                return _children.Remove(child);
-            return false;
-        }
-
-        public void RemoveChild(int index)
+        void RemoveChild(int index)
         {
             _children.RemoveAt(index);
         }
@@ -501,6 +722,20 @@ namespace Yoga.Net
         public void CloneChildrenIfNeeded(object cloneContext)
         {
             IterChildrenAfterCloningIfNeeded(null, cloneContext);
+        }
+
+        /// <summary>
+        /// Mark a node as dirty. Only valid for nodes with a custom measure function
+        /// set.
+        ///
+        /// Yoga knows when to mark all other nodes as dirty but because nodes with
+        /// measure functions depend on information not known to Yoga they must perform
+        /// this dirty marking manually.
+        /// </summary>
+        public void MarkDirty()
+        {
+            YGAssertWithNode(this, MeasureFunc != null, "Only leaf nodes with custom measure functions should manually mark themselves as dirty");
+            MarkDirtyAndPropagate();
         }
 
         public void MarkDirtyAndPropagate()

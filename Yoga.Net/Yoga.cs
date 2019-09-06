@@ -36,195 +36,31 @@ namespace Yoga.Net
         public static float YGNodePaddingAndBorderForAxis(YogaNode node, FlexDirection axis, float widthSize) => node.GetLeadingPaddingAndBorder(axis, widthSize) + node.GetTrailingPaddingAndBorder(axis, widthSize);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static YogaAlign YGNodeAlignItem(YogaNode node, YogaNode child)
-        {
-            var align = child.Style.AlignSelf == YogaAlign.Auto
-                ? node.Style.AlignItems
-                : child.Style.AlignSelf;
-            if (align == YogaAlign.Baseline && node.Style.FlexDirection.IsColumn())
-            {
-                return YogaAlign.FlexStart;
-            }
+        public static YogaAlign YGNodeAlignItem(YogaNode node, YogaNode child) => node.AlignItem(child);
 
-            return align;
-        }
+        public static float YGBaseline(YogaNode node, object layoutContext) => node.Baseline(layoutContext);
 
-        public static float YGBaseline(YogaNode node, object layoutContext)
-        {
-            if (node.BaselineFunc != null)
-            {
-                Event.Hub.Publish(new NodeBaselineStartEventArgs(node));
-
-                var layoutBaseline = node.Baseline(
-                    node.Layout.MeasuredDimensions[(int)Dimension.Width],
-                    node.Layout.MeasuredDimensions[(int)Dimension.Height],
-                    layoutContext);
-
-                Event.Hub.Publish(new NodeBaselineEndEventArgs(node));
-
-                YGAssertWithNode(
-                    node,
-                    !YogaIsUndefined(layoutBaseline),
-                    "Expect custom baseline function to not return NaN");
-                return layoutBaseline;
-            }
-
-            YogaNode baselineChild = null;
-            var childCount = YGNodeGetChildCount(node);
-            for (var i = 0; i < childCount; i++)
-            {
-                var child = node.Children[i];
-                if (child.LineIndex > 0)
-                {
-                    break;
-                }
-
-                if (child.Style.PositionType == PositionType.Absolute)
-                {
-                    continue;
-                }
-
-                if (YGNodeAlignItem(node, child) == YogaAlign.Baseline || child.IsReferenceBaseline)
-                {
-                    baselineChild = child;
-                    break;
-                }
-
-                if (baselineChild == null)
-                {
-                    baselineChild = child;
-                }
-            }
-
-            if (baselineChild == null)
-            {
-                return node.Layout.MeasuredDimensions[(int)Dimension.Height];
-            }
-
-            var baseline = YGBaseline(baselineChild, layoutContext);
-            return baseline + baselineChild.Layout.Position[(int)Edge.Top];
-        }
-
-        public static bool YGIsBaselineLayout(YogaNode node)
-        {
-            if (node.Style.FlexDirection.IsColumn())
-            {
-                return false;
-            }
-
-            if (node.Style.AlignItems == YogaAlign.Baseline)
-            {
-                return true;
-            }
-
-            var childCount = YGNodeGetChildCount(node);
-            for (var i = 0; i < childCount; i++)
-            {
-                var child = node.Children[i];
-                if (child.Style.PositionType == PositionType.Relative &&
-                    child.Style.AlignSelf == YogaAlign.Baseline)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
+        public static bool YGIsBaselineLayout(YogaNode node) => node.IsBaselineLayout();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float YGNodeDimWithMargin(YogaNode node, FlexDirection axis, float widthSize) => node.Layout.MeasuredDimensions[(int)YogaArrange.Dim[(int)axis]] + (node.GetLeadingMargin(axis, widthSize) + node.GetTrailingMargin(axis, widthSize));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool YGNodeIsStyleDimDefined(YogaNode node, FlexDirection axis, float ownerSize)
-        {
-            var isUndefined = YogaIsUndefined(node.GetResolvedDimension(YogaArrange.Dim[(int)axis]).Value);
-            return !(
-                node.GetResolvedDimension(YogaArrange.Dim[(int)axis]).Unit == YogaUnit.Auto ||
-                node.GetResolvedDimension(YogaArrange.Dim[(int)axis]).Unit == YogaUnit.Undefined ||
-                node.GetResolvedDimension(YogaArrange.Dim[(int)axis]).Unit == YogaUnit.Point &&
-                !isUndefined && node.GetResolvedDimension(YogaArrange.Dim[(int)axis]).Value < 0.0f ||
-                node.GetResolvedDimension(YogaArrange.Dim[(int)axis]).Unit == YogaUnit.Percent &&
-                !isUndefined &&
-                (node.GetResolvedDimension(YogaArrange.Dim[(int)axis]).Value < 0.0f ||
-                    YogaIsUndefined(ownerSize)));
-        }
+        public static bool YGNodeIsStyleDimDefined(YogaNode node, FlexDirection axis, float ownerSize) => node.IsStyleDimDefined(axis, ownerSize);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool YGNodeIsLayoutDimDefined(
-            YogaNode node,
-            FlexDirection axis)
-        {
-            var value = node.Layout.MeasuredDimensions[(int)YogaArrange.Dim[(int)axis]];
-            return !YogaIsUndefined(value) && value >= 0.0f;
-        }
+        public static bool YGNodeIsLayoutDimDefined(YogaNode node, FlexDirection axis) => node.IsLayoutDimDefined(axis);
 
-        public static float YGNodeBoundAxisWithinMinAndMax(in YogaNode node,FlexDirection axis,float value,float axisSize)
-        {
-            var min = float.NaN;
-            var max = float.NaN;
+        public static float YGNodeBoundAxisWithinMinAndMax(YogaNode node, FlexDirection axis, float value, float axisSize) => node.BoundAxisWithinMinAndMax(axis, value, axisSize);
+       
 
-            if (axis.IsColumn())
-            {
-                min = node.Style.MinDimensions[(int)Dimension.Height].Resolve(axisSize);
-                max = node.Style.MaxDimensions[(int)Dimension.Height].Resolve(axisSize);
-            }
-            else if (axis.IsRow())
-            {
-                min = node.Style.MinDimensions[(int)Dimension.Width].Resolve(axisSize);
-                max = node.Style.MaxDimensions[(int)Dimension.Width].Resolve(axisSize);
-            }
-
-            if (max >= 0f && value > max)
-            {
-                return max;
-            }
-
-            if (min >= 0f && value < min)
-            {
-                return min;
-            }
-
-            return value;
-        }
-
-        // Like YGNodeBoundAxisWithinMinAndMax but also ensures that the value doesn't
-        // go below the padding and border amount.
+        // Like YGNodeBoundAxisWithinMinAndMax but also ensures that the value doesn't go below the padding and border amount.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static float YGNodeBoundAxis(YogaNode node,FlexDirection axis,float value,float axisSize,float widthSize) =>
-            FloatMax(
-                YGNodeBoundAxisWithinMinAndMax(node,axis,value,axisSize), 
-                YGNodePaddingAndBorderForAxis(node, axis, widthSize));
+        public static float YGNodeBoundAxis(YogaNode node, FlexDirection axis, float value, float axisSize, float widthSize) => node.BoundAxis(axis, value, axisSize, widthSize);
 
-        public static void YGNodeSetChildTrailingPosition(YogaNode node,YogaNode child,FlexDirection axis)
-        {
-            var size = child.Layout.MeasuredDimensions[(int)YogaArrange.Dim[(int)axis]];
-            child.SetLayoutPosition(
-                node.Layout.MeasuredDimensions[(int)YogaArrange.Dim[(int)axis]] - size -
-                child.Layout.Position[(int)YogaArrange.Pos[(int)axis]],
-                (int)YogaArrange.Trailing[(int)axis]);
-        }
+        public static void YGNodeSetChildTrailingPosition(YogaNode node, YogaNode child, FlexDirection axis) => node.SetChildTrailingPosition(child, axis);
 
-        public static void YGConstrainMaxSizeForMode(in YogaNode node,FlexDirection axis,float ownerAxisSize,float ownerWidth,ref MeasureMode mode,ref float size)
-        {
-            var maxSize = node.Style.MaxDimensions[(int)YogaArrange.Dim[(int)axis]].Resolve(ownerAxisSize) + node.GetMarginForAxis(axis, ownerWidth);
-            switch (mode)
-            {
-            case MeasureMode.Exactly:
-            case MeasureMode.AtMost:
-                size = maxSize.IsUndefined() || size < maxSize
-                    ? size
-                    : maxSize;
-                break;
-            case MeasureMode.Undefined:
-                if (maxSize.IsValid())
-                {
-                    mode = MeasureMode.AtMost;
-                    size = maxSize;
-                }
-
-                break;
-            }
-        }
+        public static void YGConstrainMaxSizeForMode(in YogaNode node, FlexDirection axis, float ownerAxisSize, float ownerWidth, ref MeasureMode mode, ref float size) => node.ConstrainMaxSizeForMode(axis, ownerAxisSize, ownerWidth, ref mode, ref size);
 
         public static void YGNodeComputeFlexBasisForChild(
             YogaNode node,
