@@ -449,7 +449,7 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetHeight(root, 100);
 
             YogaNode root_child0 = YGNodeNew();
-            root_child0.SetMeasureFunc(_measure);
+            YGNodeSetMeasureFunc(root_child0, _measure);
             YGNodeStyleSetAspectRatio(root_child0, 1);
             YGNodeInsertChild(root, root_child0, 0);
 

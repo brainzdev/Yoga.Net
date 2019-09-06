@@ -56,7 +56,7 @@ namespace Yoga.Net.Tests
             YogaNode root_child0 = YGNodeNew();
             //  root_child0.Context = &constraintList);
             root_child0.Context = constraintList;
-            root_child0.SetMeasureFunc(_measure);
+            YGNodeSetMeasureFunc(root_child0, _measure);
             //  root_child0.setMeasureFunc(_measure);
             YGNodeInsertChild(root, root_child0, 0);
 
@@ -83,7 +83,7 @@ namespace Yoga.Net.Tests
             YogaNode root_child0 = YGNodeNew();
             //  root_child0.Context = &constraintList);
             root_child0.Context = constraintList;
-            root_child0.SetMeasureFunc(_measure);
+            YGNodeSetMeasureFunc(root_child0, _measure);
             YGNodeInsertChild(root, root_child0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
@@ -107,7 +107,7 @@ namespace Yoga.Net.Tests
 
             YogaNode root_child0 = YGNodeNew();
             root_child0.Context = constraintList;
-            root_child0.SetMeasureFunc(_measure);
+            YGNodeSetMeasureFunc(root_child0, _measure);
             YGNodeInsertChild(root, root_child0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
@@ -132,7 +132,7 @@ namespace Yoga.Net.Tests
 
             YogaNode root_child0 = YGNodeNew();
             root_child0.Context = constraintList;
-            root_child0.SetMeasureFunc(_measure);
+            YGNodeSetMeasureFunc(root_child0, _measure);
             YGNodeInsertChild(root, root_child0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
@@ -157,7 +157,7 @@ namespace Yoga.Net.Tests
 
             YogaNode root_child0 = YGNodeNew();
             root_child0.Context = constraintList;
-            root_child0.SetMeasureFunc(_measure);
+            YGNodeSetMeasureFunc(root_child0, _measure);
             YGNodeInsertChild(root, root_child0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
@@ -183,7 +183,7 @@ namespace Yoga.Net.Tests
 
             YogaNode root_child0 = YGNodeNew();
             root_child0.Context = constraintList;
-            root_child0.SetMeasureFunc(_measure);
+            YGNodeSetMeasureFunc(root_child0, _measure);
             YGNodeInsertChild(root, root_child0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
@@ -207,7 +207,7 @@ namespace Yoga.Net.Tests
             YogaNode root_child0 = YGNodeNew();
             YGNodeStyleSetFlexGrow(root_child0, 1);
             root_child0.Context = constraintList;
-            root_child0.SetMeasureFunc(_measure);
+            YGNodeSetMeasureFunc(root_child0, _measure);
             YGNodeInsertChild(root, root_child0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
@@ -235,7 +235,7 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetFlexGrow(root_child0, 1);
             YGNodeStyleSetFlexBasis(root_child0, 0);
             root_child0.Context = constraintList;
-            root_child0.SetMeasureFunc(_measure);
+            YGNodeSetMeasureFunc(root_child0, _measure);
             YGNodeInsertChild(root, root_child0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
@@ -261,7 +261,7 @@ namespace Yoga.Net.Tests
 
             YogaNode root_child0 = YGNodeNew();
             root_child0.Context = constraintList;
-            root_child0.SetMeasureFunc(_measure);
+            YGNodeSetMeasureFunc(root_child0, _measure);
             YGNodeInsertChild(root, root_child0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
@@ -291,7 +291,7 @@ namespace Yoga.Net.Tests
 
             YogaNode root_child0 = YGNodeNew();
             root_child0.Context = constraintList;
-            root_child0.SetMeasureFunc(_measure);
+            YGNodeSetMeasureFunc(root_child0, _measure);
             YGNodeInsertChild(root, root_child0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);

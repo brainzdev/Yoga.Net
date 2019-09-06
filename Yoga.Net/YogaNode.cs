@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using static Yoga.Net.YogaGlobal;
-using uint8_t = System.Byte;
 
 namespace Yoga.Net
 {
@@ -18,17 +16,35 @@ namespace Yoga.Net
         /// the YogaNode is shared between two or more YogaTrees.
         /// </summary>
         public YogaNode Owner { get; set; }
+
         public object Context { get; set; }
         public YogaConfig Config { get; private set; }
         public YogaLayout Layout { get; set; } = new YogaLayout();
         public int LineIndex { get; set; }
+        public NodeType NodeType { get; set; } = NodeType.Default;
+        public bool HasNewLayout { get; set; } = true;
+        public string Trace { get; set; }
 
         public BaselineFunc BaselineFunc { get; set; }
         public DirtiedFunc DirtiedFunc { get; set; }
-        public MeasureFunc MeasureFunc { get; private set; }
         public PrintFunc PrintFunc { get; set; }
-
-        public string Trace { get; set; }
+        public MeasureFunc MeasureFunc
+        {
+            get => _measureFunc;
+            set
+            {
+                _measureFunc = value;
+                if (_measureFunc == null)
+                {
+                    NodeType = NodeType.Default;
+                }
+                else
+                {
+                    YGAssertWithNode(this, _children.Count == 0, "Cannot set measure function: Nodes with measure functions cannot have children.");
+                    NodeType = NodeType.Text;
+                }
+            }
+        }
 
         public YogaStyle Style
         {
@@ -43,16 +59,20 @@ namespace Yoga.Net
             }
         }
 
-        YogaStyle _style = new YogaStyle();
-        YogaNodes _children = new YogaNodes();
+        public bool IsDirty
+        {
+            get => _isDirty;
+            set
+            {
+                if (value == IsDirty)
+                    return;
 
-        bool HasNewLayout { get; set; } = true;
-        NodeType NodeType { get; set; } = NodeType.Default;
-        YogaValue[] _resolvedDimensions = {YogaValue.Undefined, YogaValue.Undefined};
+                _isDirty = value;
+                if (value)
+                    DirtiedFunc?.Invoke(this);
+            }
+        }
 
-        public bool IsDirty { get; set; }
-
-        bool _isReferenceBaseline;
         public bool IsReferenceBaseline
         {
             get => _isReferenceBaseline;
@@ -66,6 +86,15 @@ namespace Yoga.Net
             }
         }
 
+
+        YogaStyle _style = new YogaStyle();
+        YogaNodes _children = new YogaNodes();
+        MeasureFunc _measureFunc;
+        
+        YogaValue[] _resolvedDimensions = {YogaValue.Undefined, YogaValue.Undefined};
+        bool _isReferenceBaseline;
+        bool _isDirty;
+
         public YogaNode(YogaConfig config = null)
         {
             Config = config ?? YogaConfig.DefaultConfig;
@@ -73,15 +102,15 @@ namespace Yoga.Net
 
         public YogaNode(YogaNode other)
         {
-            Context       = other.Context;
+            Context      = other.Context;
             MeasureFunc  = other.MeasureFunc;
             BaselineFunc = other.BaselineFunc;
             PrintFunc    = other.PrintFunc;
             DirtiedFunc  = other.DirtiedFunc;
-            _style        = new YogaStyle(other.Style);
-            Layout        = new YogaLayout(other.Layout);
+            _style       = new YogaStyle(other.Style);
+            Layout       = new YogaLayout(other.Layout);
             LineIndex    = other.LineIndex;
-            Owner         = other.Owner;
+            Owner        = other.Owner;
             Config       = other.Config;
             Array.Copy(other._resolvedDimensions, _resolvedDimensions, _resolvedDimensions.Length);
 
@@ -92,14 +121,12 @@ namespace Yoga.Net
         // for RB fabric
         public YogaNode(YogaNode node, YogaConfig config) : this(node)
         {
-            Config = config;
+            Config = config ?? YogaConfig.DefaultConfig;
         }
 
         // If both left and right are defined, then use left. Otherwise return +left or
         // -right depending on which is defined.
-        float RelativePosition(
-            FlexDirection axis,
-            float axisSize)
+        float RelativePosition(FlexDirection axis, float axisSize)
         {
             if (IsLeadingPositionDefined(axis))
             {
@@ -115,25 +142,11 @@ namespace Yoga.Net
             return trailingPosition;
         }
 
-        public void Print(object printContext)
-        {
-            PrintFunc?.Invoke(this, printContext);
-        }
-
-        public bool GetHasNewLayout()
-        {
-            return HasNewLayout;
-        }
-
-        public NodeType GetNodeType()
-        {
-            return NodeType;
-        }
+        public void Print(object printContext) => PrintFunc?.Invoke(this, printContext);
 
         public YogaSize Measure(float width, MeasureMode widthMode, float height, MeasureMode heightMode, object layoutContext)
         {
-            return MeasureFunc?.Invoke(this, width, widthMode, height, heightMode, layoutContext)
-                ?? new YogaSize();
+            return MeasureFunc?.Invoke(this, width, widthMode, height, heightMode, layoutContext) ?? new YogaSize();
         }
 
         public float Baseline(float width, float height, object layoutContext)
@@ -151,7 +164,7 @@ namespace Yoga.Net
                 var child = _children[i];
                 if (child.Owner != this)
                 {
-                    child = Config.CloneNode(child, this, i, cloneContext);
+                    child       = Config.CloneNode(child, this, i, cloneContext);
                     child.Owner = this;
                 }
 
@@ -161,22 +174,13 @@ namespace Yoga.Net
         }
 
         [Obsolete("use Children[i]")]
-        public YogaNode GetChild(int index)
-        {
-            return _children[index];
-        }
+        public YogaNode GetChild(int index) => _children[index];
 
         public IReadOnlyList<YogaNode> Children => _children;
 
-        public YogaValue[] GetResolvedDimensions()
-        {
-            return _resolvedDimensions;
-        }
+        public YogaValue[] GetResolvedDimensions() => _resolvedDimensions;
 
-        public YogaValue GetResolvedDimension(Dimension index)
-        {
-            return _resolvedDimensions[(int)index];
-        }
+        public YogaValue GetResolvedDimension(Dimension index) => _resolvedDimensions[(int)index];
 
         // Methods related to positions, margin, padding and border
         public float GetLeadingPosition(FlexDirection axis, in float axisSize)
@@ -190,7 +194,7 @@ namespace Yoga.Net
                 }
             }
 
-            var leadingPosition = Style.Position.ComputedEdgeValue(leading[(int)axis]);
+            var leadingPosition = Style.Position.ComputedEdgeValue(YogaArrange.Leading[(int)axis]);
 
             return leadingPosition.IsUndefined ? 0f : leadingPosition.Resolve(axisSize);
         }
@@ -199,14 +203,14 @@ namespace Yoga.Net
         {
             return (axis.IsRow() &&
                     !Style.Position.ComputedEdgeValue(Edge.Start).IsUndefined) ||
-                !Style.Position.ComputedEdgeValue(leading[(int)axis]).IsUndefined;
+                !Style.Position.ComputedEdgeValue(YogaArrange.Leading[(int)axis]).IsUndefined;
         }
 
         public bool IsTrailingPosDefined(FlexDirection axis)
         {
             return (axis.IsRow() &&
                     !Style.Position.ComputedEdgeValue(Edge.End).IsUndefined) ||
-                !Style.Position.ComputedEdgeValue(trailing[(int)axis]).IsUndefined;
+                !Style.Position.ComputedEdgeValue(YogaArrange.Trailing[(int)axis]).IsUndefined;
         }
 
         public float GetTrailingPosition(FlexDirection axis, in float axisSize)
@@ -220,7 +224,7 @@ namespace Yoga.Net
                 }
             }
 
-            var trailingPosition = Style.Position.ComputedEdgeValue(trailing[(int)axis]);
+            var trailingPosition = Style.Position.ComputedEdgeValue(YogaArrange.Trailing[(int)axis]);
 
             return trailingPosition.IsUndefined ? 0f : trailingPosition.Resolve(axisSize);
         }
@@ -233,8 +237,8 @@ namespace Yoga.Net
                 return Style.Margin[Edge.Start].ResolveValueMargin(widthSize);
             }
 
-            return Style.Margin.ComputedEdgeValue(leading[(int)axis], YogaValue.Zero)
-                         .ResolveValueMargin(widthSize);
+            return Style.Margin.ComputedEdgeValue(YogaArrange.Leading[(int)axis], YogaValue.Zero)
+                        .ResolveValueMargin(widthSize);
         }
 
         public float GetTrailingMargin(FlexDirection axis, in float widthSize)
@@ -244,8 +248,8 @@ namespace Yoga.Net
                 return Style.Margin[Edge.End].ResolveValueMargin(widthSize);
             }
 
-            return Style.Margin.ComputedEdgeValue(trailing[(int)axis], YogaValue.Zero)
-                         .ResolveValueMargin(widthSize);
+            return Style.Margin.ComputedEdgeValue(YogaArrange.Trailing[(int)axis], YogaValue.Zero)
+                        .ResolveValueMargin(widthSize);
         }
 
         public float GetLeadingBorder(FlexDirection axis)
@@ -259,7 +263,7 @@ namespace Yoga.Net
                     return leadingBorder.Value;
             }
 
-            leadingBorder = Style.Border.ComputedEdgeValue(leading[(int)axis], YogaValue.Zero);
+            leadingBorder = Style.Border.ComputedEdgeValue(YogaArrange.Leading[(int)axis], YogaValue.Zero);
             return FloatMax(leadingBorder.Value, 0.0f);
         }
 
@@ -275,7 +279,7 @@ namespace Yoga.Net
                 }
             }
 
-            trailingBorder = Style.Border.ComputedEdgeValue(trailing[(int)flexDirection], YogaValue.Zero);
+            trailingBorder = Style.Border.ComputedEdgeValue(YogaArrange.Trailing[(int)flexDirection], YogaValue.Zero);
             return FloatMax(trailingBorder.Value, 0.0f);
         }
 
@@ -289,7 +293,7 @@ namespace Yoga.Net
                 return paddingEdgeStart;
             }
 
-            var resolvedValue = Style.Padding.ComputedEdgeValue(leading[(int)axis], YogaValue.Zero).Resolve(widthSize);
+            var resolvedValue = Style.Padding.ComputedEdgeValue(YogaArrange.Leading[(int)axis], YogaValue.Zero).Resolve(widthSize);
             return Math.Max(resolvedValue, 0f);
         }
 
@@ -301,75 +305,20 @@ namespace Yoga.Net
                 return paddingEdgeEnd;
             }
 
-            var resolvedValue = Style.Padding.ComputedEdgeValue(trailing[(int)axis], YogaValue.Zero).Resolve(widthSize);
+            var resolvedValue = Style.Padding.ComputedEdgeValue(YogaArrange.Trailing[(int)axis], YogaValue.Zero).Resolve(widthSize);
 
             return Math.Max(resolvedValue, 0f);
         }
 
-        public float GetLeadingPaddingAndBorder(FlexDirection axis, in float widthSize)
-        {
-            return GetLeadingPadding(axis, widthSize) + GetLeadingBorder(axis);
-        }
+        public float GetLeadingPaddingAndBorder(FlexDirection axis, in float widthSize) => GetLeadingPadding(axis, widthSize) + GetLeadingBorder(axis);
 
-        public float GetTrailingPaddingAndBorder(FlexDirection axis, in float widthSize)
-        {
-            return GetTrailingPadding(axis, widthSize) + GetTrailingBorder(axis);
-        }
+        public float GetTrailingPaddingAndBorder(FlexDirection axis, in float widthSize) => GetTrailingPadding(axis, widthSize) + GetTrailingBorder(axis);
 
-        public float GetMarginForAxis(FlexDirection axis, in float widthSize)
-        {
-            return GetLeadingMargin(axis, widthSize) + GetTrailingMargin(axis, widthSize);
-        }
-
-        public void SetHasNewLayout(bool hasNewLayout)
-        {
-            HasNewLayout = hasNewLayout;
-        }
-
-        public void SetNodeType(NodeType nodeType)
-        {
-            NodeType = nodeType;
-        }
-
-        public void SetMeasureFunc(MeasureFunc measureFunc)
-        {
-            MeasureFunc = measureFunc;
-
-            if (MeasureFunc == null)
-            {
-                // TODO: t18095186 Move nodeType to opt-in function and mark appropriate places in Litho
-                NodeType = NodeType.Default;
-            }
-            else
-            {
-                YGAssertWithNode(
-                    this,
-                    _children.Count == 0,
-                    "Cannot set measure function: Nodes with measure functions cannot have children.");
-
-                // TODO: t18095186 Move nodeType to opt-in function and mark appropriate places in Litho
-                SetNodeType(NodeType.Text);
-            }
-        }
-
-        public void SetIsReferenceBaseline(bool isReferenceBaseline)
-        {
-            IsReferenceBaseline = isReferenceBaseline;
-        }
+        public float GetMarginForAxis(FlexDirection axis, in float widthSize) => GetLeadingMargin(axis, widthSize) + GetTrailingMargin(axis, widthSize);
 
         public void SetChildren(IEnumerable<YogaNode> nodes)
         {
             _children = new YogaNodes(nodes);
-        }
-
-        public void SetDirty(bool isDirty)
-        {
-            if (isDirty == IsDirty)
-                return;
-
-            IsDirty = isDirty;
-            if (isDirty)
-                DirtiedFunc?.Invoke(this);
         }
 
         public void SetLayoutLastOwnerDirection(Direction direction)
@@ -417,6 +366,7 @@ namespace Yoga.Net
         {
             Layout.Position[index] = position;
         }
+
         public void SetLayoutPosition(float position, Edge edge)
         {
             Layout.Position[edge] = position;
@@ -439,16 +389,16 @@ namespace Yoga.Net
 
             SetLayoutPosition(
                 (GetLeadingMargin(mainAxis, ownerWidth) + relativePositionMain),
-                leading[(int)mainAxis]);
+                YogaArrange.Leading[(int)mainAxis]);
             SetLayoutPosition(
                 (GetTrailingMargin(mainAxis, ownerWidth) + relativePositionMain),
-                trailing[(int)mainAxis]);
+                YogaArrange.Trailing[(int)mainAxis]);
             SetLayoutPosition(
                 (GetLeadingMargin(crossAxis, ownerWidth) + relativePositionCross),
-                leading[(int)crossAxis]);
+                YogaArrange.Leading[(int)crossAxis]);
             SetLayoutPosition(
                 (GetTrailingMargin(crossAxis, ownerWidth) + relativePositionCross),
-                trailing[(int)crossAxis]);
+                YogaArrange.Trailing[(int)crossAxis]);
         }
 
         public void MarkDirtyAndPropagateDownwards()
@@ -465,14 +415,14 @@ namespace Yoga.Net
         {
             if (axis.IsRow() && !Style.Margin[Edge.Start].IsUndefined)
                 return Style.Margin[Edge.Start];
-            return Style.Margin[leading[(int)axis]];
+            return Style.Margin[YogaArrange.Leading[(int)axis]];
         }
 
         public YogaValue MarginTrailingValue(FlexDirection axis)
         {
             if (axis.IsRow() && !Style.Margin[Edge.End].IsUndefined)
                 return Style.Margin[Edge.End];
-            return Style.Margin[trailing[(int)axis]];
+            return Style.Margin[YogaArrange.Trailing[(int)axis]];
         }
 
         public YogaValue ResolveFlexBasisPtr()
@@ -557,7 +507,7 @@ namespace Yoga.Net
         {
             if (!IsDirty)
             {
-                SetDirty(true);
+                IsDirty = true;
                 SetLayoutComputedFlexBasis(float.NaN);
                 Owner?.MarkDirtyAndPropagate();
             }

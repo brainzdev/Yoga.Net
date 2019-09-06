@@ -31,11 +31,11 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(0, (int)root.Context);
 
             // `_dirtied` MUST be called in case of explicit dirtying.
-            root.SetDirty(true);
+            root.IsDirty = true;
             Assert.AreEqual(1, (int)root.Context);
 
             // `_dirtied` MUST be called ONCE.
-            root.SetDirty(true);
+            root.IsDirty = true;
             Assert.AreEqual(1, (int)root.Context);
         }
 

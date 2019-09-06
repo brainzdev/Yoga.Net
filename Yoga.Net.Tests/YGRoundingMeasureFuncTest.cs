@@ -46,7 +46,7 @@ namespace Yoga.Net.Tests
             YogaNode root = YGNodeNewWithConfig(config);
 
             YogaNode root_child0 = YGNodeNewWithConfig(config);
-            root_child0.SetMeasureFunc(_measureFloor);
+            YGNodeSetMeasureFunc(root_child0, _measureFloor);
             YGNodeInsertChild(root, root_child0, 0);
 
             YGConfigSetPointScaleFactor(config, 0.0f);
@@ -92,7 +92,7 @@ namespace Yoga.Net.Tests
             YogaNode root = YGNodeNewWithConfig(config);
 
             YogaNode root_child0 = YGNodeNewWithConfig(config);
-            root_child0.SetMeasureFunc(_measureCeil);
+            YGNodeSetMeasureFunc(root_child0, _measureCeil);
             YGNodeInsertChild(root, root_child0, 0);
             YGConfigSetPointScaleFactor(config, 1.0f);
 
@@ -110,7 +110,7 @@ namespace Yoga.Net.Tests
 
             YogaNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetPosition(root_child0, Edge.Left, 73.625f);
-            root_child0.SetMeasureFunc(_measureFractial);
+            YGNodeSetMeasureFunc(root_child0, _measureFractial);
             YGNodeInsertChild(root, root_child0, 0);
 
             YGConfigSetPointScaleFactor(config, 2.0f);
