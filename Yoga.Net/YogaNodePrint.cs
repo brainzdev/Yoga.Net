@@ -1,21 +1,24 @@
 ﻿using System.Text;
-using static Yoga.Net.YogaGlobal;
+using static Yoga.Net.YogaMath;
 
 namespace Yoga.Net
 {
     public class YogaNodePrint
     {
-        StringBuilder sb;
+        StringBuilder _sb;
+        PrintOptions _options;
+        public static YogaNode DefaultYogaNode { get; } = new YogaNode();
 
-        public YogaNodePrint(StringBuilder sb = null)
+        public YogaNodePrint(PrintOptions printOptions, StringBuilder sb = null)
         {
-            this.sb = sb ?? new StringBuilder();
+            _options = printOptions;
+            _sb = sb ?? new StringBuilder();
         }
 
         void Indent(int level)
         {
             for (int i = 0; i < level; ++i)
-                sb.Append("  ");
+                _sb.Append("  ");
         }
 
         bool AreFourValuesEqual(EdgesReadonly four)
@@ -26,14 +29,14 @@ namespace Yoga.Net
                 four[Edge.Left] == four[Edge.Bottom];
         }
 
-        void AppendString(string str) => sb.Append(str);
+        void AppendString(string str) => _sb.Append(str);
 
         void AppendFloatOptionalIfDefined(
             string key,
             float num)
         {
-            if (num.IsValid())
-                sb.Append($"{key}: {num:G}; ");
+            if (num.HasValue())
+                _sb.Append($"{key}: {num:G}; ");
         }
 
         void AppendNumberIfNotUndefined(
@@ -44,9 +47,9 @@ namespace Yoga.Net
                 return;
 
             if (number.Unit == YogaUnit.Auto)
-                sb.Append($"{key}: auto; ");
+                _sb.Append($"{key}: auto; ");
             else
-                sb.Append($"{key}: {number}; ");
+                _sb.Append($"{key}: {number}; ");
         }
 
         void AppendNumberIfNotAuto(
@@ -63,7 +66,7 @@ namespace Yoga.Net
         {
             if (number.Unit == YogaUnit.Auto)
             {
-                sb.Append(str + ": auto; ");
+                _sb.Append(str + ": auto; ");
             }
             else if (!FloatsEqual(number.Value, 0))
             {
@@ -92,12 +95,12 @@ namespace Yoga.Net
             AppendNumberIfNotUndefined(str, edges.ComputedEdgeValue(edge, YogaValue.Undefined));
         }
 
-        public void Output(YogaNode node, PrintOptions options, int level)
+        public YogaNodePrint Output(YogaNode node, int level = 0)
         {
             Indent(level);
             AppendString("<div ");
 
-            if (options.HasFlag(PrintOptions.Layout))
+            if (_options.HasFlag(PrintOptions.Layout))
             {
                 AppendString("layout=\"");
                 AppendString($"width: {node.Layout.Width:G}; ");
@@ -107,7 +110,7 @@ namespace Yoga.Net
                 AppendString("\" ");
             }
 
-            if (options.HasFlag(PrintOptions.Style))
+            if (_options.HasFlag(PrintOptions.Style))
             {
                 AppendString("style=\"");
                 if (node.StyleFlexDirection != DefaultYogaNode.StyleFlexDirection)
@@ -186,12 +189,12 @@ namespace Yoga.Net
             AppendString(">");
 
             var childCount = node.Children.Count;
-            if (options.HasFlag(PrintOptions.Children) && childCount > 0)
+            if (_options.HasFlag(PrintOptions.Children) && childCount > 0)
             {
                 for (int i = 0; i < childCount; i++)
                 {
                     AppendString("\n");
-                    Output(node.Children[i], options, level + 1);
+                    Output(node.Children[i], level + 1);
                 }
 
                 AppendString("\n");
@@ -199,12 +202,14 @@ namespace Yoga.Net
             }
 
             AppendString("</div>");
+
+            return this;
         }
 
         /// <inheritdoc />
         public override string ToString()
         {
-            return sb.ToString();
+            return _sb.ToString();
         }
     }
 }

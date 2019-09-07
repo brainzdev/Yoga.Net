@@ -1,4 +1,6 @@
-﻿namespace Yoga.Net
+﻿using static Yoga.Net.YogaMath;
+
+namespace Yoga.Net
 {
     public interface YogaStyleReadonly {
         Direction Direction { get; }
@@ -108,26 +110,26 @@
                 MaxDimensions == other.MaxDimensions;
 
             areNonFloatValuesEqual = areNonFloatValuesEqual && Flex.IsUndefined() == other.Flex.IsUndefined();
-            if (areNonFloatValuesEqual && Flex.IsValid() && other.Flex.IsValid())
+            if (areNonFloatValuesEqual && Flex.HasValue() && other.Flex.HasValue())
             {
-                areNonFloatValuesEqual = Flex == other.Flex;
+                areNonFloatValuesEqual = FloatsEqual(Flex, other.Flex);
             }
 
             areNonFloatValuesEqual = areNonFloatValuesEqual && FlexGrow.IsUndefined() == other.FlexGrow.IsUndefined();
-            if (areNonFloatValuesEqual && FlexGrow.IsValid())
+            if (areNonFloatValuesEqual && FlexGrow.HasValue())
             {
-                areNonFloatValuesEqual = FlexGrow == other.FlexGrow;
+                areNonFloatValuesEqual = FloatsEqual(FlexGrow , other.FlexGrow);
             }
 
             areNonFloatValuesEqual = areNonFloatValuesEqual && FlexShrink.IsUndefined() == other.FlexShrink.IsUndefined();
-            if (areNonFloatValuesEqual && other.FlexShrink.IsValid())
+            if (areNonFloatValuesEqual && other.FlexShrink.HasValue())
             {
-                areNonFloatValuesEqual = FlexShrink == other.FlexShrink;
+                areNonFloatValuesEqual = FloatsEqual(FlexShrink , other.FlexShrink);
             }
 
             if (!(AspectRatio.IsUndefined() && other.AspectRatio.IsUndefined()))
             {
-                areNonFloatValuesEqual = areNonFloatValuesEqual && AspectRatio == other.AspectRatio;
+                areNonFloatValuesEqual = areNonFloatValuesEqual && FloatsEqual(AspectRatio , other.AspectRatio);
             }
 
             return areNonFloatValuesEqual;

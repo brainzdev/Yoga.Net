@@ -1,4 +1,6 @@
-﻿namespace Yoga.Net
+﻿using System;
+
+namespace Yoga.Net
 {
     public class YogaArrange
     {

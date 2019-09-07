@@ -1,4 +1,6 @@
-﻿namespace Yoga.Net
+﻿using static Yoga.Net.YogaMath;
+
+namespace Yoga.Net
 {
     public class YogaCachedMeasurement
     {
@@ -34,24 +36,24 @@
             bool isEqual = WidthMeasureMode == other.WidthMeasureMode &&
                 HeightMeasureMode == other.HeightMeasureMode;
 
-            if (!YogaGlobal.YogaIsUndefined(AvailableWidth) || !YogaGlobal.YogaIsUndefined(other.AvailableWidth))
+            if (AvailableWidth.HasValue() || other.AvailableWidth.HasValue())
             {
-                isEqual = isEqual && YogaGlobal.FloatsEqual(AvailableWidth, other.AvailableWidth);
+                isEqual = isEqual && FloatsEqual(AvailableWidth, other.AvailableWidth);
             }
 
-            if (!YogaGlobal.YogaIsUndefined(AvailableHeight) || !YogaGlobal.YogaIsUndefined(other.AvailableHeight))
+            if (AvailableHeight.HasValue() || other.AvailableHeight.HasValue())
             {
-                isEqual = isEqual && YogaGlobal.FloatsEqual(AvailableHeight, other.AvailableHeight);
+                isEqual = isEqual && FloatsEqual(AvailableHeight, other.AvailableHeight);
             }
 
-            if (!YogaGlobal.YogaIsUndefined(ComputedWidth) || !YogaGlobal.YogaIsUndefined(other.ComputedWidth))
+            if (ComputedWidth.HasValue() || other.ComputedWidth.HasValue())
             {
-                isEqual = isEqual && YogaGlobal.FloatsEqual(ComputedWidth, other.ComputedWidth);
+                isEqual = isEqual && FloatsEqual(ComputedWidth, other.ComputedWidth);
             }
 
-            if (!YogaGlobal.YogaIsUndefined(ComputedHeight) || !YogaGlobal.YogaIsUndefined(other.ComputedHeight))
+            if (ComputedHeight.HasValue() || other.ComputedHeight.HasValue())
             {
-                isEqual = isEqual && YogaGlobal.FloatsEqual(ComputedHeight, other.ComputedHeight);
+                isEqual = isEqual && FloatsEqual(ComputedHeight, other.ComputedHeight);
             }
 
             return isEqual;
@@ -81,14 +83,8 @@
             }
         }
 
-        public static bool operator ==(YogaCachedMeasurement left, YogaCachedMeasurement right)
-        {
-            return Equals(left, right);
-        }
+        public static bool operator ==(YogaCachedMeasurement left, YogaCachedMeasurement right) => Equals(left, right);
 
-        public static bool operator !=(YogaCachedMeasurement left, YogaCachedMeasurement right)
-        {
-            return !Equals(left, right);
-        }
+        public static bool operator !=(YogaCachedMeasurement left, YogaCachedMeasurement right) => !Equals(left, right);
     }
 }

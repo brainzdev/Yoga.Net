@@ -19,7 +19,7 @@ namespace Yoga.Net.Tests
             YGNodeInsertChild(root_child0, root_child0_child0, 0);
 
             List<YogaNode> visited = new List<YogaNode>();
-            YGTraversePreOrder(root, (node) => visited.Add(node));
+            root.TraversePreOrder(node => visited.Add(node));
 
             YogaNode[] expected = new YogaNode[]
             {

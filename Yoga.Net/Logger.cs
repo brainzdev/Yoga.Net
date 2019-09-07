@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using static Yoga.Net.YogaGlobal;
 
 namespace Yoga.Net
 {

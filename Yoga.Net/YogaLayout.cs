@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
-using static Yoga.Net.YogaGlobal;
+using static Yoga.Net.YogaMath;
 
 namespace Yoga.Net
 {
@@ -25,7 +25,7 @@ namespace Yoga.Net
 
         public int NextCachedMeasurementsIndex { get; set; }
 
-        public readonly YogaCachedMeasurement[] CachedMeasurements = new YogaCachedMeasurement[MaxCachedResultCount];
+        public readonly YogaCachedMeasurement[] CachedMeasurements = new YogaCachedMeasurement[YogaGlobal.MaxCachedResultCount];
         public readonly float[] MeasuredDimensions = {YogaValue.YGUndefined, YogaValue.YGUndefined};
 
         public YogaCachedMeasurement CachedLayout { get; } = new YogaCachedMeasurement();
@@ -81,12 +81,12 @@ namespace Yoga.Net
             for (var i = 0; i < CachedMeasurements.Length && isEqual; ++i)
                 isEqual = CachedMeasurements[i] == other.CachedMeasurements[i];
 
-            if (!YogaIsUndefined(MeasuredDimensions[0]) || !YogaIsUndefined(other.MeasuredDimensions[0]))
+            if (MeasuredDimensions[0].HasValue() || other.MeasuredDimensions[0].HasValue())
             {
                 isEqual = isEqual && FloatsEqual(MeasuredDimensions[0], other.MeasuredDimensions[0]);
             }
 
-            if (!YogaIsUndefined(MeasuredDimensions[1]) || !YogaIsUndefined(other.MeasuredDimensions[1]))
+            if (MeasuredDimensions[1].HasValue() || other.MeasuredDimensions[1].HasValue())
             {
                 isEqual = isEqual && FloatsEqual(MeasuredDimensions[1], other.MeasuredDimensions[1]);
             }

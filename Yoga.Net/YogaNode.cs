@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
-using static Yoga.Net.YogaGlobal;
+using static Yoga.Net.YogaMath;
+
 
 namespace Yoga.Net
 {
@@ -45,7 +47,7 @@ namespace Yoga.Net
                 }
                 else
                 {
-                    YGAssertWithNode(this, _children.Count == 0, "Cannot set measure function: Nodes with measure functions cannot have children.");
+                    Debug.Assert(_children.Count == 0, "Cannot set measure function: Nodes with measure functions cannot have children.");
                     NodeType = NodeType.Text;
                 }
             }
@@ -139,7 +141,7 @@ namespace Yoga.Net
             var children = new YogaNodes(oldNode.Children.Count);
             foreach (var item in oldNode.Children)
             {
-                var childNode = YGNodeDeepClone(item);
+                var childNode = DeepClone(item);
                 childNode.Owner = node;
                 children.Add(childNode);
             }
@@ -151,8 +153,8 @@ namespace Yoga.Net
 
         public void InsertChild(YogaNode child, int index)
         {
-            YGAssertWithNode(this, child.Owner == null, "Child already has a owner, it must be removed first.");
-            YGAssertWithNode(this, MeasureFunc == null, "Cannot add child: Nodes with measure functions cannot have children.");
+            Debug.Assert( child.Owner == null, "Child already has a owner, it must be removed first.");
+            Debug.Assert( MeasureFunc == null, "Cannot add child: Nodes with measure functions cannot have children.");
 
             _children.Insert(index, child);
             child.Owner = this;
@@ -250,7 +252,7 @@ namespace Yoga.Net
             }
 
             float trailingPosition = GetTrailingPosition(axis, axisSize);
-            if (trailingPosition.IsValid())
+            if (trailingPosition.HasValue())
             {
                 trailingPosition = (-1f * trailingPosition);
             }
@@ -296,7 +298,7 @@ namespace Yoga.Net
 
                 Event.Hub.Publish(new NodeBaselineEndEventArgs(this));
 
-                YGAssertWithNode(this, !YogaIsUndefined(layoutBaseline), "Expect custom baseline function to not return NaN");
+                Debug.Assert(layoutBaseline.HasValue(), "Expect custom baseline function to not return NaN");
                 return layoutBaseline;
             }
 
@@ -324,7 +326,7 @@ namespace Yoga.Net
             if (baselineChild == null)
                 return Layout.MeasuredDimensions[(int)Dimension.Height];
 
-            var baseline = YGBaseline(baselineChild, layoutContext);
+            var baseline = baselineChild.Baseline(layoutContext);
             return baseline + baselineChild.Layout.Position[(int)Edge.Top];
         }
 
@@ -350,7 +352,7 @@ namespace Yoga.Net
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsStyleDimDefined(FlexDirection axis, float ownerSize)
         {
-            var isUndefined = YogaIsUndefined(GetResolvedDimension(YogaArrange.Dim[(int)axis]).Value);
+            var isUndefined = GetResolvedDimension(YogaArrange.Dim[(int)axis]).IsUndefined;
             return !(
                 GetResolvedDimension(YogaArrange.Dim[(int)axis]).Unit == YogaUnit.Auto ||
                 GetResolvedDimension(YogaArrange.Dim[(int)axis]).Unit == YogaUnit.Undefined ||
@@ -358,14 +360,14 @@ namespace Yoga.Net
                 !isUndefined && GetResolvedDimension(YogaArrange.Dim[(int)axis]).Value < 0.0f ||
                 GetResolvedDimension(YogaArrange.Dim[(int)axis]).Unit == YogaUnit.Percent &&
                 !isUndefined &&
-                (GetResolvedDimension(YogaArrange.Dim[(int)axis]).Value < 0.0f || YogaIsUndefined(ownerSize)));
+                (GetResolvedDimension(YogaArrange.Dim[(int)axis]).Value < 0.0f || ownerSize.IsUndefined()));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsLayoutDimDefined(FlexDirection axis)
         {
             var value = Layout.MeasuredDimensions[(int)YogaArrange.Dim[(int)axis]];
-            return !YogaIsUndefined(value) && value >= 0.0f;
+            return value.HasValue() && value >= 0.0f;
         }
 
         public float BoundAxisWithinMinAndMax(FlexDirection axis,float value,float axisSize)
@@ -419,7 +421,7 @@ namespace Yoga.Net
                 size = maxSize.IsUndefined() || size < maxSize ? size : maxSize;
                 break;
             case MeasureMode.Undefined:
-                if (maxSize.IsValid())
+                if (maxSize.HasValue())
                 {
                     mode = MeasureMode.AtMost;
                     size = maxSize;
@@ -775,7 +777,7 @@ namespace Yoga.Net
             float paddingEdgeStart = Style.Padding[Edge.Start].Resolve(widthSize);
             if (axis.IsRow() &&
                 !Style.Padding[Edge.Start].IsUndefined &&
-                paddingEdgeStart.IsValid() && paddingEdgeStart >= 0.0f)
+                paddingEdgeStart.HasValue() && paddingEdgeStart >= 0.0f)
             {
                 return paddingEdgeStart;
             }
@@ -826,6 +828,42 @@ namespace Yoga.Net
         public void SetLayoutPosition(float position, int index) => Layout.Position[index] = position;
 
         public void SetLayoutPosition(float position, Edge edge) => Layout.Position[edge] = position;
+
+
+        public float LayoutMargin(Edge edge) => LayoutResolvedProperty(Layout.Margin, edge);
+
+        public float LayoutBorder(Edge edge) => LayoutResolvedProperty(Layout.Border, edge);
+
+        public float LayoutPadding(Edge edge) => LayoutResolvedProperty(Layout.Padding, edge);
+
+        float LayoutResolvedProperty(LTRBEdge instanceName, Edge edge)
+        {
+            Debug.Assert(edge <= Edge.End, "Cannot get layout properties of multi-edge shorthands");
+            if (edge == Edge.Start)
+            {
+                if (Layout.Direction == Direction.RTL)
+                    return instanceName[(int)Edge.Right];
+                return instanceName[(int)Edge.Left];
+            }
+
+            if (edge == Edge.End)
+            {
+                if (Layout.Direction == Direction.RTL)
+                    return instanceName[(int)Edge.Left];
+                return instanceName[(int)Edge.Right];
+            }
+
+            return instanceName[(int)edge];
+        }
+
+        public float PaddingAndBorderForAxis(FlexDirection axis, float widthSize) => 
+            GetLeadingPaddingAndBorder(axis, widthSize) + 
+            GetTrailingPaddingAndBorder(axis, widthSize);
+
+        public float DimWithMargin(FlexDirection axis, float widthSize) => 
+            Layout.MeasuredDimensions[(int)YogaArrange.Dim[(int)axis]] + 
+            GetLeadingMargin(axis, widthSize) + 
+            GetTrailingMargin(axis, widthSize);
 
         public void SetPosition(
             in Direction direction,
@@ -888,7 +926,7 @@ namespace Yoga.Net
                 return flexBasis;
             }
 
-            if (Style.Flex.IsValid() && Style.Flex > 0.0f)
+            if (Style.Flex.HasValue() && Style.Flex > 0.0f)
                 return YogaValue.Zero;
             return YogaValue.Auto;
         }
@@ -960,7 +998,7 @@ namespace Yoga.Net
         /// </summary>
         public void MarkDirty()
         {
-            YGAssertWithNode(this, MeasureFunc != null, "Only leaf nodes with custom measure functions should manually mark themselves as dirty");
+            Debug.Assert( MeasureFunc != null, "Only leaf nodes with custom measure functions should manually mark themselves as dirty");
             MarkDirtyAndPropagate();
         }
 
@@ -980,10 +1018,10 @@ namespace Yoga.Net
             if (Owner == null)
                 return 0.0f;
 
-            if (Style.FlexGrow.IsValid())
+            if (Style.FlexGrow.HasValue())
                 return Style.FlexGrow;
 
-            if (Style.Flex.IsValid() && Style.Flex > 0.0f)
+            if (Style.Flex.HasValue() && Style.Flex > 0.0f)
                 return Style.Flex;
 
             return DefaultFlexGrow;
@@ -994,10 +1032,10 @@ namespace Yoga.Net
             if (Owner == null)
                 return 0.0f;
 
-            if (Style.FlexShrink.IsValid())
+            if (Style.FlexShrink.HasValue())
                 return Style.FlexShrink;
 
-            if (Style.Flex.IsValid() && Style.Flex < 0.0f)
+            if (Style.Flex.HasValue() && Style.Flex < 0.0f)
                 return -Style.Flex;
 
             return DefaultFlexShrink;
@@ -1034,18 +1072,20 @@ namespace Yoga.Net
 
         public YogaNode Reset()
         {
-            YGAssertWithNode(
-                this,
-                _children.Count == 0,
-                "Cannot reset a node which still has children attached");
-            YGAssertWithNode(
-                this,
-                Owner == null,
-                "Cannot reset a node still attached to a owner");
+            Debug.Assert(_children.Count == 0,"Cannot reset a node which still has children attached");
+            Debug.Assert(Owner == null,"Cannot reset a node still attached to a owner");
 
             return new YogaNode(Config);
         }
 
+        public void TraversePreOrder(Action<YogaNode> action)
+        {
+            action(this);
+
+            foreach (var child in _children)
+                child.TraversePreOrder(action);
+        }
+        
         protected bool Equals(YogaNode other)
         {
             if (ReferenceEquals(this, other))

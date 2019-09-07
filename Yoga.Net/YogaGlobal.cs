@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace Yoga.Net
 {
@@ -11,55 +13,6 @@ namespace Yoga.Net
         // This value was chosen based on empirical data:
         // 98% of analyzed layouts require less than 8 entries.
         public const int MaxCachedResultCount = 8;
-
-        public const float DefaultFlexGrow = 0.0f;
-        public const float DefaultFlexShrink = 0.0f;
-
-        public static bool YogaIsUndefined(float value) => float.IsNaN(value) || float.IsInfinity(value);
-
-        public static bool IsValid(this float value) => !float.IsNaN(value) && !float.IsInfinity(value);
-
-        public static bool IsUndefined(this float value) => float.IsNaN(value) || float.IsInfinity(value);
-
-        public static bool IsZero(this float value) => Math.Abs(value) < 0.0001f;
-
-        public static bool IsNotZero(this float value) => Math.Abs(value) > 0.0001f;
-
-        // This custom float equality function returns true if either absolute
-        // difference between two floats is less than 0.0001f or both are undefined.
-        public static bool FloatsEqual(float a, float b)
-        {
-            if (!YogaIsUndefined(a) && !YogaIsUndefined(b))
-                return Math.Abs(a - b) < 0.0001f;
-
-            return YogaIsUndefined(a) && YogaIsUndefined(b);
-        }
-
-        public static float FloatMax(float a, float b)
-        {
-            if (!YogaIsUndefined(a) && !YogaIsUndefined(b))
-                return Math.Max(a, b);
-
-            return YogaIsUndefined(a) ? b : a;
-        }
-
-        public static float FloatMod(float x, float y) => (float)Math.IEEERemainder(x, y);
-
-        public static float FloatMin(float a, float b)
-        {
-            if (!YogaIsUndefined(a) && !YogaIsUndefined(b))
-                return Math.Min(a, b);
-
-            return YogaIsUndefined(a) ? b : a;
-        }
-
-        // This custom float comparison function compares the array of float with
-        // FloatsEqual, as the default float comparison operator will not work(Look
-        // at the comments of FloatsEqual function).
-        public static bool FloatArrayEqual(float[] val1, float[] val2) => val1.SequenceEqual(val2);
-
-        // This function returns 0 if YGFloatIsUndefined(val) is true and val otherwise
-        public static float FloatSanitize(float val) => YogaIsUndefined(val) ? 0 : val;
 
         public static YogaNode DefaultYogaNode { get; } = new YogaNode();
 
@@ -310,36 +263,51 @@ namespace Yoga.Net
         // set using point values then the returned value will be the same as
         // YGNodeStyleGetXXX. However if they were set using a percentage value then the
         // returned value is the computed value used during layout.
-        public static float YGNodeLayoutGetMargin(YogaNode node, Edge edge) => LayoutResolvedProperty(node, node.Layout.Margin, edge);
+        public static float YGNodeLayoutGetMargin(YogaNode node, Edge edge) => node.LayoutMargin(edge);
 
-        public static float YGNodeLayoutGetBorder(YogaNode node, Edge edge) => LayoutResolvedProperty(node, node.Layout.Border, edge);
+        public static float YGNodeLayoutGetBorder(YogaNode node, Edge edge) => node.LayoutBorder(edge);
 
-        public static float YGNodeLayoutGetPadding(YogaNode node, Edge edge) => LayoutResolvedProperty(node, node.Layout.Padding, edge);
+        public static float YGNodeLayoutGetPadding(YogaNode node, Edge edge) => node.LayoutPadding(edge);
 
-        public static float Margin(YogaNode node, Edge edge) => LayoutResolvedProperty(node, node.Layout.Margin, edge);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float YGNodePaddingAndBorderForAxis(YogaNode node, FlexDirection axis, float widthSize) => node.PaddingAndBorderForAxis(axis, widthSize);
 
-        public static float Border(YogaNode node, Edge edge) => LayoutResolvedProperty(node, node.Layout.Border, edge);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static YogaAlign YGNodeAlignItem(YogaNode node, YogaNode child) => node.AlignItem(child);
 
-        public static float Padding(YogaNode node, Edge edge) => LayoutResolvedProperty(node, node.Layout.Padding, edge);
+        public static float YGBaseline(YogaNode node, object layoutContext) => node.Baseline(layoutContext);
 
-        public static float LayoutResolvedProperty(YogaNode node, LTRBEdge instanceName, Edge edge)
-        {
-            YGAssertWithNode(node, edge <= Edge.End, "Cannot get layout properties of multi-edge shorthands");
-            if (edge == Edge.Start)
-            {
-                if (node.Layout.Direction == Direction.RTL)
-                    return instanceName[(int)Edge.Right];
-                return instanceName[(int)Edge.Left];
-            }
+        public static bool YGIsBaselineLayout(YogaNode node) => node.IsBaselineLayout();
 
-            if (edge == Edge.End)
-            {
-                if (node.Layout.Direction == Direction.RTL)
-                    return instanceName[(int)Edge.Left];
-                return instanceName[(int)Edge.Right];
-            }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float YGNodeDimWithMargin(YogaNode node, FlexDirection axis, float widthSize) => node.DimWithMargin(axis, widthSize);
 
-            return instanceName[(int)edge];
-        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool YGNodeIsStyleDimDefined(YogaNode node, FlexDirection axis, float ownerSize) => node.IsStyleDimDefined(axis, ownerSize);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool YGNodeIsLayoutDimDefined(YogaNode node, FlexDirection axis) => node.IsLayoutDimDefined(axis);
+
+        public static float YGNodeBoundAxisWithinMinAndMax(YogaNode node, FlexDirection axis, float value, float axisSize) => node.BoundAxisWithinMinAndMax(axis, value, axisSize);
+       
+
+        // Like YGNodeBoundAxisWithinMinAndMax but also ensures that the value doesn't go below the padding and border amount.
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float YGNodeBoundAxis(YogaNode node, FlexDirection axis, float value, float axisSize, float widthSize) => node.BoundAxis(axis, value, axisSize, widthSize);
+
+        public static void YGNodeSetChildTrailingPosition(YogaNode node, YogaNode child, FlexDirection axis) => node.SetChildTrailingPosition(child, axis);
+
+        public static void YGConstrainMaxSizeForMode(YogaNode node, FlexDirection axis, float ownerAxisSize, float ownerWidth, ref MeasureMode mode, ref float size) => node.ConstrainMaxSizeForMode(axis, ownerAxisSize, ownerWidth, ref mode, ref size);
+
+
+        public static void YGConfigSetExperimentalFeatureEnabled(YogaConfig config,ExperimentalFeature feature,bool enabled) => config.ExperimentalFeatures[(int)feature] = enabled;
+
+        public static void YGConfigSetLogger(YogaConfig config, LoggerFunc logger) => config.LoggerFunc = logger;
+
+        [Conditional("DEBUG")]
+        public static void YGNodePrint(YogaNode node, PrintOptions options) => Logger.Log(node, LogLevel.Debug, new YogaNodePrint(options).Output(node).ToString());
+
+        public static void YGConfigSetPointScaleFactor(YogaConfig config,float pixelsInPoint) => config.PointScaleFactor = pixelsInPoint.IsZero() ? 0.0f : pixelsInPoint;
+
     }
 }

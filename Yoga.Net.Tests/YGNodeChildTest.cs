@@ -28,8 +28,8 @@ namespace Yoga.Net.Tests
 
             Assert.AreEqual(0, YGNodeLayoutGetLeft(root_child0));
             Assert.AreEqual(0, YGNodeLayoutGetTop(root_child0));
-            Assert.IsTrue(YogaIsUndefined(YGNodeLayoutGetWidth(root_child0)));
-            Assert.IsTrue(YogaIsUndefined(YGNodeLayoutGetHeight(root_child0)));
+            Assert.IsTrue(YGNodeLayoutGetWidth(root_child0).IsUndefined());
+            Assert.IsTrue(YGNodeLayoutGetHeight(root_child0).IsUndefined());
         }
     }
 }

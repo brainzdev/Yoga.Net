@@ -1,4 +1,5 @@
-﻿using static Yoga.Net.YogaGlobal;
+﻿using System.Diagnostics;
+using static Yoga.Net.YogaGlobal;
 
 namespace Yoga.Net
 {
@@ -8,7 +9,23 @@ namespace Yoga.Net
 
         public YogaCloneNodeFunc CloneNodeFunc { get; set; }
         public bool PrintTree { get; set; }
-        public float PointScaleFactor { get; set; } = 1.0f;
+
+        /// <summary>
+        /// Set this to number of pixels in 1 point to round calculation results If you
+        /// want to avoid rounding - set PointScaleFactor to 0
+        /// 
+        /// We store points for Pixel as we will use it for rounding
+        /// </summary>
+        public float PointScaleFactor
+        {
+            get => _pointScaleFactor;
+            set
+            {
+                Debug.Assert(value >= 0.0f,"Scale factor should not be less than zero");
+                _pointScaleFactor = value;
+            }
+        }
+
         public bool[] ExperimentalFeatures { get; } = {false};
         public LoggerFunc LoggerFunc
         {
@@ -18,6 +35,7 @@ namespace Yoga.Net
 
 
         LoggerFunc _loggerFunc;
+        float _pointScaleFactor = 1.0f;
 
         public YogaConfig(LoggerFunc logger = null)
         {

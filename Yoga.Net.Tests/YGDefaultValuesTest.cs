@@ -48,12 +48,12 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(YGNodeStyleGetPadding(root, Edge.Start).Unit, YogaUnit.Undefined);
             Assert.AreEqual(YGNodeStyleGetPadding(root, Edge.End).Unit, YogaUnit.Undefined);
 
-            Assert.IsTrue(YogaIsUndefined(YGNodeStyleGetBorder(root, Edge.Left)));
-            Assert.IsTrue(YogaIsUndefined(YGNodeStyleGetBorder(root, Edge.Top)));
-            Assert.IsTrue(YogaIsUndefined(YGNodeStyleGetBorder(root, Edge.Right)));
-            Assert.IsTrue(YogaIsUndefined(YGNodeStyleGetBorder(root, Edge.Bottom)));
-            Assert.IsTrue(YogaIsUndefined(YGNodeStyleGetBorder(root, Edge.Start)));
-            Assert.IsTrue(YogaIsUndefined(YGNodeStyleGetBorder(root, Edge.End)));
+            Assert.IsTrue(YGNodeStyleGetBorder(root, Edge.Left).IsUndefined());
+            Assert.IsTrue(YGNodeStyleGetBorder(root, Edge.Top).IsUndefined());
+            Assert.IsTrue(YGNodeStyleGetBorder(root, Edge.Right).IsUndefined());
+            Assert.IsTrue(YGNodeStyleGetBorder(root, Edge.Bottom).IsUndefined());
+            Assert.IsTrue(YGNodeStyleGetBorder(root, Edge.Start).IsUndefined());
+            Assert.IsTrue(YGNodeStyleGetBorder(root, Edge.End).IsUndefined());
 
             Assert.AreEqual(YGNodeStyleGetWidth(root).Unit, YogaUnit.Auto);
             Assert.AreEqual(YGNodeStyleGetHeight(root).Unit, YogaUnit.Auto);
@@ -82,8 +82,8 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(0, YGNodeLayoutGetBorder(root, Edge.Right));
             Assert.AreEqual(0, YGNodeLayoutGetBorder(root, Edge.Bottom));
 
-            Assert.IsTrue(YogaIsUndefined(YGNodeLayoutGetWidth(root)));
-            Assert.IsTrue(YogaIsUndefined(YGNodeLayoutGetHeight(root)));
+            Assert.IsTrue(YGNodeLayoutGetWidth(root).IsUndefined());
+            Assert.IsTrue(YGNodeLayoutGetHeight(root).IsUndefined());
             Assert.AreEqual(Direction.Inherit, YGNodeLayoutGetDirection(root));
         }
     }
