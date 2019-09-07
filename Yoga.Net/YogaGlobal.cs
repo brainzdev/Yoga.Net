@@ -2,13 +2,21 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 
 namespace Yoga.Net
 {
-    public static partial class YogaGlobal
+    public delegate YogaSize MeasureFunc(YogaNode node, float width, MeasureMode widthMode, float height, MeasureMode heightMode, object layoutContext = null);
+
+    public delegate float BaselineFunc(YogaNode node, float width, float height, object layoutContext = null);
+
+    public delegate void PrintFunc(YogaNode node, object layoutContext = null);
+
+    public delegate void DirtiedFunc(YogaNode node);
+
+    public delegate YogaNode YogaCloneNodeFunc(YogaNode oldNode, YogaNode owner, int childIndex, object context);
+
+    public static class YogaGlobal
     {
         // This value was chosen based on empirical data:
         // 98% of analyzed layouts require less than 8 entries.
@@ -118,7 +126,7 @@ namespace Yoga.Net
 
         public static YogaAlign YGNodeStyleGetAlignContent(YogaNode node) => node.StyleAlignContent;
 
-        public static void YGNodeStyleSetAlignItems(YogaNode node, YogaAlign alignItems) => node.StyleAlignItems =  alignItems;
+        public static void YGNodeStyleSetAlignItems(YogaNode node, YogaAlign alignItems) => node.StyleAlignItems = alignItems;
 
         public static YogaAlign YGNodeStyleGetAlignItems(YogaNode node) => node.StyleAlignItems;
 
@@ -154,13 +162,13 @@ namespace Yoga.Net
 
         public static void YGNodeStyleSetFlexBasis(YogaNode node, float flexBasis) => node.StyleFlexBasis = new YogaValue(flexBasis, YogaUnit.Point);
 
-        public static void YGNodeStyleSetFlexBasisPercent(YogaNode node, float flexBasisPercent)=> node.StyleFlexBasis = new YogaValue(flexBasisPercent, YogaUnit.Percent);
+        public static void YGNodeStyleSetFlexBasisPercent(YogaNode node, float flexBasisPercent) => node.StyleFlexBasis = new YogaValue(flexBasisPercent, YogaUnit.Percent);
 
         public static void YGNodeStyleSetFlexBasisAuto(YogaNode node) => node.StyleFlexBasis = YogaValue.Auto;
 
         public static void YGNodeStyleSetPosition(YogaNode node, Edge edge, float points) => node.StyleSetPosition(edge, new YogaValue(points, YogaUnit.Point));
 
-        public static void YGNodeStyleSetPositionPercent(YogaNode node, Edge edge, float percent)  => node.StyleSetPosition(edge, new YogaValue(percent, YogaUnit.Percent));
+        public static void YGNodeStyleSetPositionPercent(YogaNode node, Edge edge, float percent) => node.StyleSetPosition(edge, new YogaValue(percent, YogaUnit.Percent));
 
         public static YogaValue YGNodeStyleGetPosition(YogaNode node, Edge edge) => node.StyleGetPosition(edge);
 
@@ -168,7 +176,7 @@ namespace Yoga.Net
 
         public static void YGNodeStyleSetMarginPercent(YogaNode node, Edge edge, float percent) => node.StyleSetMargin(edge, new YogaValue(percent, YogaUnit.Percent));
 
-        public static void YGNodeStyleSetMarginAuto(YogaNode node, Edge edge)  => node.StyleSetMargin(edge, YogaValue.Auto);
+        public static void YGNodeStyleSetMarginAuto(YogaNode node, Edge edge) => node.StyleSetMargin(edge, YogaValue.Auto);
 
         public static YogaValue YGNodeStyleGetMargin(YogaNode node, Edge edge) => node.StyleGetMargin(edge);
 
@@ -239,7 +247,7 @@ namespace Yoga.Net
 
         public static void YGNodeStyleSetMaxHeight(YogaNode node, float points) => node.StyleMaxHeight = points.Point();
 
-        public static void YGNodeStyleSetMaxHeightPercent(YogaNode node, float percent)  => node.StyleMaxHeight = percent.Percent();
+        public static void YGNodeStyleSetMaxHeightPercent(YogaNode node, float percent) => node.StyleMaxHeight = percent.Percent();
 
         public static YogaValue YGNodeStyleGetMaxHeight(YogaNode node) => node.StyleMaxHeight;
 
@@ -289,7 +297,6 @@ namespace Yoga.Net
         public static bool YGNodeIsLayoutDimDefined(YogaNode node, FlexDirection axis) => node.IsLayoutDimDefined(axis);
 
         public static float YGNodeBoundAxisWithinMinAndMax(YogaNode node, FlexDirection axis, float value, float axisSize) => node.BoundAxisWithinMinAndMax(axis, value, axisSize);
-       
 
         // Like YGNodeBoundAxisWithinMinAndMax but also ensures that the value doesn't go below the padding and border amount.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -299,15 +306,20 @@ namespace Yoga.Net
 
         public static void YGConstrainMaxSizeForMode(YogaNode node, FlexDirection axis, float ownerAxisSize, float ownerWidth, ref MeasureMode mode, ref float size) => node.ConstrainMaxSizeForMode(axis, ownerAxisSize, ownerWidth, ref mode, ref size);
 
-
-        public static void YGConfigSetExperimentalFeatureEnabled(YogaConfig config,ExperimentalFeature feature,bool enabled) => config.ExperimentalFeatures[(int)feature] = enabled;
+        public static void YGConfigSetExperimentalFeatureEnabled(YogaConfig config, ExperimentalFeature feature, bool enabled) => config.ExperimentalFeatures[(int)feature] = enabled;
 
         public static void YGConfigSetLogger(YogaConfig config, LoggerFunc logger) => config.LoggerFunc = logger;
 
         [Conditional("DEBUG")]
         public static void YGNodePrint(YogaNode node, PrintOptions options) => Logger.Log(node, LogLevel.Debug, new YogaNodePrint(options).Output(node).ToString());
 
-        public static void YGConfigSetPointScaleFactor(YogaConfig config,float pixelsInPoint) => config.PointScaleFactor = pixelsInPoint.IsZero() ? 0.0f : pixelsInPoint;
+        public static void YGConfigSetPointScaleFactor(YogaConfig config, float pixelsInPoint) => config.PointScaleFactor = pixelsInPoint.IsZero() ? 0.0f : pixelsInPoint;
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        static bool YGConfigIsExperimentalFeatureEnabled(YogaConfig config, ExperimentalFeature feature) => config.ExperimentalFeatures[(int)feature];
+
+        static void YGConfigSetCloneNodeFunc(YogaConfig config, YogaCloneNodeFunc cloneNodeFunc) => config.CloneNodeFunc = cloneNodeFunc;
+
+        public static void YGNodeCalculateLayout(YogaNode node, float ownerWidth, float ownerHeight, Direction ownerDirection) => new YogaArrange().CalculateLayout(node, ownerWidth, ownerHeight, ownerDirection);
     }
 }
