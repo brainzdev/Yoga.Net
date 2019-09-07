@@ -71,5 +71,8 @@ namespace Yoga.Net
         {
             return value.IsAuto ? 0f : value.Resolve(ownerSize);
         }
+
+        public static YogaValue Point(this float value) => new YogaValue(value, YogaUnit.Point);
+        public static YogaValue Percent(this float value) => new YogaValue(value, YogaUnit.Percent);
     }
 }

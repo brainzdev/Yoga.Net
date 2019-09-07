@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 using static Yoga.Net.YogaGlobal;
@@ -49,7 +51,9 @@ namespace Yoga.Net
             }
         }
 
-        public YogaStyle Style
+        public bool HasMeasureFunc => _measureFunc != null;
+
+        YogaStyle Style
         {
             get => _style;
             set
@@ -61,6 +65,8 @@ namespace Yoga.Net
                 }
             }
         }
+
+        public YogaStyleReadonly StyleReadonly => Style;
 
         public bool IsDirty
         {
@@ -444,6 +450,221 @@ namespace Yoga.Net
 
         public IReadOnlyList<YogaNode> Children => _children;
 
+
+        public void UpdateStyle<TEntity, T>(Expression<Func<TEntity, T>> outExpr, T value) where T : struct
+        {
+            var expr = (MemberExpression)outExpr.Body;
+            var prop = (PropertyInfo)expr.Member;
+            var propValue = (T)prop.GetValue(Style);
+
+            if (!EqualityComparer<T>.Default.Equals(propValue, value))
+            {
+                prop.SetValue(Style, value);
+                MarkDirtyAndPropagate();
+            }
+        }
+
+        public void UpdateStyleObject<TEntity, T>(Expression<Func<TEntity, T>> outExpr, T value) where T : class
+        {
+            var expr = (MemberExpression)outExpr.Body;
+            var prop = (PropertyInfo)expr.Member;
+            var propValue = (T)prop.GetValue(Style);
+
+            if (!EqualityComparer<T>.Default.Equals(propValue, value))
+            {
+                prop.SetValue(Style, value);
+                MarkDirtyAndPropagate();
+            }
+        }
+
+        public void UpdateIndexedStyleProp<TKey, TValue>(Values<TKey, TValue> values, int idx, TValue value) where TKey : struct, IConvertible
+        {
+            var propValue = values[idx];
+
+            if (!value.Equals(propValue))
+            {
+                values[idx] = value;
+                MarkDirtyAndPropagate();
+            }
+        }
+
+        public float StyleFlex
+        {
+            get => Style.Flex.IsUndefined() ? YogaValue.YGUndefined : Style.Flex;
+            set => UpdateStyle<YogaStyle, float>(s => s.Flex, value);
+        }
+
+        public float StyleFlexGrow
+        {
+            get => Style.FlexGrow.IsUndefined() ? DefaultFlexGrow : Style.FlexGrow;
+            set => UpdateStyle<YogaStyle, float>(s => s.FlexGrow, value);
+        }
+
+        public float StyleFlexShrink
+        {
+            get => Style.FlexShrink.IsUndefined() ? DefaultFlexShrink : Style.FlexShrink;
+            set => UpdateStyle<YogaStyle, float>(s => s.FlexShrink, value);
+        }
+
+        public Direction StyleDirection
+        {
+            get => Style.Direction;
+            set => UpdateStyle<YogaStyle, Direction>(s => s.Direction, value);
+        }
+
+        public FlexDirection StyleFlexDirection
+        {
+            get => Style.FlexDirection;
+            set => UpdateStyle<YogaStyle, FlexDirection>(s => s.FlexDirection, value);
+        }
+
+        public Justify StyleJustifyContent
+        {
+            get => Style.JustifyContent;
+            set => UpdateStyle<YogaStyle, Justify>(s => s.JustifyContent, value);
+        }
+
+        public YogaAlign StyleAlignContent
+        {
+            get => Style.AlignContent;
+            set => UpdateStyle<YogaStyle, YogaAlign>(s => s.AlignContent, value);
+        }
+
+        public YogaAlign StyleAlignItems
+        {
+            get => Style.AlignItems;
+            set => UpdateStyle<YogaStyle, YogaAlign>(s => s.AlignItems, value);
+        }
+
+        public YogaAlign StyleAlignSelf
+        {
+            get => Style.AlignSelf;
+            set => UpdateStyle<YogaStyle, YogaAlign>(s => s.AlignSelf, value);
+        }
+
+        public PositionType StylePositionType
+        {
+            get => Style.PositionType;
+            set => UpdateStyle<YogaStyle, PositionType>(s => s.PositionType, value);
+        }
+
+        public YogaValue StyleFlexBasis
+        {
+            get => Style.FlexBasis;
+            set => UpdateStyleObject<YogaStyle, YogaValue>(s => s.FlexBasis, value);
+        }
+
+        public Wrap StyleFlexWrap
+        {
+            get => Style.FlexWrap;
+            set => UpdateStyle<YogaStyle, Wrap>(s => s.FlexWrap, value);
+        }
+
+        public Overflow StyleOverflow
+        {
+            get => Style.Overflow;
+            set => UpdateStyle<YogaStyle, Overflow>(s => s.Overflow, value);
+        }
+
+        public Display StyleDisplay
+        {
+            get => Style.Display;
+            set => UpdateStyle<YogaStyle, Display>(s => s.Display, value);
+        }
+
+        public EdgesReadonly StylePosition => Style.Position;
+        public YogaValue StyleGetPosition(Edge edge) => Style.Position[edge];
+        public void StyleSetPosition(Edge edge, YogaValue value)
+        {
+            UpdateIndexedStyleProp(Style.Position, (int)edge, value);
+        }
+
+        public EdgesReadonly StyleMargin => Style.Margin;
+        public YogaValue StyleGetMargin(Edge edge) => Style.Margin[edge];
+        public void StyleSetMargin(Edge edge, YogaValue value)
+        {
+            UpdateIndexedStyleProp(Style.Margin, (int)edge, value);
+        }
+
+        public EdgesReadonly StylePadding => Style.Padding;
+        public YogaValue StyleGetPadding(Edge edge) => Style.Padding[edge];
+        public void StyleSetPadding(Edge edge, YogaValue value)
+        {
+            UpdateIndexedStyleProp(Style.Padding, (int)edge, value);
+        }
+
+        public EdgesReadonly StyleBorder => Style.Border;
+        public YogaValue StyleGetBorder(Edge edge) => Style.Border[edge].IsUndefined ? YogaValue.Undefined : Style.Border[edge];
+        public void StyleSetBorder(Edge edge, YogaValue value)
+        {
+            UpdateIndexedStyleProp(Style.Border, (int)edge, value);
+        }
+
+        /// <summary>
+        /// Yoga specific properties, not compatible with flexbox specification Aspect
+        /// ratio control the size of the undefined dimension of a node. Aspect ratio is
+        /// encoded as a floating point value width/height. e.g. A value of 2 leads to a
+        /// node with a width twice the size of its height while a value of 0.5 gives the
+        /// opposite effect.
+        ///
+        /// - On a node with a set width/height aspect ratio control the size of the
+        ///   unset dimension
+        /// - On a node with a set flex basis aspect ratio controls the size of the node
+        ///   in the cross axis if unset
+        /// - On a node with a measure function aspect ratio works as though the measure
+        ///   function measures the flex basis
+        /// - On a node with flex grow/shrink aspect ratio controls the size of the node
+        ///   in the cross axis if unset
+        /// - Aspect ratio takes min/max dimensions into account
+        /// </summary>
+        public float StyleAspectRatio
+        {
+            get => Style.AspectRatio.IsUndefined() ? YogaValue.YGUndefined : Style.AspectRatio;
+            set => UpdateStyle<YogaStyle, float>(s => s.AspectRatio, value);
+        }
+
+        public YogaValue StyleWidth
+        {
+            get => Style.Dimensions[(int)Dimension.Width];
+            set => UpdateIndexedStyleProp(Style.Dimensions, (int)Dimension.Width, value);
+        }
+
+        public YogaValue StyleHeight
+        {
+            get => Style.Dimensions[(int)Dimension.Height];
+            set => UpdateIndexedStyleProp(Style.Dimensions, (int)Dimension.Height, value);
+        }
+
+        public DimensionsReadonly StyleMinDimensions => Style.MinDimensions;
+
+        public YogaValue StyleMinWidth
+        {
+            get => Style.MinDimensions[(int)Dimension.Width];
+            set => UpdateIndexedStyleProp(Style.MinDimensions, (int)Dimension.Width, value);
+        }
+
+        public YogaValue StyleMinHeight
+        {
+            get => Style.MinDimensions[(int)Dimension.Height];
+            set => UpdateIndexedStyleProp(Style.MinDimensions, (int)Dimension.Height, value);
+        }
+
+        public DimensionsReadonly StyleMaxDimensions => Style.MaxDimensions;
+
+        public YogaValue StyleMaxWidth
+        {
+            get => Style.MaxDimensions[(int)Dimension.Width];
+            set => UpdateIndexedStyleProp(Style.MaxDimensions, (int)Dimension.Width, value);
+        }
+
+        public YogaValue StyleMaxHeight
+        {
+            get => Style.MaxDimensions[(int)Dimension.Height];
+            set => UpdateIndexedStyleProp(Style.MaxDimensions, (int)Dimension.Height, value);
+        }
+
+
+
         public YogaValue[] GetResolvedDimensions() => _resolvedDimensions;
 
         public YogaValue GetResolvedDimension(Dimension index) => _resolvedDimensions[(int)index];
@@ -722,6 +943,11 @@ namespace Yoga.Net
         public void CloneChildrenIfNeeded(object cloneContext)
         {
             IterChildrenAfterCloningIfNeeded(null, cloneContext);
+        }
+
+        public void CopyStyle(YogaNode node)
+        {
+            Style = node.Style;
         }
 
         /// <summary>

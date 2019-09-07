@@ -142,177 +142,94 @@ namespace Yoga.Net
 
         public static void YGNodeMarkDirty(YogaNode node) => node.MarkDirty();
 
-        public static void YGNodeCopyStyle(YogaNode dstNode, YogaNode srcNode) => dstNode.Style = srcNode.Style;
+        public static void YGNodeCopyStyle(YogaNode dstNode, YogaNode srcNode) => dstNode.CopyStyle(srcNode);
 
-        public static float YGNodeStyleGetFlexGrow(YogaNode node) => node.Style.FlexGrow.IsUndefined() ? DefaultFlexGrow : node.Style.FlexGrow;
+        public static float YGNodeStyleGetFlexGrow(YogaNode node) => node.StyleFlexGrow;
 
-        public static float YGNodeStyleGetFlexShrink(YogaNode node) => node.Style.FlexShrink.IsUndefined() ? DefaultFlexShrink : node.Style.FlexShrink;
+        public static float YGNodeStyleGetFlexShrink(YogaNode node) => node.StyleFlexShrink;
 
-        public static void UpdateStyle<TEntity, T>(YogaNode node, Expression<Func<TEntity, T>> outExpr, T value) where T : struct
-        {
-            var expr = (MemberExpression)outExpr.Body;
-            var prop = (PropertyInfo)expr.Member;
-            var propValue = (T)prop.GetValue(node.Style);
 
-            if (!EqualityComparer<T>.Default.Equals(propValue, value))
-            {
-                prop.SetValue(node.Style, value);
-                node.MarkDirtyAndPropagate();
-            }
-        }
+        public static void YGNodeStyleSetDirection(YogaNode node, Direction value) => node.StyleDirection = value;
 
-        public static void UpdateStyleObject<TEntity, T>(YogaNode node, Expression<Func<TEntity, T>> outExpr, T value) where T : class
-        {
-            var expr = (MemberExpression)outExpr.Body;
-            var prop = (PropertyInfo)expr.Member;
-            var propValue = (T)prop.GetValue(node.Style);
+        public static Direction YGNodeStyleGetDirection(YogaNode node) => node.StyleDirection;
 
-            if (!EqualityComparer<T>.Default.Equals(propValue, value))
-            {
-                prop.SetValue(node.Style, value);
-                node.MarkDirtyAndPropagate();
-            }
-        }
+        public static void YGNodeStyleSetFlexDirection(YogaNode node, FlexDirection flexDirection) => node.StyleFlexDirection = flexDirection;
 
-        public static void UpdateIndexedStyleProp<TKey, TValue>(YogaNode node, Values<TKey, TValue> values, int idx, TValue value) where TKey : struct, IConvertible
-        {
-            var propValue = values[idx];
+        public static FlexDirection YGNodeStyleGetFlexDirection(YogaNode node) => node.StyleFlexDirection;
 
-            if (!value.Equals(propValue))
-            {
-                values[idx] = value;
-                node.MarkDirtyAndPropagate();
-            }
-        }
+        public static void YGNodeStyleSetJustifyContent(YogaNode node, Justify justifyContent) => node.StyleJustifyContent = justifyContent;
 
-        public static void YGNodeStyleSetDirection(YogaNode node, Direction value) => UpdateStyle<YogaStyle, Direction>(node, s => s.Direction, value);
+        public static Justify YGNodeStyleGetJustifyContent(YogaNode node) => node.StyleJustifyContent;
 
-        public static Direction YGNodeStyleGetDirection(YogaNode node) => node.Style.Direction;
+        public static void YGNodeStyleSetAlignContent(YogaNode node, YogaAlign alignContent) => node.StyleAlignContent = alignContent;
 
-        public static void YGNodeStyleSetFlexDirection(YogaNode node, FlexDirection flexDirection) => UpdateStyle<YogaStyle, FlexDirection>(node, s => s.FlexDirection, flexDirection);
+        public static YogaAlign YGNodeStyleGetAlignContent(YogaNode node) => node.StyleAlignContent;
 
-        public static FlexDirection YGNodeStyleGetFlexDirection(YogaNode node) => node.Style.FlexDirection;
+        public static void YGNodeStyleSetAlignItems(YogaNode node, YogaAlign alignItems) => node.StyleAlignItems =  alignItems;
 
-        public static void YGNodeStyleSetJustifyContent(YogaNode node, Justify justifyContent) => UpdateStyle<YogaStyle, Justify>(node, s => s.JustifyContent, justifyContent);
+        public static YogaAlign YGNodeStyleGetAlignItems(YogaNode node) => node.StyleAlignItems;
 
-        public static Justify YGNodeStyleGetJustifyContent(YogaNode node) => node.Style.JustifyContent;
+        public static void YGNodeStyleSetAlignSelf(YogaNode node, YogaAlign alignSelf) => node.StyleAlignSelf = alignSelf;
 
-        public static void YGNodeStyleSetAlignContent(YogaNode node, YogaAlign alignContent) => UpdateStyle<YogaStyle, YogaAlign>(node, s => s.AlignContent, alignContent);
+        public static YogaAlign YGNodeStyleGetAlignSelf(YogaNode node) => node.StyleAlignSelf;
 
-        public static YogaAlign YGNodeStyleGetAlignContent(YogaNode node) => node.Style.AlignContent;
+        public static void YGNodeStyleSetPositionType(YogaNode node, PositionType positionType) => node.StylePositionType = positionType;
 
-        public static void YGNodeStyleSetAlignItems(YogaNode node, YogaAlign alignItems) => UpdateStyle<YogaStyle, YogaAlign>(node, s => s.AlignItems, alignItems);
+        public static PositionType YGNodeStyleGetPositionType(YogaNode node) => node.StylePositionType;
 
-        public static YogaAlign YGNodeStyleGetAlignItems(YogaNode node) => node.Style.AlignItems;
+        public static void YGNodeStyleSetFlexWrap(YogaNode node, Wrap flexWrap) => node.StyleFlexWrap = flexWrap;
 
-        public static void YGNodeStyleSetAlignSelf(YogaNode node, YogaAlign alignSelf) => UpdateStyle<YogaStyle, YogaAlign>(node, s => s.AlignSelf, alignSelf);
+        public static Wrap YGNodeStyleGetFlexWrap(YogaNode node) => node.StyleFlexWrap;
 
-        public static YogaAlign YGNodeStyleGetAlignSelf(YogaNode node) => node.Style.AlignSelf;
+        public static void YGNodeStyleSetOverflow(YogaNode node, Overflow overflow) => node.StyleOverflow = overflow;
 
-        public static void YGNodeStyleSetPositionType(YogaNode node, PositionType positionType) => UpdateStyle<YogaStyle, PositionType>(node, s => s.PositionType, positionType);
+        public static Overflow YGNodeStyleGetOverflow(YogaNode node) => node.StyleOverflow;
 
-        public static PositionType YGNodeStyleGetPositionType(YogaNode node) => node.Style.PositionType;
+        public static void YGNodeStyleSetDisplay(YogaNode node, Display display) => node.StyleDisplay = display;
 
-        public static void YGNodeStyleSetFlexWrap(YogaNode node, Wrap flexWrap) => UpdateStyle<YogaStyle, Wrap>(node, s => s.FlexWrap, flexWrap);
+        public static Display YGNodeStyleGetDisplay(YogaNode node) => node.StyleDisplay;
 
-        public static Wrap YGNodeStyleGetFlexWrap(YogaNode node) => node.Style.FlexWrap;
+        public static void YGNodeStyleSetFlex(YogaNode node, float flex) => node.StyleFlex = flex;
 
-        public static void YGNodeStyleSetOverflow(YogaNode node, Overflow overflow) => UpdateStyle<YogaStyle, Overflow>(node, s => s.Overflow, overflow);
+        public static float YGNodeStyleGetFlex(YogaNode node) => node.StyleFlex;
 
-        public static Overflow YGNodeStyleGetOverflow(YogaNode node) => node.Style.Overflow;
+        public static void YGNodeStyleSetFlexGrow(YogaNode node, float flexGrow) => node.StyleFlexGrow = flexGrow;
 
-        public static void YGNodeStyleSetDisplay(YogaNode node, Display display) => UpdateStyle<YogaStyle, Display>(node, s => s.Display, display);
+        public static void YGNodeStyleSetFlexShrink(YogaNode node, float flexShrink) => node.StyleFlexShrink = flexShrink;
 
-        public static Display YGNodeStyleGetDisplay(YogaNode node) => node.Style.Display;
+        public static YogaValue YGNodeStyleGetFlexBasis(YogaNode node) => node.StyleFlexBasis;
 
-        public static void YGNodeStyleSetFlex(YogaNode node, float flex) => UpdateStyle<YogaStyle, float>(node, s => s.Flex, flex);
+        public static void YGNodeStyleSetFlexBasis(YogaNode node, float flexBasis) => node.StyleFlexBasis = new YogaValue(flexBasis, YogaUnit.Point);
 
-        public static float YGNodeStyleGetFlex(YogaNode node) => node.Style.Flex.IsUndefined() ? YogaValue.YGUndefined : node.Style.Flex;
+        public static void YGNodeStyleSetFlexBasisPercent(YogaNode node, float flexBasisPercent)=> node.StyleFlexBasis = new YogaValue(flexBasisPercent, YogaUnit.Percent);
 
-        public static void YGNodeStyleSetFlexGrow(YogaNode node, float flexGrow) => UpdateStyle<YogaStyle, float>(node, s => s.FlexGrow, flexGrow);
+        public static void YGNodeStyleSetFlexBasisAuto(YogaNode node) => node.StyleFlexBasis = YogaValue.Auto;
 
-        public static void YGNodeStyleSetFlexShrink(YogaNode node, float flexShrink) => UpdateStyle<YogaStyle, float>(node, s => s.FlexShrink, flexShrink);
+        public static void YGNodeStyleSetPosition(YogaNode node, Edge edge, float points) => node.StyleSetPosition(edge, new YogaValue(points, YogaUnit.Point));
 
-        public static YogaValue YGNodeStyleGetFlexBasis(YogaNode node) => node.Style.FlexBasis;
+        public static void YGNodeStyleSetPositionPercent(YogaNode node, Edge edge, float percent)  => node.StyleSetPosition(edge, new YogaValue(percent, YogaUnit.Percent));
 
-        public static void YGNodeStyleSetFlexBasis(YogaNode node, float flexBasis)
-        {
-            var value = new YogaValue(flexBasis, YogaUnit.Point);
-            UpdateStyleObject<YogaStyle, YogaValue>(node, s => s.FlexBasis, value);
-        }
+        public static YogaValue YGNodeStyleGetPosition(YogaNode node, Edge edge) => node.StyleGetPosition(edge);
 
-        public static void YGNodeStyleSetFlexBasisPercent(YogaNode node, float flexBasisPercent)
-        {
-            var value = new YogaValue(flexBasisPercent, YogaUnit.Percent);
-            UpdateStyleObject<YogaStyle, YogaValue>(node, s => s.FlexBasis, value);
-        }
+        public static void YGNodeStyleSetMargin(YogaNode node, Edge edge, float points) => node.StyleSetMargin(edge, new YogaValue(points, YogaUnit.Point));
 
-        public static void YGNodeStyleSetFlexBasisAuto(YogaNode node) => UpdateStyleObject<YogaStyle, YogaValue>(node, s => s.FlexBasis, YogaValue.Auto);
+        public static void YGNodeStyleSetMarginPercent(YogaNode node, Edge edge, float percent) => node.StyleSetMargin(edge, new YogaValue(percent, YogaUnit.Percent));
 
-        public static void YGNodeStyleSetPosition(YogaNode node, Edge edge, float points)
-        {
-            var value = new YogaValue(points, YogaUnit.Point);
-            UpdateIndexedStyleProp(node, node.Style.Position, (int)edge, value);
-        }
+        public static void YGNodeStyleSetMarginAuto(YogaNode node, Edge edge)  => node.StyleSetMargin(edge, YogaValue.Auto);
 
-        public static void YGNodeStyleSetPositionPercent(YogaNode node, Edge edge, float percent)
-        {
-            var value = new YogaValue(percent, YogaUnit.Percent);
-            UpdateIndexedStyleProp(node, node.Style.Position, (int)edge, value);
-        }
+        public static YogaValue YGNodeStyleGetMargin(YogaNode node, Edge edge) => node.StyleGetMargin(edge);
 
-        public static YogaValue YGNodeStyleGetPosition(YogaNode node, Edge edge) => node.Style.Position[edge];
+        public static void YGNodeStyleSetPadding(YogaNode node, Edge edge, float points) => node.StyleSetPadding(edge, new YogaValue(points, YogaUnit.Point));
 
-        public static void YGNodeStyleSetMargin(YogaNode node, Edge edge, float points)
-        {
-            var value = new YogaValue(points, YogaUnit.Point);
-            UpdateIndexedStyleProp(node, node.Style.Margin, (int)edge, value);
-        }
+        public static void YGNodeStyleSetPaddingPercent(YogaNode node, Edge edge, float percent) => node.StyleSetPadding(edge, new YogaValue(percent, YogaUnit.Percent));
 
-        public static void YGNodeStyleSetMarginPercent(YogaNode node, Edge edge, float percent)
-        {
-            var value = new YogaValue(percent, YogaUnit.Percent);
-            UpdateIndexedStyleProp(node, node.Style.Margin, (int)edge, value);
-        }
+        public static YogaValue YGNodeStyleGetPadding(YogaNode node, Edge edge) => node.StyleGetPadding(edge);
 
-        public static void YGNodeStyleSetMarginAuto(YogaNode node, Edge edge) => UpdateIndexedStyleProp(node, node.Style.Margin, (int)edge, YogaValue.Auto);
+        public static void YGNodeStyleSetBorder(YogaNode node, Edge edge, float points) => node.StyleSetBorder(edge, new YogaValue(points, YogaUnit.Point));
 
-        public static YogaValue YGNodeStyleGetMargin(YogaNode node, Edge edge) => node.Style.Margin[edge];
+        public static float YGNodeStyleGetBorder(YogaNode node, Edge edge) => node.StyleGetBorder(edge).Value;
 
-        public static void YGNodeStyleSetPadding(YogaNode node, Edge edge, float points)
-        {
-            var value = new YogaValue(points, YogaUnit.Point);
-            UpdateIndexedStyleProp(node, node.Style.Padding, (int)edge, value);
-        }
-
-        public static void YGNodeStyleSetPaddingPercent(YogaNode node, Edge edge, float percent)
-        {
-            var value = new YogaValue(percent, YogaUnit.Percent);
-            UpdateIndexedStyleProp(node, node.Style.Padding, (int)edge, value);
-        }
-
-        public static YogaValue YGNodeStyleGetPadding(YogaNode node, Edge edge) => node.Style.Padding[edge];
-
-        public static void YGNodeStyleSetBorder(YogaNode node, Edge edge, float points)
-        {
-            var value = new YogaValue(points, YogaUnit.Point);
-            UpdateIndexedStyleProp(node, node.Style.Border, (int)edge, value);
-        }
-
-        public static float YGNodeStyleGetBorder(YogaNode node, Edge edge)
-        {
-            var border = node.Style.Border[edge];
-            if (border.IsUndefined || border.IsAuto)
-                return YogaValue.YGUndefined;
-
-            return border.Value;
-        }
-
-        public static float YGNodeStyleGetAspectRatio(YogaNode node)
-        {
-            var op = node.Style.AspectRatio;
-            return op.IsUndefined() ? YogaValue.YGUndefined : op;
-        }
+        public static float YGNodeStyleGetAspectRatio(YogaNode node) => node.StyleAspectRatio;
 
         /// <summary>
         /// Yoga specific properties, not compatible with flexbox specification Aspect
@@ -331,95 +248,47 @@ namespace Yoga.Net
         ///   in the cross axis if unset
         /// - Aspect ratio takes min/max dimensions into account
         /// </summary>
-        public static void YGNodeStyleSetAspectRatio(YogaNode node, float aspectRatio) => UpdateStyle<YogaStyle, float>(node, s => s.AspectRatio, aspectRatio);
+        public static void YGNodeStyleSetAspectRatio(YogaNode node, float aspectRatio) => node.StyleAspectRatio = aspectRatio;
 
-        public static void YGNodeStyleSetWidth(YogaNode node, float points)
-        {
-            var value = new YogaValue(points, YogaUnit.Point);
-            UpdateIndexedStyleProp(node, node.Style.Dimensions, (int)Dimension.Width, value);
-        }
+        public static void YGNodeStyleSetWidth(YogaNode node, float points) => node.StyleWidth = points.Point();
 
-        public static void YGNodeStyleSetWidthPercent(YogaNode node, float percent)
-        {
-            var value = new YogaValue(percent, YogaUnit.Percent);
-            UpdateIndexedStyleProp(node, node.Style.Dimensions, (int)Dimension.Width, value);
-        }
+        public static void YGNodeStyleSetWidthPercent(YogaNode node, float percent) => node.StyleWidth = percent.Percent();
 
-        public static void YGNodeStyleSetWidthAuto(YogaNode node) => UpdateIndexedStyleProp(node, node.Style.Dimensions, (int)Dimension.Width, YogaValue.Auto);
+        public static void YGNodeStyleSetWidthAuto(YogaNode node) => node.StyleWidth = YogaValue.Auto;
 
-        public static YogaValue YGNodeStyleGetWidth(YogaNode node) => node.Style.Dimensions[(int)Dimension.Width];
+        public static YogaValue YGNodeStyleGetWidth(YogaNode node) => node.StyleWidth;
 
-        public static void YGNodeStyleSetHeight(YogaNode node, float points)
-        {
-            var value = new YogaValue(points, YogaUnit.Point);
-            UpdateIndexedStyleProp(node, node.Style.Dimensions, (int)Dimension.Height, value);
-        }
+        public static void YGNodeStyleSetHeight(YogaNode node, float points) => node.StyleHeight = points.Point();
 
-        public static void YGNodeStyleSetHeightPercent(YogaNode node, float percent)
-        {
-            var value = new YogaValue(percent, YogaUnit.Percent);
-            UpdateIndexedStyleProp(node, node.Style.Dimensions, (int)Dimension.Height, value);
-        }
+        public static void YGNodeStyleSetHeightPercent(YogaNode node, float percent) => node.StyleHeight = percent.Percent();
 
-        public static void YGNodeStyleSetHeightAuto(YogaNode node) => UpdateIndexedStyleProp(node, node.Style.Dimensions, (int)Dimension.Height, YogaValue.Auto);
+        public static void YGNodeStyleSetHeightAuto(YogaNode node) => node.StyleHeight = YogaValue.Auto;
 
-        public static YogaValue YGNodeStyleGetHeight(YogaNode node) => node.Style.Dimensions[(int)Dimension.Height];
+        public static YogaValue YGNodeStyleGetHeight(YogaNode node) => node.StyleHeight;
 
-        public static void YGNodeStyleSetMinWidth(YogaNode node, float points)
-        {
-            var value = new YogaValue(points, YogaUnit.Point);
-            UpdateIndexedStyleProp(node, node.Style.MinDimensions, (int)Dimension.Width, value);
-        }
+        public static void YGNodeStyleSetMinWidth(YogaNode node, float points) => node.StyleMinWidth = points.Point();
 
-        public static void YGNodeStyleSetMinWidthPercent(YogaNode node, float percent)
-        {
-            var value = new YogaValue(percent, YogaUnit.Percent);
-            UpdateIndexedStyleProp(node, node.Style.MinDimensions, (int)Dimension.Width, value);
-        }
+        public static void YGNodeStyleSetMinWidthPercent(YogaNode node, float percent) => node.StyleMinWidth = percent.Percent();
 
-        public static YogaValue YGNodeStyleGetMinWidth(YogaNode node) => node.Style.MinDimensions[(int)Dimension.Width];
+        public static YogaValue YGNodeStyleGetMinWidth(YogaNode node) => node.StyleMinWidth;
 
-        public static void YGNodeStyleSetMinHeight(YogaNode node, float points)
-        {
-            var value = new YogaValue(points, YogaUnit.Point);
-            UpdateIndexedStyleProp(node, node.Style.MinDimensions, (int)Dimension.Height, value);
-        }
+        public static void YGNodeStyleSetMinHeight(YogaNode node, float points) => node.StyleMinHeight = points.Point();
 
-        public static void YGNodeStyleSetMinHeightPercent(YogaNode node, float percent)
-        {
-            var value = new YogaValue(percent, YogaUnit.Percent);
-            UpdateIndexedStyleProp(node, node.Style.MinDimensions, (int)Dimension.Height, value);
-        }
+        public static void YGNodeStyleSetMinHeightPercent(YogaNode node, float percent) => node.StyleMinHeight = percent.Percent();
 
-        public static YogaValue YGNodeStyleGetMinHeight(YogaNode node) => node.Style.MinDimensions[(int)Dimension.Height];
+        public static YogaValue YGNodeStyleGetMinHeight(YogaNode node) => node.StyleMinHeight;
 
-        public static void YGNodeStyleSetMaxWidth(YogaNode node, float points)
-        {
-            var value = new YogaValue(points, YogaUnit.Point);
-            UpdateIndexedStyleProp(node, node.Style.MaxDimensions, (int)Dimension.Width, value);
-        }
+        public static void YGNodeStyleSetMaxWidth(YogaNode node, float points) => node.StyleMaxWidth = points.Point();
 
-        public static void YGNodeStyleSetMaxWidthPercent(YogaNode node, float percent)
-        {
-            var value = new YogaValue(percent, YogaUnit.Percent);
-            UpdateIndexedStyleProp(node, node.Style.MaxDimensions, (int)Dimension.Width, value);
-        }
+        public static void YGNodeStyleSetMaxWidthPercent(YogaNode node, float percent) => node.StyleMaxWidth = percent.Percent();
 
-        public static YogaValue YGNodeStyleGetMaxWidth(YogaNode node) => node.Style.MaxDimensions[(int)Dimension.Width];
+        public static YogaValue YGNodeStyleGetMaxWidth(YogaNode node) => node.StyleMaxWidth;
 
-        public static void YGNodeStyleSetMaxHeight(YogaNode node, float points)
-        {
-            var value = new YogaValue(points, YogaUnit.Point);
-            UpdateIndexedStyleProp(node, node.Style.MaxDimensions, (int)Dimension.Height, value);
-        }
+        public static void YGNodeStyleSetMaxHeight(YogaNode node, float points) => node.StyleMaxHeight = points.Point();
 
-        public static void YGNodeStyleSetMaxHeightPercent(YogaNode node, float percent)
-        {
-            var value = new YogaValue(percent, YogaUnit.Percent);
-            UpdateIndexedStyleProp(node, node.Style.MaxDimensions, (int)Dimension.Height, value);
-        }
+        public static void YGNodeStyleSetMaxHeightPercent(YogaNode node, float percent)  => node.StyleMaxHeight = percent.Percent();
 
-        public static YogaValue YGNodeStyleGetMaxHeight(YogaNode node) => node.Style.MaxDimensions[(int)Dimension.Height];
+        public static YogaValue YGNodeStyleGetMaxHeight(YogaNode node) => node.StyleMaxHeight;
 
         public static float YGNodeLayoutGetLeft(YogaNode node) => node.Layout.Position[(int)Edge.Left];
 

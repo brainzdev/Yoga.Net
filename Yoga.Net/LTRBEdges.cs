@@ -1,10 +1,16 @@
 ﻿using System;
 
-namespace Yoga.Net {
+namespace Yoga.Net 
+{
+    public interface LTRBEdgeReadonly 
+    {
+        float this[Edge i] { get; }
+    }
+
     /// <summary>
     /// Left Top Right Bottom edges
     /// </summary>
-    public class LTRBEdge : Values<Edge, float>
+    public class LTRBEdge : Values<Edge, float>, LTRBEdgeReadonly
     {
         public LTRBEdge(float defaultValue = default) : base(defaultValue) { }
 

@@ -1,6 +1,31 @@
 ﻿namespace Yoga.Net
 {
-    public class YogaStyle
+    public interface YogaStyleReadonly {
+        Direction Direction { get; }
+        FlexDirection FlexDirection { get; }
+        Justify JustifyContent { get; }
+        YogaAlign AlignContent { get; }
+        YogaAlign AlignItems { get; }
+        YogaAlign AlignSelf { get; }
+        PositionType PositionType { get; }
+        Wrap FlexWrap { get; }
+        Overflow Overflow { get; }
+        Display Display { get; }
+        float Flex { get; }
+        float FlexGrow { get; }
+        float FlexShrink { get; }
+        YogaValue FlexBasis { get; }
+        Edges Margin { get; }
+        Edges Position { get; }
+        Edges Padding { get; }
+        Edges Border { get; }
+        Dimensions Dimensions { get; }
+        Dimensions MinDimensions { get; }
+        Dimensions MaxDimensions { get; }
+        float AspectRatio { get; }
+    }
+
+    public class YogaStyle : YogaStyleReadonly
     {
         public Direction Direction { get; set; } = Direction.Inherit;
         public FlexDirection FlexDirection { get; set; } = FlexDirection.Column;
@@ -16,11 +41,14 @@
         public float Flex { get; set; } = float.NaN;
         public float FlexGrow { get; set; } = float.NaN;
         public float FlexShrink { get; set; } = float.NaN;
+
         public YogaValue FlexBasis { get; set; } = YogaValue.Auto;
+
         public Edges Margin { get; set; } = new Edges(YogaValue.Undefined);
         public Edges Position { get; set; } = new Edges(YogaValue.Undefined);
         public Edges Padding { get; set; } = new Edges(YogaValue.Undefined);
         public Edges Border { get; set; } = new Edges(YogaValue.Undefined);
+
         public Dimensions Dimensions { get; set; } = new Dimensions(YogaValue.Auto);
         public Dimensions MinDimensions { get; set; } = new Dimensions(YogaValue.Undefined);
         public Dimensions MaxDimensions { get; set; } = new Dimensions(YogaValue.Undefined);

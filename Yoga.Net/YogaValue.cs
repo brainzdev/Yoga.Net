@@ -6,6 +6,9 @@ using JetBrains.Annotations;
 
 namespace Yoga.Net
 {
+    /// <summary>
+    /// Immutable value class representing a value in Points, Percentage, Auto or Undefined.
+    /// </summary>
     [DebuggerDisplay("{Value} {Unit}")]
     public class YogaValue
     {

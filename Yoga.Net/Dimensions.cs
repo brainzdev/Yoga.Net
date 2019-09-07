@@ -2,7 +2,12 @@
 
 namespace Yoga.Net
 {
-    public class Dimensions : Values<Dimension, YogaValue>
+    public interface DimensionsReadonly 
+    {
+        YogaValue this[Dimension i] { get; }
+    }
+
+    public class Dimensions : Values<Dimension, YogaValue>, DimensionsReadonly
     {
         public Dimensions(YogaValue defaultValue) : base(defaultValue) { }
 

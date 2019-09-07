@@ -23,8 +23,8 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(PositionType.Relative, YGNodeStyleGetPositionType(root));
             Assert.AreEqual(Wrap.NoWrap, YGNodeStyleGetFlexWrap(root));
             Assert.AreEqual(Overflow.Visible, YGNodeStyleGetOverflow(root));
-            Assert.AreEqual(0, YGNodeStyleGetFlexGrow(root));
-            Assert.AreEqual(0, YGNodeStyleGetFlexShrink(root));
+            Assert.AreEqual(0f, YGNodeStyleGetFlexGrow(root));
+            Assert.AreEqual(0f, YGNodeStyleGetFlexShrink(root));
             Assert.AreEqual(YogaUnit.Auto, YGNodeStyleGetFlexBasis(root).Unit);
 
             Assert.AreEqual(YGNodeStyleGetPosition(root, Edge.Left).Unit, YogaUnit.Undefined);

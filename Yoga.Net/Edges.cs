@@ -2,7 +2,12 @@
 
 namespace Yoga.Net
 {
-    public class Edges : Values<Edge, YogaValue>
+    public interface EdgesReadonly {
+        YogaValue ComputedEdgeValue(Edge edge, YogaValue defaultValue = null);
+        YogaValue this[Edge i] { get; }
+    }
+
+    public class Edges : Values<Edge, YogaValue>, EdgesReadonly
     {
         public Edges(YogaValue defaultValue) : base(defaultValue) { }
 
