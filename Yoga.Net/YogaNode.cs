@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
@@ -450,9 +451,9 @@ namespace Yoga.Net
         [Obsolete("use Children[i]")]
         public YogaNode GetChild(int index) => _children[index];
 
-        public IReadOnlyList<YogaNode> Children => _children;
-
-
+        public int ChildCount => _children.Count;
+        public YogaNodes Children => _children;
+        
         public void UpdateStyle<TEntity, T>(Expression<Func<TEntity, T>> outExpr, T value) where T : struct
         {
             var expr = (MemberExpression)outExpr.Body;

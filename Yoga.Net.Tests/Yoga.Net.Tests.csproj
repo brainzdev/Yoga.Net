@@ -7,6 +7,96 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Typed\YogaAbsolutePositionTest.cs" />
+    <Compile Remove="Typed\YogaAlignBaselineTest.cs" />
+    <Compile Remove="Typed\YogaAlignContentTest.cs" />
+    <Compile Remove="Typed\YogaAlignItemsTest.cs" />
+    <Compile Remove="Typed\YogaAlignSelfTest.cs" />
+    <Compile Remove="Typed\YogaAndroidNewsFeed.cs" />
+    <Compile Remove="Typed\YogaAspectRatioTest.cs" />
+    <Compile Remove="Typed\YogaBaselineFuncTest.cs" />
+    <Compile Remove="Typed\YogaBorderTest.cs" />
+    <Compile Remove="Typed\YogaComputedMarginTest.cs" />
+    <Compile Remove="Typed\YogaComputedPaddingTest.cs" />
+    <Compile Remove="Typed\YogaDefaultValuesTest.cs" />
+    <Compile Remove="Typed\YogaDimensionTest.cs" />
+    <Compile Remove="Typed\YogaDirtiedTest.cs" />
+    <Compile Remove="Typed\YogaDirtyMarkingTest.cs" />
+    <Compile Remove="Typed\YogaDisplayTest.cs" />
+    <Compile Remove="Typed\YogaEdgeTest.cs" />
+    <Compile Remove="Typed\YogaFlexDirectionTest.cs" />
+    <Compile Remove="Typed\YogaFlexTest.cs" />
+    <Compile Remove="Typed\YogaFlexWrapTest.cs" />
+    <Compile Remove="Typed\YogaHadOverflowTest.cs" />
+    <Compile Remove="Typed\YogaInfiniteHeightTest.cs" />
+    <Compile Remove="Typed\YogaJustifyContentTest.cs" />
+    <Compile Remove="Typed\YogaLayoutDiffingTest.cs" />
+    <Compile Remove="Typed\YogaLoggerTest.cs" />
+    <Compile Remove="Typed\YogaMarginTest.cs" />
+    <Compile Remove="Typed\YogaMeasureCacheTest.cs" />
+    <Compile Remove="Typed\YogaMeasureModeTest.cs" />
+    <Compile Remove="Typed\YogaMeasureTest.cs" />
+    <Compile Remove="Typed\YogaMinMaxDimensionTest.cs" />
+    <Compile Remove="Typed\YogaNodeChildTest.cs" />
+    <Compile Remove="Typed\YogaPaddingTest.cs" />
+    <Compile Remove="Typed\YogaPercentageTest.cs" />
+    <Compile Remove="Typed\YogaPersistenceTest.cs" />
+    <Compile Remove="Typed\YogaRelayoutTest.cs" />
+    <Compile Remove="Typed\YogaRoundingFunctionTest.cs" />
+    <Compile Remove="Typed\YogaRoundingMeasureFuncTest.cs" />
+    <Compile Remove="Typed\YogaRoundingTest.cs" />
+    <Compile Remove="Typed\YogaSizeOverflowTest.cs" />
+    <Compile Remove="Typed\YogaStyleTest.cs" />
+    <Compile Remove="Typed\YogaTreeMutationTest.cs" />
+    <Compile Remove="Typed\YogaZeroOutLayoutRecursivlyTest.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Typed\YogaAbsolutePositionTest.cs" />
+    <None Include="Typed\YogaAlignBaselineTest.cs" />
+    <None Include="Typed\YogaAlignContentTest.cs" />
+    <None Include="Typed\YogaAlignItemsTest.cs" />
+    <None Include="Typed\YogaAlignSelfTest.cs" />
+    <None Include="Typed\YogaAndroidNewsFeed.cs" />
+    <None Include="Typed\YogaAspectRatioTest.cs" />
+    <None Include="Typed\YogaBaselineFuncTest.cs" />
+    <None Include="Typed\YogaBorderTest.cs" />
+    <None Include="Typed\YogaComputedMarginTest.cs" />
+    <None Include="Typed\YogaComputedPaddingTest.cs" />
+    <None Include="Typed\YogaDefaultValuesTest.cs" />
+    <None Include="Typed\YogaDimensionTest.cs" />
+    <None Include="Typed\YogaDirtiedTest.cs" />
+    <None Include="Typed\YogaDirtyMarkingTest.cs" />
+    <None Include="Typed\YogaDisplayTest.cs" />
+    <None Include="Typed\YogaEdgeTest.cs" />
+    <None Include="Typed\YogaFlexDirectionTest.cs" />
+    <None Include="Typed\YogaFlexTest.cs" />
+    <None Include="Typed\YogaFlexWrapTest.cs" />
+    <None Include="Typed\YogaHadOverflowTest.cs" />
+    <None Include="Typed\YogaInfiniteHeightTest.cs" />
+    <None Include="Typed\YogaJustifyContentTest.cs" />
+    <None Include="Typed\YogaLayoutDiffingTest.cs" />
+    <None Include="Typed\YogaLoggerTest.cs" />
+    <None Include="Typed\YogaMarginTest.cs" />
+    <None Include="Typed\YogaMeasureCacheTest.cs" />
+    <None Include="Typed\YogaMeasureModeTest.cs" />
+    <None Include="Typed\YogaMeasureTest.cs" />
+    <None Include="Typed\YogaMinMaxDimensionTest.cs" />
+    <None Include="Typed\YogaNodeChildTest.cs" />
+    <None Include="Typed\YogaPaddingTest.cs" />
+    <None Include="Typed\YogaPercentageTest.cs" />
+    <None Include="Typed\YogaPersistenceTest.cs" />
+    <None Include="Typed\YogaRelayoutTest.cs" />
+    <None Include="Typed\YogaRoundingFunctionTest.cs" />
+    <None Include="Typed\YogaRoundingMeasureFuncTest.cs" />
+    <None Include="Typed\YogaRoundingTest.cs" />
+    <None Include="Typed\YogaSizeOverflowTest.cs" />
+    <None Include="Typed\YogaStyleTest.cs" />
+    <None Include="Typed\YogaTreeMutationTest.cs" />
+    <None Include="Typed\YogaZeroOutLayoutRecursivlyTest.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="nunit" Version="3.11.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.11.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
