@@ -320,6 +320,6 @@ namespace Yoga.Net
 
         static void YGConfigSetCloneNodeFunc(YogaConfig config, YogaCloneNodeFunc cloneNodeFunc) => config.CloneNodeFunc = cloneNodeFunc;
 
-        public static void YGNodeCalculateLayout(YogaNode node, float ownerWidth, float ownerHeight, Direction ownerDirection) => new YogaArrange().CalculateLayout(node, ownerWidth, ownerHeight, ownerDirection);
+        public static void YGNodeCalculateLayout(YogaNode node, float ownerWidth, float ownerHeight, Direction ownerDirection) => YogaArrange.CalculateLayout(node, ownerWidth, ownerHeight, ownerDirection);
     }
 }

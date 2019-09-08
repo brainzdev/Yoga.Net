@@ -46,7 +46,7 @@ namespace Yoga.Net
 
         static void Log(YogaConfig config, YogaNode node, LogLevel level, string message)
         {
-            (node?.Config?.LoggerFunc ?? config.LoggerFunc ?? DefaultLogger).Invoke(level, message);
+            (node?.Config?.LoggerFunc ?? config?.LoggerFunc ?? DefaultLogger).Invoke(level, message);
 
             if (level == LogLevel.Fatal)
                 Environment.FailFast("Fatal exception");

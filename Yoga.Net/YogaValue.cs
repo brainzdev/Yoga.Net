@@ -9,7 +9,6 @@ namespace Yoga.Net
     /// <summary>
     /// Immutable value class representing a value in Points, Percentage, Auto or Undefined.
     /// </summary>
-    [DebuggerDisplay("{Value} {Unit}")]
     public class YogaValue
     {
         public const float YGUndefined = float.NaN;
@@ -35,7 +34,7 @@ namespace Yoga.Net
             Unit == YogaUnit.Undefined ||
             (IsNaN && (Unit == YogaUnit.Point || Unit == YogaUnit.Percent));
 
-        public bool IsValid => !IsUndefined;
+        public bool HasValue => !IsUndefined;
 
         public bool Equals(YogaValue other)
         {
@@ -105,25 +104,27 @@ namespace Yoga.Net
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static explicit operator YogaValue(int i)
+        public static implicit operator YogaValue(int i)
         {
             return new YogaValue(i, YogaUnit.Point);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static explicit operator YogaValue(short s)
+        public static implicit operator YogaValue(short s)
         {
             return new YogaValue(s, YogaUnit.Point);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static explicit operator YogaValue(float f)
+        public static implicit operator YogaValue(float f)
         {
+            if (f.IsUndefined())
+                return YogaValue.Undefined;
             return new YogaValue(f, YogaUnit.Point);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static explicit operator YogaValue(double d)
+        public static implicit operator YogaValue(double d)
         {
             return new YogaValue((float)d, YogaUnit.Point);
         }

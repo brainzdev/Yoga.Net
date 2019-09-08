@@ -194,7 +194,7 @@ namespace Yoga.Net
 
                 child.SetLayoutComputedFlexBasis(
                     FloatMax(
-                        child.Layout.MeasuredDimensions[(int)Dim[(int)mainAxis]],
+                        child.Layout.MeasuredDimensions[Dim[(int)mainAxis]],
                         child.PaddingAndBorderForAxis(mainAxis, ownerWidth)));
             }
 
@@ -239,7 +239,7 @@ namespace Yoga.Net
                 if (child.IsLeadingPositionDefined(FlexDirection.Row) &&
                     child.IsTrailingPosDefined(FlexDirection.Row))
                 {
-                    childWidth = node.Layout.MeasuredDimensions[(int)Dimension.Width] -
+                    childWidth = node.Layout.MeasuredDimensions.Width -
                         (node.GetLeadingBorder(FlexDirection.Row) +
                             node.GetTrailingBorder(FlexDirection.Row)) -
                         (child.GetLeadingPosition(FlexDirection.Row, width) +
@@ -260,7 +260,7 @@ namespace Yoga.Net
                 if (child.IsLeadingPositionDefined(FlexDirection.Column) &&
                     child.IsTrailingPosDefined(FlexDirection.Column))
                 {
-                    childHeight = node.Layout.MeasuredDimensions[(int)Dimension.Height] -
+                    childHeight = node.Layout.MeasuredDimensions.Height -
                         (node.GetLeadingBorder(FlexDirection.Column) +
                             node.GetTrailingBorder(FlexDirection.Column)) -
                         (child.GetLeadingPosition(FlexDirection.Column, height) +
@@ -329,9 +329,9 @@ namespace Yoga.Net
                     layoutContext,
                     depth,
                     generationCount);
-                childWidth = child.Layout.MeasuredDimensions[(int)Dimension.Width] +
+                childWidth = child.Layout.MeasuredDimensions.Width +
                     child.GetMarginForAxis(FlexDirection.Row, width);
-                childHeight = child.Layout.MeasuredDimensions[(int)Dimension.Height] +
+                childHeight = child.Layout.MeasuredDimensions.Height +
                     child.GetMarginForAxis(FlexDirection.Column, width);
             }
 
@@ -356,8 +356,8 @@ namespace Yoga.Net
                 !child.IsLeadingPositionDefined(mainAxis))
             {
                 child.SetLayoutPosition(
-                    node.Layout.MeasuredDimensions[(int)YogaArrange.Dim[(int)mainAxis]] -
-                    child.Layout.MeasuredDimensions[(int)YogaArrange.Dim[(int)mainAxis]] -
+                    node.Layout.MeasuredDimensions[Dim[(int)mainAxis]] -
+                    child.Layout.MeasuredDimensions[Dim[(int)mainAxis]] -
                     node.GetTrailingBorder(mainAxis) -
                     child.GetTrailingMargin(mainAxis, width) -
                     child.GetTrailingPosition(mainAxis, isMainAxisRow ? width : height),
@@ -368,8 +368,8 @@ namespace Yoga.Net
                 node.StyleJustifyContent == Justify.Center)
             {
                 child.SetLayoutPosition(
-                    (node.Layout.MeasuredDimensions[(int)YogaArrange.Dim[(int)mainAxis]] -
-                        child.Layout.MeasuredDimensions[(int)YogaArrange.Dim[(int)mainAxis]]) /
+                    (node.Layout.MeasuredDimensions[Dim[(int)mainAxis]] -
+                        child.Layout.MeasuredDimensions[Dim[(int)mainAxis]]) /
                     2.0f,
                     (int)YogaArrange.Leading[(int)mainAxis]);
             }
@@ -378,8 +378,8 @@ namespace Yoga.Net
                 node.StyleJustifyContent == Justify.FlexEnd)
             {
                 child.SetLayoutPosition(
-                    node.Layout.MeasuredDimensions[(int)YogaArrange.Dim[(int)mainAxis]] -
-                    child.Layout.MeasuredDimensions[(int)YogaArrange.Dim[(int)mainAxis]],
+                    node.Layout.MeasuredDimensions[Dim[(int)mainAxis]] -
+                    child.Layout.MeasuredDimensions[Dim[(int)mainAxis]],
                     (int)YogaArrange.Leading[(int)mainAxis]);
             }
 
@@ -387,8 +387,8 @@ namespace Yoga.Net
                 !child.IsLeadingPositionDefined(crossAxis))
             {
                 child.SetLayoutPosition(
-                    node.Layout.MeasuredDimensions[(int)YogaArrange.Dim[(int)crossAxis]] -
-                    child.Layout.MeasuredDimensions[(int)YogaArrange.Dim[(int)crossAxis]] -
+                    node.Layout.MeasuredDimensions[Dim[(int)crossAxis]] -
+                    child.Layout.MeasuredDimensions[Dim[(int)crossAxis]] -
                     node.GetTrailingBorder(crossAxis) -
                     child.GetTrailingMargin(crossAxis, width) -
                     child.GetTrailingPosition(crossAxis, isMainAxisRow ? height : width),
@@ -397,8 +397,8 @@ namespace Yoga.Net
             else if (!child.IsLeadingPositionDefined(crossAxis) && node.AlignItem(child) == YogaAlign.Center)
             {
                 child.SetLayoutPosition(
-                    (node.Layout.MeasuredDimensions[(int)YogaArrange.Dim[(int)crossAxis]] -
-                        child.Layout.MeasuredDimensions[(int)YogaArrange.Dim[(int)crossAxis]]) /
+                    (node.Layout.MeasuredDimensions[Dim[(int)crossAxis]] -
+                        child.Layout.MeasuredDimensions[Dim[(int)crossAxis]]) /
                     2.0f,
                     (int)YogaArrange.Leading[(int)crossAxis]);
             }
@@ -408,8 +408,8 @@ namespace Yoga.Net
                 (node.StyleFlexWrap == Wrap.WrapReverse))
             {
                 child.SetLayoutPosition(
-                    node.Layout.MeasuredDimensions[(int)YogaArrange.Dim[(int)crossAxis]] -
-                    child.Layout.MeasuredDimensions[(int)YogaArrange.Dim[(int)crossAxis]],
+                    node.Layout.MeasuredDimensions[Dim[(int)crossAxis]] -
+                    child.Layout.MeasuredDimensions[Dim[(int)crossAxis]],
                     (int)YogaArrange.Leading[(int)crossAxis]);
             }
         }
@@ -1233,7 +1233,7 @@ namespace Yoga.Net
             if (measureModeMainDim == MeasureMode.AtMost &&
                 collectedFlexItemsValues.RemainingFreeSpace > 0)
             {
-                if (node.StyleMinDimensions[YogaArrange.Dim[(int)mainAxis]].IsValid &&
+                if (node.StyleMinDimensions[YogaArrange.Dim[(int)mainAxis]].HasValue &&
                     node.StyleMinDimensions[YogaArrange.Dim[(int)mainAxis]].Resolve(mainAxisownerSize).HasValue())
                 {
                     // This condition makes sure that if the size of main dimension(after
@@ -1409,9 +1409,8 @@ namespace Yoga.Net
                                             FlexDirection.Column,
                                             availableInnerWidth);
                                 var descent =
-                                    (child.Layout.MeasuredDimensions[(int)Dimension.Height] +
-                                        child
-                                           .GetMarginForAxis(
+                                    (child.Layout.MeasuredDimensions.Height +
+                                        child.GetMarginForAxis(
                                                 FlexDirection.Column,
                                                 availableInnerWidth)) - ascent;
 
@@ -1942,7 +1941,7 @@ namespace Yoga.Net
                                 if (!child.IsStyleDimDefined( crossAxis, availableInnerCrossDim))
                                 {
                                     var childMainSize =
-                                        child.Layout.MeasuredDimensions[(int)YogaArrange.Dim[(int)mainAxis]];
+                                        child.Layout.MeasuredDimensions[Dim[(int)mainAxis]];
                                     var childCrossSize = child.StyleAspectRatio.HasValue()
                                         ? child.GetMarginForAxis(crossAxis, availableInnerWidth)
                                         +
@@ -2136,14 +2135,14 @@ namespace Yoga.Net
                             {
                                 lineHeight = FloatMax(
                                     lineHeight,
-                                    child.Layout.MeasuredDimensions[(int)YogaArrange.Dim[(int)crossAxis]] +
+                                    child.Layout.MeasuredDimensions[Dim[(int)crossAxis]] +
                                     child.GetMarginForAxis(crossAxis, availableInnerWidth));
                             }
 
                             if (node.AlignItem(child) == YogaAlign.Baseline)
                             {
                                 var ascent = child.Baseline(layoutContext) + child.GetLeadingMargin(FlexDirection.Column, availableInnerWidth);
-                                var descent = (child.Layout.MeasuredDimensions[(int)Dimension.Height] +
+                                var descent = (child.Layout.MeasuredDimensions.Height +
                                         child.GetMarginForAxis(FlexDirection.Column, availableInnerWidth)) - ascent;
                                 maxAscentForCurrentLine = FloatMax(maxAscentForCurrentLine, ascent);
                                 maxDescentForCurrentLine = FloatMax(maxDescentForCurrentLine, descent);
@@ -2183,14 +2182,14 @@ namespace Yoga.Net
                                         (currentLead + lineHeight) -
                                         child.GetTrailingMargin(crossAxis, availableInnerWidth)
                                         -
-                                        child.Layout.MeasuredDimensions[(int)YogaArrange.Dim[(int)crossAxis]],
+                                        child.Layout.MeasuredDimensions[Dim[(int)crossAxis]],
                                         (int)YogaArrange.Pos[(int)crossAxis]);
                                     break;
                                 }
                                 case YogaAlign.Center:
                                 {
                                     var childHeight =
-                                        child.Layout.MeasuredDimensions[(int)YogaArrange.Dim[(int)crossAxis]];
+                                        child.Layout.MeasuredDimensions[Dim[(int)crossAxis]];
 
                                     child.SetLayoutPosition(
                                         currentLead + ((lineHeight - childHeight) / 2),
@@ -2210,24 +2209,21 @@ namespace Yoga.Net
                                     {
                                         var childWidth = isMainAxisRow
                                             ? child.Layout
-                                                   .MeasuredDimensions[(int)Dimension.Width] +
+                                                   .MeasuredDimensions.Width +
                                             child.GetMarginForAxis(mainAxis, availableInnerWidth)
                                             : lineHeight;
 
                                         var childHeight = !isMainAxisRow
-                                            ? child.Layout
-                                                   .MeasuredDimensions[(int)Dimension.Height] +
+                                            ? child.Layout.MeasuredDimensions.Height +
                                             child.GetMarginForAxis(crossAxis, availableInnerWidth)
                                             : lineHeight;
 
                                         if (!(FloatsEqual(
                                                 childWidth,
-                                                child.Layout
-                                                     .MeasuredDimensions[(int)Dimension.Width]) &&
+                                                child.Layout.MeasuredDimensions.Width) &&
                                             FloatsEqual(
                                                 childHeight,
-                                                child.Layout
-                                                     .MeasuredDimensions[(int)Dimension.Height])))
+                                                child.Layout.MeasuredDimensions.Height)))
                                         {
                                             YGLayoutNodeInternal(
                                                 child,
@@ -2365,9 +2361,9 @@ namespace Yoga.Net
                     if (child.StylePositionType == PositionType.Relative)
                     {
                         child.SetLayoutPosition(
-                            node.Layout.MeasuredDimensions[(int)YogaArrange.Dim[(int)crossAxis]] -
+                            node.Layout.MeasuredDimensions[Dim[(int)crossAxis]] -
                             child.Layout.Position[(int)YogaArrange.Pos[(int)crossAxis]] -
-                            child.Layout.MeasuredDimensions[(int)YogaArrange.Dim[(int)crossAxis]],
+                            child.Layout.MeasuredDimensions[Dim[(int)crossAxis]],
                             (int)YogaArrange.Pos[(int)crossAxis]);
                     }
                 }
@@ -2429,11 +2425,11 @@ namespace Yoga.Net
         }
 
 #if DEBUG
-        static  bool gPrintChanges = false;
-        static  bool gPrintSkips = false;
+        public static bool PrintChanges = false;
+        public static bool PrintSkips = false;
 #else
-        static  bool gPrintChanges = false;
-        static  bool gPrintSkips = false;
+        static bool PrintChanges = false;
+        static bool PrintSkips = false;
 #endif
 
         static  string spacer = "                                                            ";
@@ -2706,14 +2702,14 @@ namespace Yoga.Net
 
             if (!needToVisitNode && cachedResults != null)
             {
-                layout.MeasuredDimensions[(int)Dimension.Width]  = cachedResults.ComputedWidth;
-                layout.MeasuredDimensions[(int)Dimension.Height] = cachedResults.ComputedHeight;
+                layout.MeasuredDimensions.Width  = cachedResults.ComputedWidth;
+                layout.MeasuredDimensions.Height = cachedResults.ComputedHeight;
                 if (performLayout)
                     layoutMarkerData.CachedLayouts++;
                 else
                     layoutMarkerData.CachedMeasures++;
 
-                if (gPrintChanges && gPrintSkips)
+                if (PrintChanges && PrintSkips)
                 {
                     Logger.Log(
                         node,
@@ -2728,7 +2724,7 @@ namespace Yoga.Net
             }
             else
             {
-                if (gPrintChanges)
+                if (PrintChanges)
                 {
                     Logger.Log(
                         node,
@@ -2758,7 +2754,7 @@ namespace Yoga.Net
                     generationCount,
                     reason);
 
-                if (gPrintChanges)
+                if (PrintChanges)
                 {
                     Logger.Log(
                         node,
@@ -2768,7 +2764,7 @@ namespace Yoga.Net
                     Logger.Log(
                         node,
                         LogLevel.Verbose,
-                        $"wm: {YGMeasureModeName(widthMeasureMode, performLayout)}, hm: {YGMeasureModeName(heightMeasureMode, performLayout)}, d: ({layout.MeasuredDimensions[(int)Dimension.Width]}, {layout.MeasuredDimensions[(int)Dimension.Height]}) {reason.ToString()}\n");
+                        $"wm: {YGMeasureModeName(widthMeasureMode, performLayout)}, hm: {YGMeasureModeName(heightMeasureMode, performLayout)}, d: ({layout.MeasuredDimensions.Width}, {layout.MeasuredDimensions.Height}) {reason.ToString()}\n");
                 }
 
                 layout.LastOwnerDirection = ownerDirection;
@@ -2783,7 +2779,7 @@ namespace Yoga.Net
 
                     if (layout.NextCachedMeasurementsIndex == YogaGlobal.MaxCachedResultCount)
                     {
-                        if (gPrintChanges)
+                        if (PrintChanges)
                         {
                             Logger.Log(node, LogLevel.Verbose, "Out of cache entries!\n");
                         }
@@ -2808,15 +2804,15 @@ namespace Yoga.Net
                     newCacheEntry.AvailableHeight   = availableHeight;
                     newCacheEntry.WidthMeasureMode  = widthMeasureMode;
                     newCacheEntry.HeightMeasureMode = heightMeasureMode;
-                    newCacheEntry.ComputedWidth     = layout.MeasuredDimensions[(int)Dimension.Width];
-                    newCacheEntry.ComputedHeight    = layout.MeasuredDimensions[(int)Dimension.Height];
+                    newCacheEntry.ComputedWidth     = layout.MeasuredDimensions.Width;
+                    newCacheEntry.ComputedHeight    = layout.MeasuredDimensions.Height;
                 }
             }
 
             if (performLayout)
             {
-                node.Layout.Width  = node.Layout.MeasuredDimensions[(int)Dimension.Width];
-                node.Layout.Height = node.Layout.MeasuredDimensions[(int)Dimension.Height];
+                node.Layout.Width  = node.Layout.MeasuredDimensions.Width;
+                node.Layout.Height = node.Layout.MeasuredDimensions.Height;
 
                 node.HasNewLayout = true;
                 node.IsDirty = false;
@@ -3010,7 +3006,9 @@ namespace Yoga.Net
             Event.Hub.Publish(new LayoutPassEndEventArgs(node, layoutContext, markerData));
         }
 
-        public void CalculateLayout(YogaNode node,float ownerWidth,float ownerHeight,Direction ownerDirection) => 
-            YGNodeCalculateLayoutWithContext(node,ownerWidth,ownerHeight,ownerDirection,null);
+         public static void CalculateLayout(YogaNode node, float ownerWidth, float ownerHeight, Direction ownerDirection)
+         {
+             new YogaArrange().YGNodeCalculateLayoutWithContext(node, ownerWidth, ownerHeight, ownerDirection, null);
+         }
     }
 }

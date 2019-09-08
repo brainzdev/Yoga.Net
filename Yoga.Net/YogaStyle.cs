@@ -1,4 +1,6 @@
-﻿using static Yoga.Net.YogaMath;
+﻿using System.Diagnostics;
+using Newtonsoft.Json;
+using static Yoga.Net.YogaMath;
 
 namespace Yoga.Net
 {
@@ -57,6 +59,31 @@ namespace Yoga.Net
 
         // Yoga specific properties, not compatible with flexbox specification
         public float AspectRatio { get; set; } = float.NaN;
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        [JsonIgnore] 
+        public YogaValue Width { get => Dimensions[Dimension.Width]; set => Dimensions[Dimension.Width] = value; }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        [JsonIgnore] 
+        public YogaValue Height { get => Dimensions[Dimension.Height]; set => Dimensions[Dimension.Height] = value; }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        [JsonIgnore] 
+        public YogaValue Left { get => Position[Edge.Left]; set => Position[Edge.Left] = value; }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        [JsonIgnore] 
+        public YogaValue Top { get => Position[Edge.Top]; set => Position[Edge.Top] = value; }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        [JsonIgnore] 
+        public YogaValue Right { get => Position[Edge.Right]; set => Position[Edge.Right] = value; }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        [JsonIgnore] 
+        public YogaValue Bottom { get => Position[Edge.Bottom]; set => Position[Edge.Bottom] = value; }
+        
 
         public YogaStyle() { }
 

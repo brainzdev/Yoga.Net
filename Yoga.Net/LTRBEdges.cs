@@ -1,4 +1,5 @@
 ﻿using System;
+using static Yoga.Net.YogaMath;
 
 namespace Yoga.Net 
 {
@@ -19,23 +20,19 @@ namespace Yoga.Net
             Array.Copy(other._values, _values, _values.Length);
         }
 
+        public bool IsZero =>
+            this[0].IsZero() &&
+            FloatsEqual(this[0], this[1]) &&
+            FloatsEqual(this[0], this[2]) &&
+            FloatsEqual(this[0], this[3]);
+
         public new float this[Edge edge]
         {
-            get => _values[GetIndex(edge)];
-            set => _values[GetIndex(edge)] = value;
+            get => _values[(int)edge];
+            set => _values[(int)edge] = value;
         }
 
-        int GetIndex(Edge edge)
-        {
-            switch (edge)
-            {
-            case Edge.Left:   return 0;
-            case Edge.Top:    return 1;
-            case Edge.Right:  return 2;
-            case Edge.Bottom: return 3;
-            default:
-                throw new IndexOutOfRangeException();
-            }
-        }
+        /// <inheritdoc />
+        public override string ToString() => $"({this[Edge.Left]}, {this[Edge.Top]}, {this[Edge.Right]}, {this[Edge.Bottom]})";
     }
 }

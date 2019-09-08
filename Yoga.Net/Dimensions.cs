@@ -15,16 +15,58 @@ namespace Yoga.Net
         {
             Array.Copy(other._values, _values, _values.Length);
         }
+
+        /// <inheritdoc />
+        public override string ToString() => $"({this[Dimension.Width]}, {this[Dimension.Height]})";
     }
 
-    public class DimensionsFloat : Values<Dimension, float>
+    public class DimensionsFloat
     {
-        public DimensionsFloat(float defaultValue) : base(defaultValue) { }
+        public float Width { get; set; }
+        public float Height { get; set; }
 
-        public DimensionsFloat(DimensionsFloat other) : base(float.NaN)
+        public DimensionsFloat(float width = float.NaN, float height = float.NaN)
         {
-            Array.Copy(other._values, _values, _values.Length);
+            Width = width;
+            Height = height;
         }
+
+        public DimensionsFloat(DimensionsFloat other)
+        {
+            Width = other.Width;
+            Height = other.Height;
+        }
+
+        public float this[Dimension dim]
+        {
+            get
+            {
+                switch (dim)
+                {
+                    case Dimension.Width: return Width;
+                    case Dimension.Height: return Height;
+                }
+
+                throw new ArgumentException("Unknown dimension", nameof(dim));
+            }
+            set
+            {
+                switch (dim)
+                {
+                case Dimension.Width:  
+                    Width = value;
+                    return;
+                case Dimension.Height: 
+                    Height = value;
+                    return;
+                default:
+                    throw new ArgumentException("Unknown dimension", nameof(dim));
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public override string ToString() => $"({Width}, {Height})";
     }
 
 }

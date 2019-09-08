@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics;
+using System.Text;
 using static Yoga.Net.YogaMath;
 
 namespace Yoga.Net
@@ -100,13 +101,22 @@ namespace Yoga.Net
             Indent(level);
             AppendString("<div ");
 
+            if (!string.IsNullOrWhiteSpace(node.Trace))
+                AppendString(node.Trace + "; ");
+
             if (_options.HasFlag(PrintOptions.Layout))
             {
                 AppendString("layout=\"");
-                AppendString($"width: {node.Layout.Width:G}; ");
-                AppendString($"height: {node.Layout.Height:G}; ");
-                AppendString($"top: {node.Layout.Position[Edge.Top]:G}; ");
-                AppendString($"left: {node.Layout.Position[(int)Edge.Left]:G};");
+                AppendString($"width: {node.Layout.Width:G};");
+                AppendString($" height: {node.Layout.Height:G};");
+                AppendString($" top: {node.Layout.Position[Edge.Top]:G};");
+                AppendString($" left: {node.Layout.Position[(int)Edge.Left]:G};");
+                if (!node.Layout.Margin.IsZero)
+                    AppendString($" margin: {node.Layout.Margin};");
+                if (!node.Layout.Border.IsZero)
+                    AppendString($" border: {node.Layout.Border};");
+                if (!node.Layout.Padding.IsZero)
+                    AppendString($" padding: {node.Layout.Padding};");
                 AppendString("\" ");
             }
 
@@ -204,6 +214,15 @@ namespace Yoga.Net
             AppendString("</div>");
 
             return this;
+        }
+
+        [Conditional("DEBUG")]
+        public static void Output(string message, YogaNode node, PrintOptions options = PrintOptions.Layout | PrintOptions.Style | PrintOptions.Children)
+        {
+            var print = new YogaNodePrint(options);
+            print.Output(node);
+            Logger.Log(LogLevel.Debug, "\n" + message);
+            Logger.Log(LogLevel.Debug, print.ToString());
         }
 
         /// <inheritdoc />

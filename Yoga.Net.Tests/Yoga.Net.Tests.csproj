@@ -48,7 +48,6 @@
     <Compile Remove="Typed\YogaSizeOverflowTest.cs" />
     <Compile Remove="Typed\YogaStyleTest.cs" />
     <Compile Remove="Typed\YogaTreeMutationTest.cs" />
-    <Compile Remove="Typed\YogaZeroOutLayoutRecursivlyTest.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -93,7 +92,6 @@
     <None Include="Typed\YogaSizeOverflowTest.cs" />
     <None Include="Typed\YogaStyleTest.cs" />
     <None Include="Typed\YogaTreeMutationTest.cs" />
-    <None Include="Typed\YogaZeroOutLayoutRecursivlyTest.cs" />
   </ItemGroup>
 
   <ItemGroup>

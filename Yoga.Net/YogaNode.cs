@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
@@ -56,7 +57,7 @@ namespace Yoga.Net
 
         public bool HasMeasureFunc => _measureFunc != null;
 
-        YogaStyle Style
+        public YogaStyle Style
         {
             get => _style;
             set
@@ -69,6 +70,7 @@ namespace Yoga.Net
             }
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public YogaStyleReadonly StyleReadonly => Style;
 
         public bool IsDirty
@@ -109,12 +111,14 @@ namespace Yoga.Net
 
         public YogaNode(YogaConfig config = null)
         {
+            _children.Owner = this;
             Config = config ?? YogaConfig.DefaultConfig;
             Event.Hub.Publish(new NodeAllocationEventArgs(this, config));
         }
 
         public YogaNode([NotNull] YogaNode other, YogaConfig config = null)
         {
+            _children.Owner = this;
             Context      = other.Context;
             MeasureFunc  = other.MeasureFunc;
             BaselineFunc = other.BaselineFunc;
@@ -293,8 +297,8 @@ namespace Yoga.Net
                 Event.Hub.Publish(new NodeBaselineStartEventArgs(this));
 
                 var layoutBaseline = Baseline(
-                    Layout.MeasuredDimensions[(int)Dimension.Width],
-                    Layout.MeasuredDimensions[(int)Dimension.Height],
+                    Layout.MeasuredDimensions.Width,
+                    Layout.MeasuredDimensions.Height,
                     layoutContext);
 
                 Event.Hub.Publish(new NodeBaselineEndEventArgs(this));
@@ -325,7 +329,7 @@ namespace Yoga.Net
             }
 
             if (baselineChild == null)
-                return Layout.MeasuredDimensions[(int)Dimension.Height];
+                return Layout.MeasuredDimensions.Height;
 
             var baseline = baselineChild.Baseline(layoutContext);
             return baseline + baselineChild.Layout.Position[(int)Edge.Top];
@@ -367,7 +371,7 @@ namespace Yoga.Net
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsLayoutDimDefined(FlexDirection axis)
         {
-            var value = Layout.MeasuredDimensions[(int)YogaArrange.Dim[(int)axis]];
+            var value = Layout.MeasuredDimensions[YogaArrange.Dim[(int)axis]];
             return value.HasValue() && value >= 0.0f;
         }
 
@@ -405,10 +409,10 @@ namespace Yoga.Net
 
         public void SetChildTrailingPosition(YogaNode child,FlexDirection axis)
         {
-            var size = child.Layout.MeasuredDimensions[(int)YogaArrange.Dim[(int)axis]];
+            var size = child.Layout.MeasuredDimensions[YogaArrange.Dim[(int)axis]];
             child.SetLayoutPosition(
-                Layout.MeasuredDimensions[(int)YogaArrange.Dim[(int)axis]] - size -
-                child.Layout.Position[(int)YogaArrange.Pos[(int)axis]],
+                Layout.MeasuredDimensions[YogaArrange.Dim[(int)axis]] - size -
+                child.Layout.Position[YogaArrange.Pos[(int)axis]],
                 (int)YogaArrange.Trailing[(int)axis]);
         }
 
@@ -491,90 +495,105 @@ namespace Yoga.Net
             }
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public float StyleFlex
         {
             get => Style.Flex.IsUndefined() ? YogaValue.YGUndefined : Style.Flex;
             set => UpdateStyle<YogaStyle, float>(s => s.Flex, value);
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public float StyleFlexGrow
         {
             get => Style.FlexGrow.IsUndefined() ? DefaultFlexGrow : Style.FlexGrow;
             set => UpdateStyle<YogaStyle, float>(s => s.FlexGrow, value);
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public float StyleFlexShrink
         {
             get => Style.FlexShrink.IsUndefined() ? DefaultFlexShrink : Style.FlexShrink;
             set => UpdateStyle<YogaStyle, float>(s => s.FlexShrink, value);
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public Direction StyleDirection
         {
             get => Style.Direction;
             set => UpdateStyle<YogaStyle, Direction>(s => s.Direction, value);
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public FlexDirection StyleFlexDirection
         {
             get => Style.FlexDirection;
             set => UpdateStyle<YogaStyle, FlexDirection>(s => s.FlexDirection, value);
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public Justify StyleJustifyContent
         {
             get => Style.JustifyContent;
             set => UpdateStyle<YogaStyle, Justify>(s => s.JustifyContent, value);
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public YogaAlign StyleAlignContent
         {
             get => Style.AlignContent;
             set => UpdateStyle<YogaStyle, YogaAlign>(s => s.AlignContent, value);
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public YogaAlign StyleAlignItems
         {
             get => Style.AlignItems;
             set => UpdateStyle<YogaStyle, YogaAlign>(s => s.AlignItems, value);
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public YogaAlign StyleAlignSelf
         {
             get => Style.AlignSelf;
             set => UpdateStyle<YogaStyle, YogaAlign>(s => s.AlignSelf, value);
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public PositionType StylePositionType
         {
             get => Style.PositionType;
             set => UpdateStyle<YogaStyle, PositionType>(s => s.PositionType, value);
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public YogaValue StyleFlexBasis
         {
             get => Style.FlexBasis;
             set => UpdateStyleObject<YogaStyle, YogaValue>(s => s.FlexBasis, value);
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public Wrap StyleFlexWrap
         {
             get => Style.FlexWrap;
             set => UpdateStyle<YogaStyle, Wrap>(s => s.FlexWrap, value);
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public Overflow StyleOverflow
         {
             get => Style.Overflow;
             set => UpdateStyle<YogaStyle, Overflow>(s => s.Overflow, value);
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public Display StyleDisplay
         {
             get => Style.Display;
             set => UpdateStyle<YogaStyle, Display>(s => s.Display, value);
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public EdgesReadonly StylePosition => Style.Position;
         public YogaValue StyleGetPosition(Edge edge) => Style.Position[edge];
         public void StyleSetPosition(Edge edge, YogaValue value)
@@ -582,6 +601,7 @@ namespace Yoga.Net
             UpdateIndexedStyleProp(Style.Position, (int)edge, value);
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public EdgesReadonly StyleMargin => Style.Margin;
         public YogaValue StyleGetMargin(Edge edge) => Style.Margin[edge];
         public void StyleSetMargin(Edge edge, YogaValue value)
@@ -589,6 +609,7 @@ namespace Yoga.Net
             UpdateIndexedStyleProp(Style.Margin, (int)edge, value);
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public EdgesReadonly StylePadding => Style.Padding;
         public YogaValue StyleGetPadding(Edge edge) => Style.Padding[edge];
         public void StyleSetPadding(Edge edge, YogaValue value)
@@ -596,6 +617,7 @@ namespace Yoga.Net
             UpdateIndexedStyleProp(Style.Padding, (int)edge, value);
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public EdgesReadonly StyleBorder => Style.Border;
         public YogaValue StyleGetBorder(Edge edge) => Style.Border[edge].IsUndefined ? YogaValue.Undefined : Style.Border[edge];
         public void StyleSetBorder(Edge edge, YogaValue value)
@@ -620,53 +642,60 @@ namespace Yoga.Net
         ///   in the cross axis if unset
         /// - Aspect ratio takes min/max dimensions into account
         /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public float StyleAspectRatio
         {
             get => Style.AspectRatio.IsUndefined() ? YogaValue.YGUndefined : Style.AspectRatio;
             set => UpdateStyle<YogaStyle, float>(s => s.AspectRatio, value);
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public YogaValue StyleWidth
         {
             get => Style.Dimensions[(int)Dimension.Width];
             set => UpdateIndexedStyleProp(Style.Dimensions, (int)Dimension.Width, value);
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public YogaValue StyleHeight
         {
             get => Style.Dimensions[(int)Dimension.Height];
             set => UpdateIndexedStyleProp(Style.Dimensions, (int)Dimension.Height, value);
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public DimensionsReadonly StyleMinDimensions => Style.MinDimensions;
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public YogaValue StyleMinWidth
         {
             get => Style.MinDimensions[(int)Dimension.Width];
             set => UpdateIndexedStyleProp(Style.MinDimensions, (int)Dimension.Width, value);
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public YogaValue StyleMinHeight
         {
             get => Style.MinDimensions[(int)Dimension.Height];
             set => UpdateIndexedStyleProp(Style.MinDimensions, (int)Dimension.Height, value);
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public DimensionsReadonly StyleMaxDimensions => Style.MaxDimensions;
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public YogaValue StyleMaxWidth
         {
             get => Style.MaxDimensions[(int)Dimension.Width];
             set => UpdateIndexedStyleProp(Style.MaxDimensions, (int)Dimension.Width, value);
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public YogaValue StyleMaxHeight
         {
             get => Style.MaxDimensions[(int)Dimension.Height];
             set => UpdateIndexedStyleProp(Style.MaxDimensions, (int)Dimension.Height, value);
         }
-
-
 
         public YogaValue[] GetResolvedDimensions() => _resolvedDimensions;
 
@@ -812,9 +841,9 @@ namespace Yoga.Net
 
         public void SetLayoutComputedFlexBasisGeneration(int computedFlexBasisGeneration) => Layout.ComputedFlexBasisGeneration = computedFlexBasisGeneration;
 
-        public void SetLayoutMeasuredDimension(float measuredDimension, int index) => Layout.MeasuredDimensions[index] = measuredDimension;
+        public void SetLayoutMeasuredDimension(float measuredDimension, int index) => Layout.MeasuredDimensions[(Dimension)index] = measuredDimension;
 
-        public void SetLayoutMeasuredDimension(float measuredDimension, Dimension index) => Layout.MeasuredDimensions[(int)index] = measuredDimension;
+        public void SetLayoutMeasuredDimension(float measuredDimension, Dimension index) => Layout.MeasuredDimensions[index] = measuredDimension;
 
         public void SetLayoutHadOverflow(bool hadOverflow) => Layout.HadOverflow = hadOverflow;
 
@@ -829,7 +858,6 @@ namespace Yoga.Net
         public void SetLayoutPosition(float position, int index) => Layout.Position[index] = position;
 
         public void SetLayoutPosition(float position, Edge edge) => Layout.Position[edge] = position;
-
 
         public float LayoutMargin(Edge edge) => LayoutResolvedProperty(Layout.Margin, edge);
 
@@ -862,7 +890,7 @@ namespace Yoga.Net
             GetTrailingPaddingAndBorder(axis, widthSize);
 
         public float DimWithMargin(FlexDirection axis, float widthSize) => 
-            Layout.MeasuredDimensions[(int)YogaArrange.Dim[(int)axis]] + 
+            Layout.MeasuredDimensions[YogaArrange.Dim[(int)axis]] + 
             GetLeadingMargin(axis, widthSize) + 
             GetTrailingMargin(axis, widthSize);
 
@@ -1104,11 +1132,11 @@ namespace Yoga.Net
 
             if (isEqual)
             {
-                isEqual = isEqual & _resolvedDimensions[0] == other._resolvedDimensions[0];
+                isEqual = _resolvedDimensions[0] == other._resolvedDimensions[0];
                 isEqual = isEqual & _resolvedDimensions[1] == other._resolvedDimensions[1];
                 for (int i = 0; i < _children.Count && isEqual; i++)
                 {
-                    isEqual = isEqual & _children[i] == other.Children[0];
+                    isEqual = _children[i] == other._children[i];
                 }
             }
 

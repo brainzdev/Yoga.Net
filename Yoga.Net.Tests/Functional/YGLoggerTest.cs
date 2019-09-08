@@ -94,7 +94,7 @@ namespace Yoga.Net.Tests
             YGConfigSetLogger(config, null);
 
 
-            string expected = "<div layout=\"width: 0; height: 0; top: 0; left: 0;\" style=\"flex: 1; margin-left: auto; margin-right: 10px; width: 50%; height: 75%; position: absolute; \" ></div>";
+            string expected = "<div layout=\"width: 0; height: 0; top: 0; left: 0; margin: (0, 0, 10, 0);\" style=\"flex: 1; margin-left: auto; margin-right: 10px; width: 50%; height: 75%; position: absolute; \" ></div>";
             Assert.AreEqual(expected, writeBuffer.ToString());
         }
 
