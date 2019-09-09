@@ -46,7 +46,6 @@
     <Compile Remove="Typed\YogaRoundingMeasureFuncTest.cs" />
     <Compile Remove="Typed\YogaRoundingTest.cs" />
     <Compile Remove="Typed\YogaSizeOverflowTest.cs" />
-    <Compile Remove="Typed\YogaStyleTest.cs" />
     <Compile Remove="Typed\YogaTreeMutationTest.cs" />
   </ItemGroup>
 
@@ -90,7 +89,6 @@
     <None Include="Typed\YogaRoundingMeasureFuncTest.cs" />
     <None Include="Typed\YogaRoundingTest.cs" />
     <None Include="Typed\YogaSizeOverflowTest.cs" />
-    <None Include="Typed\YogaStyleTest.cs" />
     <None Include="Typed\YogaTreeMutationTest.cs" />
   </ItemGroup>
 

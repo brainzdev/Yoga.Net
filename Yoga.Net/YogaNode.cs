@@ -15,9 +15,6 @@ namespace Yoga.Net
 {
     public class YogaNode
     {
-        public const float DefaultFlexGrow = 0.0f;
-        public const float DefaultFlexShrink = 0.0f;
-
         /// <summary>
         /// the YogaNode that owns this YogaNode. An owner is used to identify
         /// the YogaTree that a YogaNode belongs to. This method will return the parent
@@ -64,8 +61,14 @@ namespace Yoga.Net
             {
                 if (value != _style)
                 {
+                    if (_style != null)
+                    {
+                        _style.Owner = null;
+                        MarkDirtyAndPropagate();
+                    }
+
                     _style = value;
-                    MarkDirtyAndPropagate();
+                    _style.Owner = this;
                 }
             }
         }
@@ -112,13 +115,13 @@ namespace Yoga.Net
         public YogaNode(YogaConfig config = null)
         {
             _children.Owner = this;
+            _style.Owner = this;
             Config = config ?? YogaConfig.DefaultConfig;
             Event.Hub.Publish(new NodeAllocationEventArgs(this, config));
         }
 
         public YogaNode([NotNull] YogaNode other, YogaConfig config = null)
         {
-            _children.Owner = this;
             Context      = other.Context;
             MeasureFunc  = other.MeasureFunc;
             BaselineFunc = other.BaselineFunc;
@@ -133,6 +136,8 @@ namespace Yoga.Net
 
             // Lazy-clone
             _children.AddRange(other.Children);
+            _children.Owner = this;
+            _style.Owner = this;
 
             Event.Hub.Publish(new NodeAllocationEventArgs(this, Config));
         }
@@ -382,13 +387,13 @@ namespace Yoga.Net
 
             if (axis.IsColumn())
             {
-                min = Style.MinDimensions[(int)Dimension.Height].Resolve(axisSize);
-                max = Style.MaxDimensions[(int)Dimension.Height].Resolve(axisSize);
+                min = Style.MinHeight.Resolve(axisSize);
+                max = Style.MaxHeight.Resolve(axisSize);
             }
             else if (axis.IsRow())
             {
-                min = Style.MinDimensions[(int)Dimension.Width].Resolve(axisSize);
-                max = Style.MaxDimensions[(int)Dimension.Width].Resolve(axisSize);
+                min = Style.MinWidth.Resolve(axisSize);
+                max = Style.MaxWidth.Resolve(axisSize);
             }
 
             if (max >= 0f && value > max)
@@ -418,7 +423,7 @@ namespace Yoga.Net
 
         public void ConstrainMaxSizeForMode(FlexDirection axis,float ownerAxisSize,float ownerWidth,ref MeasureMode mode,ref float size)
         {
-            var maxSize = Style.MaxDimensions[(int)YogaArrange.Dim[(int)axis]].Resolve(ownerAxisSize) + GetMarginForAxis(axis, ownerWidth);
+            var maxSize = Style.MaxDimension(YogaArrange.Dim[(int)axis]).Resolve(ownerAxisSize) + GetMarginForAxis(axis, ownerWidth);
             switch (mode)
             {
             case MeasureMode.Exactly:
@@ -458,6 +463,7 @@ namespace Yoga.Net
         public int ChildCount => _children.Count;
         public YogaNodes Children => _children;
         
+        /*
         public void UpdateStyle<TEntity, T>(Expression<Func<TEntity, T>> outExpr, T value) where T : struct
         {
             var expr = (MemberExpression)outExpr.Body;
@@ -505,14 +511,14 @@ namespace Yoga.Net
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public float StyleFlexGrow
         {
-            get => Style.FlexGrow.IsUndefined() ? DefaultFlexGrow : Style.FlexGrow;
+            get => Style.FlexGrow.IsUndefined() ? YogaStyle.DefaultFlexGrow : Style.FlexGrow;
             set => UpdateStyle<YogaStyle, float>(s => s.FlexGrow, value);
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public float StyleFlexShrink
         {
-            get => Style.FlexShrink.IsUndefined() ? DefaultFlexShrink : Style.FlexShrink;
+            get => Style.FlexShrink.IsUndefined() ? YogaStyle.DefaultFlexShrink : Style.FlexShrink;
             set => UpdateStyle<YogaStyle, float>(s => s.FlexShrink, value);
         }
 
@@ -624,6 +630,7 @@ namespace Yoga.Net
         {
             UpdateIndexedStyleProp(Style.Border, (int)edge, value);
         }
+        */
 
         /// <summary>
         /// Yoga specific properties, not compatible with flexbox specification Aspect
@@ -642,6 +649,7 @@ namespace Yoga.Net
         ///   in the cross axis if unset
         /// - Aspect ratio takes min/max dimensions into account
         /// </summary>
+        /*
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public float StyleAspectRatio
         {
@@ -652,50 +660,45 @@ namespace Yoga.Net
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public YogaValue StyleWidth
         {
-            get => Style.Dimensions[(int)Dimension.Width];
-            set => UpdateIndexedStyleProp(Style.Dimensions, (int)Dimension.Width, value);
+            get => Style.Width;
+            set => UpdateStyleObject<YogaStyle, YogaValue>(s => s.Width, value);
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public YogaValue StyleHeight
         {
-            get => Style.Dimensions[(int)Dimension.Height];
-            set => UpdateIndexedStyleProp(Style.Dimensions, (int)Dimension.Height, value);
+            get => Style.Height;
+            set => UpdateStyleObject<YogaStyle, YogaValue>(s => s.Height, value);
         }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        public DimensionsReadonly StyleMinDimensions => Style.MinDimensions;
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public YogaValue StyleMinWidth
         {
-            get => Style.MinDimensions[(int)Dimension.Width];
-            set => UpdateIndexedStyleProp(Style.MinDimensions, (int)Dimension.Width, value);
+            get => Style.MinWidth;
+            set => UpdateStyleObject<YogaStyle, YogaValue>(s => s.MinWidth, value);
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public YogaValue StyleMinHeight
         {
-            get => Style.MinDimensions[(int)Dimension.Height];
-            set => UpdateIndexedStyleProp(Style.MinDimensions, (int)Dimension.Height, value);
+            get => Style.MinHeight;
+            set => UpdateStyleObject<YogaStyle, YogaValue>(s => s.MinHeight, value);
         }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        public DimensionsReadonly StyleMaxDimensions => Style.MaxDimensions;
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public YogaValue StyleMaxWidth
         {
-            get => Style.MaxDimensions[(int)Dimension.Width];
-            set => UpdateIndexedStyleProp(Style.MaxDimensions, (int)Dimension.Width, value);
+            get => Style.MaxWidth;
+            set => UpdateStyleObject<YogaStyle, YogaValue>(s => s.MaxWidth, value);
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public YogaValue StyleMaxHeight
         {
-            get => Style.MaxDimensions[(int)Dimension.Height];
-            set => UpdateIndexedStyleProp(Style.MaxDimensions, (int)Dimension.Height, value);
+            get => Style.MaxHeight;
+            set => UpdateStyleObject<YogaStyle, YogaValue>(s => s.MaxHeight, value);
         }
+        */
 
         public YogaValue[] GetResolvedDimensions() => _resolvedDimensions;
 
@@ -849,11 +852,11 @@ namespace Yoga.Net
 
         public void SetLayoutDirection(Direction direction) => Layout.Direction = direction;
 
-        public void SetLayoutMargin(float margin, Edge edge) => Layout.Margin[(int)edge] = margin;
+        public void SetLayoutMargin(float margin, Edge edge) => Layout.Margin[edge] = margin;
 
-        public void SetLayoutBorder(float border, Edge edge) => Layout.Border[(int)edge] = border;
+        public void SetLayoutBorder(float border, Edge edge) => Layout.Border[edge] = border;
 
-        public void SetLayoutPadding(float padding, Edge edge) => Layout.Padding[(int)edge] = padding;
+        public void SetLayoutPadding(float padding, Edge edge) => Layout.Padding[edge] = padding;
 
         public void SetLayoutPosition(float position, int index) => Layout.Position[index] = position;
 
@@ -900,8 +903,7 @@ namespace Yoga.Net
             in float crossSize,
             in float ownerWidth)
         {
-            /* Root nodes should be always layouted as LTR, so we don't return negative
-             * values. */
+            // Root nodes should be always layed out as LTR, so we don't return negative values.
             Direction directionRespectingRoot = Owner != null ? direction : Direction.LTR;
             FlexDirection mainAxis = Style.FlexDirection.Resolve(directionRespectingRoot);
             FlexDirection crossAxis = mainAxis.CrossAxis(directionRespectingRoot);
@@ -965,14 +967,14 @@ namespace Yoga.Net
             YogaStyle style = Style;
             foreach (var dim in new[] {Dimension.Width, Dimension.Height})
             {
-                if (!style.MaxDimensions[dim].IsUndefined &&
-                    style.MaxDimensions[dim] == style.MinDimensions[dim])
+                if (!style.MaxDimension(dim).IsUndefined &&
+                    style.MaxDimension(dim) == style.MinDimension(dim))
                 {
-                    _resolvedDimensions[(int)dim] = style.MaxDimensions[dim];
+                    _resolvedDimensions[(int)dim] = style.MaxDimension(dim);
                 }
                 else
                 {
-                    _resolvedDimensions[(int)dim] = style.Dimensions[dim];
+                    _resolvedDimensions[(int)dim] = style.Dimension(dim);
                 }
             }
         }
@@ -1031,6 +1033,12 @@ namespace Yoga.Net
             MarkDirtyAndPropagate();
         }
 
+        void MarkDirtyIfDifferent(YogaValue a, YogaValue b)
+        {
+            if (a != b)
+                MarkDirtyAndPropagate();
+        }
+
         public void MarkDirtyAndPropagate()
         {
             if (!IsDirty)
@@ -1053,7 +1061,7 @@ namespace Yoga.Net
             if (Style.Flex.HasValue() && Style.Flex > 0.0f)
                 return Style.Flex;
 
-            return DefaultFlexGrow;
+            return YogaStyle.DefaultFlexGrow;
         }
 
         public float ResolveFlexShrink()
@@ -1067,7 +1075,7 @@ namespace Yoga.Net
             if (Style.Flex.HasValue() && Style.Flex < 0.0f)
                 return -Style.Flex;
 
-            return DefaultFlexShrink;
+            return YogaStyle.DefaultFlexShrink;
         }
 
         public bool IsNodeFlexible()

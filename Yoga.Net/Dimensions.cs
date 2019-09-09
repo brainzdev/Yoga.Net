@@ -7,18 +7,56 @@ namespace Yoga.Net
         YogaValue this[Dimension i] { get; }
     }
 
-    public class Dimensions : Values<Dimension, YogaValue>, DimensionsReadonly
+    /*
+    public class Dimensions : DimensionsReadonly
     {
-        public Dimensions(YogaValue defaultValue) : base(defaultValue) { }
+        public YogaValue Width { get; set; }
+        public YogaValue Height { get; set; }
 
-        public Dimensions(Dimensions other) : base(YogaValue.Undefined)
+        public Dimensions(YogaValue width = null, YogaValue height = null)
         {
-            Array.Copy(other._values, _values, _values.Length);
+            Width = width ?? YogaValue.Undefined;
+            Height = height ?? YogaValue.Undefined;
+        }
+
+        public Dimensions(Dimensions other)
+        {
+            Width = other.Width;
+            Height = other.Height;
+        }
+
+        public YogaValue this[Dimension dim]
+        {
+            get
+            {
+                switch (dim)
+                {
+                case Dimension.Width:  return Width;
+                case Dimension.Height: return Height;
+                }
+
+                throw new ArgumentException("Unknown dimension", nameof(dim));
+            }
+            set
+            {
+                switch (dim)
+                {
+                case Dimension.Width:  
+                    Width = value;
+                    return;
+                case Dimension.Height: 
+                    Height = value;
+                    return;
+                default:
+                    throw new ArgumentException("Unknown dimension", nameof(dim));
+                }
+            }
         }
 
         /// <inheritdoc />
-        public override string ToString() => $"({this[Dimension.Width]}, {this[Dimension.Height]})";
+        public override string ToString() => $"({Width}, {Height})";
     }
+    */
 
     public class DimensionsFloat
     {

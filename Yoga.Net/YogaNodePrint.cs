@@ -123,71 +123,71 @@ namespace Yoga.Net
             if (_options.HasFlag(PrintOptions.Style))
             {
                 AppendString("style=\"");
-                if (node.StyleFlexDirection != DefaultYogaNode.StyleFlexDirection)
+                if (node.Style.FlexDirection != DefaultYogaNode.Style.FlexDirection)
                 {
-                    AppendString($"flex-direction: {node.StyleFlexDirection.ToString().ToLower()}; ");
+                    AppendString($"flex-direction: {node.Style.FlexDirection.ToString().ToLower()}; ");
                 }
 
-                if (node.StyleJustifyContent != DefaultYogaNode.StyleJustifyContent)
+                if (node.Style.JustifyContent != DefaultYogaNode.Style.JustifyContent)
                 {
-                    AppendString($"justify-content: {node.StyleJustifyContent.ToString().ToLower()}; ");
+                    AppendString($"justify-content: {node.Style.JustifyContent.ToString().ToLower()}; ");
                 }
 
-                if (node.StyleAlignItems != DefaultYogaNode.StyleAlignItems)
+                if (node.Style.AlignItems != DefaultYogaNode.Style.AlignItems)
                 {
-                    AppendString($"align-items: {node.StyleAlignItems.ToString().ToLower()}; ");
+                    AppendString($"align-items: {node.Style.AlignItems.ToString().ToLower()}; ");
                 }
 
-                if (node.StyleAlignContent != DefaultYogaNode.StyleAlignContent)
+                if (node.Style.AlignContent != DefaultYogaNode.Style.AlignContent)
                 {
-                    AppendString($"align-content: {node.StyleAlignContent.ToString().ToLower()}; ");
+                    AppendString($"align-content: {node.Style.AlignContent.ToString().ToLower()}; ");
                 }
 
-                if (node.StyleAlignSelf != DefaultYogaNode.StyleAlignSelf)
+                if (node.Style.AlignSelf != DefaultYogaNode.Style.AlignSelf)
                 {
-                    AppendString($"align-self: {node.StyleAlignSelf.ToString().ToLower()}; ");
+                    AppendString($"align-self: {node.Style.AlignSelf.ToString().ToLower()}; ");
                 }
 
-                AppendFloatOptionalIfDefined("flex-grow", node.StyleReadonly.FlexGrow);
-                AppendFloatOptionalIfDefined("flex-shrink", node.StyleReadonly.FlexShrink);
-                AppendNumberIfNotAuto("flex-basis", node.StyleFlexBasis);
+                AppendNumberIfNotZero("flex-grow", node.StyleReadonly.FlexGrow);
+                AppendNumberIfNotZero("flex-shrink", node.StyleReadonly.FlexShrink);
+                AppendNumberIfNotAuto("flex-basis", node.Style.FlexBasis);
                 AppendFloatOptionalIfDefined("flex", node.StyleReadonly.Flex);
 
-                if (node.StyleFlexWrap != DefaultYogaNode.StyleFlexWrap)
+                if (node.Style.FlexWrap != DefaultYogaNode.Style.FlexWrap)
                 {
-                    AppendString($"flex-wrap: {node.StyleFlexWrap.ToString().ToLower()}; ");
+                    AppendString($"flex-wrap: {node.Style.FlexWrap.ToString().ToLower()}; ");
                 }
 
-                if (node.StyleOverflow != DefaultYogaNode.StyleOverflow)
+                if (node.Style.Overflow != DefaultYogaNode.Style.Overflow)
                 {
-                    AppendString($"overflow: {node.StyleOverflow.ToString().ToLower()}; ");
+                    AppendString($"overflow: {node.Style.Overflow.ToString().ToLower()}; ");
                 }
 
-                if (node.StyleDisplay != DefaultYogaNode.StyleDisplay)
+                if (node.Style.Display != DefaultYogaNode.Style.Display)
                 {
-                    AppendString($"display: {node.StyleDisplay.ToString().ToLower()}; ");
+                    AppendString($"display: {node.Style.Display.ToString().ToLower()}; ");
                 }
 
-                AppendEdges("margin", node.StyleMargin);
-                AppendEdges("padding", node.StylePadding);
-                AppendEdges("border", node.StyleBorder);
+                AppendEdges("margin", node.Style.Margin);
+                AppendEdges("padding", node.Style.Padding);
+                AppendEdges("border", node.Style.Border);
 
-                AppendNumberIfNotAuto("width", node.StyleWidth);
-                AppendNumberIfNotAuto("height", node.StyleHeight);
-                AppendNumberIfNotAuto("max-width", node.StyleMaxWidth);
-                AppendNumberIfNotAuto("max-height", node.StyleMaxHeight);
-                AppendNumberIfNotAuto("min-width", node.StyleMinWidth);
-                AppendNumberIfNotAuto("min-height", node.StyleMinHeight);
+                AppendNumberIfNotAuto("width", node.Style.Width);
+                AppendNumberIfNotAuto("height", node.Style.Height);
+                AppendNumberIfNotAuto("max-width", node.Style.MaxWidth);
+                AppendNumberIfNotAuto("max-height", node.Style.MaxHeight);
+                AppendNumberIfNotAuto("min-width", node.Style.MinWidth);
+                AppendNumberIfNotAuto("min-height", node.Style.MinHeight);
 
-                if (node.StylePositionType != DefaultYogaNode.StylePositionType)
+                if (node.Style.PositionType != DefaultYogaNode.Style.PositionType)
                 {
-                    AppendString($"position: {node.StylePositionType.ToString().ToLower()}; ");
+                    AppendString($"position: {node.Style.PositionType.ToString().ToLower()}; ");
                 }
 
-                AppendEdgeIfNotUndefined("left", node.StylePosition, Edge.Left);
-                AppendEdgeIfNotUndefined("right", node.StylePosition, Edge.Right);
-                AppendEdgeIfNotUndefined("top", node.StylePosition, Edge.Top);
-                AppendEdgeIfNotUndefined("bottom", node.StylePosition, Edge.Bottom);
+                AppendEdgeIfNotUndefined("left", node.Style.Position, Edge.Left);
+                AppendEdgeIfNotUndefined("right", node.Style.Position, Edge.Right);
+                AppendEdgeIfNotUndefined("top", node.Style.Position, Edge.Top);
+                AppendEdgeIfNotUndefined("bottom", node.Style.Position, Edge.Bottom);
                 AppendString("\" ");
 
                 if (node.HasMeasureFunc)

@@ -41,7 +41,7 @@ namespace Yoga.Net.Tests.Typed
             Assert.AreEqual(10, child.LayoutMargin(Edge.Top));
             Assert.AreEqual(10, child.LayoutPadding(Edge.Top));
 
-            child.StyleDisplay = Display.None;
+            child.Style.Display = Display.None;
 
             YogaArrange.CalculateLayout(root, 100, 100, Direction.LTR);
 
