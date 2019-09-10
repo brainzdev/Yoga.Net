@@ -15,12 +15,12 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void dirtied()
         {
-            YogaNode root = YGNodeNew();
+            YogaNode root = new YogaNode();
             YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
+            YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
             //int dirtiedCount = 0;
             root.Context = 0;
@@ -40,22 +40,22 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void dirtied_propagation()
         {
-            YogaNode root = YGNodeNew();
+            YogaNode root = new YogaNode();
             YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YogaNode root_child0 = YGNodeNew();
+            YogaNode root_child0 = new YogaNode();
             YGNodeStyleSetWidth(root_child0, 50);
             YGNodeStyleSetHeight(root_child0, 20);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YogaNode root_child1 = YGNodeNew();
+            YogaNode root_child1 = new YogaNode();
             YGNodeStyleSetWidth(root_child1, 50);
             YGNodeStyleSetHeight(root_child1, 20);
             YGNodeInsertChild(root, root_child1, 1);
 
-            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
+            YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
             root.Context = 0;
             root.DirtiedFunc = _dirtied;
@@ -74,22 +74,22 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void dirtied_hierarchy()
         {
-            YogaNode root = YGNodeNew();
+            YogaNode root = new YogaNode();
             YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YogaNode root_child0 = YGNodeNew();
+            YogaNode root_child0 = new YogaNode();
             YGNodeStyleSetWidth(root_child0, 50);
             YGNodeStyleSetHeight(root_child0, 20);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YogaNode root_child1 = YGNodeNew();
+            YogaNode root_child1 = new YogaNode();
             YGNodeStyleSetWidth(root_child1, 50);
             YGNodeStyleSetHeight(root_child1, 20);
             YGNodeInsertChild(root, root_child1, 1);
 
-            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
+            YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
             root_child0.Context = 0;
             root_child0.DirtiedFunc = _dirtied;

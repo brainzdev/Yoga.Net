@@ -36,17 +36,11 @@
     <Compile Remove="Typed\YogaMeasureCacheTest.cs" />
     <Compile Remove="Typed\YogaMeasureModeTest.cs" />
     <Compile Remove="Typed\YogaMeasureTest.cs" />
-    <Compile Remove="Typed\YogaMinMaxDimensionTest.cs" />
-    <Compile Remove="Typed\YogaNodeChildTest.cs" />
-    <Compile Remove="Typed\YogaPaddingTest.cs" />
     <Compile Remove="Typed\YogaPercentageTest.cs" />
     <Compile Remove="Typed\YogaPersistenceTest.cs" />
     <Compile Remove="Typed\YogaRelayoutTest.cs" />
-    <Compile Remove="Typed\YogaRoundingFunctionTest.cs" />
     <Compile Remove="Typed\YogaRoundingMeasureFuncTest.cs" />
     <Compile Remove="Typed\YogaRoundingTest.cs" />
-    <Compile Remove="Typed\YogaSizeOverflowTest.cs" />
-    <Compile Remove="Typed\YogaTreeMutationTest.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -79,17 +73,11 @@
     <None Include="Typed\YogaMeasureCacheTest.cs" />
     <None Include="Typed\YogaMeasureModeTest.cs" />
     <None Include="Typed\YogaMeasureTest.cs" />
-    <None Include="Typed\YogaMinMaxDimensionTest.cs" />
-    <None Include="Typed\YogaNodeChildTest.cs" />
-    <None Include="Typed\YogaPaddingTest.cs" />
     <None Include="Typed\YogaPercentageTest.cs" />
     <None Include="Typed\YogaPersistenceTest.cs" />
     <None Include="Typed\YogaRelayoutTest.cs" />
-    <None Include="Typed\YogaRoundingFunctionTest.cs" />
     <None Include="Typed\YogaRoundingMeasureFuncTest.cs" />
     <None Include="Typed\YogaRoundingTest.cs" />
-    <None Include="Typed\YogaSizeOverflowTest.cs" />
-    <None Include="Typed\YogaTreeMutationTest.cs" />
   </ItemGroup>
 
   <ItemGroup>

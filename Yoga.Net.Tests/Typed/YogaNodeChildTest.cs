@@ -8,26 +8,35 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void reset_layout_when_child_removed()
         {
-            YogaNode root = YGNodeNew();
+            YogaNode root_child0;
+            YogaNode root = new YogaNode
+            {
+                Children =
+                {
+                    (root_child0 = new YogaNode
+                    {
+                        Style = new YogaStyle
+                        {
+                            Width  = 100,
+                            Height = 100
+                        }
+                    })
+                }
+            };
 
-            YogaNode root_child0 = YGNodeNew();
-            YGNodeStyleSetWidth(root_child0, 100);
-            YGNodeStyleSetHeight(root_child0, 100);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
+            Assert.AreEqual(0, root_child0.Layout.Left);
+            Assert.AreEqual(0, root_child0.Layout.Top);
+            Assert.AreEqual(100, root_child0.Layout.Width);
+            Assert.AreEqual(100, root_child0.Layout.Height);
 
-            Assert.AreEqual(0, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(0, YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(100, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(100, YGNodeLayoutGetHeight(root_child0));
+            root.RemoveChild(root_child0);
 
-            YGNodeRemoveChild(root, root_child0);
-
-            Assert.AreEqual(0, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(0, YGNodeLayoutGetTop(root_child0));
-            Assert.IsTrue(YGNodeLayoutGetWidth(root_child0).IsUndefined());
-            Assert.IsTrue(YGNodeLayoutGetHeight(root_child0).IsUndefined());
+            Assert.AreEqual(0, root_child0.Layout.Left);
+            Assert.AreEqual(0, root_child0.Layout.Top);
+            Assert.IsTrue(root_child0.Layout.Width.IsUndefined());
+            Assert.IsTrue(root_child0.Layout.Height.IsUndefined());
         }
     }
 }

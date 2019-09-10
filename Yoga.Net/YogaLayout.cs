@@ -7,10 +7,14 @@ namespace Yoga.Net
 {
     public class YogaLayout
     {
-        public readonly LTRBEdge Position = new LTRBEdge(0f);
         public float Width { get; set; } = float.NaN;
         public float Height { get; set; } = float.NaN;
+        public float Left => Position.Left;
+        public float Top => Position.Top;
+        public float Right => Position.Right;
+        public float Bottom => Position.Bottom;
 
+        internal readonly LTRBEdge Position = new LTRBEdge(0f);
         public readonly LTRBEdge Margin = new LTRBEdge(0f);
         public readonly LTRBEdge Border = new LTRBEdge(0f);
         public readonly LTRBEdge Padding = new LTRBEdge(0f);
@@ -138,10 +142,10 @@ namespace Yoga.Net
             return !Equals(left, right);
         }
 
-        public float this[int p]
+        public float this[Edge edge]
         {
-            get => Position[p];
-            set => Position[p] = value;
+            get => Position[edge];
+            set => Position[edge] = value;
         }
     }
 }

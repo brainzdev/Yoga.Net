@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using static Yoga.Net.YogaMath;
 
 namespace Yoga.Net.Tests.Typed
 {

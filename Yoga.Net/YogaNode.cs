@@ -337,7 +337,7 @@ namespace Yoga.Net
                 return Layout.MeasuredDimensions.Height;
 
             var baseline = baselineChild.Baseline(layoutContext);
-            return baseline + baselineChild.Layout.Position[(int)Edge.Top];
+            return baseline + baselineChild.Layout.Top;
         }
 
         public bool IsBaselineLayout()
@@ -858,7 +858,7 @@ namespace Yoga.Net
 
         public void SetLayoutPadding(float padding, Edge edge) => Layout.Padding[edge] = padding;
 
-        public void SetLayoutPosition(float position, int index) => Layout.Position[index] = position;
+        public void SetLayoutPosition(float position, int index) => Layout.Position[(Edge)index] = position;
 
         public void SetLayoutPosition(float position, Edge edge) => Layout.Position[edge] = position;
 
@@ -874,18 +874,18 @@ namespace Yoga.Net
             if (edge == Edge.Start)
             {
                 if (Layout.Direction == Direction.RTL)
-                    return instanceName[(int)Edge.Right];
-                return instanceName[(int)Edge.Left];
+                    return instanceName.Right;
+                return instanceName.Left;
             }
 
             if (edge == Edge.End)
             {
                 if (Layout.Direction == Direction.RTL)
-                    return instanceName[(int)Edge.Left];
-                return instanceName[(int)Edge.Right];
+                    return instanceName.Left;
+                return instanceName.Right;
             }
 
-            return instanceName[(int)edge];
+            return instanceName[edge];
         }
 
         public float PaddingAndBorderForAxis(FlexDirection axis, float widthSize) => 

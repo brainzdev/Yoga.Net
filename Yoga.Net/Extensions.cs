@@ -183,5 +183,8 @@ namespace Yoga.Net
 
         public static YogaValue Point(this float value) => new YogaValue(value, YogaUnit.Point);
         public static YogaValue Percent(this float value) => new YogaValue(value, YogaUnit.Percent);
+        public static YogaValue Point(this int value) => new YogaValue(value, YogaUnit.Point);
+        public static YogaValue Percent(this int value) => new YogaValue(value, YogaUnit.Percent);
+
     }
 }

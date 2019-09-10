@@ -55,7 +55,10 @@ namespace Yoga.Net
         public void CopyTo(YogaNode[] array, int arrayIndex) => _nodes.CopyTo(array, arrayIndex);
 
         /// <inheritdoc />
-        public bool Remove(YogaNode item) => _nodes.Remove(item);
+        public bool Remove(YogaNode item)
+        {
+            return _nodes.Remove(item);
+        }
 
         /// <inheritdoc />
         public int Count => _nodes.Count;

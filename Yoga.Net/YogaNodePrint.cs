@@ -109,8 +109,8 @@ namespace Yoga.Net
                 AppendString("layout=\"");
                 AppendString($"width: {node.Layout.Width:G};");
                 AppendString($" height: {node.Layout.Height:G};");
-                AppendString($" top: {node.Layout.Position[Edge.Top]:G};");
-                AppendString($" left: {node.Layout.Position[(int)Edge.Left]:G};");
+                AppendString($" top: {node.Layout.Top:G};");
+                AppendString($" left: {node.Layout.Left:G};");
                 if (!node.Layout.Margin.IsZero)
                     AppendString($" margin: {node.Layout.Margin};");
                 if (!node.Layout.Border.IsZero)

@@ -251,13 +251,13 @@ namespace Yoga.Net
 
         public static YogaValue YGNodeStyleGetMaxHeight(YogaNode node) => node.Style.MaxHeight;
 
-        public static float YGNodeLayoutGetLeft(YogaNode node) => node.Layout.Position[(int)Edge.Left];
+        public static float YGNodeLayoutGetLeft(YogaNode node) => node.Layout.Left;
 
-        public static float YGNodeLayoutGetTop(YogaNode node) => node.Layout.Position[(int)Edge.Top];
+        public static float YGNodeLayoutGetTop(YogaNode node) => node.Layout.Top;
 
-        public static float YGNodeLayoutGetRight(YogaNode node) => node.Layout.Position[(int)Edge.Right];
+        public static float YGNodeLayoutGetRight(YogaNode node) => node.Layout.Right;
 
-        public static float YGNodeLayoutGetBottom(YogaNode node) => node.Layout.Position[(int)Edge.Bottom];
+        public static float YGNodeLayoutGetBottom(YogaNode node) => node.Layout.Bottom;
 
         public static float YGNodeLayoutGetWidth(YogaNode node) => node.Layout.Width;
 

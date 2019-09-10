@@ -1370,7 +1370,7 @@ namespace Yoga.Net
                         if (performLayout)
                         {
                             child.SetLayoutPosition(
-                                childLayout.Position[(int)YogaArrange.Pos[(int)mainAxis]] +
+                                childLayout.Position[Pos[(int)mainAxis]] +
                                 collectedFlexItemsValues.MainDim,
                                 (int)YogaArrange.Pos[(int)mainAxis]);
                         }
@@ -1433,7 +1433,7 @@ namespace Yoga.Net
                     else if (performLayout)
                     {
                         child.SetLayoutPosition(
-                            childLayout.Position[(int)YogaArrange.Pos[(int)mainAxis]] +
+                            childLayout.Position[Pos[(int)mainAxis]] +
                             node.GetLeadingBorder(mainAxis) + leadingMainDim,
                             (int)YogaArrange.Pos[(int)mainAxis]);
                     }
@@ -1910,7 +1910,7 @@ namespace Yoga.Net
                             // If leading position is not defined or calculations result in Nan,
                             // default to border + margin
                             if (!isChildLeadingPosDefined ||
-                                child.Layout.Position[(int)YogaArrange.Pos[(int)crossAxis]].IsUndefined())
+                                child.Layout.Position[Pos[(int)crossAxis]].IsUndefined())
                             {
                                 child.SetLayoutPosition(
                                     node.GetLeadingBorder(crossAxis) +
@@ -2038,7 +2038,7 @@ namespace Yoga.Net
 
                             // And we apply the position
                             child.SetLayoutPosition(
-                                child.Layout.Position[(int)YogaArrange.Pos[(int)crossAxis]] + totalLineCrossDim +
+                                child.Layout.Position[Pos[(int)crossAxis]] + totalLineCrossDim +
                                 leadingCrossDim,
                                 (int)YogaArrange.Pos[(int)crossAxis]);
                         }
@@ -2360,7 +2360,7 @@ namespace Yoga.Net
                     {
                         child.SetLayoutPosition(
                             node.Layout.MeasuredDimensions[Dim[(int)crossAxis]] -
-                            child.Layout.Position[(int)YogaArrange.Pos[(int)crossAxis]] -
+                            child.Layout.Position[Pos[(int)crossAxis]] -
                             child.Layout.MeasuredDimensions[Dim[(int)crossAxis]],
                             (int)YogaArrange.Pos[(int)crossAxis]);
                     }
@@ -2842,8 +2842,8 @@ namespace Yoga.Net
             if (pointScaleFactor.IsZero())
                 return;
 
-            var nodeLeft = node.Layout.Position[(int)Edge.Left];
-            var nodeTop = node.Layout.Position[(int)Edge.Top];
+            var nodeLeft = node.Layout.Left;
+            var nodeTop = node.Layout.Top;
 
             var nodeWidth = node.Layout.Width;
             var nodeHeight = node.Layout.Height;
