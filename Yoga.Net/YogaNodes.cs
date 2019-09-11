@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using JetBrains.Annotations;
 
 namespace Yoga.Net
@@ -46,7 +47,26 @@ namespace Yoga.Net
         }
         
         /// <inheritdoc />
-        public void Clear() => _nodes.Clear();
+        public void Clear()
+        {
+            var childCount = _nodes.Count;
+            if (childCount == 0)
+                return;
+
+            var firstChild = _nodes[0];
+            if (firstChild.Owner == Owner)
+            {
+                // If the first child has this node as its owner, we assume that this child set is unique.
+                for (var i = 0; i < childCount; i++)
+                {
+                    var oldChild = _nodes[i];
+                    oldChild.Layout = new YogaNode().Layout; // layout is no longer valid
+                    oldChild.Owner  = null;
+                }
+            }
+            _nodes.Clear();
+            Owner.MarkDirtyAndPropagate();
+        }
 
         /// <inheritdoc />
         public bool Contains(YogaNode item) => _nodes.Contains(item);
@@ -57,7 +77,25 @@ namespace Yoga.Net
         /// <inheritdoc />
         public bool Remove(YogaNode item)
         {
-            return _nodes.Remove(item);
+            if (_nodes.Count == 0 || item == null)
+                return false;
+
+            // Children may be shared between parents, which is indicated by not having an
+            // owner. We only want to reset the child completely if it is owned exclusively by one node.
+            var childOwner = item.Owner;
+            if (_nodes.Contains(item) && _nodes.Remove(item))
+            {
+                if (Owner == childOwner)
+                {
+                    item.Layout = new YogaLayout(); // layout is no longer valid
+                    item.Owner  = null;
+                }
+
+                Owner.MarkDirtyAndPropagate();
+                return true;
+            }
+
+            return false;
         }
 
         /// <inheritdoc />
@@ -70,10 +108,34 @@ namespace Yoga.Net
         public int IndexOf(YogaNode item) => _nodes.IndexOf(item);
 
         /// <inheritdoc />
-        public void Insert(int index, YogaNode item) => _nodes.Insert(index, item);
+        public void Insert(int index, YogaNode item)
+        {
+            Debug.Assert( item.Owner == null, "Child already has a owner, it must be removed first.");
+            Debug.Assert( Owner.MeasureFunc == null, "Cannot add child: Nodes with measure functions cannot have children.");
+
+            _nodes.Insert(index, item);
+            item.Owner = Owner;
+            Owner.MarkDirtyAndPropagate();
+        }
 
         /// <inheritdoc />
-        public void RemoveAt(int index) => _nodes.RemoveAt(index);
+        public void RemoveAt(int index)
+        {
+            var item = _nodes[index];
+            if (item == null)
+                return;
+
+            // Children may be shared between parents, which is indicated by not having an
+            // owner. We only want to reset the child completely if it is owned exclusively by one node.
+            _nodes.RemoveAt(index);
+            if (Owner == item.Owner)
+            {
+                item.Layout = new YogaLayout(); // layout is no longer valid
+                item.Owner  = null;
+            }
+
+            Owner.MarkDirtyAndPropagate();
+        }
 
         /// <inheritdoc />
         public YogaNode this[int index]

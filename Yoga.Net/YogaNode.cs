@@ -163,53 +163,17 @@ namespace Yoga.Net
 
         public void InsertChild(YogaNode child, int index)
         {
-            Debug.Assert( child.Owner == null, "Child already has a owner, it must be removed first.");
-            Debug.Assert( MeasureFunc == null, "Cannot add child: Nodes with measure functions cannot have children.");
-
             _children.Insert(index, child);
-            child.Owner = this;
-            MarkDirtyAndPropagate();
         }
 
         public void RemoveChild(YogaNode excludedChild)
         {
-            if (_children.Count == 0)
-                return;
-
-            // Children may be shared between parents, which is indicated by not having an
-            // owner. We only want to reset the child completely if it is owned exclusively by one node.
-            var childOwner = excludedChild.Owner;
-            if (_children.Contains(excludedChild) && _children.Remove(excludedChild))
-            {
-                if (this == childOwner)
-                {
-                    excludedChild.Layout = new YogaLayout(); // layout is no longer valid
-                    excludedChild.Owner  = null;
-                }
-
-                MarkDirtyAndPropagate();
-            }
+            _children.Remove(excludedChild);
         }
 
         public void RemoveAllChildren()
         {
-            var childCount = _children.Count;
-            if (childCount == 0)
-                return;
-
-            var firstChild = _children[0];
-            if (firstChild.Owner == this)
-            {
-                // If the first child has this node as its owner, we assume that this child set is unique.
-                for (var i = 0; i < childCount; i++)
-                {
-                    var oldChild = _children[i];
-                    oldChild.Layout = new YogaNode().Layout; // layout is no longer valid
-                    oldChild.Owner  = null;
-                }
-            }
-            ClearChildren();
-            MarkDirtyAndPropagate();
+            _children.Clear();
         }
 
         public void SetChildren(IEnumerable<YogaNode> childs)
@@ -217,17 +181,7 @@ namespace Yoga.Net
             var newChildren = childs.ToList();
             if (newChildren.Count == 0)
             {
-                if (_children.Count > 0)
-                {
-                    foreach (var child in _children)
-                    {
-                        child.Layout = new YogaLayout();
-                        child.Owner  = null;
-                    }
-
-                    ClearChildren();
-                    MarkDirtyAndPropagate();
-                }
+                _children.Clear();
             }
             else
             {
@@ -244,7 +198,7 @@ namespace Yoga.Net
                     }
                 }
 
-                _children = new YogaNodes(newChildren);
+                _children = new YogaNodes(newChildren) { Owner = this };
                 foreach (var child in newChildren)
                     child.Owner = this;
 
@@ -463,243 +417,6 @@ namespace Yoga.Net
         public int ChildCount => _children.Count;
         public YogaNodes Children => _children;
         
-        /*
-        public void UpdateStyle<TEntity, T>(Expression<Func<TEntity, T>> outExpr, T value) where T : struct
-        {
-            var expr = (MemberExpression)outExpr.Body;
-            var prop = (PropertyInfo)expr.Member;
-            var propValue = (T)prop.GetValue(Style);
-
-            if (!EqualityComparer<T>.Default.Equals(propValue, value))
-            {
-                prop.SetValue(Style, value);
-                MarkDirtyAndPropagate();
-            }
-        }
-
-        public void UpdateStyleObject<TEntity, T>(Expression<Func<TEntity, T>> outExpr, T value) where T : class
-        {
-            var expr = (MemberExpression)outExpr.Body;
-            var prop = (PropertyInfo)expr.Member;
-            var propValue = (T)prop.GetValue(Style);
-
-            if (!EqualityComparer<T>.Default.Equals(propValue, value))
-            {
-                prop.SetValue(Style, value);
-                MarkDirtyAndPropagate();
-            }
-        }
-
-        public void UpdateIndexedStyleProp<TKey, TValue>(Values<TKey, TValue> values, int idx, TValue value) where TKey : struct, IConvertible
-        {
-            var propValue = values[idx];
-
-            if (!value.Equals(propValue))
-            {
-                values[idx] = value;
-                MarkDirtyAndPropagate();
-            }
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        public float StyleFlex
-        {
-            get => Style.Flex.IsUndefined() ? YogaValue.YGUndefined : Style.Flex;
-            set => UpdateStyle<YogaStyle, float>(s => s.Flex, value);
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        public float StyleFlexGrow
-        {
-            get => Style.FlexGrow.IsUndefined() ? YogaStyle.DefaultFlexGrow : Style.FlexGrow;
-            set => UpdateStyle<YogaStyle, float>(s => s.FlexGrow, value);
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        public float StyleFlexShrink
-        {
-            get => Style.FlexShrink.IsUndefined() ? YogaStyle.DefaultFlexShrink : Style.FlexShrink;
-            set => UpdateStyle<YogaStyle, float>(s => s.FlexShrink, value);
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        public Direction StyleDirection
-        {
-            get => Style.Direction;
-            set => UpdateStyle<YogaStyle, Direction>(s => s.Direction, value);
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        public FlexDirection StyleFlexDirection
-        {
-            get => Style.FlexDirection;
-            set => UpdateStyle<YogaStyle, FlexDirection>(s => s.FlexDirection, value);
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        public Justify StyleJustifyContent
-        {
-            get => Style.JustifyContent;
-            set => UpdateStyle<YogaStyle, Justify>(s => s.JustifyContent, value);
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        public YogaAlign StyleAlignContent
-        {
-            get => Style.AlignContent;
-            set => UpdateStyle<YogaStyle, YogaAlign>(s => s.AlignContent, value);
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        public YogaAlign StyleAlignItems
-        {
-            get => Style.AlignItems;
-            set => UpdateStyle<YogaStyle, YogaAlign>(s => s.AlignItems, value);
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        public YogaAlign StyleAlignSelf
-        {
-            get => Style.AlignSelf;
-            set => UpdateStyle<YogaStyle, YogaAlign>(s => s.AlignSelf, value);
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        public PositionType StylePositionType
-        {
-            get => Style.PositionType;
-            set => UpdateStyle<YogaStyle, PositionType>(s => s.PositionType, value);
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        public YogaValue StyleFlexBasis
-        {
-            get => Style.FlexBasis;
-            set => UpdateStyleObject<YogaStyle, YogaValue>(s => s.FlexBasis, value);
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        public Wrap StyleFlexWrap
-        {
-            get => Style.FlexWrap;
-            set => UpdateStyle<YogaStyle, Wrap>(s => s.FlexWrap, value);
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        public Overflow StyleOverflow
-        {
-            get => Style.Overflow;
-            set => UpdateStyle<YogaStyle, Overflow>(s => s.Overflow, value);
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        public Display StyleDisplay
-        {
-            get => Style.Display;
-            set => UpdateStyle<YogaStyle, Display>(s => s.Display, value);
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        public EdgesReadonly StylePosition => Style.Position;
-        public YogaValue StyleGetPosition(Edge edge) => Style.Position[edge];
-        public void StyleSetPosition(Edge edge, YogaValue value)
-        {
-            UpdateIndexedStyleProp(Style.Position, (int)edge, value);
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        public EdgesReadonly StyleMargin => Style.Margin;
-        public YogaValue StyleGetMargin(Edge edge) => Style.Margin[edge];
-        public void StyleSetMargin(Edge edge, YogaValue value)
-        {
-            UpdateIndexedStyleProp(Style.Margin, (int)edge, value);
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        public EdgesReadonly StylePadding => Style.Padding;
-        public YogaValue StyleGetPadding(Edge edge) => Style.Padding[edge];
-        public void StyleSetPadding(Edge edge, YogaValue value)
-        {
-            UpdateIndexedStyleProp(Style.Padding, (int)edge, value);
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        public EdgesReadonly StyleBorder => Style.Border;
-        public YogaValue StyleGetBorder(Edge edge) => Style.Border[edge].IsUndefined ? YogaValue.Undefined : Style.Border[edge];
-        public void StyleSetBorder(Edge edge, YogaValue value)
-        {
-            UpdateIndexedStyleProp(Style.Border, (int)edge, value);
-        }
-        */
-
-        /// <summary>
-        /// Yoga specific properties, not compatible with flexbox specification Aspect
-        /// ratio control the size of the undefined dimension of a node. Aspect ratio is
-        /// encoded as a floating point value width/height. e.g. A value of 2 leads to a
-        /// node with a width twice the size of its height while a value of 0.5 gives the
-        /// opposite effect.
-        ///
-        /// - On a node with a set width/height aspect ratio control the size of the
-        ///   unset dimension
-        /// - On a node with a set flex basis aspect ratio controls the size of the node
-        ///   in the cross axis if unset
-        /// - On a node with a measure function aspect ratio works as though the measure
-        ///   function measures the flex basis
-        /// - On a node with flex grow/shrink aspect ratio controls the size of the node
-        ///   in the cross axis if unset
-        /// - Aspect ratio takes min/max dimensions into account
-        /// </summary>
-        /*
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        public float StyleAspectRatio
-        {
-            get => Style.AspectRatio.IsUndefined() ? YogaValue.YGUndefined : Style.AspectRatio;
-            set => UpdateStyle<YogaStyle, float>(s => s.AspectRatio, value);
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        public YogaValue StyleWidth
-        {
-            get => Style.Width;
-            set => UpdateStyleObject<YogaStyle, YogaValue>(s => s.Width, value);
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        public YogaValue StyleHeight
-        {
-            get => Style.Height;
-            set => UpdateStyleObject<YogaStyle, YogaValue>(s => s.Height, value);
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        public YogaValue StyleMinWidth
-        {
-            get => Style.MinWidth;
-            set => UpdateStyleObject<YogaStyle, YogaValue>(s => s.MinWidth, value);
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        public YogaValue StyleMinHeight
-        {
-            get => Style.MinHeight;
-            set => UpdateStyleObject<YogaStyle, YogaValue>(s => s.MinHeight, value);
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        public YogaValue StyleMaxWidth
-        {
-            get => Style.MaxWidth;
-            set => UpdateStyleObject<YogaStyle, YogaValue>(s => s.MaxWidth, value);
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        public YogaValue StyleMaxHeight
-        {
-            get => Style.MaxHeight;
-            set => UpdateStyleObject<YogaStyle, YogaValue>(s => s.MaxHeight, value);
-        }
-        */
-
         public YogaValue[] GetResolvedDimensions() => _resolvedDimensions;
 
         public YogaValue GetResolvedDimension(Dimension index) => _resolvedDimensions[(int)index];
@@ -985,12 +702,6 @@ namespace Yoga.Net
                 return ownerDirection > Direction.Inherit ? ownerDirection : Direction.LTR;
 
             return Style.Direction;
-        }
-
-        void ClearChildren()
-        {
-            _children.Clear();
-            //children_.shrink_to_fit();
         }
 
         /// Replaces the occurrences of oldChild with newChild

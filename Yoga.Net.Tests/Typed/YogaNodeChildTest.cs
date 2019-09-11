@@ -31,7 +31,7 @@ namespace Yoga.Net.Tests.Typed
             Assert.AreEqual(100, root_child0.Layout.Width);
             Assert.AreEqual(100, root_child0.Layout.Height);
 
-            root.RemoveChild(root_child0);
+            root.Children.Remove(root_child0);
 
             Assert.AreEqual(0, root_child0.Layout.Left);
             Assert.AreEqual(0, root_child0.Layout.Top);
