@@ -36,10 +36,6 @@
     <Compile Remove="Typed\YogaMeasureCacheTest.cs" />
     <Compile Remove="Typed\YogaMeasureModeTest.cs" />
     <Compile Remove="Typed\YogaMeasureTest.cs" />
-    <Compile Remove="Typed\YogaPercentageTest.cs" />
-    <Compile Remove="Typed\YogaPersistenceTest.cs" />
-    <Compile Remove="Typed\YogaRelayoutTest.cs" />
-    <Compile Remove="Typed\YogaRoundingMeasureFuncTest.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -72,10 +68,6 @@
     <None Include="Typed\YogaMeasureCacheTest.cs" />
     <None Include="Typed\YogaMeasureModeTest.cs" />
     <None Include="Typed\YogaMeasureTest.cs" />
-    <None Include="Typed\YogaPercentageTest.cs" />
-    <None Include="Typed\YogaPersistenceTest.cs" />
-    <None Include="Typed\YogaRelayoutTest.cs" />
-    <None Include="Typed\YogaRoundingMeasureFuncTest.cs" />
   </ItemGroup>
 
   <ItemGroup>

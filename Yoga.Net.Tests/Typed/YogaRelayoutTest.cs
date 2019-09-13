@@ -1,5 +1,7 @@
 using NUnit.Framework;
 
+using static Yoga.Net.YogaBuild;
+
 namespace Yoga.Net.Tests.Typed
 {
     [TestFixture]
@@ -9,15 +11,14 @@ namespace Yoga.Net.Tests.Typed
         public void dont_cache_computed_flex_basis_between_layouts()
         {
             YogaConfig config = new YogaConfig();
-            YGConfigSetExperimentalFeatureEnabled(config, ExperimentalFeature.WebFlexBasis, true);
+            config.ExperimentalFeatures[(int)ExperimentalFeature.WebFlexBasis] = true;
 
-            YogaNode root = new YogaNode(config);
-            YGNodeStyleSetHeightPercent(root, 100);
-            YGNodeStyleSetWidthPercent(root, 100);
-
-            YogaNode root_child0 = new YogaNode(config);
-            YGNodeStyleSetFlexBasisPercent(root_child0, 100);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0;
+            YogaNode root = Node(
+                    config: config,
+                    height: 100.Percent(),
+                    width: 100.Percent())
+               .AddChild(root_child0 = Node(config, flexBasis: 100.Percent()));
 
             YogaArrange.CalculateLayout(root, 100, YogaValue.YGUndefined, Direction.LTR);
             YogaArrange.CalculateLayout(root, 100, 100, Direction.LTR);
@@ -28,17 +29,14 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void recalculate_resolvedDimonsion_onchange()
         {
-            YogaNode root = new YogaNode();
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeStyleSetMinHeight(root_child0, 10);
-            YGNodeStyleSetMaxHeight(root_child0, 10);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0;
+            YogaNode root = Node()
+               .AddChild(root_child0 = Node(minHeight: 10, maxHeight: 10));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
             Assert.AreEqual(10, root_child0.Layout.Height);
 
-            YGNodeStyleSetMinHeight(root_child0, YogaValue.YGUndefined);
+            root_child0.Style.MinHeight = YogaValue.YGUndefined;
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
             Assert.AreEqual(0, root_child0.Layout.Height);

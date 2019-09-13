@@ -1,5 +1,7 @@
 using NUnit.Framework;
 
+using static Yoga.Net.YogaBuild;
+
 namespace Yoga.Net.Tests.Typed
 {
     [TestFixture]
@@ -8,21 +10,13 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void cloning_shared_root()
         {
-            YogaConfig config = new YogaConfig();
-            YGConfigSetPrintTreeFlag(config, true);
+            YogaConfig config = new YogaConfig {PrintTree = true};
 
-            YogaNode root = new YogaNode(config);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
+            YogaNode root_child0, root_child1;
+            YogaNode root = Node(config, width: 100, height: 100)
+                           .AddChild(root_child0 = Node(flexGrow: 1, flexBasis: 50))
+                           .AddChild(root_child1 = Node(flexGrow: 1));
 
-            YogaNode root_child0 = new YogaNode(config);
-            YGNodeStyleSetFlexGrow(root_child0, 1);
-            YGNodeStyleSetFlexBasis(root_child0, 50);
-            YGNodeInsertChild(root, root_child0, 0);
-
-            YogaNode root_child1 = new YogaNode(config);
-            YGNodeStyleSetFlexGrow(root_child1, 1);
-            YGNodeInsertChild(root, root_child1, 1);
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
             Assert.AreEqual(0, root.Layout.Left);
@@ -41,7 +35,7 @@ namespace Yoga.Net.Tests.Typed
             Assert.AreEqual(25, root_child1.Layout.Height);
 
             YogaNode root2 = YogaNode.Clone(root);
-            YGNodeStyleSetWidth(root2, 100);
+            root2.Style.Width = 100;
 
             Assert.AreEqual(2, root.ChildCount);
             // The children should have referential equality at this point.
@@ -55,12 +49,12 @@ namespace Yoga.Net.Tests.Typed
             Assert.AreEqual(root_child0, root2.Children[0]);
             Assert.AreEqual(root_child1, root2.Children[1]);
 
-            YGNodeStyleSetWidth(root2, 150);
-            YGNodeStyleSetHeight(root2, 200);
+            root2.Style.Width = 150;
+            root2.Style.Height = 200;
             YogaArrange.CalculateLayout(root2, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
             Assert.AreEqual(2, root2.ChildCount);
-            // Relayout with changed input should result in cloned children.
+            // Re-layout with changed input should result in cloned children.
             YogaNode root2_child0 = root2.Children[0];
             YogaNode root2_child1 = root2.Children[1];
 
@@ -103,37 +97,37 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void mutating_children_of_a_clone_clones()
         {
-            YogaConfig config = new YogaConfig();
-            YGConfigSetPrintTreeFlag(config, true);
+            YogaConfig config = new YogaConfig
+                { PrintTree = true };
 
-            YogaNode root = new YogaNode(config);
-            Assert.AreEqual(0, YGNodeGetChildCount(root));
+            YogaNode root = Node(config);
+            Assert.AreEqual(0, root.ChildCount);
 
             YogaNode root2 = YogaNode.Clone(root);
             Assert.AreEqual(0, root.ChildCount);
 
             YogaNode root2_child0 = new YogaNode(config);
-            YGNodeInsertChild(root2, root2_child0, 0);
+            root2.Children.Add(root2_child0);
 
-            Assert.AreEqual(0, YGNodeGetChildCount(root));
-            Assert.AreEqual(1, root.ChildCount);
+            Assert.AreEqual(0, root.ChildCount);
+            Assert.AreEqual(1, root2.ChildCount);
 
-            YogaNode root3 = YGNodeClone(root2);
-            Assert.AreEqual(1, root.ChildCount);
-            Assert.AreEqual(1, YGNodeGetChildCount(root3));
+            YogaNode root3 = YogaNode.Clone(root2);
+            Assert.AreEqual(1, root2.ChildCount);
+            Assert.AreEqual(1, root3.ChildCount);
             Assert.AreEqual(root2.Children[0], root3.Children[0]);
 
             YogaNode root3_child1 = new YogaNode(config);
-            YGNodeInsertChild(root3, root3_child1, 1);
-            Assert.AreEqual(1, root.ChildCount);
-            Assert.AreEqual(2, YGNodeGetChildCount(root3));
+            root3.Children.Add(root3_child1);
+            Assert.AreEqual(1, root2.ChildCount);
+            Assert.AreEqual(2, root3.ChildCount);
             Assert.AreEqual(root3_child1, root3.Children[1]);
             Assert.IsFalse(ReferenceEquals(root2.Children[0], root3.Children[1]));
 
-            YogaNode root4 = YGNodeClone(root3);
+            YogaNode root4 = YogaNode.Clone(root3);
             Assert.AreEqual(root3_child1, root4.Children[1]);
 
-            YGNodeRemoveChild(root4, root3_child1);
+            root4.Children.Remove(root3_child1);
             Assert.AreEqual(2, root3.ChildCount);
             Assert.AreEqual(1, root4.ChildCount);
             //Assert.IsFalse(ReferenceEquals(root3.Children[0], root4.Children[0]));
@@ -142,48 +136,34 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void cloning_two_levels()
         {
-            YogaConfig config = new YogaConfig();
-            YGConfigSetPrintTreeFlag(config, true);
+            YogaConfig config = new YogaConfig {PrintTree = true};
 
-            YogaNode root = new YogaNode(config);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
+            YogaNode root_child0, root_child1, root_child1_0, root_child1_1;
+            YogaNode root =
+                Node(config, width: 100, height: 100)
+                   .AddChild(root_child0 = Node(config, flexGrow: 1, flexBasis: 15))
+                   .AddChild(root_child1 = Node(config, flexGrow: 1)
+                                     .AddChild(root_child1_0 = Node(config, flexBasis: 10, flexGrow: 1))
+                                     .AddChild(root_child1_1 = Node(config, flexBasis: 25)));
 
-            YogaNode root_child0 = new YogaNode(config);
-            YGNodeStyleSetFlexGrow(root_child0, 1);
-            YGNodeStyleSetFlexBasis(root_child0, 15);
-            YGNodeInsertChild(root, root_child0, 0);
-
-            YogaNode root_child1 = new YogaNode(config);
-            YGNodeStyleSetFlexGrow(root_child1, 1);
-            YGNodeInsertChild(root, root_child1, 1);
-
-            YogaNode root_child1_0 = new YogaNode(config);
-            YGNodeStyleSetFlexBasis(root_child1_0, 10);
-            YGNodeStyleSetFlexGrow(root_child1_0, 1);
-            YGNodeInsertChild(root_child1, root_child1_0, 0);
-
-            YogaNode root_child1_1 = new YogaNode(config);
-            YGNodeStyleSetFlexBasis(root_child1_1, 25);
-            YGNodeInsertChild(root_child1, root_child1_1, 1);
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
             Assert.AreEqual(40, root_child0.Layout.Height);
             Assert.AreEqual(60, root_child1.Layout.Height);
-            Assert.AreEqual(35, YGNodeLayoutGetHeight(root_child1_0));
-            Assert.AreEqual(25, YGNodeLayoutGetHeight(root_child1_1));
+            Assert.AreEqual(35, root_child1_0.Layout.Height);
+            Assert.AreEqual(25, root_child1_1.Layout.Height);
 
-            YogaNode root2_child0 = YGNodeClone(root_child0);
-            YogaNode root2_child1 = YGNodeClone(root_child1);
+            YogaNode root2_child0 = YogaNode.Clone(root_child0);
+            YogaNode root2_child1 = YogaNode.Clone(root_child1);
             YogaNode root2 = YogaNode.Clone(root);
 
-            YGNodeStyleSetFlexGrow(root2_child0, 0);
-            YGNodeStyleSetFlexBasis(root2_child0, 40);
+            root2_child0.Style.FlexGrow = 0;
+            root2_child0.Style.FlexBasis = 40;
 
-            YGNodeRemoveAllChildren(root2);
-            YGNodeInsertChild(root2, root2_child0, 0);
-            YGNodeInsertChild(root2, root2_child1, 1);
+            root2.Children.Clear();
+            root2.Children.Add(root2_child0);
+            root2.Children.Add(root2_child1);
             Assert.AreEqual(2, root.ChildCount);
 
             YogaArrange.CalculateLayout(root2, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
@@ -208,16 +188,12 @@ namespace Yoga.Net.Tests.Typed
         {
             //int initialInstanceCount = YGNodeGetInstanceCount();
 
-            YogaConfig config = new YogaConfig();
-            YGConfigSetPrintTreeFlag(config, true);
+            YogaConfig config = new YogaConfig {PrintTree = true};
 
-            YogaNode root = new YogaNode(config);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-            YogaNode root_child0 = new YogaNode(config);
-            YGNodeInsertChild(root, root_child0, 0);
-            YogaNode root_child1 = new YogaNode(config);
-            YGNodeInsertChild(root, root_child1, 1);
+            YogaNode root_child0, root_child1;
+            YogaNode root = Node(config, width: 100, height: 100)
+                           .AddChild(root_child0 = Node(config))
+                           .AddChild(root_child1 = Node(config));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -225,7 +201,6 @@ namespace Yoga.Net.Tests.Typed
 
             // Freeing the original root should be safe as long as we don't free its
             // children.
-
 
             YogaArrange.CalculateLayout(root2, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 

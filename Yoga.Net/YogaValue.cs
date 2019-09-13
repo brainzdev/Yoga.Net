@@ -88,13 +88,17 @@ namespace Yoga.Net
             }
         }
 
-        public static bool operator ==([NotNull] YogaValue left, YogaValue right)
+        public static bool operator ==(YogaValue left, YogaValue right)
         {
+            if (ReferenceEquals(left, right)) return true;
+            if (ReferenceEquals(null, left) || ReferenceEquals(null, right)) return false;
             return left.Equals(right);
         }
 
-        public static bool operator !=([NotNull] YogaValue left, YogaValue right)
+        public static bool operator !=(YogaValue left, YogaValue right)
         {
+            if (ReferenceEquals(left, right)) return false;
+            if (ReferenceEquals(null, left) || ReferenceEquals(null, right)) return true;
             return !left.Equals(right);
         }
 
