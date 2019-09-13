@@ -32,10 +32,6 @@
     <Compile Remove="Typed\YogaJustifyContentTest.cs" />
     <Compile Remove="Typed\YogaLayoutDiffingTest.cs" />
     <Compile Remove="Typed\YogaLoggerTest.cs" />
-    <Compile Remove="Typed\YogaMarginTest.cs" />
-    <Compile Remove="Typed\YogaMeasureCacheTest.cs" />
-    <Compile Remove="Typed\YogaMeasureModeTest.cs" />
-    <Compile Remove="Typed\YogaMeasureTest.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -64,10 +60,6 @@
     <None Include="Typed\YogaJustifyContentTest.cs" />
     <None Include="Typed\YogaLayoutDiffingTest.cs" />
     <None Include="Typed\YogaLoggerTest.cs" />
-    <None Include="Typed\YogaMarginTest.cs" />
-    <None Include="Typed\YogaMeasureCacheTest.cs" />
-    <None Include="Typed\YogaMeasureModeTest.cs" />
-    <None Include="Typed\YogaMeasureTest.cs" />
   </ItemGroup>
 
   <ItemGroup>

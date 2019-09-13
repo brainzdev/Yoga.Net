@@ -29,12 +29,16 @@ namespace Yoga.Net
             YogaValue left = null,
             YogaValue top = null,
             YogaValue right = null,
-            YogaValue bottom = null)
+            YogaValue bottom = null,
+            YogaValue start = null,
+            YogaValue end = null)
         {
             Left   = left ?? YogaValue.YGUndefined;
             Top    = top ?? YogaValue.YGUndefined;
             Right  = right ?? YogaValue.YGUndefined;
             Bottom = bottom ?? YogaValue.YGUndefined;
+            Start  = start ?? YogaValue.YGUndefined;
+            End    = end ?? YogaValue.YGUndefined;
         }
 
         public Edges(Edges other)

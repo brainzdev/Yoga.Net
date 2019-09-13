@@ -1,5 +1,7 @@
 using NUnit.Framework;
 
+using static Yoga.Net.YogaBuild;
+
 namespace Yoga.Net.Tests.Typed
 {
     [TestFixture]
@@ -14,7 +16,7 @@ namespace Yoga.Net.Tests.Typed
         {
             var nodeContext = node.Context;
 
-            int measureCount = nodeContext == null ? 0 : (int)nodeContext;
+            int measureCount = (int?)nodeContext ?? 0;
             measureCount++;
             node.Context = measureCount;
 
@@ -53,16 +55,10 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void dont_measure_single_grow_shrink_child()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode();
+            YogaNode root_child0;
+            YogaNode root = Node(width: 100, height: 100)
+               .AddChild(root_child0 = Node(measureFunc:_measure, flexGrow:1, flexShrink:1));
             root_child0.Context = 0;
-            YGNodeSetMeasureFunc(root_child0, _measure);
-            YGNodeStyleSetFlexGrow(root_child0, 1);
-            YGNodeStyleSetFlexShrink(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -72,16 +68,12 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void measure_absolute_child_with_no_constraints()
         {
-            YogaNode root = new YogaNode();
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeInsertChild(root, root_child0, 0);
-
-            YogaNode root_child0_child0 = new YogaNode();
-            YGNodeStyleSetPositionType(root_child0_child0, PositionType.Absolute);
+            YogaNode root_child0, root_child0_child0;
+            YogaNode root = Node()
+               .AddChild(root_child0 = Node()
+                   .AddChild(root_child0_child0 = Node(positionType:PositionType.Absolute, measureFunc:_measure))
+                );
             root_child0_child0.Context = 0;
-            YGNodeSetMeasureFunc(root_child0_child0, _measure);
-            YGNodeInsertChild(root_child0, root_child0_child0, 0);
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -91,19 +83,10 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void dont_measure_when_min_equals_max()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode();
+            YogaNode root_child0;
+            YogaNode root = Node(alignItems: YogaAlign.FlexStart, width: 100, height: 100)
+               .AddChild(root_child0 = Node(measureFunc:_measure, minWidth:10, maxWidth:10, minHeight:10, maxHeight:10));
             root_child0.Context = 0;
-            YGNodeSetMeasureFunc(root_child0, _measure);
-            YGNodeStyleSetMinWidth(root_child0, 10);
-            YGNodeStyleSetMaxWidth(root_child0, 10);
-            YGNodeStyleSetMinHeight(root_child0, 10);
-            YGNodeStyleSetMaxHeight(root_child0, 10);
-            YGNodeInsertChild(root, root_child0, 0);
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -117,19 +100,10 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void dont_measure_when_min_equals_max_percentages()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode();
+            YogaNode root_child0;
+            YogaNode root = Node(alignItems: YogaAlign.FlexStart, width: 100, height: 100)
+               .AddChild(root_child0 = Node(measureFunc:_measure, minWidth:10, maxWidth:10, minHeight:10, maxHeight:10));
             root_child0.Context = 0;
-            YGNodeSetMeasureFunc(root_child0, _measure);
-            YGNodeStyleSetMinWidthPercent(root_child0, 10);
-            YGNodeStyleSetMaxWidthPercent(root_child0, 10);
-            YGNodeStyleSetMinHeightPercent(root_child0, 10);
-            YGNodeStyleSetMaxHeightPercent(root_child0, 10);
-            YGNodeInsertChild(root, root_child0, 0);
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -144,14 +118,9 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void measure_nodes_with_margin_auto_and_stretch()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetWidth(root, 500);
-            YGNodeStyleSetHeight(root, 500);
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeSetMeasureFunc(root_child0, _measure);
-            YGNodeStyleSetMarginAuto(root_child0, Edge.Left);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0;
+            YogaNode root = Node(width: 500, height: 500)
+               .AddChild(root_child0 = Node(measureFunc:_measure, margin:new Edges(left:YogaValue.Auto)));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -164,19 +133,10 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void dont_measure_when_min_equals_max_mixed_width_percent()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode();
+            YogaNode root_child0;
+            YogaNode root = Node(alignItems:YogaAlign.FlexStart, width: 100, height: 100)
+               .AddChild(root_child0 = Node(measureFunc:_measure, minWidth:10.Percent(), maxWidth:10.Percent(), minHeight:10, maxHeight:10 ));
             root_child0.Context = 0;
-            YGNodeSetMeasureFunc(root_child0, _measure);
-            YGNodeStyleSetMinWidthPercent(root_child0, 10);
-            YGNodeStyleSetMaxWidthPercent(root_child0, 10);
-            YGNodeStyleSetMinHeight(root_child0, 10);
-            YGNodeStyleSetMaxHeight(root_child0, 10);
-            YGNodeInsertChild(root, root_child0, 0);
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -190,19 +150,10 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void dont_measure_when_min_equals_max_mixed_height_percent()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode();
+            YogaNode root_child0;
+            YogaNode root = Node(alignItems:YogaAlign.FlexStart, width: 100, height: 100)
+               .AddChild(root_child0 = Node(measureFunc:_measure, minWidth:10, maxWidth:10, minHeight:10.Percent(), maxHeight:10.Percent()));
             root_child0.Context = 0;
-            YGNodeSetMeasureFunc(root_child0, _measure);
-            YGNodeStyleSetMinWidth(root_child0, 10);
-            YGNodeStyleSetMaxWidth(root_child0, 10);
-            YGNodeStyleSetMinHeightPercent(root_child0, 10);
-            YGNodeStyleSetMaxHeightPercent(root_child0, 10);
-            YGNodeInsertChild(root, root_child0, 0);
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -216,14 +167,9 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void measure_enough_size_should_be_in_single_line()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetWidth(root, 100);
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeStyleSetAlignSelf(root_child0, YogaAlign.FlexStart);
-            YGNodeSetMeasureFunc(root_child0, _simulate_wrapping_text);
-
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0;
+            YogaNode root = Node(width: 100)
+               .AddChild(root_child0 = Node(measureFunc:_simulate_wrapping_text, alignSelf:YogaAlign.FlexStart));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -234,14 +180,9 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void measure_not_enough_size_should_wrap()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetWidth(root, 55);
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeStyleSetAlignSelf(root_child0, YogaAlign.FlexStart);
-            //  YGNodeSetMeasureFunc(root_child0, _simulate_wrapping_text);
-            YGNodeSetMeasureFunc(root_child0, _simulate_wrapping_text);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0;
+            YogaNode root = Node(width: 55)
+               .AddChild(root_child0 = Node(measureFunc:_simulate_wrapping_text, alignSelf:YogaAlign.FlexStart));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -252,18 +193,10 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void measure_zero_space_should_grow()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetHeight(root, 200);
-            YGNodeStyleSetFlexDirection(root, FlexDirection.Column);
-            YGNodeStyleSetFlexGrow(root, 0);
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeStyleSetFlexDirection(root_child0, FlexDirection.Column);
-            YGNodeStyleSetPadding(root_child0, Edge.All, 100);
+            YogaNode root_child0;
+            YogaNode root = Node(height: 200, flexDirection:FlexDirection.Column, flexGrow:0)
+               .AddChild(root_child0 = Node(flexDirection:FlexDirection.Column, padding:new Edges(100), measureFunc:_measure));
             root_child0.Context = 0;
-            YGNodeSetMeasureFunc(root_child0, _measure);
-
-            YGNodeInsertChild(root, root_child0, 0);
 
             YogaArrange.CalculateLayout(root, 282, YogaValue.YGUndefined, Direction.LTR);
 
@@ -276,24 +209,11 @@ namespace Yoga.Net.Tests.Typed
         {
             YogaConfig config = new YogaConfig();
 
-            YogaNode root = new YogaNode(config);
-            YGNodeStyleSetFlexDirection(root, FlexDirection.Row);
-            YGNodeStyleSetPadding(root, Edge.Left, 25);
-            YGNodeStyleSetPadding(root, Edge.Top, 25);
-            YGNodeStyleSetPadding(root, Edge.Right, 25);
-            YGNodeStyleSetPadding(root, Edge.Bottom, 25);
-            YGNodeStyleSetWidth(root, 50);
-            YGNodeStyleSetHeight(root, 50);
+            YogaNode root_child0, root_child1;
+            YogaNode root = Node(config, flexDirection: FlexDirection.Row, padding: new Edges(25), width: 50, height: 50)
+                           .AddChild(root_child0 = Node(config, measureFunc: _simulate_wrapping_text))
+                           .AddChild(root_child1 = Node(config, width:5, height:5));
 
-            YogaNode root_child0 = new YogaNode(config);
-            YGNodeSetMeasureFunc(root_child0, _simulate_wrapping_text);
-            //  YGNodeSetMeasureFunc(root_child0, _simulate_wrapping_text);
-            YGNodeInsertChild(root, root_child0, 0);
-
-            YogaNode root_child1 = new YogaNode(config);
-            YGNodeStyleSetWidth(root_child1, 5);
-            YGNodeStyleSetHeight(root_child1, 5);
-            YGNodeInsertChild(root, root_child1, 1);
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
             Assert.AreEqual(0, root.Layout.Left);
@@ -317,21 +237,11 @@ namespace Yoga.Net.Tests.Typed
         {
             YogaConfig config = new YogaConfig();
 
-            YogaNode root = new YogaNode(config);
-            YGNodeStyleSetMargin(root, Edge.Top, 20);
-            YGNodeStyleSetPadding(root, Edge.All, 25);
-            YGNodeStyleSetWidth(root, 50);
-            YGNodeStyleSetHeight(root, 50);
+            YogaNode root_child0, root_child1;
+            YogaNode root = Node(config, margin: new Edges(top: 20), padding: new Edges(25), width: 50, height: 50)
+                           .AddChild(root_child0 = Node(config, measureFunc: _simulate_wrapping_text))
+                           .AddChild(root_child1 = Node(config, width:5, height:5));
 
-            YogaNode root_child0 = new YogaNode(config);
-            YGNodeSetMeasureFunc(root_child0, _simulate_wrapping_text);
-            //  YGNodeSetMeasureFunc(root_child0, _simulate_wrapping_text);
-            YGNodeInsertChild(root, root_child0, 0);
-
-            YogaNode root_child1 = new YogaNode(config);
-            YGNodeStyleSetWidth(root_child1, 5);
-            YGNodeStyleSetHeight(root_child1, 5);
-            YGNodeInsertChild(root, root_child1, 1);
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
             Assert.AreEqual(0, root.Layout.Left);
@@ -355,21 +265,11 @@ namespace Yoga.Net.Tests.Typed
         {
             YogaConfig config = new YogaConfig();
 
-            YogaNode root = new YogaNode(config);
-            YGNodeStyleSetFlexDirection(root, FlexDirection.Row);
-            YGNodeStyleSetMargin(root, Edge.Top, 20);
-            YGNodeStyleSetWidth(root, 50);
-            YGNodeStyleSetHeight(root, 50);
+            YogaNode root_child0, root_child1;
+            YogaNode root = Node(flexDirection: FlexDirection.Row, margin: new Edges(top: 20), width: 50, height: 50)
+                           .AddChild(root_child0 = Node(config, measureFunc: _simulate_wrapping_text))
+                           .AddChild(root_child1 = Node(config, width:5, height:5));
 
-            YogaNode root_child0 = new YogaNode(config);
-            //  YGNodeSetMeasureFunc(root_child0, _simulate_wrapping_text);
-            YGNodeSetMeasureFunc(root_child0, _simulate_wrapping_text);
-            YGNodeInsertChild(root, root_child0, 0);
-
-            YogaNode root_child1 = new YogaNode(config);
-            YGNodeStyleSetWidth(root_child1, 5);
-            YGNodeStyleSetHeight(root_child1, 5);
-            YGNodeInsertChild(root, root_child1, 1);
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
             Assert.AreEqual(0, root.Layout.Left);
@@ -393,21 +293,11 @@ namespace Yoga.Net.Tests.Typed
         {
             YogaConfig config = new YogaConfig();
 
-            YogaNode root = new YogaNode(config);
-            YGNodeStyleSetFlexDirection(root, FlexDirection.Row);
-            YGNodeStyleSetMargin(root, Edge.Top, 20);
-            YGNodeStyleSetWidth(root, 50);
-            YGNodeStyleSetHeight(root, 50);
-            YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
+            YogaNode root_child0, root_child1;
+            YogaNode root = Node(config, flexDirection: FlexDirection.Row, margin: new Edges(top: 20), width: 50, height: 50, alignItems:YogaAlign.FlexStart)
+                           .AddChild(root_child0 = Node(config, measureFunc: _simulate_wrapping_text))
+                           .AddChild(root_child1 = Node(config, width:5, height:5));
 
-            YogaNode root_child0 = new YogaNode(config);
-            YGNodeSetMeasureFunc(root_child0, _simulate_wrapping_text);
-            YGNodeInsertChild(root, root_child0, 0);
-
-            YogaNode root_child1 = new YogaNode(config);
-            YGNodeStyleSetWidth(root_child1, 5);
-            YGNodeStyleSetHeight(root_child1, 5);
-            YGNodeInsertChild(root, root_child1, 1);
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
             Assert.AreEqual(0, root.Layout.Left);
@@ -431,22 +321,11 @@ namespace Yoga.Net.Tests.Typed
         {
             YogaConfig config = new YogaConfig();
 
-            YogaNode root = new YogaNode(config);
-            YGNodeStyleSetMargin(root, Edge.Top, 20);
-            YGNodeStyleSetPadding(root, Edge.All, 25);
-            YGNodeStyleSetWidth(root, 50);
-            YGNodeStyleSetHeight(root, 50);
+            YogaNode root_child0, root_child1;
+            YogaNode root = Node(margin: new Edges(top: 20), padding:new Edges(25), width: 50, height: 50)
+                           .AddChild(root_child0 = Node(config, measureFunc: _simulate_wrapping_text, width:10, height:10))
+                           .AddChild(root_child1 = Node(config, width:5, height:5));
 
-            YogaNode root_child0 = new YogaNode(config);
-            YGNodeSetMeasureFunc(root_child0, _simulate_wrapping_text);
-            YGNodeStyleSetWidth(root_child0, 10);
-            YGNodeStyleSetHeight(root_child0, 10);
-            YGNodeInsertChild(root, root_child0, 0);
-
-            YogaNode root_child1 = new YogaNode(config);
-            YGNodeStyleSetWidth(root_child1, 5);
-            YGNodeStyleSetHeight(root_child1, 5);
-            YGNodeInsertChild(root, root_child1, 1);
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
             Assert.AreEqual(0, root.Layout.Left);
@@ -470,21 +349,11 @@ namespace Yoga.Net.Tests.Typed
         {
             YogaConfig config = new YogaConfig();
 
-            YogaNode root = new YogaNode(config);
-            YGNodeStyleSetMargin(root, Edge.Top, 20);
-            YGNodeStyleSetPadding(root, Edge.All, 25);
-            YGNodeStyleSetWidth(root, 50);
-            YGNodeStyleSetHeight(root, 50);
+            YogaNode root_child0, root_child1;
+            YogaNode root = Node(margin: new Edges(top: 20), padding:new Edges(25), width: 50, height: 50)
+                           .AddChild(root_child0 = Node(config, measureFunc: _simulate_wrapping_text, flexShrink:1))
+                           .AddChild(root_child1 = Node(config, width:5, height:5));
 
-            YogaNode root_child0 = new YogaNode(config);
-            YGNodeSetMeasureFunc(root_child0, _simulate_wrapping_text);
-            YGNodeStyleSetFlexShrink(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
-
-            YogaNode root_child1 = new YogaNode(config);
-            YGNodeStyleSetWidth(root_child1, 5);
-            YGNodeStyleSetHeight(root_child1, 5);
-            YGNodeInsertChild(root, root_child1, 1);
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
             Assert.AreEqual(0, root.Layout.Left);
@@ -508,20 +377,11 @@ namespace Yoga.Net.Tests.Typed
         {
             YogaConfig config = new YogaConfig();
 
-            YogaNode root = new YogaNode(config);
-            YGNodeStyleSetMargin(root, Edge.Top, 20);
-            YGNodeStyleSetWidth(root, 50);
-            YGNodeStyleSetHeight(root, 50);
+            YogaNode root_child0, root_child1;
+            YogaNode root = Node(margin: new Edges(top: 20), width: 50, height: 50)
+                           .AddChild(root_child0 = Node(config, measureFunc: _simulate_wrapping_text, flexShrink:1))
+                           .AddChild(root_child1 = Node(config, width:5, height:5));
 
-            YogaNode root_child0 = new YogaNode(config);
-            YGNodeSetMeasureFunc(root_child0, _simulate_wrapping_text);
-            YGNodeStyleSetFlexShrink(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
-
-            YogaNode root_child1 = new YogaNode(config);
-            YGNodeStyleSetWidth(root_child1, 5);
-            YGNodeStyleSetHeight(root_child1, 5);
-            YGNodeInsertChild(root, root_child1, 1);
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
             Assert.AreEqual(0, root.Layout.Left);
@@ -540,33 +400,12 @@ namespace Yoga.Net.Tests.Typed
             Assert.AreEqual(5, root_child1.Layout.Height);
         }
 
-#if GTEST_HAS_DEATH_TEST
-TEST(YogaDeathTest, cannot_add_child_to_node_with_measure_func() {
-  YogaNode root = new YogaNode();
-  root.setMeasureFunc(_measure);
-
-  YogaNode root_child0 = new YogaNode();
-  ASSERT_DEATH(YGNodeInsertChild(root, root_child0, 0), "Cannot add child.*");
-  YGNodeFree(root_child0);
-  
-}
-
-TEST(YogaDeathTest, cannot_add_nonnull_measure_func_to_non_leaf_node() {
-  YogaNode root = new YogaNode();
-  YogaNode root_child0 = new YogaNode();
-  YGNodeInsertChild(root, root_child0, 0);
-  ASSERT_DEATH(root.setMeasureFunc(_measure), "Cannot set measure function.*");
-  
-}
-
-#endif
-
         [Test]
         public void can_nullify_measure_func_on_any_node()
         {
-            YogaNode root = new YogaNode();
-            YGNodeInsertChild(root, new YogaNode(), 0);
-            YGNodeSetMeasureFunc(root, null);
+            YogaNode root = Node(measureFunc:null)
+               .AddChild(Node());
+
             Assert.IsTrue(root.MeasureFunc == null);
         }
 
@@ -575,15 +414,9 @@ TEST(YogaDeathTest, cannot_add_nonnull_measure_func_to_non_leaf_node() {
         {
             YogaConfig config = new YogaConfig();
 
-            YogaNode root = new YogaNode(config);
-            YGNodeStyleSetFlexDirection(root, FlexDirection.Column);
-            YGNodeStyleSetWidth(root, 50);
-            YGNodeStyleSetHeight(root, 10);
-
-            YogaNode root_child0 = new YogaNode(config);
-            YGNodeSetMeasureFunc(root_child0, _measure_assert_negative);
-            YGNodeStyleSetMargin(root_child0, Edge.Top, 20);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0, root_child1;
+            YogaNode root = Node(config, flexDirection: FlexDirection.Column, width: 50, height: 10)
+               .AddChild(root_child0 = Node(config, measureFunc: _measure_assert_negative, margin:new Edges(top:20)));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
         }
@@ -593,15 +426,10 @@ TEST(YogaDeathTest, cannot_add_nonnull_measure_func_to_non_leaf_node() {
         {
             YogaConfig config = new YogaConfig();
 
-            YogaNode root = new YogaNode(config);
-            YGNodeStyleSetFlexDirection(root, FlexDirection.Row);
-            YGNodeStyleSetWidth(root, 10);
-            YGNodeStyleSetHeight(root, 20);
-
-            YogaNode root_child0 = new YogaNode(config);
-            YGNodeSetMeasureFunc(root_child0, _measure_assert_negative);
-            YGNodeStyleSetMargin(root_child0, Edge.Start, 20);
-            YGNodeInsertChild(root, root_child0, 0);
+            var edge = new Edges {Start = 20};
+            YogaNode root_child0, root_child1;
+            YogaNode root = Node(flexDirection: FlexDirection.Row, width: 10, height: 20)
+               .AddChild(root_child0 = Node(config, measureFunc: _measure_assert_negative, margin:new Edges {Start = 20}));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
         }
@@ -622,21 +450,10 @@ TEST(YogaDeathTest, cannot_add_nonnull_measure_func_to_non_leaf_node() {
         {
             YogaConfig config = new YogaConfig();
 
-            YogaNode root = new YogaNode(config);
-            YGNodeStyleSetFlexDirection(root, FlexDirection.Row);
-            YGNodeStyleSetJustifyContent(root, Justify.SpaceBetween);
-            YGNodeStyleSetAlignItems(root, YogaAlign.Center);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 80);
-
-            YogaNode root_child0 = new YogaNode(config);
-            YGNodeInsertChild(root, root_child0, 0);
-
-            YogaNode root_child1 = new YogaNode(config);
-            YGNodeSetMeasureFunc(root_child1, _measure_90_10);
-            YGNodeStyleSetMaxWidthPercent(root_child1, 50);
-            YGNodeStyleSetPaddingPercent(root_child1, Edge.Top, 50);
-            YGNodeInsertChild(root, root_child1, 1);
+            YogaNode root_child0, root_child1;
+            YogaNode root = Node(flexDirection: FlexDirection.Row, justifyContent:Justify.SpaceBetween, alignItems:YogaAlign.Center, width: 100, height: 80)
+                           .AddChild(root_child0 = Node(config))
+                           .AddChild(root_child1 = Node(config, measureFunc:_measure_90_10, maxWidth:50.Percent(), padding:new Edges(top:50.Percent())));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
