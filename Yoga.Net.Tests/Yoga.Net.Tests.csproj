@@ -8,19 +8,10 @@
 
   <ItemGroup>
     <Compile Remove="Typed\YogaAbsolutePositionTest.cs" />
-    <Compile Remove="Typed\YogaAlignBaselineTest.cs" />
     <Compile Remove="Typed\YogaAlignContentTest.cs" />
     <Compile Remove="Typed\YogaAlignItemsTest.cs" />
-    <Compile Remove="Typed\YogaAlignSelfTest.cs" />
     <Compile Remove="Typed\YogaAndroidNewsFeed.cs" />
     <Compile Remove="Typed\YogaAspectRatioTest.cs" />
-    <Compile Remove="Typed\YogaBaselineFuncTest.cs" />
-    <Compile Remove="Typed\YogaBorderTest.cs" />
-    <Compile Remove="Typed\YogaComputedMarginTest.cs" />
-    <Compile Remove="Typed\YogaComputedPaddingTest.cs" />
-    <Compile Remove="Typed\YogaDefaultValuesTest.cs" />
-    <Compile Remove="Typed\YogaDimensionTest.cs" />
-    <Compile Remove="Typed\YogaDirtiedTest.cs" />
     <Compile Remove="Typed\YogaFlexDirectionTest.cs" />
     <Compile Remove="Typed\YogaFlexTest.cs" />
     <Compile Remove="Typed\YogaFlexWrapTest.cs" />
@@ -29,19 +20,10 @@
 
   <ItemGroup>
     <None Include="Typed\YogaAbsolutePositionTest.cs" />
-    <None Include="Typed\YogaAlignBaselineTest.cs" />
     <None Include="Typed\YogaAlignContentTest.cs" />
     <None Include="Typed\YogaAlignItemsTest.cs" />
-    <None Include="Typed\YogaAlignSelfTest.cs" />
     <None Include="Typed\YogaAndroidNewsFeed.cs" />
     <None Include="Typed\YogaAspectRatioTest.cs" />
-    <None Include="Typed\YogaBaselineFuncTest.cs" />
-    <None Include="Typed\YogaBorderTest.cs" />
-    <None Include="Typed\YogaComputedMarginTest.cs" />
-    <None Include="Typed\YogaComputedPaddingTest.cs" />
-    <None Include="Typed\YogaDefaultValuesTest.cs" />
-    <None Include="Typed\YogaDimensionTest.cs" />
-    <None Include="Typed\YogaDirtiedTest.cs" />
     <None Include="Typed\YogaFlexDirectionTest.cs" />
     <None Include="Typed\YogaFlexTest.cs" />
     <None Include="Typed\YogaFlexWrapTest.cs" />

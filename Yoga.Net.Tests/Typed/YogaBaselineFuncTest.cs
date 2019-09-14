@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using static Yoga.Net.YogaBuild;
 
 namespace Yoga.Net.Tests.Typed
 {
@@ -10,29 +11,18 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void align_baseline_customer_func()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetFlexDirection(root, FlexDirection.Row);
-            YGNodeStyleSetAlignItems(root, YogaAlign.Baseline);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeStyleSetWidth(root_child0, 50);
-            YGNodeStyleSetHeight(root_child0, 50);
-            YGNodeInsertChild(root, root_child0, 0);
-
-            YogaNode root_child1 = new YogaNode();
-            YGNodeStyleSetWidth(root_child1, 50);
-            YGNodeStyleSetHeight(root_child1, 20);
-            YGNodeInsertChild(root, root_child1, 1);
-
             float baselineValue = 10;
-            YogaNode root_child1_child0 = new YogaNode();
+
+            YogaNode root_child0, root_child1, root_child1_child0;
+            YogaNode root = Node(flexDirection: FlexDirection.Row, alignItems: YogaAlign.Baseline, width: 100, height: 100)
+                           .AddChild(root_child0 = Node(width: 50, height: 50))
+                           .AddChild(root_child1 = Node(width:50, height:20)
+                               .AddChild(root_child1_child0 = Node(width:50, height:20))
+                            );
+
             root_child1_child0.Context = baselineValue;
-            YGNodeStyleSetWidth(root_child1_child0, 50);
             root_child1_child0.BaselineFunc = _baseline;
-            YGNodeStyleSetHeight(root_child1_child0, 20);
-            YGNodeInsertChild(root_child1, root_child1_child0, 0);
+
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
             Assert.AreEqual(0, root.Layout.Left);

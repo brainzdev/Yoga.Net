@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using static Yoga.Net.YogaBuild;
 
 namespace Yoga.Net.Tests.Typed
 {
@@ -10,12 +11,10 @@ namespace Yoga.Net.Tests.Typed
         {
             var config = new YogaConfig();
 
-            var root = new YogaNode(config);
+            YogaNode root_child0;
+            YogaNode root = Node(config)
+               .AddChild(root_child0 = Node(width:100, height:100));
 
-            var root_child0 = new YogaNode(config);
-            YGNodeStyleSetWidth(root_child0, 100);
-            YGNodeStyleSetHeight(root_child0, 100);
-            YGNodeInsertChild(root, root_child0, 0);
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
             Assert.AreEqual(0, root.Layout.Left);
@@ -46,15 +45,12 @@ namespace Yoga.Net.Tests.Typed
         {
             var config = new YogaConfig();
 
-            var root = new YogaNode(config);
+            YogaNode root_child0, root_child0_child0;
+            YogaNode root = Node(config)
+               .AddChild(root_child0 = Node()
+                   .AddChild(root_child0_child0 = Node(width:100, height:100))
+                );
 
-            var root_child0 = new YogaNode(config);
-            YGNodeInsertChild(root, root_child0, 0);
-
-            var root_child0_child0 = new YogaNode(config);
-            YGNodeStyleSetWidth(root_child0_child0, 100);
-            YGNodeStyleSetHeight(root_child0_child0, 100);
-            YGNodeInsertChild(root_child0, root_child0_child0, 0);
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
             Assert.AreEqual(0, root.Layout.Left);

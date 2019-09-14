@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using static Yoga.Net.YogaBuild;
 
 namespace Yoga.Net.Tests.Typed
 {
@@ -8,10 +9,7 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void computed_layout_margin()
         {
-            var root = new YogaNode();
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-            YGNodeStyleSetMarginPercent(root, Edge.Start, 10);
+            YogaNode root = Node(width:100, height:100, margin:Edges(start:10.Percent()));
 
             YogaArrange.CalculateLayout(root, 100, 100, Direction.LTR);
 
