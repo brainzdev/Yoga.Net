@@ -21,17 +21,10 @@
     <Compile Remove="Typed\YogaDefaultValuesTest.cs" />
     <Compile Remove="Typed\YogaDimensionTest.cs" />
     <Compile Remove="Typed\YogaDirtiedTest.cs" />
-    <Compile Remove="Typed\YogaDirtyMarkingTest.cs" />
-    <Compile Remove="Typed\YogaDisplayTest.cs" />
-    <Compile Remove="Typed\YogaEdgeTest.cs" />
     <Compile Remove="Typed\YogaFlexDirectionTest.cs" />
     <Compile Remove="Typed\YogaFlexTest.cs" />
     <Compile Remove="Typed\YogaFlexWrapTest.cs" />
-    <Compile Remove="Typed\YogaHadOverflowTest.cs" />
-    <Compile Remove="Typed\YogaInfiniteHeightTest.cs" />
-    <Compile Remove="Typed\YogaJustifyContentTest.cs" />
     <Compile Remove="Typed\YogaLayoutDiffingTest.cs" />
-    <Compile Remove="Typed\YogaLoggerTest.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -49,17 +42,10 @@
     <None Include="Typed\YogaDefaultValuesTest.cs" />
     <None Include="Typed\YogaDimensionTest.cs" />
     <None Include="Typed\YogaDirtiedTest.cs" />
-    <None Include="Typed\YogaDirtyMarkingTest.cs" />
-    <None Include="Typed\YogaDisplayTest.cs" />
-    <None Include="Typed\YogaEdgeTest.cs" />
     <None Include="Typed\YogaFlexDirectionTest.cs" />
     <None Include="Typed\YogaFlexTest.cs" />
     <None Include="Typed\YogaFlexWrapTest.cs" />
-    <None Include="Typed\YogaHadOverflowTest.cs" />
-    <None Include="Typed\YogaInfiniteHeightTest.cs" />
-    <None Include="Typed\YogaJustifyContentTest.cs" />
     <None Include="Typed\YogaLayoutDiffingTest.cs" />
-    <None Include="Typed\YogaLoggerTest.cs" />
   </ItemGroup>
 
   <ItemGroup>

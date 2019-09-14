@@ -311,7 +311,7 @@ namespace Yoga.Net
         public static void YGConfigSetLogger(YogaConfig config, LoggerFunc logger) => config.LoggerFunc = logger;
 
         [Conditional("DEBUG")]
-        public static void YGNodePrint(YogaNode node, PrintOptions options) => Logger.Log(node, LogLevel.Debug, new YogaNodePrint(options).Output(node).ToString());
+        public static void YGNodePrint(YogaNode node, PrintOptions options) => new YogaNodePrint(options).Output(node);
 
         public static void YGConfigSetPointScaleFactor(YogaConfig config, float pixelsInPoint) => config.PointScaleFactor = pixelsInPoint.IsZero() ? 0.0f : pixelsInPoint;
 

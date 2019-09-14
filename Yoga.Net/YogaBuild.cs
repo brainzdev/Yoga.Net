@@ -88,6 +88,25 @@ namespace Yoga.Net
             return this;
         }
 
+        public static Edges Edges(
+            YogaValue left = null,
+            YogaValue top = null,
+            YogaValue right = null,
+            YogaValue bottom = null,
+            YogaValue start = null,
+            YogaValue end = null,
+            YogaValue horizontal = null,
+            YogaValue vertical = null,
+            YogaValue all = null)
+        {
+            return new Edges(
+                left, top, right, bottom,
+                start, end,
+                horizontal, vertical,
+                all);
+        }
+
+
         public static implicit operator YogaNode(YogaBuild build) => build.Value;
     }
 }

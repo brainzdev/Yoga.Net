@@ -2996,7 +2996,10 @@ namespace Yoga.Net
 
 #if DEBUG
                 if (node.Config.PrintTree)
-                    YogaGlobal.YGNodePrint(node, PrintOptions.Layout | PrintOptions.Children | PrintOptions.Style);
+                {
+                    new YogaNodePrint(PrintOptions.Layout | PrintOptions.Children | PrintOptions.Style)
+                       .Output(node);
+                }
 #endif
             }
 

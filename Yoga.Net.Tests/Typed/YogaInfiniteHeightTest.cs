@@ -1,5 +1,7 @@
 using NUnit.Framework;
 
+using static Yoga.Net.YogaBuild;
+
 namespace Yoga.Net.Tests.Typed
 {
     [TestFixture]
@@ -11,24 +13,11 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void percent_absolute_position_infinite_height()
         {
-            YogaConfig config = new YogaConfig();
+            YogaNode root_child0, root_child1;
+            YogaNode root = Node(flexDirection: FlexDirection.Row, width: 300)
+                           .AddChild(root_child0 = Node(width:300, height:300))
+                           .AddChild(root_child1 = Node(positionType:PositionType.Absolute, left:20.Percent(), top:20.Percent(), width:20.Percent(), height:20.Percent()));
 
-            YogaNode root = new YogaNode(config);
-            YGNodeStyleSetFlexDirection(root, FlexDirection.Row);
-            YGNodeStyleSetWidth(root, 300);
-
-            YogaNode root_child0 = new YogaNode(config);
-            YGNodeStyleSetWidth(root_child0, 300);
-            YGNodeStyleSetHeight(root_child0, 300);
-            YGNodeInsertChild(root, root_child0, 0);
-
-            YogaNode root_child1 = new YogaNode(config);
-            YGNodeStyleSetPositionType(root_child1, PositionType.Absolute);
-            YGNodeStyleSetPositionPercent(root_child1, Edge.Left, 20);
-            YGNodeStyleSetPositionPercent(root_child1, Edge.Top, 20);
-            YGNodeStyleSetWidthPercent(root_child1, 20);
-            YGNodeStyleSetHeightPercent(root_child1, 20);
-            YGNodeInsertChild(root, root_child1, 1);
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
             Assert.AreEqual(0, root.Layout.Left);

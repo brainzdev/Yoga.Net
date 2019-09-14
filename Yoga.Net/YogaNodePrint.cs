@@ -8,6 +8,8 @@ namespace Yoga.Net
     {
         StringBuilder _sb;
         PrintOptions _options;
+        YogaNode _currentNode;
+
         public static YogaNode DefaultYogaNode { get; } = new YogaNode();
 
         public YogaNodePrint(PrintOptions printOptions, StringBuilder sb = null)
@@ -19,7 +21,7 @@ namespace Yoga.Net
         void Indent(int level)
         {
             for (int i = 0; i < level; ++i)
-                _sb.Append("  ");
+                AppendString("  ");
         }
 
         bool AreFourValuesEqual(EdgesReadonly four)
@@ -30,14 +32,18 @@ namespace Yoga.Net
                 four[Edge.Left] == four[Edge.Bottom];
         }
 
-        void AppendString(string str) => _sb.Append(str);
+        void AppendString(string str)
+        {
+            _currentNode?.Config?.LoggerFunc(LogLevel.Info, str);
+            _sb.Append(str);
+        }
 
         void AppendFloatOptionalIfDefined(
             string key,
             float num)
         {
             if (num.HasValue())
-                _sb.Append($"{key}: {num:G}; ");
+                AppendString($"{key}: {num:G}; ");
         }
 
         void AppendNumberIfNotUndefined(
@@ -48,9 +54,9 @@ namespace Yoga.Net
                 return;
 
             if (number.Unit == YogaUnit.Auto)
-                _sb.Append($"{key}: auto; ");
+                AppendString($"{key}: auto; ");
             else
-                _sb.Append($"{key}: {number}; ");
+                AppendString($"{key}: {number}; ");
         }
 
         void AppendNumberIfNotAuto(
@@ -67,7 +73,7 @@ namespace Yoga.Net
         {
             if (number.Unit == YogaUnit.Auto)
             {
-                _sb.Append(str + ": auto; ");
+                AppendString(str + ": auto; ");
             }
             else if (!FloatsEqual(number.Value, 0))
             {
@@ -98,6 +104,7 @@ namespace Yoga.Net
 
         public YogaNodePrint Output(YogaNode node, int level = 0)
         {
+            _currentNode = node;
             Indent(level);
             AppendString("<div ");
 
@@ -205,6 +212,7 @@ namespace Yoga.Net
                 {
                     AppendString("\n");
                     Output(node.Children[i], level + 1);
+                    _currentNode = node;
                 }
 
                 AppendString("\n");

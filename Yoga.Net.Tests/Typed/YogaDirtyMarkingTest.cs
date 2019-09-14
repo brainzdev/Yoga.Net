@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using static Yoga.Net.YogaBuild;
 
 namespace Yoga.Net.Tests.Typed
 {
@@ -8,24 +9,15 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void dirty_propagation()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeStyleSetWidth(root_child0, 50);
-            YGNodeStyleSetHeight(root_child0, 20);
-            YGNodeInsertChild(root, root_child0, 0);
-
-            YogaNode root_child1 = new YogaNode();
-            YGNodeStyleSetWidth(root_child1, 50);
-            YGNodeStyleSetHeight(root_child1, 20);
-            YGNodeInsertChild(root, root_child1, 1);
+            YogaNode root_child0, root_child1;
+            YogaNode root = Node(alignItems: YogaAlign.FlexStart, width: 100, height: 100)
+                           .AddChild(root_child0 = Node(width:50, height:20))
+                           .AddChild(root_child1 = Node(width:50, height:20));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            YGNodeStyleSetWidth(root_child0, 20);
+
+            root_child0.Style.Width = 20;
 
             Assert.IsTrue(root_child0.IsDirty);
             Assert.IsFalse(root_child1.IsDirty);

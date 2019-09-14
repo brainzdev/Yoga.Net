@@ -31,14 +31,20 @@ namespace Yoga.Net
             YogaValue right = null,
             YogaValue bottom = null,
             YogaValue start = null,
-            YogaValue end = null)
+            YogaValue end = null,
+            YogaValue horizontal = null,
+            YogaValue vertical = null,
+            YogaValue all = null)
         {
-            Left   = left ?? YogaValue.YGUndefined;
-            Top    = top ?? YogaValue.YGUndefined;
-            Right  = right ?? YogaValue.YGUndefined;
-            Bottom = bottom ?? YogaValue.YGUndefined;
-            Start  = start ?? YogaValue.YGUndefined;
-            End    = end ?? YogaValue.YGUndefined;
+            if (all != null)        All = all;
+            if (horizontal != null) Left = Right  = horizontal;
+            if (vertical != null)   Top  = Bottom = vertical;
+            if (start != null)      Start = start;
+            if (end != null)        End   = end;
+            if (left != null)       Left   = left;
+            if (top != null)        Top    = top;
+            if (right != null)      Right  = right;
+            if (bottom != null)     Bottom = bottom;
         }
 
         public Edges(Edges other)
