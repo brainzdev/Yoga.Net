@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using static Yoga.Net.YogaBuild;
 
 namespace Yoga.Net.Tests.Typed
 {
@@ -8,35 +9,23 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void reset_layout_when_child_removed()
         {
-            YogaNode root_child0;
-            YogaNode root = new YogaNode
-            {
-                Children =
-                {
-                    (root_child0 = new YogaNode
-                    {
-                        Style = new YogaStyle
-                        {
-                            Width  = 100,
-                            Height = 100
-                        }
-                    })
-                }
-            };
+            YogaNode rootChild0;
+            YogaNode root = Node()
+               .Add(rootChild0 = Node(width: 100, height: 100));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            Assert.AreEqual(0, root_child0.Layout.Left);
-            Assert.AreEqual(0, root_child0.Layout.Top);
-            Assert.AreEqual(100, root_child0.Layout.Width);
-            Assert.AreEqual(100, root_child0.Layout.Height);
+            Assert.AreEqual(0, rootChild0.Layout.Left);
+            Assert.AreEqual(0, rootChild0.Layout.Top);
+            Assert.AreEqual(100, rootChild0.Layout.Width);
+            Assert.AreEqual(100, rootChild0.Layout.Height);
 
-            root.Children.Remove(root_child0);
+            root.Children.Remove(rootChild0);
 
-            Assert.AreEqual(0, root_child0.Layout.Left);
-            Assert.AreEqual(0, root_child0.Layout.Top);
-            Assert.IsTrue(root_child0.Layout.Width.IsUndefined());
-            Assert.IsTrue(root_child0.Layout.Height.IsUndefined());
+            Assert.AreEqual(0, rootChild0.Layout.Left);
+            Assert.AreEqual(0, rootChild0.Layout.Top);
+            Assert.IsTrue(rootChild0.Layout.Width.IsUndefined());
+            Assert.IsTrue(rootChild0.Layout.Height.IsUndefined());
         }
     }
 }

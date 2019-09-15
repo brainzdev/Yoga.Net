@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using static Yoga.Net.YogaBuild;
 
 namespace Yoga.Net.Tests.Typed
 {
@@ -8,8 +9,8 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void copy_style_same()
         {
-            YogaNode node0 = new YogaNode();
-            YogaNode node1 = new YogaNode();
+            YogaNode node0 = Node();
+            YogaNode node1 = Node();
             Assert.IsFalse(node0.IsDirty);
 
             node0.CopyStyle(node1);
@@ -19,12 +20,12 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void copy_style_modified()
         {
-            YogaNode node0 = new YogaNode();
+            YogaNode node0 = Node();
             Assert.IsFalse(node0.IsDirty);
             Assert.AreEqual(FlexDirection.Column, node0.Style.FlexDirection);
             Assert.IsFalse( node0.Style.MaxHeight.Unit != YogaUnit.Undefined);
 
-            YogaNode node1 = new YogaNode();
+            YogaNode node1 = Node();
             node1.Style.FlexDirection = FlexDirection.Row;
             node1.Style.MaxHeight = 10;
 
@@ -37,26 +38,13 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void copy_style_modified_same()
         {
-            YogaNode node0 = new YogaNode
-            {
-                Style = new YogaStyle
-                {
-                    FlexDirection = FlexDirection.Row,
-                    MaxHeight     = 10
-                }
-            };
+            YogaNode node0 = Node(flexDirection: FlexDirection.Row, maxHeight: 10);
 
             YogaArrange.CalculateLayout(node0, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
+
             Assert.IsFalse(node0.IsDirty);
 
-            YogaNode node1 = new YogaNode
-            {
-                Style = new YogaStyle
-                {
-                    FlexDirection = FlexDirection.Row,
-                    MaxHeight = 10
-                }
-            };
+            YogaNode node1 = Node(flexDirection: FlexDirection.Row, maxHeight: 10);
 
             node0.CopyStyle(node1);
             Assert.IsFalse(node0.IsDirty);
@@ -65,13 +53,7 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void initialise_flexShrink_flexGrow()
         {
-            YogaNode node0 = new YogaNode
-            {
-                Style = new YogaStyle
-                {
-                    FlexShrink = 1
-                }
-            };
+            YogaNode node0 = Node(flexShrink: 1);
             Assert.AreEqual(1f, node0.Style.FlexShrink);
 
             node0.Style.FlexShrink = YogaValue.YGUndefined;

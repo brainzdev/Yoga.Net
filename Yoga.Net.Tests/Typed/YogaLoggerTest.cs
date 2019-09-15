@@ -1,4 +1,3 @@
-using System.IO.MemoryMappedFiles;
 using NUnit.Framework;
 using System.Text;
 
@@ -9,20 +8,20 @@ namespace Yoga.Net.Tests.Typed
     [TestFixture]
     public class YogaLoggerTest
     {
-        StringBuilder writeBuffer;
+        StringBuilder _writeBuffer;
 
         [SetUp]
         public void Init()
         {
-            writeBuffer = new StringBuilder();
+            _writeBuffer = new StringBuilder();
         }
 
         int _unmanagedLogger(
             LogLevel level,
             string message)
         {
-            writeBuffer.Append(message);
-            return writeBuffer.Length;
+            _writeBuffer.Append(message);
+            return _writeBuffer.Length;
         }
 
         [Test]
@@ -40,7 +39,7 @@ namespace Yoga.Net.Tests.Typed
 
             string expected =
                 "<div layout=\"width: 0; height: 0; top: 0; left: 0;\" style=\"\" >\n  <div layout=\"width: 0; height: 0; top: 0; left: 0;\" style=\"\" ></div>\n  <div layout=\"width: 0; height: 0; top: 0; left: 0;\" style=\"\" ></div>\n</div>";
-            Assert.AreEqual(expected, writeBuffer.ToString());
+            Assert.AreEqual(expected, _writeBuffer.ToString());
         }
 
         [Test]
@@ -56,7 +55,7 @@ namespace Yoga.Net.Tests.Typed
             config.LoggerFunc = null;
 
             string expected = "";
-            Assert.AreEqual(expected, writeBuffer.ToString());
+            Assert.AreEqual(expected, _writeBuffer.ToString());
         }
 
         [Test]
@@ -72,7 +71,7 @@ namespace Yoga.Net.Tests.Typed
                .Output(root);
 
             string expected = "<div layout=\"width: 0; height: 0; top: 0; left: 0;\" style=\"\" ></div>";
-            Assert.AreEqual(expected, writeBuffer.ToString());
+            Assert.AreEqual(expected, _writeBuffer.ToString());
         }
 
         [Test]
@@ -85,7 +84,7 @@ namespace Yoga.Net.Tests.Typed
                 width:50.Percent(), 
                 height:75.Percent(), 
                 flex:1, 
-                margin:Edges(right:10, left:YogaValue.Auto));
+                margin:new Edges(right:10, left:YogaValue.Auto));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -93,7 +92,7 @@ namespace Yoga.Net.Tests.Typed
                .Output(root);
 
             string expected = "<div layout=\"width: 0; height: 0; top: 0; left: 0; margin: (0, 0, 10, 0);\" style=\"flex: 1; margin-left: auto; margin-right: 10px; width: 50%; height: 75%; position: absolute; \" ></div>";
-            Assert.AreEqual(expected, writeBuffer.ToString());
+            Assert.AreEqual(expected, _writeBuffer.ToString());
         }
 
         [Test]
@@ -111,7 +110,7 @@ namespace Yoga.Net.Tests.Typed
                .Output(root);
 
             string expected = "<div layout=\"width: 0; height: 0; top: 0; left: 0;\" style=\"\" >\n  <div layout=\"width: 0; height: 0; top: 0; left: 0;\" style=\"\" ></div>\n  <div layout=\"width: 0; height: 0; top: 0; left: 0;\" style=\"\" ></div>\n</div>";
-            Assert.AreEqual(expected, writeBuffer.ToString());
+            Assert.AreEqual(expected, _writeBuffer.ToString());
         }
     }
 }

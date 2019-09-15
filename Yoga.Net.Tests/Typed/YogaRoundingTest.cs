@@ -441,7 +441,7 @@ namespace Yoga.Net.Tests.Typed
         }
 
         [Test]
-        public void rounding_fractial_input_2()
+        public void rounding_fractal_input_2()
         {
             YogaNode rootChild0, rootChild1, rootChild2;
             YogaNode root = Node(width  : 100,height : 113.6f)

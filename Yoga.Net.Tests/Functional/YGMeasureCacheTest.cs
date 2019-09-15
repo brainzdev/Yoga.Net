@@ -43,7 +43,7 @@ namespace Yoga.Net.Tests
                     : height);
         };
 
-        static MeasureFunc _measure_84_49 = (
+        static MeasureFunc _measure8449 = (
             YogaNode node,
             float width,
             MeasureMode widthMode,
@@ -67,15 +67,15 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YogaNode root_child0 = YGNodeNew();
-            root_child0.Context = 0;
-            YGNodeSetMeasureFunc(root_child0,_measureMax);
-            YGNodeStyleSetFlexGrow(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            rootChild0.Context = 0;
+            YGNodeSetMeasureFunc(rootChild0,_measureMax);
+            YGNodeStyleSetFlexGrow(rootChild0, 1);
+            YGNodeInsertChild(root, rootChild0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            Assert.AreEqual(1, (int)root_child0.Context);
+            Assert.AreEqual(1, (int)rootChild0.Context);
         }
 
         [Test]
@@ -83,32 +83,32 @@ namespace Yoga.Net.Tests
         {
             YogaNode root = YGNodeNew();
 
-            YogaNode root_child0 = YGNodeNew();
-            root_child0.Context = 0;
-            YGNodeSetMeasureFunc(root_child0, _measureMin);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            rootChild0.Context = 0;
+            YGNodeSetMeasureFunc(rootChild0, _measureMin);
+            YGNodeInsertChild(root, rootChild0, 0);
 
             YGNodeCalculateLayout(root, 100, 100, Direction.LTR);
             YGNodeCalculateLayout(root, 100, 50, Direction.LTR);
 
-            Assert.AreEqual(1, (int)root_child0.Context);
+            Assert.AreEqual(1, (int)rootChild0.Context);
         }
 
         [Test]
-        public void remeasure_with_same_atmost_width_larger_than_needed_height()
+        public void remeasure_with_same_at_most_width_larger_than_needed_height()
         {
             YogaNode root = YGNodeNew();
             YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
 
-            YogaNode root_child0 = YGNodeNew();
-            root_child0.Context = 0;
-            YGNodeSetMeasureFunc(root_child0, _measureMin);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            rootChild0.Context = 0;
+            YGNodeSetMeasureFunc(rootChild0, _measureMin);
+            YGNodeInsertChild(root, rootChild0, 0);
 
             YGNodeCalculateLayout(root, 100, 100, Direction.LTR);
             YGNodeCalculateLayout(root, 100, 50, Direction.LTR);
 
-            Assert.AreEqual(1, (int)root_child0.Context);
+            Assert.AreEqual(1, (int)rootChild0.Context);
         }
 
         [Test]
@@ -117,33 +117,33 @@ namespace Yoga.Net.Tests
             YogaNode root = YGNodeNew();
             YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
 
-            YogaNode root_child0 = YGNodeNew();
-            root_child0.Context = 0;
-            YGNodeSetMeasureFunc(root_child0, _measureMin);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            rootChild0.Context = 0;
+            YGNodeSetMeasureFunc(rootChild0, _measureMin);
+            YGNodeInsertChild(root, rootChild0, 0);
 
             YGNodeCalculateLayout(root, 100, 100, Direction.LTR);
             YGNodeStyleSetAlignItems(root, YogaAlign.Stretch);
             YGNodeCalculateLayout(root, 10, 50, Direction.LTR);
 
-            Assert.AreEqual(1, (int)root_child0.Context);
+            Assert.AreEqual(1, (int)rootChild0.Context);
         }
 
         [Test]
-        public void remeasure_with_atmost_computed_width_undefined_height()
+        public void remeasure_with_at_most_computed_width_undefined_height()
         {
             YogaNode root = YGNodeNew();
             YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
 
-            YogaNode root_child0 = YGNodeNew();
-            root_child0.Context = 0;
-            YGNodeSetMeasureFunc(root_child0, _measureMin);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            rootChild0.Context = 0;
+            YGNodeSetMeasureFunc(rootChild0, _measureMin);
+            YGNodeInsertChild(root, rootChild0, 0);
 
             YGNodeCalculateLayout(root, 100, YogaValue.YGUndefined, Direction.LTR);
             YGNodeCalculateLayout(root, 10, YogaValue.YGUndefined, Direction.LTR);
 
-            Assert.AreEqual(1, (int)root_child0.Context);
+            Assert.AreEqual(1, (int)rootChild0.Context);
         }
 
         [Test]
@@ -154,20 +154,20 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetHeight(root, 288f);
             YGNodeStyleSetFlexDirection(root, FlexDirection.Row);
 
-            YogaNode root_child0 = YGNodeNew();
-            YGNodeStyleSetPadding(root_child0, Edge.All, 2.88f);
-            YGNodeStyleSetFlexDirection(root_child0, FlexDirection.Row);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            YGNodeStyleSetPadding(rootChild0, Edge.All, 2.88f);
+            YGNodeStyleSetFlexDirection(rootChild0, FlexDirection.Row);
+            YGNodeInsertChild(root, rootChild0, 0);
 
-            YogaNode root_child0_child0 = YGNodeNew();
-            root_child0_child0.Context = 0;
-            YGNodeSetMeasureFunc(root_child0_child0, _measure_84_49);
-            YGNodeInsertChild(root_child0, root_child0_child0, 0);
+            YogaNode rootChild0Child0 = YGNodeNew();
+            rootChild0Child0.Context = 0;
+            YGNodeSetMeasureFunc(rootChild0Child0, _measure8449);
+            YGNodeInsertChild(rootChild0, rootChild0Child0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
 
-            Assert.AreEqual(1, (int)root_child0_child0.Context);
+            Assert.AreEqual(1, (int)rootChild0Child0.Context);
         }
     }
 }

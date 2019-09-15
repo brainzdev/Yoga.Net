@@ -15,7 +15,7 @@ namespace Yoga.Net.Tests
         }
 
         [Test]
-        public void dirtied()
+        public void Dirtied()
         {
             YogaNode root = YGNodeNew();
             YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
@@ -47,15 +47,15 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YogaNode root_child0 = YGNodeNew();
-            YGNodeStyleSetWidth(root_child0, 50);
-            YGNodeStyleSetHeight(root_child0, 20);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            YGNodeStyleSetWidth(rootChild0, 50);
+            YGNodeStyleSetHeight(rootChild0, 20);
+            YGNodeInsertChild(root, rootChild0, 0);
 
-            YogaNode root_child1 = YGNodeNew();
-            YGNodeStyleSetWidth(root_child1, 50);
-            YGNodeStyleSetHeight(root_child1, 20);
-            YGNodeInsertChild(root, root_child1, 1);
+            YogaNode rootChild1 = YGNodeNew();
+            YGNodeStyleSetWidth(rootChild1, 50);
+            YGNodeStyleSetHeight(rootChild1, 20);
+            YGNodeInsertChild(root, rootChild1, 1);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -65,11 +65,11 @@ namespace Yoga.Net.Tests
             Assert.AreEqual(0, (int)root.Context);
 
             // `_dirtied` MUST be called for the first time.
-            root_child0.MarkDirtyAndPropagate();
+            rootChild0.MarkDirtyAndPropagate();
             Assert.AreEqual(1, (int)root.Context);
 
             // `_dirtied` must NOT be called for the second time.
-            root_child0.MarkDirtyAndPropagate();
+            rootChild0.MarkDirtyAndPropagate();
             Assert.AreEqual(1, (int)root.Context);
         }
 
@@ -81,34 +81,34 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YogaNode root_child0 = YGNodeNew();
-            YGNodeStyleSetWidth(root_child0, 50);
-            YGNodeStyleSetHeight(root_child0, 20);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            YGNodeStyleSetWidth(rootChild0, 50);
+            YGNodeStyleSetHeight(rootChild0, 20);
+            YGNodeInsertChild(root, rootChild0, 0);
 
-            YogaNode root_child1 = YGNodeNew();
-            YGNodeStyleSetWidth(root_child1, 50);
-            YGNodeStyleSetHeight(root_child1, 20);
-            YGNodeInsertChild(root, root_child1, 1);
+            YogaNode rootChild1 = YGNodeNew();
+            YGNodeStyleSetWidth(rootChild1, 50);
+            YGNodeStyleSetHeight(rootChild1, 20);
+            YGNodeInsertChild(root, rootChild1, 1);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            root_child0.Context = 0;
-            root_child0.DirtiedFunc = _dirtied;
+            rootChild0.Context = 0;
+            rootChild0.DirtiedFunc = _dirtied;
 
-            Assert.AreEqual(0, (int)root_child0.Context);
+            Assert.AreEqual(0, (int)rootChild0.Context);
 
             // `_dirtied` must NOT be called for descendants.
             root.MarkDirtyAndPropagate();
-            Assert.AreEqual(0, (int)root_child0.Context);
+            Assert.AreEqual(0, (int)rootChild0.Context);
 
             // `_dirtied` must NOT be called for the sibling node.
-            root_child1.MarkDirtyAndPropagate();
-            Assert.AreEqual(0, (int)root_child0.Context);
+            rootChild1.MarkDirtyAndPropagate();
+            Assert.AreEqual(0, (int)rootChild0.Context);
 
             // `_dirtied` MUST be called in case of explicit dirtying.
-            root_child0.MarkDirtyAndPropagate();
-            Assert.AreEqual(1, (int)root_child0.Context);
+            rootChild0.MarkDirtyAndPropagate();
+            Assert.AreEqual(1, (int)rootChild0.Context);
         }
     }
 }

@@ -14,7 +14,7 @@ namespace Yoga.Net.Tests.Typed
         }
 
         [Test]
-        public void dirtied()
+        public void Dirtied()
         {
             YogaNode root = Node(alignItems:YogaAlign.FlexStart, width:100, height:100);
 
@@ -38,10 +38,10 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void dirtied_propagation()
         {
-            YogaNode root_child0, root_child1;
+            YogaNode rootChild0;
             YogaNode root = Node(alignItems: YogaAlign.FlexStart, width: 100, height: 100)
-                           .Add(root_child0 = Node(width:50, height:20))
-                           .Add(root_child1 = Node(width:50, height:20));
+                           .Add(rootChild0 = Node(width:50, height:20))
+                           .Add(Node(width:50, height:20));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -51,40 +51,40 @@ namespace Yoga.Net.Tests.Typed
             Assert.AreEqual(0, (int)root.Context);
 
             // `_dirtied` MUST be called for the first time.
-            root_child0.MarkDirtyAndPropagate();
+            rootChild0.MarkDirtyAndPropagate();
             Assert.AreEqual(1, (int)root.Context);
 
             // `_dirtied` must NOT be called for the second time.
-            root_child0.MarkDirtyAndPropagate();
+            rootChild0.MarkDirtyAndPropagate();
             Assert.AreEqual(1, (int)root.Context);
         }
 
         [Test]
         public void dirtied_hierarchy()
         {
-            YogaNode root_child0, root_child1;
+            YogaNode rootChild0, rootChild1;
             YogaNode root = Node(alignItems: YogaAlign.FlexStart, width: 100, height: 100)
-                           .Add(root_child0 = Node(width:50, height:20))
-                           .Add(root_child1 = Node(width:50, height:20));
+                           .Add(rootChild0 = Node(width:50, height:20))
+                           .Add(rootChild1 = Node(width:50, height:20));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            root_child0.Context = 0;
-            root_child0.DirtiedFunc = _dirtied;
+            rootChild0.Context = 0;
+            rootChild0.DirtiedFunc = _dirtied;
 
-            Assert.AreEqual(0, (int)root_child0.Context);
+            Assert.AreEqual(0, (int)rootChild0.Context);
 
             // `_dirtied` must NOT be called for descendants.
             root.MarkDirtyAndPropagate();
-            Assert.AreEqual(0, (int)root_child0.Context);
+            Assert.AreEqual(0, (int)rootChild0.Context);
 
             // `_dirtied` must NOT be called for the sibling node.
-            root_child1.MarkDirtyAndPropagate();
-            Assert.AreEqual(0, (int)root_child0.Context);
+            rootChild1.MarkDirtyAndPropagate();
+            Assert.AreEqual(0, (int)rootChild0.Context);
 
             // `_dirtied` MUST be called in case of explicit dirtying.
-            root_child0.MarkDirtyAndPropagate();
-            Assert.AreEqual(1, (int)root_child0.Context);
+            rootChild0.MarkDirtyAndPropagate();
+            Assert.AreEqual(1, (int)rootChild0.Context);
         }
     }
 }

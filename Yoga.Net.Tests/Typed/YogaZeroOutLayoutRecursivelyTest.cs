@@ -1,5 +1,5 @@
 using NUnit.Framework;
-using static Yoga.Net.YogaGlobal;
+using static Yoga.Net.YogaBuild;
 
 namespace Yoga.Net.Tests.Typed
 {
@@ -9,44 +9,21 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void zero_out_layout()
         {
-            YogaNode child;
-            YogaNode root = new YogaNode
-            {
-                Trace  = "root",
-                Config = {PrintTree = true},
-                Style = new YogaStyle
-                {
-                    Width         = 200,
-                    Height        = 200,
-                    FlexDirection = FlexDirection.Row
-                },
-                Children =
-                {
-                    (child = new YogaNode
-                    {
-                        Trace = "child",
-                        Style = new YogaStyle
-                        {
-                            Width   = 100,
-                            Height  = 100,
-                            Margin  = new Edges(top: 10),
-                            Padding = new Edges(top: 10)
-                        }
-                    })
-                }
-            };
+            YogaNode child0;
+            YogaNode root = Node(new YogaConfig {PrintTree = true}, width: 200, height: 200, flexDirection: FlexDirection.Row)
+               .Add(child0 = Node(width:100, height:100, margin:new Edges(top:10), padding:new Edges(top:10)));
 
             YogaArrange.CalculateLayout(root, 100, 100, Direction.LTR);
 
-            Assert.AreEqual(10, child.LayoutMargin(Edge.Top));
-            Assert.AreEqual(10, child.LayoutPadding(Edge.Top));
+            Assert.AreEqual(10, child0.LayoutMargin(Edge.Top));
+            Assert.AreEqual(10, child0.LayoutPadding(Edge.Top));
 
-            child.Style.Display = Display.None;
+            child0.Style.Display = Display.None;
 
             YogaArrange.CalculateLayout(root, 100, 100, Direction.LTR);
 
-            Assert.AreEqual(0, child.LayoutMargin(Edge.Top));
-            Assert.AreEqual(0, child.LayoutPadding(Edge.Top));
+            Assert.AreEqual(0, child0.LayoutMargin(Edge.Top));
+            Assert.AreEqual(0, child0.LayoutPadding(Edge.Top));
         }
     }
 }

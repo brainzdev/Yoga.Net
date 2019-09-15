@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using static Yoga.Net.YogaBuild;
 
 namespace Yoga.Net.Tests.Typed
 {
@@ -8,7 +9,7 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void assert_default_values()
         {
-            YogaNode root = new YogaNode();
+            YogaNode root = Node();
 
             Assert.AreEqual(0, root.ChildCount);
 

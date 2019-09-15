@@ -27,17 +27,17 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YogaNode root_child0 = YGNodeNew();
-            YGNodeStyleSetWidth(root_child0, 50);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            YGNodeStyleSetWidth(rootChild0, 50);
+            YGNodeStyleSetAspectRatio(rootChild0, 1);
+            YGNodeInsertChild(root, rootChild0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            Assert.AreEqual(0, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(0, YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(50, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(0, YGNodeLayoutGetLeft(rootChild0));
+            Assert.AreEqual(0, YGNodeLayoutGetTop(rootChild0));
+            Assert.AreEqual(50, YGNodeLayoutGetWidth(rootChild0));
+            Assert.AreEqual(50, YGNodeLayoutGetHeight(rootChild0));
         }
 
         [Test]
@@ -48,17 +48,17 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YogaNode root_child0 = YGNodeNew();
-            YGNodeStyleSetHeight(root_child0, 50);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            YGNodeStyleSetHeight(rootChild0, 50);
+            YGNodeStyleSetAspectRatio(rootChild0, 1);
+            YGNodeInsertChild(root, rootChild0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            Assert.AreEqual(0, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(0, YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(50, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(0, YGNodeLayoutGetLeft(rootChild0));
+            Assert.AreEqual(0, YGNodeLayoutGetTop(rootChild0));
+            Assert.AreEqual(50, YGNodeLayoutGetWidth(rootChild0));
+            Assert.AreEqual(50, YGNodeLayoutGetHeight(rootChild0));
         }
 
         [Test]
@@ -70,18 +70,18 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YogaNode root_child0 = YGNodeNew();
-            YGNodeStyleSetWidth(root_child0, 100);
-            YGNodeStyleSetHeight(root_child0, 50);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            YGNodeStyleSetWidth(rootChild0, 100);
+            YGNodeStyleSetHeight(rootChild0, 50);
+            YGNodeStyleSetAspectRatio(rootChild0, 1);
+            YGNodeInsertChild(root, rootChild0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            Assert.AreEqual(0, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(0, YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(100, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(100, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(0, YGNodeLayoutGetLeft(rootChild0));
+            Assert.AreEqual(0, YGNodeLayoutGetTop(rootChild0));
+            Assert.AreEqual(100, YGNodeLayoutGetWidth(rootChild0));
+            Assert.AreEqual(100, YGNodeLayoutGetHeight(rootChild0));
         }
 
         [Test]
@@ -92,18 +92,18 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YogaNode root_child0 = YGNodeNew();
-            YGNodeStyleSetWidth(root_child0, 100);
-            YGNodeStyleSetHeight(root_child0, 50);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            YGNodeStyleSetWidth(rootChild0, 100);
+            YGNodeStyleSetHeight(rootChild0, 50);
+            YGNodeStyleSetAspectRatio(rootChild0, 1);
+            YGNodeInsertChild(root, rootChild0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            Assert.AreEqual(0, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(0, YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(50, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(0, YGNodeLayoutGetLeft(rootChild0));
+            Assert.AreEqual(0, YGNodeLayoutGetTop(rootChild0));
+            Assert.AreEqual(50, YGNodeLayoutGetWidth(rootChild0));
+            Assert.AreEqual(50, YGNodeLayoutGetHeight(rootChild0));
         }
 
         [Test]
@@ -113,16 +113,16 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YogaNode root_child0 = YGNodeNew();
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            YGNodeStyleSetAspectRatio(rootChild0, 1);
+            YGNodeInsertChild(root, rootChild0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            Assert.AreEqual(0, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(0, YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(100, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(100, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(0, YGNodeLayoutGetLeft(rootChild0));
+            Assert.AreEqual(0, YGNodeLayoutGetTop(rootChild0));
+            Assert.AreEqual(100, YGNodeLayoutGetWidth(rootChild0));
+            Assert.AreEqual(100, YGNodeLayoutGetHeight(rootChild0));
         }
 
         [Test]
@@ -133,18 +133,18 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YogaNode root_child0 = YGNodeNew();
-            YGNodeStyleSetHeight(root_child0, 50);
-            YGNodeStyleSetFlexGrow(root_child0, 1);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            YGNodeStyleSetHeight(rootChild0, 50);
+            YGNodeStyleSetFlexGrow(rootChild0, 1);
+            YGNodeStyleSetAspectRatio(rootChild0, 1);
+            YGNodeInsertChild(root, rootChild0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            Assert.AreEqual(0, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(0, YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(100, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(100, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(0, YGNodeLayoutGetLeft(rootChild0));
+            Assert.AreEqual(0, YGNodeLayoutGetTop(rootChild0));
+            Assert.AreEqual(100, YGNodeLayoutGetWidth(rootChild0));
+            Assert.AreEqual(100, YGNodeLayoutGetHeight(rootChild0));
         }
 
         [Test]
@@ -155,18 +155,18 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YogaNode root_child0 = YGNodeNew();
-            YGNodeStyleSetHeight(root_child0, 150);
-            YGNodeStyleSetFlexShrink(root_child0, 1);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            YGNodeStyleSetHeight(rootChild0, 150);
+            YGNodeStyleSetFlexShrink(rootChild0, 1);
+            YGNodeStyleSetAspectRatio(rootChild0, 1);
+            YGNodeInsertChild(root, rootChild0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            Assert.AreEqual(0, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(0, YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(100, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(100, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(0, YGNodeLayoutGetLeft(rootChild0));
+            Assert.AreEqual(0, YGNodeLayoutGetTop(rootChild0));
+            Assert.AreEqual(100, YGNodeLayoutGetWidth(rootChild0));
+            Assert.AreEqual(100, YGNodeLayoutGetHeight(rootChild0));
         }
 
         [Test]
@@ -176,29 +176,29 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YogaNode root_child0 = YGNodeNew();
-            YGNodeStyleSetHeightPercent(root_child0, 100);
-            YGNodeStyleSetFlexShrink(root_child0, 1);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            YGNodeStyleSetHeightPercent(rootChild0, 100);
+            YGNodeStyleSetFlexShrink(rootChild0, 1);
+            YGNodeStyleSetAspectRatio(rootChild0, 1);
+            YGNodeInsertChild(root, rootChild0, 0);
 
-            YogaNode root_child1 = YGNodeNew();
-            YGNodeStyleSetHeightPercent(root_child1, 100);
-            YGNodeStyleSetFlexShrink(root_child1, 1);
-            YGNodeStyleSetAspectRatio(root_child1, 1);
-            YGNodeInsertChild(root, root_child1, 1);
+            YogaNode rootChild1 = YGNodeNew();
+            YGNodeStyleSetHeightPercent(rootChild1, 100);
+            YGNodeStyleSetFlexShrink(rootChild1, 1);
+            YGNodeStyleSetAspectRatio(rootChild1, 1);
+            YGNodeInsertChild(root, rootChild1, 1);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            Assert.AreEqual(0, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(0, YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(50, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(0, YGNodeLayoutGetLeft(rootChild0));
+            Assert.AreEqual(0, YGNodeLayoutGetTop(rootChild0));
+            Assert.AreEqual(50, YGNodeLayoutGetWidth(rootChild0));
+            Assert.AreEqual(50, YGNodeLayoutGetHeight(rootChild0));
 
-            Assert.AreEqual(0, YGNodeLayoutGetLeft(root_child1));
-            Assert.AreEqual(50, YGNodeLayoutGetTop(root_child1));
-            Assert.AreEqual(50, YGNodeLayoutGetWidth(root_child1));
-            Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child1));
+            Assert.AreEqual(0, YGNodeLayoutGetLeft(rootChild1));
+            Assert.AreEqual(50, YGNodeLayoutGetTop(rootChild1));
+            Assert.AreEqual(50, YGNodeLayoutGetWidth(rootChild1));
+            Assert.AreEqual(50, YGNodeLayoutGetHeight(rootChild1));
         }
 
         [Test]
@@ -209,17 +209,17 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YogaNode root_child0 = YGNodeNew();
-            YGNodeStyleSetFlexBasis(root_child0, 50);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            YGNodeStyleSetFlexBasis(rootChild0, 50);
+            YGNodeStyleSetAspectRatio(rootChild0, 1);
+            YGNodeInsertChild(root, rootChild0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            Assert.AreEqual(0, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(0, YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(50, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(0, YGNodeLayoutGetLeft(rootChild0));
+            Assert.AreEqual(0, YGNodeLayoutGetTop(rootChild0));
+            Assert.AreEqual(50, YGNodeLayoutGetWidth(rootChild0));
+            Assert.AreEqual(50, YGNodeLayoutGetHeight(rootChild0));
         }
 
         [Test]
@@ -229,20 +229,20 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YogaNode root_child0 = YGNodeNew();
-            YGNodeStyleSetPositionType(root_child0, PositionType.Absolute);
-            YGNodeStyleSetPosition(root_child0, Edge.Left, 0);
-            YGNodeStyleSetPosition(root_child0, Edge.Top, 0);
-            YGNodeStyleSetWidth(root_child0, 50);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            YGNodeStyleSetPositionType(rootChild0, PositionType.Absolute);
+            YGNodeStyleSetPosition(rootChild0, Edge.Left, 0);
+            YGNodeStyleSetPosition(rootChild0, Edge.Top, 0);
+            YGNodeStyleSetWidth(rootChild0, 50);
+            YGNodeStyleSetAspectRatio(rootChild0, 1);
+            YGNodeInsertChild(root, rootChild0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            Assert.AreEqual(0, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(0, YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(50, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(0, YGNodeLayoutGetLeft(rootChild0));
+            Assert.AreEqual(0, YGNodeLayoutGetTop(rootChild0));
+            Assert.AreEqual(50, YGNodeLayoutGetWidth(rootChild0));
+            Assert.AreEqual(50, YGNodeLayoutGetHeight(rootChild0));
         }
 
         [Test]
@@ -252,20 +252,20 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YogaNode root_child0 = YGNodeNew();
-            YGNodeStyleSetPositionType(root_child0, PositionType.Absolute);
-            YGNodeStyleSetPosition(root_child0, Edge.Left, 0);
-            YGNodeStyleSetPosition(root_child0, Edge.Top, 0);
-            YGNodeStyleSetHeight(root_child0, 50);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            YGNodeStyleSetPositionType(rootChild0, PositionType.Absolute);
+            YGNodeStyleSetPosition(rootChild0, Edge.Left, 0);
+            YGNodeStyleSetPosition(rootChild0, Edge.Top, 0);
+            YGNodeStyleSetHeight(rootChild0, 50);
+            YGNodeStyleSetAspectRatio(rootChild0, 1);
+            YGNodeInsertChild(root, rootChild0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            Assert.AreEqual(0, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(0, YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(50, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(0, YGNodeLayoutGetLeft(rootChild0));
+            Assert.AreEqual(0, YGNodeLayoutGetTop(rootChild0));
+            Assert.AreEqual(50, YGNodeLayoutGetWidth(rootChild0));
+            Assert.AreEqual(50, YGNodeLayoutGetHeight(rootChild0));
         }
 
         [Test]
@@ -276,18 +276,18 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YogaNode root_child0 = YGNodeNew();
-            YGNodeStyleSetHeight(root_child0, 50);
-            YGNodeStyleSetMaxWidth(root_child0, 40);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            YGNodeStyleSetHeight(rootChild0, 50);
+            YGNodeStyleSetMaxWidth(rootChild0, 40);
+            YGNodeStyleSetAspectRatio(rootChild0, 1);
+            YGNodeInsertChild(root, rootChild0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            Assert.AreEqual(0, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(0, YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(40, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(0, YGNodeLayoutGetLeft(rootChild0));
+            Assert.AreEqual(0, YGNodeLayoutGetTop(rootChild0));
+            Assert.AreEqual(40, YGNodeLayoutGetWidth(rootChild0));
+            Assert.AreEqual(50, YGNodeLayoutGetHeight(rootChild0));
         }
 
         [Test]
@@ -298,18 +298,18 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YogaNode root_child0 = YGNodeNew();
-            YGNodeStyleSetWidth(root_child0, 50);
-            YGNodeStyleSetMaxHeight(root_child0, 40);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            YGNodeStyleSetWidth(rootChild0, 50);
+            YGNodeStyleSetMaxHeight(rootChild0, 40);
+            YGNodeStyleSetAspectRatio(rootChild0, 1);
+            YGNodeInsertChild(root, rootChild0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            Assert.AreEqual(0, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(0, YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(40, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(40, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(0, YGNodeLayoutGetLeft(rootChild0));
+            Assert.AreEqual(0, YGNodeLayoutGetTop(rootChild0));
+            Assert.AreEqual(40, YGNodeLayoutGetWidth(rootChild0));
+            Assert.AreEqual(40, YGNodeLayoutGetHeight(rootChild0));
         }
 
         [Test]
@@ -320,18 +320,18 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YogaNode root_child0 = YGNodeNew();
-            YGNodeStyleSetHeight(root_child0, 30);
-            YGNodeStyleSetMinWidth(root_child0, 40);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            YGNodeStyleSetHeight(rootChild0, 30);
+            YGNodeStyleSetMinWidth(rootChild0, 40);
+            YGNodeStyleSetAspectRatio(rootChild0, 1);
+            YGNodeInsertChild(root, rootChild0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            Assert.AreEqual(0, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(0, YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(40, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(30, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(0, YGNodeLayoutGetLeft(rootChild0));
+            Assert.AreEqual(0, YGNodeLayoutGetTop(rootChild0));
+            Assert.AreEqual(40, YGNodeLayoutGetWidth(rootChild0));
+            Assert.AreEqual(30, YGNodeLayoutGetHeight(rootChild0));
         }
 
         [Test]
@@ -342,18 +342,18 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YogaNode root_child0 = YGNodeNew();
-            YGNodeStyleSetWidth(root_child0, 30);
-            YGNodeStyleSetMinHeight(root_child0, 40);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            YGNodeStyleSetWidth(rootChild0, 30);
+            YGNodeStyleSetMinHeight(rootChild0, 40);
+            YGNodeStyleSetAspectRatio(rootChild0, 1);
+            YGNodeInsertChild(root, rootChild0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            Assert.AreEqual(0, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(0, YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(40, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(40, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(0, YGNodeLayoutGetLeft(rootChild0));
+            Assert.AreEqual(0, YGNodeLayoutGetTop(rootChild0));
+            Assert.AreEqual(40, YGNodeLayoutGetWidth(rootChild0));
+            Assert.AreEqual(40, YGNodeLayoutGetHeight(rootChild0));
         }
 
         [Test]
@@ -364,17 +364,17 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YogaNode root_child0 = YGNodeNew();
-            YGNodeStyleSetHeight(root_child0, 50);
-            YGNodeStyleSetAspectRatio(root_child0, 2);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            YGNodeStyleSetHeight(rootChild0, 50);
+            YGNodeStyleSetAspectRatio(rootChild0, 2);
+            YGNodeInsertChild(root, rootChild0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            Assert.AreEqual(0, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(0, YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(100, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(0, YGNodeLayoutGetLeft(rootChild0));
+            Assert.AreEqual(0, YGNodeLayoutGetTop(rootChild0));
+            Assert.AreEqual(100, YGNodeLayoutGetWidth(rootChild0));
+            Assert.AreEqual(50, YGNodeLayoutGetHeight(rootChild0));
         }
 
         [Test]
@@ -385,17 +385,17 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YogaNode root_child0 = YGNodeNew();
-            YGNodeStyleSetHeight(root_child0, 100);
-            YGNodeStyleSetAspectRatio(root_child0, 0.5f);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            YGNodeStyleSetHeight(rootChild0, 100);
+            YGNodeStyleSetAspectRatio(rootChild0, 0.5f);
+            YGNodeInsertChild(root, rootChild0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            Assert.AreEqual(0, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(0, YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(50, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(100, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(0, YGNodeLayoutGetLeft(rootChild0));
+            Assert.AreEqual(0, YGNodeLayoutGetTop(rootChild0));
+            Assert.AreEqual(50, YGNodeLayoutGetWidth(rootChild0));
+            Assert.AreEqual(100, YGNodeLayoutGetHeight(rootChild0));
         }
 
         [Test]
@@ -406,17 +406,17 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YogaNode root_child0 = YGNodeNew();
-            YGNodeStyleSetWidth(root_child0, 50);
-            YGNodeStyleSetAspectRatio(root_child0, 0.5f);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            YGNodeStyleSetWidth(rootChild0, 50);
+            YGNodeStyleSetAspectRatio(rootChild0, 0.5f);
+            YGNodeInsertChild(root, rootChild0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            Assert.AreEqual(0, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(0, YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(50, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(100, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(0, YGNodeLayoutGetLeft(rootChild0));
+            Assert.AreEqual(0, YGNodeLayoutGetTop(rootChild0));
+            Assert.AreEqual(50, YGNodeLayoutGetWidth(rootChild0));
+            Assert.AreEqual(100, YGNodeLayoutGetHeight(rootChild0));
         }
 
         [Test]
@@ -427,17 +427,17 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YogaNode root_child0 = YGNodeNew();
-            YGNodeStyleSetWidth(root_child0, 100);
-            YGNodeStyleSetAspectRatio(root_child0, 2);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            YGNodeStyleSetWidth(rootChild0, 100);
+            YGNodeStyleSetAspectRatio(rootChild0, 2);
+            YGNodeInsertChild(root, rootChild0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            Assert.AreEqual(0, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(0, YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(100, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(0, YGNodeLayoutGetLeft(rootChild0));
+            Assert.AreEqual(0, YGNodeLayoutGetTop(rootChild0));
+            Assert.AreEqual(100, YGNodeLayoutGetWidth(rootChild0));
+            Assert.AreEqual(50, YGNodeLayoutGetHeight(rootChild0));
         }
 
         [Test]
@@ -448,17 +448,17 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YogaNode root_child0 = YGNodeNew();
-            YGNodeSetMeasureFunc(root_child0, _measure);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            YGNodeSetMeasureFunc(rootChild0, _measure);
+            YGNodeStyleSetAspectRatio(rootChild0, 1);
+            YGNodeInsertChild(root, rootChild0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            Assert.AreEqual(0, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(0, YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(50, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(0, YGNodeLayoutGetLeft(rootChild0));
+            Assert.AreEqual(0, YGNodeLayoutGetTop(rootChild0));
+            Assert.AreEqual(50, YGNodeLayoutGetWidth(rootChild0));
+            Assert.AreEqual(50, YGNodeLayoutGetHeight(rootChild0));
         }
 
         [Test]
@@ -470,19 +470,19 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 200);
 
-            YogaNode root_child0 = YGNodeNew();
-            YGNodeStyleSetWidth(root_child0, 50);
-            YGNodeStyleSetHeight(root_child0, 50);
-            YGNodeStyleSetFlexGrow(root_child0, 1);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            YGNodeStyleSetWidth(rootChild0, 50);
+            YGNodeStyleSetHeight(rootChild0, 50);
+            YGNodeStyleSetFlexGrow(rootChild0, 1);
+            YGNodeStyleSetAspectRatio(rootChild0, 1);
+            YGNodeInsertChild(root, rootChild0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            Assert.AreEqual(0, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(0, YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(100, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(100, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(0, YGNodeLayoutGetLeft(rootChild0));
+            Assert.AreEqual(0, YGNodeLayoutGetTop(rootChild0));
+            Assert.AreEqual(100, YGNodeLayoutGetWidth(rootChild0));
+            Assert.AreEqual(100, YGNodeLayoutGetHeight(rootChild0));
         }
 
         [Test]
@@ -493,19 +493,19 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 200);
             YGNodeStyleSetHeight(root, 100);
 
-            YogaNode root_child0 = YGNodeNew();
-            YGNodeStyleSetWidth(root_child0, 50);
-            YGNodeStyleSetHeight(root_child0, 50);
-            YGNodeStyleSetFlexGrow(root_child0, 1);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            YGNodeStyleSetWidth(rootChild0, 50);
+            YGNodeStyleSetHeight(rootChild0, 50);
+            YGNodeStyleSetFlexGrow(rootChild0, 1);
+            YGNodeStyleSetAspectRatio(rootChild0, 1);
+            YGNodeInsertChild(root, rootChild0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            Assert.AreEqual(0, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(0, YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(100, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(100, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(0, YGNodeLayoutGetLeft(rootChild0));
+            Assert.AreEqual(0, YGNodeLayoutGetTop(rootChild0));
+            Assert.AreEqual(100, YGNodeLayoutGetWidth(rootChild0));
+            Assert.AreEqual(100, YGNodeLayoutGetHeight(rootChild0));
         }
 
         [Test]
@@ -517,29 +517,29 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 200);
             YGNodeStyleSetHeight(root, 200);
 
-            YogaNode root_child0 = YGNodeNew();
-            YGNodeStyleSetHeight(root_child0, 50);
-            YGNodeStyleSetFlexGrow(root_child0, 1);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            YGNodeStyleSetHeight(rootChild0, 50);
+            YGNodeStyleSetFlexGrow(rootChild0, 1);
+            YGNodeStyleSetAspectRatio(rootChild0, 1);
+            YGNodeInsertChild(root, rootChild0, 0);
 
-            YogaNode root_child1 = YGNodeNew();
-            YGNodeStyleSetHeight(root_child1, 100);
-            YGNodeStyleSetFlexGrow(root_child1, 1);
-            YGNodeStyleSetAspectRatio(root_child1, 1);
-            YGNodeInsertChild(root, root_child1, 1);
+            YogaNode rootChild1 = YGNodeNew();
+            YGNodeStyleSetHeight(rootChild1, 100);
+            YGNodeStyleSetFlexGrow(rootChild1, 1);
+            YGNodeStyleSetAspectRatio(rootChild1, 1);
+            YGNodeInsertChild(root, rootChild1, 1);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            Assert.AreEqual(0, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(0, YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(75, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(75, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(0, YGNodeLayoutGetLeft(rootChild0));
+            Assert.AreEqual(0, YGNodeLayoutGetTop(rootChild0));
+            Assert.AreEqual(75, YGNodeLayoutGetWidth(rootChild0));
+            Assert.AreEqual(75, YGNodeLayoutGetHeight(rootChild0));
 
-            Assert.AreEqual(75, YGNodeLayoutGetLeft(root_child1));
-            Assert.AreEqual(0, YGNodeLayoutGetTop(root_child1));
-            Assert.AreEqual(125, YGNodeLayoutGetWidth(root_child1));
-            Assert.AreEqual(125, YGNodeLayoutGetHeight(root_child1));
+            Assert.AreEqual(75, YGNodeLayoutGetLeft(rootChild1));
+            Assert.AreEqual(0, YGNodeLayoutGetTop(rootChild1));
+            Assert.AreEqual(125, YGNodeLayoutGetWidth(rootChild1));
+            Assert.AreEqual(125, YGNodeLayoutGetHeight(rootChild1));
         }
 
         [Test]
@@ -550,29 +550,29 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 200);
             YGNodeStyleSetHeight(root, 200);
 
-            YogaNode root_child0 = YGNodeNew();
-            YGNodeStyleSetWidth(root_child0, 50);
-            YGNodeStyleSetFlexGrow(root_child0, 1);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            YGNodeStyleSetWidth(rootChild0, 50);
+            YGNodeStyleSetFlexGrow(rootChild0, 1);
+            YGNodeStyleSetAspectRatio(rootChild0, 1);
+            YGNodeInsertChild(root, rootChild0, 0);
 
-            YogaNode root_child1 = YGNodeNew();
-            YGNodeStyleSetWidth(root_child1, 100);
-            YGNodeStyleSetFlexGrow(root_child1, 1);
-            YGNodeStyleSetAspectRatio(root_child1, 1);
-            YGNodeInsertChild(root, root_child1, 1);
+            YogaNode rootChild1 = YGNodeNew();
+            YGNodeStyleSetWidth(rootChild1, 100);
+            YGNodeStyleSetFlexGrow(rootChild1, 1);
+            YGNodeStyleSetAspectRatio(rootChild1, 1);
+            YGNodeInsertChild(root, rootChild1, 1);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            Assert.AreEqual(0, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(0, YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(75, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(75, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(0, YGNodeLayoutGetLeft(rootChild0));
+            Assert.AreEqual(0, YGNodeLayoutGetTop(rootChild0));
+            Assert.AreEqual(75, YGNodeLayoutGetWidth(rootChild0));
+            Assert.AreEqual(75, YGNodeLayoutGetHeight(rootChild0));
 
-            Assert.AreEqual(0, YGNodeLayoutGetLeft(root_child1));
-            Assert.AreEqual(75, YGNodeLayoutGetTop(root_child1));
-            Assert.AreEqual(125, YGNodeLayoutGetWidth(root_child1));
-            Assert.AreEqual(125, YGNodeLayoutGetHeight(root_child1));
+            Assert.AreEqual(0, YGNodeLayoutGetLeft(rootChild1));
+            Assert.AreEqual(75, YGNodeLayoutGetTop(rootChild1));
+            Assert.AreEqual(125, YGNodeLayoutGetWidth(rootChild1));
+            Assert.AreEqual(125, YGNodeLayoutGetHeight(rootChild1));
         }
 
         [Test]
@@ -584,18 +584,18 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YogaNode root_child0 = YGNodeNew();
-            YGNodeStyleSetWidth(root_child0, 50);
-            YGNodeStyleSetFlexGrow(root_child0, 1);
-            YGNodeStyleSetAspectRatio(root_child0, 0.5f);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            YGNodeStyleSetWidth(rootChild0, 50);
+            YGNodeStyleSetFlexGrow(rootChild0, 1);
+            YGNodeStyleSetAspectRatio(rootChild0, 0.5f);
+            YGNodeInsertChild(root, rootChild0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            Assert.AreEqual(0, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(0, YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(100, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(200, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(0, YGNodeLayoutGetLeft(rootChild0));
+            Assert.AreEqual(0, YGNodeLayoutGetTop(rootChild0));
+            Assert.AreEqual(100, YGNodeLayoutGetWidth(rootChild0));
+            Assert.AreEqual(200, YGNodeLayoutGetHeight(rootChild0));
         }
 
         [Test]
@@ -606,18 +606,18 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YogaNode root_child0 = YGNodeNew();
-            YGNodeStyleSetHeight(root_child0, 50);
-            YGNodeStyleSetFlexGrow(root_child0, 1);
-            YGNodeStyleSetAspectRatio(root_child0, 2);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            YGNodeStyleSetHeight(rootChild0, 50);
+            YGNodeStyleSetFlexGrow(rootChild0, 1);
+            YGNodeStyleSetAspectRatio(rootChild0, 2);
+            YGNodeInsertChild(root, rootChild0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            Assert.AreEqual(0, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(0, YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(200, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(100, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(0, YGNodeLayoutGetLeft(rootChild0));
+            Assert.AreEqual(0, YGNodeLayoutGetTop(rootChild0));
+            Assert.AreEqual(200, YGNodeLayoutGetWidth(rootChild0));
+            Assert.AreEqual(100, YGNodeLayoutGetHeight(rootChild0));
         }
 
         [Test]
@@ -627,20 +627,20 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YogaNode root_child0 = YGNodeNew();
-            YGNodeStyleSetPositionType(root_child0, PositionType.Absolute);
-            YGNodeStyleSetPosition(root_child0, Edge.Left, 10);
-            YGNodeStyleSetPosition(root_child0, Edge.Top, 10);
-            YGNodeStyleSetPosition(root_child0, Edge.Right, 10);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            YGNodeStyleSetPositionType(rootChild0, PositionType.Absolute);
+            YGNodeStyleSetPosition(rootChild0, Edge.Left, 10);
+            YGNodeStyleSetPosition(rootChild0, Edge.Top, 10);
+            YGNodeStyleSetPosition(rootChild0, Edge.Right, 10);
+            YGNodeStyleSetAspectRatio(rootChild0, 1);
+            YGNodeInsertChild(root, rootChild0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            Assert.AreEqual(10, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(10, YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(80, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(80, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(10, YGNodeLayoutGetLeft(rootChild0));
+            Assert.AreEqual(10, YGNodeLayoutGetTop(rootChild0));
+            Assert.AreEqual(80, YGNodeLayoutGetWidth(rootChild0));
+            Assert.AreEqual(80, YGNodeLayoutGetHeight(rootChild0));
         }
 
         [Test]
@@ -650,20 +650,20 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YogaNode root_child0 = YGNodeNew();
-            YGNodeStyleSetPositionType(root_child0, PositionType.Absolute);
-            YGNodeStyleSetPosition(root_child0, Edge.Left, 10);
-            YGNodeStyleSetPosition(root_child0, Edge.Top, 10);
-            YGNodeStyleSetPosition(root_child0, Edge.Bottom, 10);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            YGNodeStyleSetPositionType(rootChild0, PositionType.Absolute);
+            YGNodeStyleSetPosition(rootChild0, Edge.Left, 10);
+            YGNodeStyleSetPosition(rootChild0, Edge.Top, 10);
+            YGNodeStyleSetPosition(rootChild0, Edge.Bottom, 10);
+            YGNodeStyleSetAspectRatio(rootChild0, 1);
+            YGNodeInsertChild(root, rootChild0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            Assert.AreEqual(10, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(10, YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(80, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(80, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(10, YGNodeLayoutGetLeft(rootChild0));
+            Assert.AreEqual(10, YGNodeLayoutGetTop(rootChild0));
+            Assert.AreEqual(80, YGNodeLayoutGetWidth(rootChild0));
+            Assert.AreEqual(80, YGNodeLayoutGetHeight(rootChild0));
         }
 
         [Test]
@@ -674,17 +674,17 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YogaNode root_child0 = YGNodeNew();
-            YGNodeStyleSetWidth(root_child0, 50);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            YGNodeStyleSetWidth(rootChild0, 50);
+            YGNodeStyleSetAspectRatio(rootChild0, 1);
+            YGNodeInsertChild(root, rootChild0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            Assert.AreEqual(0, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(0, YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(50, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(0, YGNodeLayoutGetLeft(rootChild0));
+            Assert.AreEqual(0, YGNodeLayoutGetTop(rootChild0));
+            Assert.AreEqual(50, YGNodeLayoutGetWidth(rootChild0));
+            Assert.AreEqual(50, YGNodeLayoutGetHeight(rootChild0));
         }
 
         [Test]
@@ -694,17 +694,17 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YogaNode root_child0 = YGNodeNew();
-            YGNodeStyleSetHeight(root_child0, 50);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            YGNodeStyleSetHeight(rootChild0, 50);
+            YGNodeStyleSetAspectRatio(rootChild0, 1);
+            YGNodeInsertChild(root, rootChild0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            Assert.AreEqual(0, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(0, YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(50, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(0, YGNodeLayoutGetLeft(rootChild0));
+            Assert.AreEqual(0, YGNodeLayoutGetTop(rootChild0));
+            Assert.AreEqual(50, YGNodeLayoutGetWidth(rootChild0));
+            Assert.AreEqual(50, YGNodeLayoutGetHeight(rootChild0));
         }
 
         [Test]
@@ -714,18 +714,18 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
             YGNodeStyleSetWidth(root, 100);
 
-            YogaNode root_child0 = YGNodeNew();
-            YGNodeStyleSetHeight(root_child0, 50);
-            YGNodeStyleSetAspectRatio(root_child0, 4);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            YGNodeStyleSetHeight(rootChild0, 50);
+            YGNodeStyleSetAspectRatio(rootChild0, 4);
+            YGNodeInsertChild(root, rootChild0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
             Assert.AreEqual(100, YGNodeLayoutGetWidth(root));
             Assert.AreEqual(50, YGNodeLayoutGetHeight(root));
 
-            Assert.AreEqual(200, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(200, YGNodeLayoutGetWidth(rootChild0));
+            Assert.AreEqual(50, YGNodeLayoutGetHeight(rootChild0));
         }
 
         [Test]
@@ -737,20 +737,20 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YogaNode root_child0 = YGNodeNew();
-            YGNodeStyleSetHeight(root_child0, 50);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeStyleSetMargin(root_child0, Edge.Left, 10);
-            YGNodeStyleSetMargin(root_child0, Edge.Right, 10);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            YGNodeStyleSetHeight(rootChild0, 50);
+            YGNodeStyleSetAspectRatio(rootChild0, 1);
+            YGNodeStyleSetMargin(rootChild0, Edge.Left, 10);
+            YGNodeStyleSetMargin(rootChild0, Edge.Right, 10);
+            YGNodeInsertChild(root, rootChild0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
             Assert.AreEqual(100, YGNodeLayoutGetWidth(root));
             Assert.AreEqual(100, YGNodeLayoutGetHeight(root));
 
-            Assert.AreEqual(50, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(50, YGNodeLayoutGetWidth(rootChild0));
+            Assert.AreEqual(50, YGNodeLayoutGetHeight(rootChild0));
         }
 
         [Test]
@@ -762,20 +762,20 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YogaNode root_child0 = YGNodeNew();
-            YGNodeStyleSetWidth(root_child0, 50);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeStyleSetMargin(root_child0, Edge.Left, 10);
-            YGNodeStyleSetMargin(root_child0, Edge.Right, 10);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            YGNodeStyleSetWidth(rootChild0, 50);
+            YGNodeStyleSetAspectRatio(rootChild0, 1);
+            YGNodeStyleSetMargin(rootChild0, Edge.Left, 10);
+            YGNodeStyleSetMargin(rootChild0, Edge.Right, 10);
+            YGNodeInsertChild(root, rootChild0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
             Assert.AreEqual(100, YGNodeLayoutGetWidth(root));
             Assert.AreEqual(100, YGNodeLayoutGetHeight(root));
 
-            Assert.AreEqual(50, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(50, YGNodeLayoutGetWidth(rootChild0));
+            Assert.AreEqual(50, YGNodeLayoutGetHeight(rootChild0));
         }
 
         [Test]
@@ -787,20 +787,20 @@ namespace Yoga.Net.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YogaNode root_child0 = YGNodeNew();
-            YGNodeStyleSetWidth(root_child0, 50);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeStyleSetMargin(root_child0, Edge.Top, 10);
-            YGNodeStyleSetMargin(root_child0, Edge.Bottom, 10);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode rootChild0 = YGNodeNew();
+            YGNodeStyleSetWidth(rootChild0, 50);
+            YGNodeStyleSetAspectRatio(rootChild0, 1);
+            YGNodeStyleSetMargin(rootChild0, Edge.Top, 10);
+            YGNodeStyleSetMargin(rootChild0, Edge.Bottom, 10);
+            YGNodeInsertChild(root, rootChild0, 0);
 
             YGNodeCalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
             Assert.AreEqual(100, YGNodeLayoutGetWidth(root));
             Assert.AreEqual(100, YGNodeLayoutGetHeight(root));
 
-            Assert.AreEqual(50, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(50, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(50, YGNodeLayoutGetWidth(rootChild0));
+            Assert.AreEqual(50, YGNodeLayoutGetHeight(rootChild0));
         }
 
         /*

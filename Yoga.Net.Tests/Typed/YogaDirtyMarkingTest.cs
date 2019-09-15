@@ -9,61 +9,60 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void dirty_propagation()
         {
-            YogaNode root_child0, root_child1;
+            YogaNode rootChild0, rootChild1;
             YogaNode root = Node(alignItems: YogaAlign.FlexStart, width: 100, height: 100)
-                           .Add(root_child0 = Node(width:50, height:20))
-                           .Add(root_child1 = Node(width:50, height:20));
+                           .Add(rootChild0 = Node(width:50, height:20))
+                           .Add(rootChild1 = Node(width:50, height:20));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
 
-            root_child0.Style.Width = 20;
+            rootChild0.Style.Width = 20;
 
-            Assert.IsTrue(root_child0.IsDirty);
-            Assert.IsFalse(root_child1.IsDirty);
+            Assert.IsTrue(rootChild0.IsDirty);
+            Assert.IsFalse(rootChild1.IsDirty);
             Assert.IsTrue(root.IsDirty);
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            Assert.IsFalse(root_child0.IsDirty);
-            Assert.IsFalse(root_child1.IsDirty);
+            Assert.IsFalse(rootChild0.IsDirty);
+            Assert.IsFalse(rootChild1.IsDirty);
             Assert.IsFalse(root.IsDirty);
         }
 
         [Test]
         public void dirty_propagation_only_if_prop_changed()
         {
-            YogaNode root_child0, root_child1;
+            YogaNode rootChild0, rootChild1;
             YogaNode root = Node(alignItems: YogaAlign.FlexStart, width: 100, height: 100)
-                           .Add(root_child0 = Node(width:50, height:20))
-                           .Add(root_child1 = Node(width:50, height:20));
+                           .Add(rootChild0 = Node(width:50, height:20))
+                           .Add(rootChild1 = Node(width:50, height:20));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            root_child0.Style.Width = 50;
+            rootChild0.Style.Width = 50;
 
-            Assert.IsFalse(root_child0.IsDirty);
-            Assert.IsFalse(root_child1.IsDirty);
+            Assert.IsFalse(rootChild0.IsDirty);
+            Assert.IsFalse(rootChild1.IsDirty);
             Assert.IsFalse(root.IsDirty);
         }
 
         [Test]
         public void dirty_mark_all_children_as_dirty_when_display_changes()
         {
-            YogaNode child0, child1, child1_child0, child1_child0_child0;
+            YogaNode child0, child1, child1Child0Child0;
             YogaNode root = Node(flexDirection: FlexDirection.Row, height: 100)
-                           .Add(child0 = Node(flexGrow: 1, display:Display.Flex))
+                           .Add(child0 = Node(flexGrow: 1))
                            .Add(child1 = Node(flexGrow: 1, display:Display.None)
-                                   .Add(
-                                        child1_child0 = Node()
-                                           .Add(child1_child0_child0 = Node(width:8, height:16))
+                                   .Add(Node()
+                                           .Add(child1Child0Child0 = Node(width:8, height:16))
                                         )
                             );
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            Assert.AreEqual(0, child1_child0_child0.Layout.Width);
-            Assert.AreEqual(0, child1_child0_child0.Layout.Height);
+            Assert.AreEqual(0, child1Child0Child0.Layout.Width);
+            Assert.AreEqual(0, child1Child0Child0.Layout.Height);
 
 
             child0.Style.Display = Display.None;
@@ -71,24 +70,24 @@ namespace Yoga.Net.Tests.Typed
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            Assert.AreEqual(8, child1_child0_child0.Layout.Width);
-            Assert.AreEqual(16, child1_child0_child0.Layout.Height);
+            Assert.AreEqual(8, child1Child0Child0.Layout.Width);
+            Assert.AreEqual(16, child1Child0Child0.Layout.Height);
 
             child0.Style.Display = Display.Flex;
             child1.Style.Display = Display.None;
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            Assert.AreEqual(0, child1_child0_child0.Layout.Width);
-            Assert.AreEqual(0, child1_child0_child0.Layout.Height);
+            Assert.AreEqual(0, child1Child0Child0.Layout.Width);
+            Assert.AreEqual(0, child1Child0Child0.Layout.Height);
 
             child0.Style.Display = Display.None;
             child1.Style.Display = Display.Flex;
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
-            Assert.AreEqual(8, child1_child0_child0.Layout.Width);
-            Assert.AreEqual(16, child1_child0_child0.Layout.Height);
+            Assert.AreEqual(8, child1Child0Child0.Layout.Width);
+            Assert.AreEqual(16, child1Child0Child0.Layout.Height);
         }
 
         [Test]

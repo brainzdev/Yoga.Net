@@ -1,12 +1,13 @@
 using NUnit.Framework;
 using System.Collections.Generic;
+using static Yoga.Net.YogaBuild;
 
 namespace Yoga.Net.Tests.Typed
 {
     [TestFixture]
     public class YogaTreeMutationTest
     {
-        static List<YogaNode> getChildren(YogaNode node)
+        static List<YogaNode> GetChildren(YogaNode node)
         {
             var count = node.ChildCount;
             List<YogaNode> children = new List<YogaNode>(count);
@@ -19,16 +20,16 @@ namespace Yoga.Net.Tests.Typed
         public void set_children_adds_children_to_parent()
         {
             YogaNode root = new YogaNode();
-            YogaNode root_child0 = new YogaNode();
-            YogaNode root_child1 = new YogaNode();
+            YogaNode rootChild0 = new YogaNode();
+            YogaNode rootChild1 = new YogaNode();
 
-            root.SetChildren(new List<YogaNode> {root_child0, root_child1});
+            root.SetChildren(new[] {rootChild0, rootChild1});
 
-            List<YogaNode> children = getChildren(root);
-            List<YogaNode> expectedChildren = new List<YogaNode> {root_child0, root_child1};
+            var children = GetChildren(root);
+            var expectedChildren = new List<YogaNode> {rootChild0, rootChild1};
             Assert.AreEqual(children, expectedChildren);
 
-            List<YogaNode> owners = new List<YogaNode> {root_child0.Owner, root_child1.Owner};
+            List<YogaNode> owners = new List<YogaNode> {rootChild0.Owner, rootChild1.Owner};
             List<YogaNode> expectedOwners = new List<YogaNode> {root, root};
             Assert.AreEqual(owners, expectedOwners);
         }
@@ -37,18 +38,18 @@ namespace Yoga.Net.Tests.Typed
         public void set_children_to_empty_removes_old_children()
         {
             YogaNode root = new YogaNode();
-            YogaNode root_child0 = new YogaNode();
-            YogaNode root_child1 = new YogaNode();
+            YogaNode rootChild0 = new YogaNode();
+            YogaNode rootChild1 = new YogaNode();
 
-            root.SetChildren(new List<YogaNode> {root_child0, root_child1});
-            root.SetChildren(new List<YogaNode> { });
+            root.SetChildren(new [] {rootChild0, rootChild1});
+            root.SetChildren(new YogaNode[] { });
 
-            List<YogaNode> children = getChildren(root);
-            List<YogaNode> expectedChildren = new List<YogaNode> { };
+            var children = GetChildren(root);
+            var expectedChildren = new YogaNode[] { };
             Assert.AreEqual(children, expectedChildren);
 
-            List<YogaNode> owners = new List<YogaNode> {root_child0.Owner, root_child1.Owner};
-            List<YogaNode> expectedOwners = new List<YogaNode> {null, null};
+            var owners = new [] {rootChild0.Owner, rootChild1.Owner};
+            var expectedOwners = new YogaNode[] {null, null};
             Assert.AreEqual(owners, expectedOwners);
         }
 
@@ -56,26 +57,25 @@ namespace Yoga.Net.Tests.Typed
         public void set_children_replaces_non_common_children()
         {
             YogaNode root = new YogaNode();
-            YogaNode root_child0 = new YogaNode();
-            YogaNode root_child1 = new YogaNode();
-            YogaNode root_child2 = new YogaNode();
-            YogaNode root_child3 = new YogaNode();
+            YogaNode rootChild0 = new YogaNode();
+            YogaNode rootChild1 = new YogaNode();
+            YogaNode rootChild2 = new YogaNode();
+            YogaNode rootChild3 = new YogaNode();
 
-            root_child0.LineIndex = 0;
-            root_child1.LineIndex = 1;
-            root_child2.LineIndex = 2;
-            root_child3.LineIndex = 3;
+            rootChild0.LineIndex = 0;
+            rootChild1.LineIndex = 1;
+            rootChild2.LineIndex = 2;
+            rootChild3.LineIndex = 3;
 
-            root.SetChildren(new List<YogaNode> {root_child0, root_child1});
+            root.SetChildren(new [] {rootChild0, rootChild1});
+            root.SetChildren(new [] {rootChild2, rootChild3});
 
-            root.SetChildren(new List<YogaNode> {root_child2, root_child3});
-
-            List<YogaNode> children = getChildren(root);
-            List<YogaNode> expectedChildren = new List<YogaNode> {root_child2, root_child3};
+            var children = GetChildren(root);
+            var expectedChildren = new [] {rootChild2, rootChild3};
             Assert.AreEqual(children, expectedChildren);
 
-            List<YogaNode> owners = new List<YogaNode> {root_child0.Owner, root_child1.Owner};
-            List<YogaNode> expectedOwners = new List<YogaNode> {null, null};
+            var owners = new [] {rootChild0.Owner, rootChild1.Owner};
+            var expectedOwners = new YogaNode[] {null, null};
             Assert.AreEqual(owners, expectedOwners);
         }
 
@@ -83,32 +83,31 @@ namespace Yoga.Net.Tests.Typed
         public void set_children_keeps_and_reorders_common_children()
         {
             YogaNode root = new YogaNode();
-            YogaNode root_child0 = new YogaNode();
-            YogaNode root_child1 = new YogaNode();
-            YogaNode root_child2 = new YogaNode();
-            YogaNode root_child3 = new YogaNode();
+            YogaNode rootChild0 = new YogaNode();
+            YogaNode rootChild1 = new YogaNode();
+            YogaNode rootChild2 = new YogaNode();
+            YogaNode rootChild3 = new YogaNode();
 
-            root_child0.LineIndex = 0;
-            root_child1.LineIndex = 1;
-            root_child2.LineIndex = 2;
-            root_child3.LineIndex = 3;
+            rootChild0.LineIndex = 0;
+            rootChild1.LineIndex = 1;
+            rootChild2.LineIndex = 2;
+            rootChild3.LineIndex = 3;
 
-            root.SetChildren(new YogaNode[] {root_child0, root_child1, root_child2});
+            root.SetChildren(new [] {rootChild0, rootChild1, rootChild2});
+            root.SetChildren(new [] {rootChild2, rootChild1, rootChild3});
 
-            root.SetChildren(new YogaNode[] {root_child2, root_child1, root_child3});
-
-            List<YogaNode> children = getChildren(root);
-            List<YogaNode> expectedChildren = new List<YogaNode> {root_child2, root_child1, root_child3};
+            var children = GetChildren(root);
+            var expectedChildren = new [] {rootChild2, rootChild1, rootChild3};
             Assert.AreEqual(children, expectedChildren);
 
             List<YogaNode> owners = new List<YogaNode>
             {
-                root_child0.Owner,
-                root_child1.Owner,
-                root_child2.Owner,
-                root_child3.Owner
+                rootChild0.Owner,
+                rootChild1.Owner,
+                rootChild2.Owner,
+                rootChild3.Owner
             };
-            var expectedOwners = new List<YogaNode> {null, root, root, root};
+            var expectedOwners = new [] {null, root, root, root};
             Assert.AreEqual(owners, expectedOwners);
         }
     }

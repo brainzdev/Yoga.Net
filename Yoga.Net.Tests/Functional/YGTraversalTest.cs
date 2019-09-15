@@ -11,12 +11,12 @@ namespace Yoga.Net.Tests
         public void pre_order_traversal()
         {
             YogaNode root = YGNodeNew();
-            YogaNode root_child0 = YGNodeNew();
-            YogaNode root_child1 = YGNodeNew();
-            YogaNode root_child0_child0 = YGNodeNew();
+            YogaNode rootChild0 = YGNodeNew();
+            YogaNode rootChild1 = YGNodeNew();
+            YogaNode rootChild0Child0 = YGNodeNew();
 
-            YGNodeSetChildren(root, new List<YogaNode> {root_child0, root_child1});
-            YGNodeInsertChild(root_child0, root_child0_child0, 0);
+            YGNodeSetChildren(root, new List<YogaNode> {rootChild0, rootChild1});
+            YGNodeInsertChild(rootChild0, rootChild0Child0, 0);
 
             List<YogaNode> visited = new List<YogaNode>();
             root.TraversePreOrder(node => visited.Add(node));
@@ -24,9 +24,9 @@ namespace Yoga.Net.Tests
             YogaNode[] expected = new YogaNode[]
             {
                 root,
-                root_child0,
-                root_child0_child0,
-                root_child1
+                rootChild0,
+                rootChild0Child0,
+                rootChild1
             };
             Assert.AreEqual(visited, expected);
         }

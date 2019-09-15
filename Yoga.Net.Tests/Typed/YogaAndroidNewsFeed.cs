@@ -1,4 +1,3 @@
-using System.IO.MemoryMappedFiles;
 using NUnit.Framework;
 using static Yoga.Net.YogaBuild;
 
@@ -27,89 +26,32 @@ namespace Yoga.Net.Tests.Typed
                 rootChild0Child0Child1Child0Child1Child0,
                 rootChild0Child0Child1Child0Child1Child1;
             YogaNode root = Node(alignContent: YogaAlign.Stretch, width: 1080)
-               .Add(
-                    rootChild0 = Node()
-                       .Add(
-                            rootChild0Child0 = Node(alignContent: YogaAlign.Stretch)
-                                              .Add(
-                                                   rootChild0Child0Child0 = Node(alignContent: YogaAlign.Stretch)
-                                                      .Add(
-                                                           rootChild0Child0Child0Child0 = Node(
-                                                                                              flexDirection: FlexDirection.Row,
-                                                                                              alignContent: YogaAlign.Stretch,
-                                                                                              alignItems: YogaAlign.FlexStart,
-                                                                                              margin: Edges(start: 36, top: 24))
-                                                                                         .Add(
-                                                                                              rootChild0Child0Child0Child0Child0 = Node(
-                                                                                                      flexDirection: FlexDirection.Row,
-                                                                                                      alignContent: YogaAlign.Stretch)
-                                                                                                 .Add(
-                                                                                                      rootChild0Child0Child0Child0Child0Child0 = Node(
-                                                                                                          alignContent: YogaAlign.Stretch,
-                                                                                                          width: 120,
-                                                                                                          height: 120))
-                                                                                          )
-                                                                                         .Add(
-                                                                                              rootChild0Child0Child0Child0Child1 = Node(
-                                                                                                                                       alignContent: YogaAlign.Stretch,
-                                                                                                                                       flexShrink: 1,
-                                                                                                                                       margin: Edges(right: 36),
-                                                                                                                                       padding: Edges(left: 36, top: 21, right: 36, bottom: 18))
-                                                                                                                                  .Add(
-                                                                                                                                       rootChild0Child0Child0Child0Child1Child0 = Node(
-                                                                                                                                           flexDirection: FlexDirection.Row,
-                                                                                                                                           alignContent: YogaAlign.Stretch,
-                                                                                                                                           flexShrink: 1))
-                                                                                                                                  .Add(
-                                                                                                                                       rootChild0Child0Child0Child0Child1Child1 = Node(
-                                                                                                                                           alignContent: YogaAlign.Stretch,
-                                                                                                                                           flexShrink: 1))
-                                                                                          )
-                                                       )
-                                               )
-                                              .Add(
-                                                   rootChild0Child0Child1 = Node(alignContent: YogaAlign.Stretch)
-                                                      .Add(
-                                                           rootChild0Child0Child1Child0 = Node(
-                                                                                              flexDirection: FlexDirection.Row,
-                                                                                              alignContent: YogaAlign.Stretch,
-                                                                                              alignItems: YogaAlign.FlexStart,
-                                                                                              margin: Edges(start: 174, top: 24)
-                                                                                          )
-                                                                                         .Add(
-                                                                                              rootChild0Child0Child1Child0Child0 = Node(
-                                                                                                      flexDirection: FlexDirection.Row,
-                                                                                                      alignContent: YogaAlign.Stretch
-                                                                                                  )
-                                                                                                 .Add(
-                                                                                                      rootChild0Child0Child1Child0Child0Child0 = Node(
-                                                                                                          alignContent: YogaAlign.Stretch,
-                                                                                                          width: 72,
-                                                                                                          height: 72
-                                                                                                      )))
-                                                                                         .Add(
-                                                                                              rootChild0Child0Child1Child0Child1 = Node(
-                                                                                                                                       alignContent: YogaAlign.Stretch,
-                                                                                                                                       flexShrink: 1,
-                                                                                                                                       margin: Edges(right: 36),
-                                                                                                                                       padding: Edges(left: 36, top: 21, right: 36, bottom: 18)
-                                                                                                                                   )
-                                                                                                                                  .Add(
-                                                                                                                                       rootChild0Child0Child1Child0Child1Child0 = Node(
-                                                                                                                                           flexDirection: FlexDirection.Row,
-                                                                                                                                           alignContent: YogaAlign.Stretch,
-                                                                                                                                           flexShrink: 1
-                                                                                                                                       ))
-                                                                                                                                  .Add(
-                                                                                                                                       rootChild0Child0Child1Child0Child1Child1 = Node(
-                                                                                                                                           alignContent: YogaAlign.Stretch,
-                                                                                                                                           flexShrink: 1
-                                                                                                                                       ))
-                                                                                          )
-                                                       )
-                                               )
-                        )
-                );
+               .Add(rootChild0 = Node()
+                   .Add(rootChild0Child0 = Node(alignContent: YogaAlign.Stretch)
+                       .Add(rootChild0Child0Child0 = Node(alignContent: YogaAlign.Stretch)
+                           .Add(rootChild0Child0Child0Child0 = Node(flexDirection: FlexDirection.Row, alignContent: YogaAlign.Stretch, alignItems: YogaAlign.FlexStart, margin: new Edges(start: 36, top: 24))
+                               .Add(rootChild0Child0Child0Child0Child0 = Node(flexDirection: FlexDirection.Row,alignContent: YogaAlign.Stretch)
+                                   .Add(rootChild0Child0Child0Child0Child0Child0 = Node(alignContent: YogaAlign.Stretch,width: 120,height: 120))
+                                )
+                                .Add(rootChild0Child0Child0Child0Child1 = Node(alignContent: YogaAlign.Stretch,flexShrink: 1,margin: new Edges(right: 36),padding: new Edges(left: 36, top: 21, right: 36, bottom: 18))
+                                    .Add(rootChild0Child0Child0Child0Child1Child0 = Node(flexDirection: FlexDirection.Row,alignContent: YogaAlign.Stretch,flexShrink: 1))
+                                    .Add(rootChild0Child0Child0Child0Child1Child1 = Node(alignContent: YogaAlign.Stretch,flexShrink: 1))
+                                )
+                            )
+                       )
+                       .Add(rootChild0Child0Child1 = Node(alignContent: YogaAlign.Stretch)
+                           .Add(rootChild0Child0Child1Child0 = Node(flexDirection: FlexDirection.Row,alignContent: YogaAlign.Stretch,alignItems: YogaAlign.FlexStart,margin: new Edges(start: 174, top: 24))
+                               .Add(rootChild0Child0Child1Child0Child0 = Node(flexDirection: FlexDirection.Row,alignContent: YogaAlign.Stretch)
+                                   .Add(rootChild0Child0Child1Child0Child0Child0 = Node(alignContent: YogaAlign.Stretch,width: 72,height: 72))
+                               )
+                               .Add(rootChild0Child0Child1Child0Child1 = Node(alignContent: YogaAlign.Stretch,flexShrink: 1,margin: new Edges(right: 36),padding: new Edges(left: 36, top: 21, right: 36, bottom: 18))
+                                   .Add(rootChild0Child0Child1Child0Child1Child0 = Node(flexDirection: FlexDirection.Row,alignContent: YogaAlign.Stretch,flexShrink: 1))
+                                   .Add(rootChild0Child0Child1Child0Child1Child1 = Node(alignContent: YogaAlign.Stretch,flexShrink: 1))
+                               )
+                           )
+                       )
+                   )
+               );
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 

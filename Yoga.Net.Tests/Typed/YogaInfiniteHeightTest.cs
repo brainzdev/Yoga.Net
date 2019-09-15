@@ -13,10 +13,10 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void percent_absolute_position_infinite_height()
         {
-            YogaNode root_child0, root_child1;
+            YogaNode rootChild0, rootChild1;
             YogaNode root = Node(flexDirection: FlexDirection.Row, width: 300)
-                           .Add(root_child0 = Node(width:300, height:300))
-                           .Add(root_child1 = Node(positionType:PositionType.Absolute, left:20.Percent(), top:20.Percent(), width:20.Percent(), height:20.Percent()));
+                           .Add(rootChild0 = Node(width:300, height:300))
+                           .Add(rootChild1 = Node(positionType:PositionType.Absolute, left:20.Percent(), top:20.Percent(), width:20.Percent(), height:20.Percent()));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -25,15 +25,15 @@ namespace Yoga.Net.Tests.Typed
             Assert.AreEqual(300, root.Layout.Width);
             Assert.AreEqual(300, root.Layout.Height);
 
-            Assert.AreEqual(0, root_child0.Layout.Left);
-            Assert.AreEqual(0, root_child0.Layout.Top);
-            Assert.AreEqual(300, root_child0.Layout.Width);
-            Assert.AreEqual(300, root_child0.Layout.Height);
+            Assert.AreEqual(0, rootChild0.Layout.Left);
+            Assert.AreEqual(0, rootChild0.Layout.Top);
+            Assert.AreEqual(300, rootChild0.Layout.Width);
+            Assert.AreEqual(300, rootChild0.Layout.Height);
 
-            Assert.AreEqual(60, root_child1.Layout.Left);
-            Assert.AreEqual(0, root_child1.Layout.Top);
-            Assert.AreEqual(60, root_child1.Layout.Width);
-            Assert.AreEqual(0, root_child1.Layout.Height);
+            Assert.AreEqual(60, rootChild1.Layout.Left);
+            Assert.AreEqual(0, rootChild1.Layout.Top);
+            Assert.AreEqual(60, rootChild1.Layout.Width);
+            Assert.AreEqual(0, rootChild1.Layout.Height);
         }
     }
 }

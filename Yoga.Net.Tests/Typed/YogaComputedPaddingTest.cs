@@ -9,7 +9,7 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void computed_layout_padding()
         {
-            YogaNode root = Node(width:100, height:100, padding:Edges(start:10));
+            YogaNode root = Node(width:100, height:100, padding:new Edges(start:10));
 
             YogaArrange.CalculateLayout(root, 100, 100, Direction.LTR);
 

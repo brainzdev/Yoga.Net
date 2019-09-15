@@ -9,7 +9,7 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void computed_layout_margin()
         {
-            YogaNode root = Node(width:100, height:100, margin:Edges(start:10.Percent()));
+            YogaNode root = Node(width:100, height:100, margin:new Edges(start:10.Percent()));
 
             YogaArrange.CalculateLayout(root, 100, 100, Direction.LTR);
 
