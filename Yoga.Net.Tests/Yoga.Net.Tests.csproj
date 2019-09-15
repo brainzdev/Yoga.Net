@@ -9,15 +9,11 @@
   <ItemGroup>
     <Compile Remove="Typed\YogaAbsolutePositionTest.cs" />
     <Compile Remove="Typed\YogaAlignContentTest.cs" />
-    <Compile Remove="Typed\YogaAlignItemsTest.cs" />
-    <Compile Remove="Typed\YogaAndroidNewsFeed.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="Typed\YogaAbsolutePositionTest.cs" />
     <None Include="Typed\YogaAlignContentTest.cs" />
-    <None Include="Typed\YogaAlignItemsTest.cs" />
-    <None Include="Typed\YogaAndroidNewsFeed.cs" />
   </ItemGroup>
 
   <ItemGroup>

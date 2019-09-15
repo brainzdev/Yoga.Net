@@ -15,8 +15,8 @@ namespace Yoga.Net.Tests.Typed
         {
             YogaNode root_child0, root_child1;
             YogaNode root = Node(flexDirection: FlexDirection.Row, width: 300)
-                           .AddChild(root_child0 = Node(width:300, height:300))
-                           .AddChild(root_child1 = Node(positionType:PositionType.Absolute, left:20.Percent(), top:20.Percent(), width:20.Percent(), height:20.Percent()));
+                           .Add(root_child0 = Node(width:300, height:300))
+                           .Add(root_child1 = Node(positionType:PositionType.Absolute, left:20.Percent(), top:20.Percent(), width:20.Percent(), height:20.Percent()));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 

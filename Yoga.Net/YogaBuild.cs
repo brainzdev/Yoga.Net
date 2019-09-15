@@ -84,7 +84,7 @@ namespace Yoga.Net
             return new YogaBuild(node);
         }
 
-        public YogaBuild AddChild(YogaNode child)
+        public YogaBuild Add(YogaNode child)
         {
             Value.Children.Add(child);
             return this;

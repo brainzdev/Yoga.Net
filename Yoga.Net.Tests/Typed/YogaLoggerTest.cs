@@ -31,8 +31,8 @@ namespace Yoga.Net.Tests.Typed
             YogaConfig config = new YogaConfig {PrintTree = true, LoggerFunc = _unmanagedLogger};
 
             YogaNode root = Node(config)
-                           .AddChild(Node(config))
-                           .AddChild(Node(config));
+                           .Add(Node(config))
+                           .Add(Node(config));
             
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -49,8 +49,8 @@ namespace Yoga.Net.Tests.Typed
             YogaConfig config = new YogaConfig {PrintTree = false, LoggerFunc = _unmanagedLogger};
             
             YogaNode root = Node(config)
-                           .AddChild(Node(config))
-                           .AddChild(Node(config));
+                           .Add(Node(config))
+                           .Add(Node(config));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
             config.LoggerFunc = null;
@@ -102,8 +102,8 @@ namespace Yoga.Net.Tests.Typed
             YogaConfig config = new YogaConfig {LoggerFunc = _unmanagedLogger};
 
             YogaNode root = Node(config)
-                           .AddChild(Node(config))
-                           .AddChild(Node(config));
+                           .Add(Node(config))
+                           .Add(Node(config));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 

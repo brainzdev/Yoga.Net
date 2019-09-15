@@ -19,7 +19,7 @@ namespace Yoga.Net.Tests.Typed
             YogaConfig config = new YogaConfig();
             YogaNode rootChild0;
             YogaNode root = Node(config)
-               .AddChild(rootChild0 = Node(measureFunc: _measureFloor));
+               .Add(rootChild0 = Node(measureFunc: _measureFloor));
 
             config.PointScaleFactor = 0.0f;
 
@@ -63,7 +63,7 @@ namespace Yoga.Net.Tests.Typed
             YogaConfig config = new YogaConfig();
             YogaNode rootChild0;
             YogaNode root = Node(config)
-               .AddChild(rootChild0 = Node(measureFunc: _measureCeil));
+               .Add(rootChild0 = Node(measureFunc: _measureCeil));
 
             config.PointScaleFactor = 1.0f;
 
@@ -79,7 +79,7 @@ namespace Yoga.Net.Tests.Typed
             YogaConfig config = new YogaConfig();
             YogaNode rootChild0;
             YogaNode root = Node(config)
-               .AddChild(rootChild0 = Node(left: 73.625f, measureFunc:_measureFractal));
+               .Add(rootChild0 = Node(left: 73.625f, measureFunc:_measureFractal));
 
             config.PointScaleFactor = 2.0f;
 

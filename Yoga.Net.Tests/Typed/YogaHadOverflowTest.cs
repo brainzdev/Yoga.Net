@@ -83,7 +83,7 @@ namespace Yoga.Net.Tests.Typed
             root.Children.Add(Node(config, width: 80, height: 40, margin: Edges(top: 10, bottom: 10)));
             root.Children.Add(
                 Node(config, width: 80, height: 40)
-                   .AddChild(Node(width: 80, height: 40, margin: Edges(bottom: 5)))
+                   .Add(Node(width: 80, height: 40, margin: Edges(bottom: 5)))
             );
 
             YogaArrange.CalculateLayout(root, 200, 100, Direction.LTR);

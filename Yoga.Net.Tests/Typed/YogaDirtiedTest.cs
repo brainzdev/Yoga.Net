@@ -40,8 +40,8 @@ namespace Yoga.Net.Tests.Typed
         {
             YogaNode root_child0, root_child1;
             YogaNode root = Node(alignItems: YogaAlign.FlexStart, width: 100, height: 100)
-                           .AddChild(root_child0 = Node(width:50, height:20))
-                           .AddChild(root_child1 = Node(width:50, height:20));
+                           .Add(root_child0 = Node(width:50, height:20))
+                           .Add(root_child1 = Node(width:50, height:20));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -64,8 +64,8 @@ namespace Yoga.Net.Tests.Typed
         {
             YogaNode root_child0, root_child1;
             YogaNode root = Node(alignItems: YogaAlign.FlexStart, width: 100, height: 100)
-                           .AddChild(root_child0 = Node(width:50, height:20))
-                           .AddChild(root_child1 = Node(width:50, height:20));
+                           .Add(root_child0 = Node(width:50, height:20))
+                           .Add(root_child1 = Node(width:50, height:20));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 

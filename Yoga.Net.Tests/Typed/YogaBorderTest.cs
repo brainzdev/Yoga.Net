@@ -35,7 +35,7 @@ namespace Yoga.Net.Tests.Typed
 
             YogaNode root_child0;
             YogaNode root = Node(config, border: Edges(left: 10, top: 10, right: 10, bottom: 10))
-               .AddChild(root_child0 = Node(width:10, height:10));
+               .Add(root_child0 = Node(width:10, height:10));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -69,7 +69,7 @@ namespace Yoga.Net.Tests.Typed
 
             YogaNode root_child0;
             YogaNode root = Node(config, border: Edges(left: 10, top: 10, right: 10, bottom: 10), width:100, height:100)
-               .AddChild(root_child0 = Node(flexGrow:1, width:10));
+               .Add(root_child0 = Node(flexGrow:1, width:10));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -103,7 +103,7 @@ namespace Yoga.Net.Tests.Typed
 
             YogaNode root_child0;
             YogaNode root = Node(config, border: Edges(left: 10, top: 10, right: 10, bottom: 10), width:100, height:100)
-               .AddChild(root_child0 = Node(height:10));
+               .Add(root_child0 = Node(height:10));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -137,7 +137,7 @@ namespace Yoga.Net.Tests.Typed
 
             YogaNode root_child0;
             YogaNode root = Node(config, justifyContent:Justify.Center, alignItems:YogaAlign.Center, border: Edges(start: 10, end: 20, bottom: 20), width:100, height:100)
-               .AddChild(root_child0 = Node(width:10, height:10));
+               .Add(root_child0 = Node(width:10, height:10));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 

@@ -15,9 +15,9 @@ namespace Yoga.Net.Tests.Typed
 
             YogaNode root_child0, root_child1, root_child1_child0;
             YogaNode root = Node(flexDirection: FlexDirection.Row, alignItems: YogaAlign.Baseline, width: 100, height: 100)
-                           .AddChild(root_child0 = Node(width: 50, height: 50))
-                           .AddChild(root_child1 = Node(width:50, height:20)
-                               .AddChild(root_child1_child0 = Node(width:50, height:20))
+                           .Add(root_child0 = Node(width: 50, height: 50))
+                           .Add(root_child1 = Node(width:50, height:20)
+                               .Add(root_child1_child0 = Node(width:50, height:20))
                             );
 
             root_child1_child0.Context = baselineValue;

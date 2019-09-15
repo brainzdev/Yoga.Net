@@ -18,7 +18,7 @@ namespace Yoga.Net.Tests.Typed
                     config: config,
                     height: 100.Percent(),
                     width: 100.Percent())
-               .AddChild(root_child0 = Node(config, flexBasis: 100.Percent()));
+               .Add(root_child0 = Node(config, flexBasis: 100.Percent()));
 
             YogaArrange.CalculateLayout(root, 100, YogaValue.YGUndefined, Direction.LTR);
             YogaArrange.CalculateLayout(root, 100, 100, Direction.LTR);
@@ -31,7 +31,7 @@ namespace Yoga.Net.Tests.Typed
         {
             YogaNode root_child0;
             YogaNode root = Node()
-               .AddChild(root_child0 = Node(minHeight: 10, maxHeight: 10));
+               .Add(root_child0 = Node(minHeight: 10, maxHeight: 10));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
             Assert.AreEqual(10, root_child0.Layout.Height);

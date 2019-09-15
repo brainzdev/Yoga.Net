@@ -37,8 +37,8 @@ namespace Yoga.Net.Tests.Typed
 
             YogaNode root_child0, root_child1;
             YogaNode root = Node(config, flexDirection: FlexDirection.Row, alignContent: YogaAlign.Stretch, alignItems: YogaAlign.Baseline, width: 340, maxHeight: 170, minHeight: 0)
-                           .AddChild(root_child0 = Node(flexGrow: 0, flexShrink: 1, measureFunc: _measure1))
-                           .AddChild(root_child1 = Node(flexGrow:0, flexShrink:1, measureFunc:_measure2));
+                           .Add(root_child0 = Node(flexGrow: 0, flexShrink: 1, measureFunc: _measure1))
+                           .Add(root_child1 = Node(flexGrow:0, flexShrink:1, measureFunc:_measure2));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -65,8 +65,8 @@ namespace Yoga.Net.Tests.Typed
 
             YogaNode root_child0, root_child1;
             YogaNode root = Node(config, flexDirection: FlexDirection.Row, alignItems: YogaAlign.Baseline, width: 150)
-                           .AddChild(root_child0 = Node(width:50, height:50))
-                           .AddChild(root_child1 = Node(width:50, height:40));
+                           .Add(root_child0 = Node(width:50, height:50))
+                           .Add(root_child1 = Node(width:50, height:40));
             root_child1.BaselineFunc = _baselineFunc;
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
@@ -94,8 +94,8 @@ namespace Yoga.Net.Tests.Typed
 
             YogaNode root_child0, root_child1;
             YogaNode root = Node(config, flexDirection: FlexDirection.Row, alignItems: YogaAlign.Baseline, width: 150)
-                           .AddChild(root_child0 = Node(width: 50, height: 80))
-                           .AddChild(root_child1 = Node(width:50, height:50));
+                           .Add(root_child0 = Node(width: 50, height: 80))
+                           .Add(root_child1 = Node(width:50, height:50));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 

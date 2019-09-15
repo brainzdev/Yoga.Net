@@ -14,8 +14,8 @@ namespace Yoga.Net.Tests.Typed
 
             YogaNode root_child0, root_child1;
             YogaNode root = Node(config, width: 100, height: 100)
-                           .AddChild(root_child0 = Node(flexGrow: 1, flexBasis: 50))
-                           .AddChild(root_child1 = Node(flexGrow: 1));
+                           .Add(root_child0 = Node(flexGrow: 1, flexBasis: 50))
+                           .Add(root_child1 = Node(flexGrow: 1));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -141,10 +141,10 @@ namespace Yoga.Net.Tests.Typed
             YogaNode root_child0, root_child1, root_child1_0, root_child1_1;
             YogaNode root =
                 Node(config, width: 100, height: 100)
-                   .AddChild(root_child0 = Node(config, flexGrow: 1, flexBasis: 15))
-                   .AddChild(root_child1 = Node(config, flexGrow: 1)
-                                     .AddChild(root_child1_0 = Node(config, flexBasis: 10, flexGrow: 1))
-                                     .AddChild(root_child1_1 = Node(config, flexBasis: 25)));
+                   .Add(root_child0 = Node(config, flexGrow: 1, flexBasis: 15))
+                   .Add(root_child1 = Node(config, flexGrow: 1)
+                                     .Add(root_child1_0 = Node(config, flexBasis: 10, flexGrow: 1))
+                                     .Add(root_child1_1 = Node(config, flexBasis: 25)));
 
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
@@ -192,8 +192,8 @@ namespace Yoga.Net.Tests.Typed
 
             YogaNode root_child0, root_child1;
             YogaNode root = Node(config, width: 100, height: 100)
-                           .AddChild(root_child0 = Node(config))
-                           .AddChild(root_child1 = Node(config));
+                           .Add(root_child0 = Node(config))
+                           .Add(root_child1 = Node(config));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 

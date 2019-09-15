@@ -11,8 +11,8 @@ namespace Yoga.Net.Tests.Typed
         {
             YogaNode root_child0, root_child1;
             YogaNode root = Node(alignItems: YogaAlign.FlexStart, width: 100, height: 100)
-                           .AddChild(root_child0 = Node(width:50, height:20))
-                           .AddChild(root_child1 = Node(width:50, height:20));
+                           .Add(root_child0 = Node(width:50, height:20))
+                           .Add(root_child1 = Node(width:50, height:20));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -35,8 +35,8 @@ namespace Yoga.Net.Tests.Typed
         {
             YogaNode root_child0, root_child1;
             YogaNode root = Node(alignItems: YogaAlign.FlexStart, width: 100, height: 100)
-                           .AddChild(root_child0 = Node(width:50, height:20))
-                           .AddChild(root_child1 = Node(width:50, height:20));
+                           .Add(root_child0 = Node(width:50, height:20))
+                           .Add(root_child1 = Node(width:50, height:20));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -52,11 +52,11 @@ namespace Yoga.Net.Tests.Typed
         {
             YogaNode child0, child1, child1_child0, child1_child0_child0;
             YogaNode root = Node(flexDirection: FlexDirection.Row, height: 100)
-                           .AddChild(child0 = Node(flexGrow: 1, display:Display.Flex))
-                           .AddChild(child1 = Node(flexGrow: 1, display:Display.None)
-                                   .AddChild(
+                           .Add(child0 = Node(flexGrow: 1, display:Display.Flex))
+                           .Add(child1 = Node(flexGrow: 1, display:Display.None)
+                                   .Add(
                                         child1_child0 = Node()
-                                           .AddChild(child1_child0_child0 = Node(width:8, height:16))
+                                           .Add(child1_child0_child0 = Node(width:8, height:16))
                                         )
                             );
 
@@ -96,7 +96,7 @@ namespace Yoga.Net.Tests.Typed
         {
             YogaNode child0;
             YogaNode root = Node(alignItems: YogaAlign.FlexStart, width: 50, height: 50)
-               .AddChild(child0 = Node(width:50, height:25));
+               .Add(child0 = Node(width:50, height:25));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
