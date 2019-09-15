@@ -7,16 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Typed\YogaAbsolutePositionTest.cs" />
-    <Compile Remove="Typed\YogaAlignContentTest.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Typed\YogaAbsolutePositionTest.cs" />
-    <None Include="Typed\YogaAlignContentTest.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="nunit" Version="3.11.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.11.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />

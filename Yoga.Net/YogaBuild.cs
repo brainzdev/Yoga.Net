@@ -36,6 +36,8 @@ namespace Yoga.Net
             YogaValue top = null,
             YogaValue right = null,
             YogaValue bottom = null,
+            YogaValue start = null,
+            YogaValue end = null,
             Edges margin = null,
             Edges position = null,
             Edges padding = null,
@@ -70,14 +72,16 @@ namespace Yoga.Net
                     MaxHeight      = maxHeight ?? YogaValue.Undefined
                 }
             };
-            if (margin != null) node.Style.Margin     = margin;
-            if (position != null) node.Style.Position = position;
-            if (padding != null) node.Style.Padding   = padding;
-            if (border != null) node.Style.Border     = border;
-            if (left != null) node.Style.Left         = left;
-            if (top != null) node.Style.Top           = top;
-            if (right != null) node.Style.Right       = right;
-            if (bottom != null) node.Style.Bottom     = bottom;
+            if (margin != null) node.Style.Margin        = margin;
+            if (position != null) node.Style.Position    = position;
+            if (padding != null) node.Style.Padding      = padding;
+            if (border != null) node.Style.Border        = border;
+            if (start != null) node.Style.Position.Start = start;
+            if (end != null) node.Style.Position.End     = end;
+            if (left != null) node.Style.Left            = left;
+            if (top != null) node.Style.Top              = top;
+            if (right != null) node.Style.Right          = right;
+            if (bottom != null) node.Style.Bottom        = bottom;
 
             if (measureFunc != null) node.MeasureFunc = measureFunc;
 
@@ -102,9 +106,14 @@ namespace Yoga.Net
             YogaValue all = null)
         {
             return new Edges(
-                left, top, right, bottom,
-                start, end,
-                horizontal, vertical,
+                left,
+                top,
+                right,
+                bottom,
+                start,
+                end,
+                horizontal,
+                vertical,
                 all);
         }
 
