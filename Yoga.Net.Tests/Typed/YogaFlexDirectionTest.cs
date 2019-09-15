@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using static Yoga.Net.YogaBuild;
 
 namespace Yoga.Net.Tests.Typed
 {
@@ -8,22 +9,13 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void flex_direction_column_no_height()
         {
-            YogaConfig config = new YogaConfig();
 
-            YogaNode root = new YogaNode(config);
-            YGNodeStyleSetWidth(root, 100);
+            YogaNode root_child0, root_child1, root_child2;
+            YogaNode root = Node(width: 100)
+                           .AddChild(root_child0 = Node(height: 10))
+                           .AddChild(root_child1 = Node(height: 10))
+                           .AddChild(root_child2 = Node(height: 10));
 
-            YogaNode root_child0 = new YogaNode(config);
-            YGNodeStyleSetHeight(root_child0, 10);
-            YGNodeInsertChild(root, root_child0, 0);
-
-            YogaNode root_child1 = new YogaNode(config);
-            YGNodeStyleSetHeight(root_child1, 10);
-            YGNodeInsertChild(root, root_child1, 1);
-
-            YogaNode root_child2 = new YogaNode(config);
-            YGNodeStyleSetHeight(root_child2, 10);
-            YGNodeInsertChild(root, root_child2, 2);
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
             Assert.AreEqual(0, root.Layout.Left);
@@ -72,23 +64,12 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void flex_direction_row_no_width()
         {
-            YogaConfig config = new YogaConfig();
-
-            YogaNode root = new YogaNode(config);
-            YGNodeStyleSetFlexDirection(root, FlexDirection.Row);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode(config);
-            YGNodeStyleSetWidth(root_child0, 10);
-            YGNodeInsertChild(root, root_child0, 0);
-
-            YogaNode root_child1 = new YogaNode(config);
-            YGNodeStyleSetWidth(root_child1, 10);
-            YGNodeInsertChild(root, root_child1, 1);
-
-            YogaNode root_child2 = new YogaNode(config);
-            YGNodeStyleSetWidth(root_child2, 10);
-            YGNodeInsertChild(root, root_child2, 2);
+            YogaNode root_child0, root_child1, root_child2;
+            YogaNode root = Node(flexDirection:FlexDirection.Row, height: 100)
+                           .AddChild(root_child0 = Node(width: 10))
+                           .AddChild(root_child1 = Node(width: 10))
+                           .AddChild(root_child2 = Node(width: 10));
+            
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
             Assert.AreEqual(0, root.Layout.Left);
@@ -137,23 +118,12 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void flex_direction_column()
         {
-            YogaConfig config = new YogaConfig();
+            YogaNode root_child0, root_child1, root_child2;
+            YogaNode root = Node(width: 100, height:100)
+                           .AddChild(root_child0 = Node(height: 10))
+                           .AddChild(root_child1 = Node(height: 10))
+                           .AddChild(root_child2 = Node(height: 10));
 
-            YogaNode root = new YogaNode(config);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode(config);
-            YGNodeStyleSetHeight(root_child0, 10);
-            YGNodeInsertChild(root, root_child0, 0);
-
-            YogaNode root_child1 = new YogaNode(config);
-            YGNodeStyleSetHeight(root_child1, 10);
-            YGNodeInsertChild(root, root_child1, 1);
-
-            YogaNode root_child2 = new YogaNode(config);
-            YGNodeStyleSetHeight(root_child2, 10);
-            YGNodeInsertChild(root, root_child2, 2);
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
             Assert.AreEqual(0, root.Layout.Left);
@@ -202,24 +172,12 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void flex_direction_row()
         {
-            YogaConfig config = new YogaConfig();
-
-            YogaNode root = new YogaNode(config);
-            YGNodeStyleSetFlexDirection(root, FlexDirection.Row);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode(config);
-            YGNodeStyleSetWidth(root_child0, 10);
-            YGNodeInsertChild(root, root_child0, 0);
-
-            YogaNode root_child1 = new YogaNode(config);
-            YGNodeStyleSetWidth(root_child1, 10);
-            YGNodeInsertChild(root, root_child1, 1);
-
-            YogaNode root_child2 = new YogaNode(config);
-            YGNodeStyleSetWidth(root_child2, 10);
-            YGNodeInsertChild(root, root_child2, 2);
+            YogaNode root_child0, root_child1, root_child2;
+            YogaNode root = Node(flexDirection:FlexDirection.Row, width: 100, height:100)
+                           .AddChild(root_child0 = Node(width: 10))
+                           .AddChild(root_child1 = Node(width: 10))
+                           .AddChild(root_child2 = Node(width: 10));
+            
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
             Assert.AreEqual(0, root.Layout.Left);
@@ -268,24 +226,12 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void flex_direction_column_reverse()
         {
-            YogaConfig config = new YogaConfig();
-
-            YogaNode root = new YogaNode(config);
-            YGNodeStyleSetFlexDirection(root, FlexDirection.ColumnReverse);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode(config);
-            YGNodeStyleSetHeight(root_child0, 10);
-            YGNodeInsertChild(root, root_child0, 0);
-
-            YogaNode root_child1 = new YogaNode(config);
-            YGNodeStyleSetHeight(root_child1, 10);
-            YGNodeInsertChild(root, root_child1, 1);
-
-            YogaNode root_child2 = new YogaNode(config);
-            YGNodeStyleSetHeight(root_child2, 10);
-            YGNodeInsertChild(root, root_child2, 2);
+            YogaNode root_child0, root_child1, root_child2;
+            YogaNode root = Node(flexDirection:FlexDirection.ColumnReverse, width: 100, height:100)
+                           .AddChild(root_child0 = Node(height: 10))
+                           .AddChild(root_child1 = Node(height: 10))
+                           .AddChild(root_child2 = Node(height: 10));
+            
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
             Assert.AreEqual(0, root.Layout.Left);
@@ -334,24 +280,12 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void flex_direction_row_reverse()
         {
-            YogaConfig config = new YogaConfig();
-
-            YogaNode root = new YogaNode(config);
-            YGNodeStyleSetFlexDirection(root, FlexDirection.RowReverse);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode(config);
-            YGNodeStyleSetWidth(root_child0, 10);
-            YGNodeInsertChild(root, root_child0, 0);
-
-            YogaNode root_child1 = new YogaNode(config);
-            YGNodeStyleSetWidth(root_child1, 10);
-            YGNodeInsertChild(root, root_child1, 1);
-
-            YogaNode root_child2 = new YogaNode(config);
-            YGNodeStyleSetWidth(root_child2, 10);
-            YGNodeInsertChild(root, root_child2, 2);
+            YogaNode root_child0, root_child1, root_child2;
+            YogaNode root = Node(flexDirection:FlexDirection.RowReverse, width: 100, height:100)
+                           .AddChild(root_child0 = Node(width: 10))
+                           .AddChild(root_child1 = Node(width: 10))
+                           .AddChild(root_child2 = Node(width: 10));
+            
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
             Assert.AreEqual(0, root.Layout.Left);

@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using static Yoga.Net.YogaBuild;
 
 namespace Yoga.Net.Tests.Typed
 {
@@ -20,15 +21,9 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void aspect_ratio_cross_defined()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeStyleSetWidth(root_child0, 50);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0;
+            YogaNode root = Node(alignItems: YogaAlign.FlexStart, width: 100, height: 100)
+               .AddChild(root_child0 = Node(width:50, aspectRatio:1 ));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -41,15 +36,9 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void aspect_ratio_main_defined()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeStyleSetHeight(root_child0, 50);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0;
+            YogaNode root = Node(alignItems: YogaAlign.FlexStart, width: 100, height: 100)
+               .AddChild(root_child0 = Node(height:50, aspectRatio:1 ));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -62,17 +51,9 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void aspect_ratio_both_dimensions_defined_row()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetFlexDirection(root, FlexDirection.Row);
-            YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeStyleSetWidth(root_child0, 100);
-            YGNodeStyleSetHeight(root_child0, 50);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0;
+            YogaNode root = Node(flexDirection:FlexDirection.Row, alignItems: YogaAlign.FlexStart, width: 100, height: 100)
+               .AddChild(root_child0 = Node(width:100, height:50, aspectRatio:1 ));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -85,16 +66,9 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void aspect_ratio_both_dimensions_defined_column()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeStyleSetWidth(root_child0, 100);
-            YGNodeStyleSetHeight(root_child0, 50);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0;
+            YogaNode root = Node(alignItems: YogaAlign.FlexStart, width: 100, height: 100)
+               .AddChild(root_child0 = Node(width:100, height:50, aspectRatio:1 ));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -107,13 +81,9 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void aspect_ratio_align_stretch()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0;
+            YogaNode root = Node(width: 100, height: 100)
+               .AddChild(root_child0 = Node(aspectRatio:1 ));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -126,16 +96,9 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void aspect_ratio_flex_grow()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeStyleSetHeight(root_child0, 50);
-            YGNodeStyleSetFlexGrow(root_child0, 1);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0;
+            YogaNode root = Node(alignItems: YogaAlign.FlexStart, width: 100, height: 100)
+               .AddChild(root_child0 = Node(height:50, flexGrow:1, aspectRatio:1 ));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -148,16 +111,9 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void aspect_ratio_flex_shrink()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeStyleSetHeight(root_child0, 150);
-            YGNodeStyleSetFlexShrink(root_child0, 1);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0;
+            YogaNode root = Node(alignItems: YogaAlign.FlexStart, width: 100, height: 100)
+               .AddChild(root_child0 = Node(height:100, flexShrink:1, aspectRatio:1 ));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -170,21 +126,10 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void aspect_ratio_flex_shrink_2()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeStyleSetHeightPercent(root_child0, 100);
-            YGNodeStyleSetFlexShrink(root_child0, 1);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
-
-            YogaNode root_child1 = new YogaNode();
-            YGNodeStyleSetHeightPercent(root_child1, 100);
-            YGNodeStyleSetFlexShrink(root_child1, 1);
-            YGNodeStyleSetAspectRatio(root_child1, 1);
-            YGNodeInsertChild(root, root_child1, 1);
+            YogaNode root_child0, root_child1;
+            YogaNode root = Node(width: 100, height: 100)
+                           .AddChild(root_child0 = Node(height: 100.Percent(), flexShrink: 1, aspectRatio: 1))
+                           .AddChild(root_child1 = Node(height: 100.Percent(), flexShrink: 1, aspectRatio: 1));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -202,15 +147,9 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void aspect_ratio_basis()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeStyleSetFlexBasis(root_child0, 50);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0;
+            YogaNode root = Node(alignItems: YogaAlign.FlexStart, width: 100, height: 100)
+               .AddChild(root_child0 = Node(flexBasis:50, aspectRatio:1 ));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -223,17 +162,9 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void aspect_ratio_absolute_layout_width_defined()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeStyleSetPositionType(root_child0, PositionType.Absolute);
-            YGNodeStyleSetPosition(root_child0, Edge.Left, 0);
-            YGNodeStyleSetPosition(root_child0, Edge.Top, 0);
-            YGNodeStyleSetWidth(root_child0, 50);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0;
+            YogaNode root = Node(width: 100, height: 100)
+               .AddChild(root_child0 = Node(positionType:PositionType.Absolute, left:0, top:0, width:50, aspectRatio:1 ));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -246,17 +177,9 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void aspect_ratio_absolute_layout_height_defined()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeStyleSetPositionType(root_child0, PositionType.Absolute);
-            YGNodeStyleSetPosition(root_child0, Edge.Left, 0);
-            YGNodeStyleSetPosition(root_child0, Edge.Top, 0);
-            YGNodeStyleSetHeight(root_child0, 50);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0;
+            YogaNode root = Node(width: 100, height: 100)
+               .AddChild(root_child0 = Node(positionType:PositionType.Absolute, left:0, top:0, height:50, aspectRatio:1 ));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -269,16 +192,9 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void aspect_ratio_with_max_cross_defined()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeStyleSetHeight(root_child0, 50);
-            YGNodeStyleSetMaxWidth(root_child0, 40);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0;
+            YogaNode root = Node(alignItems: YogaAlign.FlexStart, width: 100, height: 100)
+               .AddChild(root_child0 = Node(height:50, maxWidth:40, aspectRatio: 1));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -291,16 +207,9 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void aspect_ratio_with_max_main_defined()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeStyleSetWidth(root_child0, 50);
-            YGNodeStyleSetMaxHeight(root_child0, 40);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0;
+            YogaNode root = Node(alignItems: YogaAlign.FlexStart, width: 100, height: 100)
+               .AddChild(root_child0 = Node(width:50, maxHeight:40, aspectRatio: 1));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -313,16 +222,9 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void aspect_ratio_with_min_cross_defined()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeStyleSetHeight(root_child0, 30);
-            YGNodeStyleSetMinWidth(root_child0, 40);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0;
+            YogaNode root = Node(alignItems: YogaAlign.FlexStart, width: 100, height: 100)
+               .AddChild(root_child0 = Node(height:30, minWidth:40, aspectRatio: 1));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -335,16 +237,9 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void aspect_ratio_with_min_main_defined()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeStyleSetWidth(root_child0, 30);
-            YGNodeStyleSetMinHeight(root_child0, 40);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0;
+            YogaNode root = Node(alignItems: YogaAlign.FlexStart, width: 100, height: 100)
+               .AddChild(root_child0 = Node(width:30, minHeight:40, aspectRatio: 1));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -357,15 +252,9 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void aspect_ratio_double_cross()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeStyleSetHeight(root_child0, 50);
-            YGNodeStyleSetAspectRatio(root_child0, 2);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0;
+            YogaNode root = Node(alignItems: YogaAlign.FlexStart, width: 100, height: 100)
+               .AddChild(root_child0 = Node(height:50, aspectRatio: 2));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -378,15 +267,9 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void aspect_ratio_half_cross()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeStyleSetHeight(root_child0, 100);
-            YGNodeStyleSetAspectRatio(root_child0, 0.5f);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0;
+            YogaNode root = Node(alignItems: YogaAlign.FlexStart, width: 100, height: 100)
+               .AddChild(root_child0 = Node(height:100, aspectRatio: 0.5f));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -399,15 +282,9 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void aspect_ratio_double_main()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeStyleSetWidth(root_child0, 50);
-            YGNodeStyleSetAspectRatio(root_child0, 0.5f);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0;
+            YogaNode root = Node(alignItems: YogaAlign.FlexStart, width: 100, height: 100)
+               .AddChild(root_child0 = Node(width:50, aspectRatio: 0.5f));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -420,15 +297,9 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void aspect_ratio_half_main()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeStyleSetWidth(root_child0, 100);
-            YGNodeStyleSetAspectRatio(root_child0, 2);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0;
+            YogaNode root = Node(alignItems: YogaAlign.FlexStart, width: 100, height: 100)
+               .AddChild(root_child0 = Node(width:100, aspectRatio: 2));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -441,15 +312,9 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void aspect_ratio_with_measure_func()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeSetMeasureFunc(root_child0, _measure);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0;
+            YogaNode root = Node(alignItems: YogaAlign.FlexStart, width: 100, height: 100)
+               .AddChild(root_child0 = Node(measureFunc:_measure, aspectRatio: 1));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -462,18 +327,9 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void aspect_ratio_width_height_flex_grow_row()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetFlexDirection(root, FlexDirection.Row);
-            YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 200);
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeStyleSetWidth(root_child0, 50);
-            YGNodeStyleSetHeight(root_child0, 50);
-            YGNodeStyleSetFlexGrow(root_child0, 1);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0;
+            YogaNode root = Node(flexDirection:FlexDirection.Row, alignItems: YogaAlign.FlexStart, width: 100, height: 200)
+               .AddChild(root_child0 = Node(width:50, height:50, flexGrow:1, aspectRatio: 1));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -486,17 +342,9 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void aspect_ratio_width_height_flex_grow_column()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
-            YGNodeStyleSetWidth(root, 200);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeStyleSetWidth(root_child0, 50);
-            YGNodeStyleSetHeight(root_child0, 50);
-            YGNodeStyleSetFlexGrow(root_child0, 1);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0;
+            YogaNode root = Node(alignItems: YogaAlign.FlexStart, width: 200, height: 100)
+               .AddChild(root_child0 = Node(width:50, height:50, flexGrow:1, aspectRatio: 1));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -509,23 +357,10 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void aspect_ratio_height_as_flex_basis()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
-            YGNodeStyleSetFlexDirection(root, FlexDirection.Row);
-            YGNodeStyleSetWidth(root, 200);
-            YGNodeStyleSetHeight(root, 200);
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeStyleSetHeight(root_child0, 50);
-            YGNodeStyleSetFlexGrow(root_child0, 1);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
-
-            YogaNode root_child1 = new YogaNode();
-            YGNodeStyleSetHeight(root_child1, 100);
-            YGNodeStyleSetFlexGrow(root_child1, 1);
-            YGNodeStyleSetAspectRatio(root_child1, 1);
-            YGNodeInsertChild(root, root_child1, 1);
+            YogaNode root_child0, root_child1;
+            YogaNode root = Node(alignItems: YogaAlign.FlexStart, flexDirection: FlexDirection.Row, width: 200, height: 200)
+                           .AddChild(root_child0 = Node(height: 50, flexGrow: 1, aspectRatio: 1))
+                           .AddChild(root_child1 = Node(height: 100, flexGrow: 1, aspectRatio: 1));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -543,22 +378,10 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void aspect_ratio_width_as_flex_basis()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
-            YGNodeStyleSetWidth(root, 200);
-            YGNodeStyleSetHeight(root, 200);
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeStyleSetWidth(root_child0, 50);
-            YGNodeStyleSetFlexGrow(root_child0, 1);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
-
-            YogaNode root_child1 = new YogaNode();
-            YGNodeStyleSetWidth(root_child1, 100);
-            YGNodeStyleSetFlexGrow(root_child1, 1);
-            YGNodeStyleSetAspectRatio(root_child1, 1);
-            YGNodeInsertChild(root, root_child1, 1);
+            YogaNode root_child0, root_child1;
+            YogaNode root = Node(alignItems: YogaAlign.FlexStart, width: 200, height: 200)
+                           .AddChild(root_child0 = Node(width: 50, flexGrow: 1, aspectRatio: 1))
+                           .AddChild(root_child1 = Node(width: 100, flexGrow: 1, aspectRatio: 1));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -576,17 +399,9 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void aspect_ratio_overrides_flex_grow_row()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
-            YGNodeStyleSetFlexDirection(root, FlexDirection.Row);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeStyleSetWidth(root_child0, 50);
-            YGNodeStyleSetFlexGrow(root_child0, 1);
-            YGNodeStyleSetAspectRatio(root_child0, 0.5f);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0;
+            YogaNode root = Node(alignItems: YogaAlign.FlexStart, flexDirection:FlexDirection.Row, width: 100, height: 100)
+               .AddChild(root_child0 = Node(height:50, flexGrow:1, aspectRatio: 0.5f));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -599,16 +414,9 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void aspect_ratio_overrides_flex_grow_column()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeStyleSetHeight(root_child0, 50);
-            YGNodeStyleSetFlexGrow(root_child0, 1);
-            YGNodeStyleSetAspectRatio(root_child0, 2);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0;
+            YogaNode root = Node(alignItems: YogaAlign.FlexStart, width: 100, height: 100)
+               .AddChild(root_child0 = Node(height:50, flexGrow:1, aspectRatio: 2));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -621,17 +429,9 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void aspect_ratio_left_right_absolute()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeStyleSetPositionType(root_child0, PositionType.Absolute);
-            YGNodeStyleSetPosition(root_child0, Edge.Left, 10);
-            YGNodeStyleSetPosition(root_child0, Edge.Top, 10);
-            YGNodeStyleSetPosition(root_child0, Edge.Right, 10);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0;
+            YogaNode root = Node(width: 100, height: 100)
+               .AddChild(root_child0 = Node(positionType:PositionType.Absolute, left:10, top:10, right:10, aspectRatio: 1));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -644,17 +444,9 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void aspect_ratio_top_bottom_absolute()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeStyleSetPositionType(root_child0, PositionType.Absolute);
-            YGNodeStyleSetPosition(root_child0, Edge.Left, 10);
-            YGNodeStyleSetPosition(root_child0, Edge.Top, 10);
-            YGNodeStyleSetPosition(root_child0, Edge.Bottom, 10);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0;
+            YogaNode root = Node(width: 100, height: 100)
+               .AddChild(root_child0 = Node(positionType:PositionType.Absolute, left:10, top:10, bottom:10, aspectRatio: 1));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -667,15 +459,10 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void aspect_ratio_width_overrides_align_stretch_row()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetFlexDirection(root, FlexDirection.Row);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
 
-            YogaNode root_child0 = new YogaNode();
-            YGNodeStyleSetWidth(root_child0, 50);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0;
+            YogaNode root = Node(flexDirection:FlexDirection.Row, width: 100, height: 100)
+               .AddChild(root_child0 = Node(width:50, aspectRatio: 1));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -688,14 +475,9 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void aspect_ratio_height_overrides_align_stretch_column()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeStyleSetHeight(root_child0, 50);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0;
+            YogaNode root = Node(width: 100, height: 100)
+               .AddChild(root_child0 = Node(height:50, aspectRatio: 1));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -708,14 +490,9 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void aspect_ratio_allow_child_overflow_parent_size()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetAlignItems(root, YogaAlign.FlexStart);
-            YGNodeStyleSetWidth(root, 100);
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeStyleSetHeight(root_child0, 50);
-            YGNodeStyleSetAspectRatio(root_child0, 4);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0;
+            YogaNode root = Node(width: 100, alignItems:YogaAlign.FlexStart)
+               .AddChild(root_child0 = Node(height:50, aspectRatio: 4));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -729,18 +506,9 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void aspect_ratio_defined_main_with_margin()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetAlignItems(root, YogaAlign.Center);
-            YGNodeStyleSetJustifyContent(root, Justify.Center);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeStyleSetHeight(root_child0, 50);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeStyleSetMargin(root_child0, Edge.Left, 10);
-            YGNodeStyleSetMargin(root_child0, Edge.Right, 10);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0;
+            YogaNode root = Node(alignItems:YogaAlign.Center, justifyContent:Justify.Center, width: 100, height: 100)
+               .AddChild(root_child0 = Node(height:50, aspectRatio: 1, margin:Edges(left:10, right:10)));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -754,18 +522,9 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void aspect_ratio_defined_cross_with_margin()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetAlignItems(root, YogaAlign.Center);
-            YGNodeStyleSetJustifyContent(root, Justify.Center);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeStyleSetWidth(root_child0, 50);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeStyleSetMargin(root_child0, Edge.Left, 10);
-            YGNodeStyleSetMargin(root_child0, Edge.Right, 10);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0;
+            YogaNode root = Node(alignItems: YogaAlign.Center, justifyContent: Justify.Center, width: 100, height: 100)
+               .AddChild(root_child0 = Node(width:50, aspectRatio: 1, margin:Edges(left:10, right:10)));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
@@ -779,18 +538,9 @@ namespace Yoga.Net.Tests.Typed
         [Test]
         public void aspect_ratio_defined_cross_with_main_margin()
         {
-            YogaNode root = new YogaNode();
-            YGNodeStyleSetAlignItems(root, YogaAlign.Center);
-            YGNodeStyleSetJustifyContent(root, Justify.Center);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-
-            YogaNode root_child0 = new YogaNode();
-            YGNodeStyleSetWidth(root_child0, 50);
-            YGNodeStyleSetAspectRatio(root_child0, 1);
-            YGNodeStyleSetMargin(root_child0, Edge.Top, 10);
-            YGNodeStyleSetMargin(root_child0, Edge.Bottom, 10);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0;
+            YogaNode root = Node(alignItems:YogaAlign.Center, justifyContent:Justify.Center, width: 100, height: 100)
+               .AddChild(root_child0 = Node(width:50, aspectRatio: 1, margin:Edges(top:10, bottom:10)));
 
             YogaArrange.CalculateLayout(root, YogaValue.YGUndefined, YogaValue.YGUndefined, Direction.LTR);
 
